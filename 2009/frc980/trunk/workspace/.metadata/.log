@@ -1,0 +1,334 @@
+!SESSION 2009-01-12 21:02:03.882 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+This is a continuation of log file C:\Users\shadow\projects\FIRST\2009\frc980\trunk\workspace\.metadata\.bak_0.log
+Created Time: 2009-01-12 21:02:12.833
+!SESSION 2009-01-12 21:02:03.882 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.core.resources 2 10035 2009-01-12 21:02:12.836
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-12 21:02:31.709
+!MESSAGE C:\WindRiver\workbench-3.0\foundation\4.1.1\x86-win32\bin\wtxregd.exe
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-12 21:02:38.858
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-12 21:02:48.721
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:49199, PID=3756, Session="dfw-wb301-shadow"
+!SESSION 2009-01-13 19:24:07.977 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-13 19:24:36.703
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-13 19:24:39.247
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:50821, PID=7704, Session="dfw-wb301-shadow"
+!SESSION 2009-01-13 19:41:59.102 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -data C:\Users\shadow\projects\FIRST\2009\frc980\trunk\workspace -os win32 -ws win32 -arch x86
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-13 19:42:10.697
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-13 19:42:11.018
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:51392, PID=7304, Session="dfw-wb301-shadow"
+!SESSION 2009-01-14 20:41:05.040 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-14 20:41:22.732
+!MESSAGE C:\WindRiver\workbench-3.0\foundation\4.1.1\x86-win32\bin\wtxregd.exe
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-14 20:41:25.420
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-14 20:41:26.041
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:50125, PID=2220, Session="dfw-wb301-shadow"
+
+!ENTRY com.windriver.ide.target 4 0 2009-01-16 19:15:56.719
+!MESSAGE Workbench failed to connect to the Wind River Registry on host "localhost". Most likely this is caused by the Registry not running or due to an incorrect setting of the WIND_REGISTRY configuration option.
+
+If using a remote default Wind River Registry, increasing the Registry connection timeout within Window -> Preferences -> Wind River -> Target Management might be required.
+
+!ENTRY com.windriver.ide.target 4 0 2009-01-16 19:16:49.362
+!MESSAGE Workbench failed to connect to the Wind River Registry on host "localhost". Most likely this is caused by the Registry not running or due to an incorrect setting of the WIND_REGISTRY configuration option.
+
+If using a remote default Wind River Registry, increasing the Registry connection timeout within Window -> Preferences -> Wind River -> Target Management might be required.
+!SESSION 2009-01-16 19:40:01.058 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-16 19:40:17.937
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-16 19:40:18.247
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:52184, PID=7724, Session="dfw-wb301-shadow"
+
+!ENTRY org.eclipse.cdt.core 4 4 2009-01-16 20:05:20.925
+!MESSAGE Error while parsing /FRC980/DashboardDataExample.cpp.
+!STACK 0
+java.lang.NullPointerException
+	at java.io.File.<init>(File.java:194)
+	at org.eclipse.cdt.internal.core.parser.scanner2.IncludeFileResolutionCache.exists(IncludeFileResolutionCache.java:50)
+	at org.eclipse.cdt.internal.core.index.IndexBasedCodeReaderFactory.createCodeReaderForInclusion(IndexBasedCodeReaderFactory.java:144)
+	at org.eclipse.cdt.internal.core.parser.scanner2.DOMScanner.createReaderDuple(DOMScanner.java:233)
+	at org.eclipse.cdt.internal.core.parser.scanner2.DOMScanner.createReader(DOMScanner.java:610)
+	at org.eclipse.cdt.internal.core.parser.scanner2.BaseScanner$1.checkFile(BaseScanner.java:137)
+	at org.eclipse.cdt.internal.core.parser.scanner2.BaseScanner.findInclusion(BaseScanner.java:2019)
+	at org.eclipse.cdt.internal.core.parser.scanner2.BaseScanner.findInclusion(BaseScanner.java:1978)
+	at org.eclipse.cdt.internal.core.parser.scanner2.BaseScanner.handlePPInclude(BaseScanner.java:1951)
+	at org.eclipse.cdt.internal.core.parser.scanner2.BaseScanner.handlePPDirective(BaseScanner.java:1648)
+	at org.eclipse.cdt.internal.core.parser.scanner2.BaseScanner.fetchToken(BaseScanner.java:840)
+	at org.eclipse.cdt.internal.core.parser.scanner2.BaseScanner.doFetchToken(BaseScanner.java:613)
+	at org.eclipse.cdt.internal.core.parser.scanner2.BaseScanner.nextToken(BaseScanner.java:568)
+	at org.eclipse.cdt.internal.core.dom.parser.AbstractGNUSourceCodeParser.fetchToken(AbstractGNUSourceCodeParser.java:261)
+	at org.eclipse.cdt.internal.core.dom.parser.AbstractGNUSourceCodeParser.LA(AbstractGNUSourceCodeParser.java:186)
+	at org.eclipse.cdt.internal.core.dom.parser.AbstractGNUSourceCodeParser.LT(AbstractGNUSourceCodeParser.java:206)
+	at org.eclipse.cdt.internal.core.dom.parser.AbstractGNUSourceCodeParser.errorHandling(AbstractGNUSourceCodeParser.java:508)
+	at org.eclipse.cdt.internal.core.dom.parser.AbstractGNUSourceCodeParser.failParseWithErrorHandling(AbstractGNUSourceCodeParser.java:544)
+	at org.eclipse.cdt.internal.core.dom.parser.cpp.GNUCPPSourceParser.translationUnit(GNUCPPSourceParser.java:4775)
+	at org.eclipse.cdt.internal.core.dom.parser.AbstractGNUSourceCodeParser.parse(AbstractGNUSourceCodeParser.java:455)
+	at org.eclipse.cdt.core.dom.parser.cpp.AbstractCPPLanguage.getASTTranslationUnit(AbstractCPPLanguage.java:104)
+	at org.eclipse.cdt.internal.core.pdom.indexer.fast.PDOMFastIndexerTask.createAST(PDOMFastIndexerTask.java:159)
+	at org.eclipse.cdt.internal.core.pdom.indexer.PDOMIndexerTask.createAST(PDOMIndexerTask.java:168)
+	at org.eclipse.cdt.internal.core.pdom.indexer.PDOMIndexerTask.parseTU(PDOMIndexerTask.java:331)
+	at org.eclipse.cdt.internal.core.pdom.indexer.PDOMIndexerTask.internalParseTUs(PDOMIndexerTask.java:219)
+	at org.eclipse.cdt.internal.core.pdom.indexer.PDOMIndexerTask.parseTUs(PDOMIndexerTask.java:192)
+	at org.eclipse.cdt.internal.core.pdom.indexer.fast.PDOMFastIndexerTask.run(PDOMFastIndexerTask.java:102)
+	at org.eclipse.cdt.internal.core.pdom.indexer.PDOMRebuildTask.run(PDOMRebuildTask.java:74)
+	at org.eclipse.cdt.internal.core.pdom.PDOMIndexerJob.run(PDOMIndexerJob.java:90)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SESSION 2009-01-16 20:38:48.540 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-16 20:39:07.709
+!MESSAGE C:\WindRiver\workbench-3.0\foundation\4.1.1\x86-win32\bin\wtxregd.exe
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-16 20:39:10.278
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-16 20:39:11.101
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:49676, PID=6560, Session="dfw-wb301-shadow"
+!SESSION 2009-01-16 21:12:49.621 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.core.resources 2 10035 2009-01-16 21:13:15.713
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-16 21:13:51.830
+!MESSAGE C:\WindRiver\workbench-3.0\foundation\4.1.1\x86-win32\bin\wtxregd.exe
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-16 21:14:11.001
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-16 21:14:18.898
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:49205, PID=3624, Session="dfw-wb301-shadow"
+!SESSION 2009-01-17 16:07:23.816 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-17 16:07:38.375
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-17 16:07:39.222
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:50279, PID=5984, Session="dfw-wb301-shadow"
+
+!ENTRY edu.wpi.FIRSTDownloader 4 0 2009-01-17 16:11:31.170
+!MESSAGE Unable to connect to robot using IP: 10.9.80.2:21
+
+!ENTRY edu.wpi.FIRSTDownloader 4 0 2009-01-17 16:12:40.181
+!MESSAGE Unable to connect to robot using IP: 10.9.80.2:21
+!SESSION 2009-01-19 15:49:53.818 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 15:50:30.151
+!MESSAGE C:\WindRiver\workbench-3.0\foundation\4.1.1\x86-win32\bin\wtxregd.exe
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 15:50:32.717
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 15:50:37.259
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:49961, PID=7408, Session="dfw-wb301-shadow"
+
+!ENTRY edu.wpi.FIRSTDownloader 4 0 2009-01-19 16:24:07.201
+!MESSAGE Unable to connect to robot using IP: 10.9.80.2:21
+
+!ENTRY edu.wpi.FIRSTDownloader 4 0 2009-01-19 16:24:35.469
+!MESSAGE Unable to connect to robot using IP: 10.9.80.2:21
+!SESSION 2009-01-19 16:30:50.008 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.core.resources 2 10035 2009-01-19 16:31:02.134
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 16:31:16.423
+!MESSAGE C:\WindRiver\workbench-3.0\foundation\4.1.1\x86-win32\bin\wtxregd.exe
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 16:31:24.495
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 16:31:27.234
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:49193, PID=5220, Session="dfw-wb301-shadow"
+!SESSION 2009-01-19 17:04:50.232 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.core.resources 2 10035 2009-01-19 17:04:57.329
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 17:05:07.163
+!MESSAGE C:\WindRiver\workbench-3.0\foundation\4.1.1\x86-win32\bin\wtxregd.exe
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 17:05:13.776
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 17:05:14.385
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:49984, PID=3044, Session="dfw-wb301-shadow"
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 17:37:41.524
+!MESSAGE C:\WindRiver\workbench-3.0\foundation\4.1.1\x86-win32\bin\tgtsvr.exe -n VxWorks6x_10.9.80.2 -B wdbrpc -V -R C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace -RW -Bt 3 -c C:\WindRiver\WPILib\vxWorks -A 10.9.80.2
+
+!ENTRY edu.wpi.FIRSTDownloader 4 0 2009-01-19 17:55:35.596
+!MESSAGE Unable to delete the UserProgram from the robot.
+
+!ENTRY org.eclipse.jface 2 0 2009-01-19 17:56:40.863
+!MESSAGE Ignored reentrant call while viewer is busy. This is only logged once per viewer instance, but similar calls will still be ignored.
+!STACK 0
+java.lang.RuntimeException
+	at org.eclipse.jface.viewers.ColumnViewer.isBusy(ColumnViewer.java:79)
+	at org.eclipse.jface.viewers.ColumnViewer.refresh(ColumnViewer.java:540)
+	at org.eclipse.ui.dialogs.FilteredTree$NotifyingTreeViewer.refresh(FilteredTree.java:823)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1415)
+	at org.eclipse.ui.dialogs.FilteredTree$NotifyingTreeViewer.refresh(FilteredTree.java:813)
+	at org.eclipse.ui.dialogs.FilteredTree$2.runInUIThread(FilteredTree.java:368)
+	at org.eclipse.ui.progress.UIJob$1.run(UIJob.java:94)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:123)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3659)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3296)
+	at com.windriver.rb.eclipse.plugin.RBPlugin$EventQueue.runNestedDispatchLoop(RBPlugin.java:113)
+	at com.windriver.ide.target.WRWaitAndDispatchUtil.waitAndDispatch(WRWaitAndDispatchUtil.java:137)
+	at com.windriver.ide.target.WRWaitAndDispatchUtil.waitAndDispatch(WRWaitAndDispatchUtil.java:98)
+	at com.windriver.ide.target.ui.rse.internal.systemtypes.WRSystemTypeViewerFilterAdapter.doCheckWRSystemTypeValid(WRSystemTypeViewerFilterAdapter.java:132)
+	at com.windriver.ide.target.ui.rse.internal.systemtypes.WRSystemTypeViewerFilterAdapter.select(WRSystemTypeViewerFilterAdapter.java:46)
+	at org.eclipse.rse.ui.wizards.newconnection.RSENewConnectionWizardSelectionPage$NewConnectionWizardStateFilter.select(RSENewConnectionWizardSelectionPage.java:110)
+	at org.eclipse.jface.viewers.ViewerFilter.filter(ViewerFilter.java:51)
+	at org.eclipse.rse.ui.wizards.newconnection.RSENewConnectionWizardSelectionPage$NewConnectionWizardStateFilter.select(RSENewConnectionWizardSelectionPage.java:93)
+	at org.eclipse.jface.viewers.ViewerFilter.filter(ViewerFilter.java:51)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.getFilteredChildren(AbstractTreeViewer.java:619)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.getSortedChildren(AbstractTreeViewer.java:581)
+	at org.eclipse.jface.viewers.AbstractTreeViewer$1.run(AbstractTreeViewer.java:778)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:67)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.createChildren(AbstractTreeViewer.java:755)
+	at org.eclipse.jface.viewers.TreeViewer.createChildren(TreeViewer.java:627)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.internalInitializeTree(AbstractTreeViewer.java:1463)
+	at org.eclipse.jface.viewers.TreeViewer.internalInitializeTree(TreeViewer.java:816)
+	at org.eclipse.jface.viewers.AbstractTreeViewer$5.run(AbstractTreeViewer.java:1446)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1368)
+	at org.eclipse.jface.viewers.TreeViewer.preservingSelection(TreeViewer.java:390)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1330)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.inputChanged(AbstractTreeViewer.java:1435)
+	at org.eclipse.ui.dialogs.FilteredTree$NotifyingTreeViewer.inputChanged(FilteredTree.java:797)
+	at org.eclipse.jface.viewers.ContentViewer.setInput(ContentViewer.java:251)
+	at org.eclipse.jface.viewers.StructuredViewer.setInput(StructuredViewer.java:1606)
+	at org.eclipse.rse.ui.wizards.newconnection.RSENewConnectionWizardSelectionPage.createControl(RSENewConnectionWizardSelectionPage.java:243)
+	at org.eclipse.jface.wizard.Wizard.createPageControls(Wizard.java:170)
+	at org.eclipse.jface.wizard.WizardDialog.createPageControls(WizardDialog.java:669)
+	at org.eclipse.jface.wizard.WizardDialog.createContents(WizardDialog.java:543)
+	at org.eclipse.jface.window.Window.create(Window.java:426)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1081)
+	at org.eclipse.jface.window.Window.open(Window.java:785)
+	at org.eclipse.rse.ui.actions.SystemBaseDialogAction.run(SystemBaseDialogAction.java:299)
+	at com.windriver.ide.target.ui.rse.internal.actions.WRNewConnectionAction.run(WRNewConnectionAction.java:49)
+	at com.windriver.ide.target.ui.actions.TMAbstractMenuAction.runWithEvent(TMAbstractMenuAction.java:250)
+	at org.eclipse.ui.internal.PluginAction.runWithEvent(PluginAction.java:246)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:546)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:490)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:402)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:66)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:938)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3682)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3293)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2389)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2353)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2219)
+	at org.eclipse.ui.internal.Workbench$4.run(Workbench.java:466)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:289)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:461)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at com.windriver.ide.application.CopyOfIDEApplication.start(CopyOfIDEApplication.java:104)
+	at com.windriver.ide.application.UnifiedSWTSwingApplication.access$101(UnifiedSWTSwingApplication.java:42)
+	at com.windriver.ide.application.UnifiedSWTSwingApplication.start(UnifiedSWTSwingApplication.java:56)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:169)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:106)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:76)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:363)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:508)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:447)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1173)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1148)
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-19 17:57:44.384
+!MESSAGE C:\WindRiver\workbench-3.0\foundation\4.1.1\x86-win32\bin\tgtsvr.exe -n VxWorks6x_10.9.80.2 -B wdbrpc -V -R C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace -RW -Bt 3 -c C:\WindRiver\WPILib\vxWorks -A 10.9.80.2
+!SESSION 2009-01-23 19:15:07.529 -----------------------------------------------
+eclipse.buildId=20080514-1211
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-23 19:15:27.996
+!MESSAGE C:\WindRiver\workbench-3.0\dfw\0199bb\x86-win32\bin\dfwserver.exe  -protocol mi -io sockets -useregistry -session dfw-wb301-shadow -registryhost localhost
+
+!ENTRY com.windriver.ide.target 1 0 2009-01-23 19:15:29.694
+!MESSAGE Connected to dfwserver at 127.0.0.1, 127.0.0.1:53263, PID=3928, Session="dfw-wb301-shadow"

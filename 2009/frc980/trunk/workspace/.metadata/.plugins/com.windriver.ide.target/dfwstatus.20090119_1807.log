@@ -1,0 +1,294 @@
+DFW status and trace log : Mon Jan 19 17:37:57 2009
+
+17:37:57.032 WARNING: License for Debug Connection Target Server will expire in 4294967295 days
+  SevWarning(1) : UtilLicense.cpp : 545
+17:37:59.122 ERROR: Invalid core (CPU) id
+  SevError(2) : tccoreinfo.cpp : 394
+17:38:01.233 ERROR: Feature MPC5200 has no known license key/code
+  SevError(2) : UtilLicense.cpp : 326
+17:38:01.324 ERROR: Unsupported function call: TargetPluginAPI::GetTraceInfo
+  SevError(2) : tccallwrappers.cpp : 4318
+17:38:02.845 ERROR: File not found: C:\WindRiver\workbench-3.0\dfw\0199bb\host\dfwplugins\targetOS\supportfiles\vxWorks6.0\VersionCheck.xml
+  SevError(2) : xmllex.cpp : 52
+17:38:04.238 ERROR: Internal Error: Target connected notice when not connecting
+  SevInternalError(4) : contextstatemanagerimpl.cpp : 519
+17:38:04.536 WARNING: Object file has minimal debug information: /tmpout//FRC_UserProgram.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:04.579 WARNING: Object file has minimal debug information: /tmpout//FRC_FPGA.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:04.620 WARNING: Object file has minimal debug information: /tmpout//nivision.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:04.646 WARNING: Object file has minimal debug information: /tmpout//nivissvc.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:04.663 WARNING: Object file has minimal debug information: /tmpout//niserial.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:04.687 WARNING: Object file has minimal debug information: /tmpout//NiRioSrv.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:04.714 WARNING: Object file has minimal debug information: /tmpout//niorbs.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:04.777 WARNING: Object file has minimal debug information: /tmpout//nipals.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:04.846 WARNING: Object file has minimal debug information: /tmpout//lvrt.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:04.880 WARNING: Object file has minimal debug information: /tmpout//target.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:04.962 WARNING: Object file has minimal debug information: /tmpout//vx_exec.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.024 WARNING: Object file has minimal debug information: /tmpout//nisvcloc.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.049 WARNING: Object file has minimal debug information: /tmpout//NiViSv32.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.075 WARNING: Object file has minimal debug information: /tmpout//ni_emb.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.101 WARNING: Object file has minimal debug information: /tmpout//FRC_NetworkCommunication.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.126 WARNING: Object file has minimal debug information: /tmpout//visa32.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.151 WARNING: Object file has minimal debug information: /tmpout//nirpcs.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.174 WARNING: Object file has minimal debug information: /tmpout//debug.o
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.199 WARNING: Object file has minimal debug information: /tmpout//libexpat.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.222 WARNING: Object file has minimal debug information: /tmpout//ftpserve.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.244 WARNING: Object file has minimal debug information: /tmpout//NiViRio.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.269 WARNING: Object file has minimal debug information: /tmpout//NiRioRpc.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.292 WARNING: Object file has minimal debug information: /tmpout//NiViUsb.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.314 WARNING: Object file has minimal debug information: /tmpout//NiEnAsrl.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.335 WARNING: Object file has minimal debug information: /tmpout//NiViEnet.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.357 WARNING: Object file has minimal debug information: /tmpout//NiViPxi.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.381 WARNING: Object file has minimal debug information: /tmpout//NiViAsrl.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:05.405 WARNING: Object file has minimal debug information: /tmpout//NiViSrvr.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:38:19.069 ERROR: Could not translate '0x3 0x47f6e8 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.069 ERROR: Could not translate '0x3 0x4833b0 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.069 ERROR: Could not translate '0x3 0x44f088 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.069 ERROR: Could not translate '0x3 0x487088 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.070 ERROR: Could not translate '0x3 0x48a9a0 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.070 ERROR: Could not translate '0x3 0x4a7770 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.070 ERROR: Could not translate '0x3 0x4afcb8 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.071 ERROR: Could not translate '0x3 0x4b8108 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.071 ERROR: Could not translate '0x3 0x4bb968 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.071 ERROR: Could not translate '0x3 0x4c33c0 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.071 ERROR: Could not translate '0x3 0x68d290 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.072 ERROR: Could not translate '0x3 0x68f8d0 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.072 ERROR: Could not translate '0x3 0x6a97e0 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.072 ERROR: Could not translate '0x3 0x7c1138 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.072 ERROR: Could not translate '0x3 0x9a8118 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.073 ERROR: Could not translate '0x3 0x7de338 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.073 ERROR: Could not translate '0x3 0x843ef0 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.073 ERROR: Could not translate '0x3 0x854190 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.073 ERROR: Could not translate '0x3 0x8709a0 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.074 ERROR: Could not translate '0x3 0x1d06020 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.074 ERROR: Could not translate '0x3 0x9efe50 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.074 ERROR: Could not translate '0x3 0xa607d8 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.075 ERROR: Could not translate '0x3 0xab2330 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.075 ERROR: Could not translate '0x3 0xba0170 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.075 ERROR: Could not translate '0x3 0xc75580 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.075 ERROR: Could not translate '0x3 0xe50ae8 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.076 ERROR: Could not translate '0x3 0x12cf4a0 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.076 ERROR: Could not translate '0x3 0x1250168 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.076 ERROR: Could not translate '0x3 0x1255650 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.077 ERROR: Could not translate '0x3 0x129c2b8 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.077 ERROR: Could not translate '0x3 0xc16480 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.077 ERROR: Could not translate '0x3 0xc1c620 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.077 ERROR: Could not translate '0x3 0x132aa68 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+17:38:19.115 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.121 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.126 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.132 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.139 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.145 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.150 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.156 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.161 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.167 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.172 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.177 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.183 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.188 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.194 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.199 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.204 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.210 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.215 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.220 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.226 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.231 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.237 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.243 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.249 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.256 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.263 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.268 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.274 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.279 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.288 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.295 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:38:19.301 ERROR: Invalid Object Id
+  SevError(2) : tctoscallwrappers.cpp : 2403
+17:39:41.154 ERROR: Target not connected: TargetComponent::CheckInitAndConnect
+  SevError(2) : targetcomponent.cpp : 2312
+17:39:41.154 ERROR: Target not connected
+  SevError(2) : targetcomponent.cpp : 2312
+17:39:41.154 ERROR: Target not connected: TargetComponent::CheckInitAndConnect
+  SevError(2) : targetcomponent.cpp : 2312
+17:39:41.154 ERROR: Target not connected
+  SevError(2) : targetcomponent.cpp : 2312
+17:57:49.966 WARNING: License for Debug Connection Target Server will expire in 4294967295 days
+  SevWarning(1) : UtilLicense.cpp : 545
+17:57:50.054 ERROR: Invalid core (CPU) id
+  SevError(2) : tccoreinfo.cpp : 394
+17:57:50.095 ERROR: Feature MPC5200 has no known license key/code
+  SevError(2) : UtilLicense.cpp : 326
+17:57:50.097 ERROR: Unsupported function call: TargetPluginAPI::GetTraceInfo
+  SevError(2) : tccallwrappers.cpp : 4318
+17:57:51.556 ERROR: File not found: C:\WindRiver\workbench-3.0\dfw\0199bb\host\dfwplugins\targetOS\supportfiles\vxWorks6.0\VersionCheck.xml
+  SevError(2) : xmllex.cpp : 52
+17:57:51.853 ERROR: Internal Error: Target connected notice when not connecting
+  SevInternalError(4) : contextstatemanagerimpl.cpp : 519
+17:57:52.050 WARNING: Object file has minimal debug information: /tmpout//FRC_UserProgram.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.106 WARNING: Object file has minimal debug information: /tmpout//FRC_FPGA.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.160 WARNING: Object file has minimal debug information: /tmpout//nivision.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.189 WARNING: Object file has minimal debug information: /tmpout//nivissvc.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.208 WARNING: Object file has minimal debug information: /tmpout//niserial.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.237 WARNING: Object file has minimal debug information: /tmpout//NiRioSrv.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.270 WARNING: Object file has minimal debug information: /tmpout//niorbs.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.333 WARNING: Object file has minimal debug information: /tmpout//nipals.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.394 WARNING: Object file has minimal debug information: /tmpout//lvrt.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.419 WARNING: Object file has minimal debug information: /tmpout//target.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.485 WARNING: Object file has minimal debug information: /tmpout//vx_exec.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.540 WARNING: Object file has minimal debug information: /tmpout//nisvcloc.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.562 WARNING: Object file has minimal debug information: /tmpout//NiViSv32.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.583 WARNING: Object file has minimal debug information: /tmpout//ni_emb.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.603 WARNING: Object file has minimal debug information: /tmpout//FRC_NetworkCommunication.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.625 WARNING: Object file has minimal debug information: /tmpout//visa32.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.648 WARNING: Object file has minimal debug information: /tmpout//nirpcs.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.668 WARNING: Object file has minimal debug information: /tmpout//debug.o
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.689 WARNING: Object file has minimal debug information: /tmpout//libexpat.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.710 WARNING: Object file has minimal debug information: /tmpout//ftpserve.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.731 WARNING: Object file has minimal debug information: /tmpout//NiViRio.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.752 WARNING: Object file has minimal debug information: /tmpout//NiRioRpc.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.777 WARNING: Object file has minimal debug information: /tmpout//NiViUsb.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.803 WARNING: Object file has minimal debug information: /tmpout//NiEnAsrl.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.827 WARNING: Object file has minimal debug information: /tmpout//NiViEnet.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.849 WARNING: Object file has minimal debug information: /tmpout//NiViPxi.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.873 WARNING: Object file has minimal debug information: /tmpout//NiViAsrl.out
+  SevWarning(1) : symbolmanager.cpp : 125
+17:57:52.899 WARNING: Object file has minimal debug information: /tmpout//NiViSrvr.out
+  SevWarning(1) : symbolmanager.cpp : 125
+18:00:41.033 ERROR: Could not translate '0x3 0x147a698 0x0 0x0' key to a TOS object id
+  SevError(2) : tctoscallwrappers.cpp : 2426
+18:07:52.378 ERROR: Target not connected: TargetComponent::CheckInitAndConnect
+  SevError(2) : targetcomponent.cpp : 2312
+18:07:52.378 ERROR: Target not connected
+  SevError(2) : targetcomponent.cpp : 2312
+18:07:52.378 ERROR: Target not connected: TargetComponent::CheckInitAndConnect
+  SevError(2) : targetcomponent.cpp : 2312
+18:07:52.378 ERROR: Target not connected
+  SevError(2) : targetcomponent.cpp : 2312
+18:07:59.396 ERROR: Socket Error. API: recv, SessionId: 696, ReturnCode:  [SystemErrorCode=10054]: SocketHandler::Read
+  SevError(2) : sockethandler.cpp : 85
+18:07:59.417 ERROR: Socket Error. API: recv, SessionId: 696, ReturnCode:  [SystemErrorCode=10054]
+  SevError(2) : sockethandler.cpp : 85
+18:07:59.418 Operation succeeded: ShutdownServer
+  Reason: ERRNone  Severity: ERRSuccessful

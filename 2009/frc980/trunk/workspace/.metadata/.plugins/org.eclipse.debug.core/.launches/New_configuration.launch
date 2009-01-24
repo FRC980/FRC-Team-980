@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="com.windriver.ide.multilaunch.multiLaunchConfigurationType">
+<booleanAttribute key="com.windriver.ide.launchcontrol.preinit" value="false"/>
+<listAttribute key="com.windriver.ide.launchcontrol.sublaunch.error_command"/>
+<listAttribute key="com.windriver.ide.launchcontrol.sublaunch.post_command"/>
+<listAttribute key="com.windriver.ide.launchcontrol.sublaunch.pre_command"/>
+<listAttribute key="com.windriver.ide.launchcontrol.sublaunch.run_only"/>
+<listAttribute key="com.windriver.ide.launchcontrol.sublaunches"/>
+<booleanAttribute key="com.windriver.ide.launchcontrol.terminate_when_done" value="true"/>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+</launchConfiguration>
