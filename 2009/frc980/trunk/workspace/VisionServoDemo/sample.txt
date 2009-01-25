@@ -1,0 +1,8 @@
+FRC Vision-Servo Demonstration Program
+--------------------------------
+
+This is a SimpleDemo-based color tracking program.
+In autonomous mode a color (RED) is tracked by a camera mounted on a two-servo gimbal.
+A sine function is used to pan for the target. 
+Ranges are normalized (from -1.0 to 1.0) except for the servo tasking which uses 0.0 - 1.0.
+
