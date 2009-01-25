@@ -1,0 +1,5 @@
+FRC Dashboard Sample showing images sent from camera on cRIO
+--------------------------------
+
+This program is the simplest sample program that 
+implements sending images to the PC dashboard. 
