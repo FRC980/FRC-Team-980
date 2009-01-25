@@ -1,0 +1,17 @@
+FRC Two Color Tracker Example
+--------------------------------
+
+This program is a sample program that implements two color 
+tracking in the autonomous mode. It assumes that you are 
+using a gimbal such as the one provided in the 2009 kit, 
+with two servos on PWM 9 and 10.
+
+This program follows a pink/green target during the 
+Autonomous period. It looks for green above pink. To change to 
+pink above green, modify the input parameter from ABOVE to BELOW.
+Determination of alliance (pink/green order) is left as an
+exercise for teams, either by mechanical means or input from the 
+Driver Station. 
+
+The Operator Control code is unchanged from the 
+Simple Robot default.
