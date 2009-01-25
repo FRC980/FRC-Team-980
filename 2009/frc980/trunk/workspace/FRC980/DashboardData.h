@@ -1,7 +1,7 @@
-#ifndef __DashboardDataFormat_h__
-#define __DashboardDataFormat_h__
+#ifndef DASHBOARDDATA_H
+#define DASHBOARDDATA_H
 
-#include "WPILib.h"
+#include <WPILib.h>
 
 /**
  * This class is just an example of one way you could organize the data
@@ -16,22 +16,19 @@
  * Just remember to make any changes consistently between the LabVIEW
  * "Dashboard Datatype" and the data that gets packed by this class.
  */
-class DashboardDataFormat:public SensorBase
+class DashboardData : public SensorBase
 {
   public:
-    DashboardDataFormat(void);
-    virtual ~ DashboardDataFormat();
-    float m_AnalogChannels[kAnalogModules][kAnalogChannels];
-    UINT8 m_RelayFwd[kDigitalModules];
-    UINT8 m_RelayRev[kDigitalModules];
-    UINT16 m_DIOChannels[kDigitalModules];
-    UINT16 m_DIOChannelsOutputEnable[kDigitalModules];
-    UINT8 m_PWMChannels[kDigitalModules][kPwmChannels];
-    UINT8 m_SolenoidChannels;
-    void PackAndSend(void);
+    DashboardData(void);
+    virtual ~DashboardData();
+    void UpdateAndSend(void);
+
   private:
-         DISALLOW_COPY_AND_ASSIGN(DashboardDataFormat);
+    DISALLOW_COPY_AND_ASSIGN(DashboardData);
     DriverStation *m_ds;
+
+    void PackAnalog(Dashboard *pDashPack, uint32_t slot);
+    void PackDigital(Dashboard *pDashPack, uint32_t slot);
 };
 
-#endif  // __DashboardDataFormat_h__
+#endif  // DASHBOARDDATA_H
