@@ -31,7 +31,7 @@ Error & ErrorBase::GetError()
     return error;
 }
 
-const Error & ErrorBase::GetError() const const
+const Error & ErrorBase::GetError() const
 {
     return error;
 }
@@ -52,7 +52,7 @@ void ErrorBase::ClearError()
  * @param lineNumber Line number of the error source
  */
 void ErrorBase::SetError(Error::Code code, const char *filename,
-                         UINT32 lineNumber) const const
+                         UINT32 lineNumber) const
 {
     //  If there was an error
     if (code != 0)
@@ -73,7 +73,7 @@ void ErrorBase::SetError(Error::Code code, const char *filename,
   
 @return true if the current error is fatal.
 */
-bool ErrorBase::StatusIsFatal() const const
+bool ErrorBase::StatusIsFatal() const
 {
     return error.GetCode() < 0;
 }

@@ -15,27 +15,27 @@ Error::~Error()
 {
 }
 
-Error::Code Error::GetCode() constconst
+Error::Code Error::GetCode() const
 {
     return m_code;
 }
 
-const char *Error::GetMessage() const const
+const char *Error::GetMessage() const
 {
     return m_message.c_str();
 }
 
-const char *Error::GetFilename() const const
+const char *Error::GetFilename() const
 {
     return m_filename.c_str();
 }
 
-UINT32 Error::GetLineNumber() const const
+UINT32 Error::GetLineNumber() const
 {
     return m_lineNumber;
 }
 
-const ErrorBase *Error::GetOriginatingObject() const const
+const ErrorBase *Error::GetOriginatingObject() const
 {
     return m_originatingObject;
 }
