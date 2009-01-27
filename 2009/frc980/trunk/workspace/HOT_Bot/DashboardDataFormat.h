@@ -20,7 +20,8 @@ class DashboardDataFormat:public SensorBase
 {
   public:
     DashboardDataFormat(void);
-    virtual ~ DashboardDataFormat();
+    virtual ~DashboardDataFormat();
+
     float m_AnalogChannels[kAnalogModules][kAnalogChannels];
     UINT8 m_RelayFwd[kDigitalModules];
     UINT8 m_RelayRev[kDigitalModules];
@@ -29,8 +30,9 @@ class DashboardDataFormat:public SensorBase
     UINT8 m_PWMChannels[kDigitalModules][kPwmChannels];
     UINT8 m_SolenoidChannels;
     void PackAndSend(void);
+
   private:
-         DISALLOW_COPY_AND_ASSIGN(DashboardDataFormat);
+    DISALLOW_COPY_AND_ASSIGN(DashboardDataFormat);
     DriverStation *m_ds;
 };
 
