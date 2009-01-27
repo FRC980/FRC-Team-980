@@ -41,7 +41,17 @@
 <view id="biz.junginger.newsfeed.eclipse.FeedView" partName="Feeds">
 <viewState/>
 </view>
-<view id="org.eclipse.ui.views.TaskList" partName="Tasks"/>
+<view id="org.eclipse.ui.views.TaskList" partName="Tasks">
+<viewState columnWidth0="43" columnWidth1="19" columnWidth2="253" columnWidth3="78" columnWidth4="153" columnWidth5="63" columnWidth6="0" horizontalPosition="0" verticalPosition="0">
+<columnOrder columnOrderIndex="0"/>
+<columnOrder columnOrderIndex="1"/>
+<columnOrder columnOrderIndex="2"/>
+<columnOrder columnOrderIndex="3"/>
+<columnOrder columnOrderIndex="4"/>
+<columnOrder columnOrderIndex="5"/>
+<columnOrder columnOrderIndex="6"/>
+</viewState>
+</view>
 <view id="com.windriver.ide.ui.project.WRFileView" partName="File Navigator">
 <viewState LINK_NAVIGATOR_TO_EDITOR="0" columnDefaultLayout="100:104:90:50" columnLayout="100:104:0:0" showDateColumn="false" showPathColumn="true" showSizeColumn="false" sorter="0">
 <filters>&#x0A;<filter element=".project" ignoreCase="true" isEnabled="false" isFromExtension="true" isFullPathMatch="false"/>
@@ -65,7 +75,7 @@
 <element path="Conn///quesadilla2.Local"/>
 </expanded>
 <selection>
-<element path="Conn///quesadilla2.VxWorks6x_10.9.80.2"/>
+<element path="Conn///quesadilla2.Local"/>
 </selection>
 </viewState>
 </view>
@@ -77,7 +87,8 @@
 </view>
 <view id="com.windriver.ide.ui.build.WRBuildConsoleView" partName="Build Console">
 <viewState>
-<buildArgsViewState traceBuildRun="true">&#x0A;<buildArgs selection=""/>
+<buildArgsViewState traceBuildRun="true">
+<buildArgs selection=""/>
 </buildArgsViewState>
 </viewState>
 </view>
@@ -100,7 +111,7 @@
 </viewState>
 </view>
 </views>
-<perspectives activePart="org.eclipse.rse.ui.view.systemView" activePerspective="com.windriver.ide.perspective.ADE">
+<perspectives activePart="org.eclipse.ui.navigator.ProjectExplorer" activePerspective="com.windriver.ide.perspective.ADE">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="com.windriver.ide.ui.ADEPerspectiveFactory" id="com.windriver.ide.perspective.ADE" label="Application Development"/>
 <alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
@@ -231,7 +242,7 @@
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.45074862" ratioLeft="572" ratioRight="697" relationship="2" relative="left"/>
 <info folder="true" part="bottom" ratio="0.25898203" ratioLeft="173" ratioRight="495" relationship="4" relative="org.eclipse.ui.editorss">
-<folder activePageID="org.eclipse.pde.runtime.LogView" appearance="2" expanded="2">
+<folder activePageID="com.windriver.ide.ui.build.WRBuildConsoleView" appearance="2" expanded="2">
 <page content="biz.junginger.newsfeed.eclipse.FeedView" label="Feeds"/>
 <page content="org.eclipse.ui.views.TaskList" label="Tasks"/>
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
