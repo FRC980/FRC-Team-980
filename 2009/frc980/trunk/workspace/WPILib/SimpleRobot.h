@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #ifndef SIMPLE_ROBOT_H
 #define SIMPLE_ROBOT_H
@@ -12,18 +12,19 @@
 /**
  * @todo If this is going to last until release, it needs a better name.
  */
-class SimpleRobot: public RobotBase
+class SimpleRobot : public RobotBase
 {
-public:
-	SimpleRobot();
-	virtual ~SimpleRobot() {}
-	virtual void Autonomous();
-	virtual void OperatorControl();
-	virtual void RobotMain();
-	void StartCompetition();
+  public:
+    SimpleRobot();
+    virtual ~SimpleRobot() {};
 
-private:
-	bool m_robotMainOverridden;
+    virtual void Autonomous();
+    virtual void OperatorControl();
+    virtual void RobotMain();
+    void StartCompetition();
+
+  private:
+    bool m_robotMainOverridden;
 };
 
 #endif

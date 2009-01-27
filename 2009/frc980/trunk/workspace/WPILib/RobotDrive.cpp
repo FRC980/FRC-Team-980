@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -31,19 +31,19 @@
  * @param sensitivity Effectively sets the turning sensitivity (or turn radius for a given value).
  */
 RobotDrive::RobotDrive(UINT32 leftMotorChannel, UINT32 rightMotorChannel,
-		float sensitivity)
+                       float sensitivity)
 {
-	m_sensitivity = sensitivity;
-	m_frontLeftMotor = NULL;
-	m_rearLeftMotor = new Jaguar(leftMotorChannel);
-	m_frontRightMotor = NULL;
-	m_rearRightMotor = new Jaguar(rightMotorChannel);
-	for (INT32 i=0; i < kMaxNumberOfMotors; i++)
-	{
-		m_invertedMotors[i] = 1;
-	}
-	Drive(0, 0);
-	m_deleteSpeedControllers = true;
+    m_sensitivity = sensitivity;
+    m_frontLeftMotor = NULL;
+    m_rearLeftMotor = new Jaguar(leftMotorChannel);
+    m_frontRightMotor = NULL;
+    m_rearRightMotor = new Jaguar(rightMotorChannel);
+    for (INT32 i = 0; i < kMaxNumberOfMotors; i++)
+    {
+        m_invertedMotors[i] = 1;
+    }
+    Drive(0, 0);
+    m_deleteSpeedControllers = true;
 }
 
 /**
@@ -58,19 +58,20 @@ RobotDrive::RobotDrive(UINT32 leftMotorChannel, UINT32 rightMotorChannel,
  * @param sensitivity Effectively sets the turning sensitivity (or turn radius for a given value)
  */
 RobotDrive::RobotDrive(UINT32 frontLeftMotor, UINT32 rearLeftMotor,
-		UINT32 frontRightMotor, UINT32 rearRightMotor, float sensitivity)
+                       UINT32 frontRightMotor, UINT32 rearRightMotor,
+                       float sensitivity)
 {
-	m_sensitivity = sensitivity;
-	m_rearLeftMotor = new Jaguar(rearLeftMotor);
-	m_rearRightMotor = new Jaguar(rearRightMotor);
-	m_frontLeftMotor = new Jaguar(frontLeftMotor);
-	m_frontRightMotor = new Jaguar(frontRightMotor);
-	for (INT32 i=0; i < kMaxNumberOfMotors; i++)
-	{
-		m_invertedMotors[i] = 1;
-	}
-	Drive(0, 0);
-	m_deleteSpeedControllers = true;
+    m_sensitivity = sensitivity;
+    m_rearLeftMotor = new Jaguar(rearLeftMotor);
+    m_rearRightMotor = new Jaguar(rearRightMotor);
+    m_frontLeftMotor = new Jaguar(frontLeftMotor);
+    m_frontRightMotor = new Jaguar(frontRightMotor);
+    for (INT32 i = 0; i < kMaxNumberOfMotors; i++)
+    {
+        m_invertedMotors[i] = 1;
+    }
+    Drive(0, 0);
+    m_deleteSpeedControllers = true;
 }
 
 /**
@@ -82,38 +83,40 @@ RobotDrive::RobotDrive(UINT32 frontLeftMotor, UINT32 rearLeftMotor,
  * @param rightMotor the right SpeedController object used to drive the robot.
  * @param sensitivity Effectively sets the turning sensitivity (or turn radius for a given value)
  */
-RobotDrive::RobotDrive(SpeedController *leftMotor, SpeedController *rightMotor, float sensitivity)
+RobotDrive::RobotDrive(SpeedController * leftMotor,
+                       SpeedController * rightMotor, float sensitivity)
 {
-	if (leftMotor == NULL || rightMotor == NULL)
-	{
-		wpi_fatal(NullParameter);
-		m_rearLeftMotor = m_rearRightMotor = NULL;
-		return;
-	}
-	m_frontLeftMotor = NULL;
-	m_rearLeftMotor = leftMotor;
-	m_frontRightMotor = NULL;
-	m_rearRightMotor = rightMotor;
-	m_sensitivity = sensitivity;
-	for (INT32 i=0; i < kMaxNumberOfMotors; i++)
-	{
-		m_invertedMotors[i] = 1;
-	}
-	m_deleteSpeedControllers = false;
+    if (leftMotor == NULL || rightMotor == NULL)
+    {
+        wpi_fatal(NullParameter);
+        m_rearLeftMotor = m_rearRightMotor = NULL;
+        return;
+    }
+    m_frontLeftMotor = NULL;
+    m_rearLeftMotor = leftMotor;
+    m_frontRightMotor = NULL;
+    m_rearRightMotor = rightMotor;
+    m_sensitivity = sensitivity;
+    for (INT32 i = 0; i < kMaxNumberOfMotors; i++)
+    {
+        m_invertedMotors[i] = 1;
+    }
+    m_deleteSpeedControllers = false;
 }
 
-RobotDrive::RobotDrive(SpeedController &leftMotor, SpeedController &rightMotor, float sensitivity)
+RobotDrive::RobotDrive(SpeedController & leftMotor,
+                       SpeedController & rightMotor, float sensitivity)
 {
-	m_frontLeftMotor = NULL;
-	m_rearLeftMotor = &leftMotor;
-	m_frontRightMotor = NULL;
-	m_rearRightMotor = &rightMotor;
-	m_sensitivity = sensitivity;
-	for (INT32 i=0; i < kMaxNumberOfMotors; i++)
-	{
-		m_invertedMotors[i] = 1;
-	}
-	m_deleteSpeedControllers = false;
+    m_frontLeftMotor = NULL;
+    m_rearLeftMotor = &leftMotor;
+    m_frontRightMotor = NULL;
+    m_rearRightMotor = &rightMotor;
+    m_sensitivity = sensitivity;
+    for (INT32 i = 0; i < kMaxNumberOfMotors; i++)
+    {
+        m_invertedMotors[i] = 1;
+    }
+    m_deleteSpeedControllers = false;
 }
 
 /**
@@ -125,42 +128,46 @@ RobotDrive::RobotDrive(SpeedController &leftMotor, SpeedController &rightMotor, 
  * @param frontRightMotor The front right SpeedController object used to drive the robot.
  * @param sensitivity Effectively sets the turning sensitivity (or turn radius for a given value)
  */
-RobotDrive::RobotDrive(SpeedController *frontLeftMotor, SpeedController *rearLeftMotor,
-						SpeedController *frontRightMotor, SpeedController *rearRightMotor,
-						float sensitivity)
+RobotDrive::RobotDrive(SpeedController * frontLeftMotor,
+                       SpeedController * rearLeftMotor,
+                       SpeedController * frontRightMotor,
+                       SpeedController * rearRightMotor, float sensitivity)
 {
-	if (frontLeftMotor == NULL || rearLeftMotor == NULL || frontRightMotor == NULL || rearRightMotor == NULL)
-	{
-		wpi_fatal(NullParameter);
-		m_frontLeftMotor = m_rearLeftMotor = m_frontRightMotor = m_rearRightMotor = NULL;
-		return;
-	}
-	m_frontLeftMotor = frontLeftMotor;
-	m_rearLeftMotor = rearLeftMotor;
-	m_frontRightMotor = frontRightMotor;
-	m_rearRightMotor = rearRightMotor;
-	m_sensitivity = sensitivity;
-	for (INT32 i=0; i < kMaxNumberOfMotors; i++)
-	{
-		m_invertedMotors[i] = 1;
-	}
-	m_deleteSpeedControllers = false;
+    if (frontLeftMotor == NULL || rearLeftMotor == NULL
+        || frontRightMotor == NULL || rearRightMotor == NULL)
+    {
+        wpi_fatal(NullParameter);
+        m_frontLeftMotor = m_rearLeftMotor = m_frontRightMotor =
+            m_rearRightMotor = NULL;
+        return;
+    }
+    m_frontLeftMotor = frontLeftMotor;
+    m_rearLeftMotor = rearLeftMotor;
+    m_frontRightMotor = frontRightMotor;
+    m_rearRightMotor = rearRightMotor;
+    m_sensitivity = sensitivity;
+    for (INT32 i = 0; i < kMaxNumberOfMotors; i++)
+    {
+        m_invertedMotors[i] = 1;
+    }
+    m_deleteSpeedControllers = false;
 }
 
-RobotDrive::RobotDrive(SpeedController &frontLeftMotor, SpeedController &rearLeftMotor,
-						SpeedController &frontRightMotor, SpeedController &rearRightMotor,
-						float sensitivity)
+RobotDrive::RobotDrive(SpeedController & frontLeftMotor,
+                       SpeedController & rearLeftMotor,
+                       SpeedController & frontRightMotor,
+                       SpeedController & rearRightMotor, float sensitivity)
 {
-	m_frontLeftMotor = &frontLeftMotor;
-	m_rearLeftMotor = &rearLeftMotor;
-	m_frontRightMotor = &frontRightMotor;
-	m_rearRightMotor = &rearRightMotor;
-	m_sensitivity = sensitivity;
-	for (INT32 i=0; i < kMaxNumberOfMotors; i++)
-	{
-		m_invertedMotors[i] = 1;
-	}
-	m_deleteSpeedControllers = false;
+    m_frontLeftMotor = &frontLeftMotor;
+    m_rearLeftMotor = &rearLeftMotor;
+    m_frontRightMotor = &frontRightMotor;
+    m_rearRightMotor = &rearRightMotor;
+    m_sensitivity = sensitivity;
+    for (INT32 i = 0; i < kMaxNumberOfMotors; i++)
+    {
+        m_invertedMotors[i] = 1;
+    }
+    m_deleteSpeedControllers = false;
 }
 
 /**
@@ -169,13 +176,13 @@ RobotDrive::RobotDrive(SpeedController &frontLeftMotor, SpeedController &rearLef
  **/
 RobotDrive::~RobotDrive()
 {
-	if (m_deleteSpeedControllers)
-	{
-		delete m_frontLeftMotor;
-		delete m_rearLeftMotor;
-		delete m_frontRightMotor;
-		delete m_rearRightMotor;
-	}
+    if (m_deleteSpeedControllers)
+    {
+        delete m_frontLeftMotor;
+        delete m_rearLeftMotor;
+        delete m_frontRightMotor;
+        delete m_rearRightMotor;
+    }
 }
 
 /**
@@ -192,30 +199,32 @@ RobotDrive::~RobotDrive()
  */
 void RobotDrive::Drive(float speed, float curve)
 {
-	float leftSpeed, rightSpeed;
+    float leftSpeed, rightSpeed;
 
-	if (curve < 0)
-	{
-		float value = log(-curve);
-		float ratio = (value - m_sensitivity)/(value + m_sensitivity);
-		if (ratio == 0) ratio =.0000000001;
-		leftSpeed = speed / ratio;
-		rightSpeed = speed;
-	}
-	else if (curve > 0)
-	{
-		float value = log(curve);
-		float ratio = (value - m_sensitivity)/(value + m_sensitivity);
-		if (ratio == 0) ratio =.0000000001;
-		leftSpeed = speed;
-		rightSpeed = speed / ratio;
-	}
-	else
-	{
-		leftSpeed = speed;
-		rightSpeed = speed;
-	}
-	SetLeftRightMotorSpeeds(leftSpeed, rightSpeed);
+    if (curve < 0)
+    {
+        float value = log(-curve);
+        float ratio = (value - m_sensitivity) / (value + m_sensitivity);
+        if (ratio == 0)
+            ratio = .0000000001;
+        leftSpeed = speed / ratio;
+        rightSpeed = speed;
+    }
+    else if (curve > 0)
+    {
+        float value = log(curve);
+        float ratio = (value - m_sensitivity) / (value + m_sensitivity);
+        if (ratio == 0)
+            ratio = .0000000001;
+        leftSpeed = speed;
+        rightSpeed = speed / ratio;
+    }
+    else
+    {
+        leftSpeed = speed;
+        rightSpeed = speed;
+    }
+    SetLeftRightMotorSpeeds(leftSpeed, rightSpeed);
 }
 
 /**
@@ -225,19 +234,19 @@ void RobotDrive::Drive(float speed, float curve)
  * @param leftStick The joystick to control the left side of the robot.
  * @param rightStick The joystick to control the right side of the robot.
  */
-void RobotDrive::TankDrive(GenericHID *leftStick, GenericHID *rightStick)
+void RobotDrive::TankDrive(GenericHID * leftStick, GenericHID * rightStick)
 {
-	if (leftStick == NULL || rightStick == NULL)
-	{
-		wpi_fatal(NullParameter);
-		return;
-	}
-	TankDrive(leftStick->GetY(), rightStick->GetY());
+    if (leftStick == NULL || rightStick == NULL)
+    {
+        wpi_fatal(NullParameter);
+        return;
+    }
+    TankDrive(leftStick->GetY(), rightStick->GetY());
 }
 
-void RobotDrive::TankDrive(GenericHID &leftStick, GenericHID &rightStick)
+void RobotDrive::TankDrive(GenericHID & leftStick, GenericHID & rightStick)
 {
-	TankDrive(leftStick.GetY(), rightStick.GetY());
+    TankDrive(leftStick.GetY(), rightStick.GetY());
 }
 
 /**
@@ -249,23 +258,24 @@ void RobotDrive::TankDrive(GenericHID &leftStick, GenericHID &rightStick)
  * @param rightStick The Joystick object to use for the right side of the robot.
  * @param rightAxis The axis to select on the right side Joystick object.
  */
-void RobotDrive::TankDrive(GenericHID *leftStick, UINT32 leftAxis,
-		GenericHID *rightStick, UINT32 rightAxis)
+void RobotDrive::TankDrive(GenericHID * leftStick, UINT32 leftAxis,
+                           GenericHID * rightStick, UINT32 rightAxis)
 {
-	if (leftStick == NULL || rightStick == NULL)
-	{
-		wpi_fatal(NullParameter);
-		return;
-	}
-	TankDrive(leftStick->GetRawAxis(leftAxis), rightStick->GetRawAxis(rightAxis));
+    if (leftStick == NULL || rightStick == NULL)
+    {
+        wpi_fatal(NullParameter);
+        return;
+    }
+    TankDrive(leftStick->GetRawAxis(leftAxis),
+              rightStick->GetRawAxis(rightAxis));
 }
 
-void RobotDrive::TankDrive(GenericHID &leftStick, UINT32 leftAxis,
-		GenericHID &rightStick, UINT32 rightAxis)
+void RobotDrive::TankDrive(GenericHID & leftStick, UINT32 leftAxis,
+                           GenericHID & rightStick, UINT32 rightAxis)
 {
-	TankDrive(leftStick.GetRawAxis(leftAxis), rightStick.GetRawAxis(rightAxis));
+    TankDrive(leftStick.GetRawAxis(leftAxis),
+              rightStick.GetRawAxis(rightAxis));
 }
-
 
 /**
  * Provide tank steering using the stored robot configuration.
@@ -275,27 +285,27 @@ void RobotDrive::TankDrive(GenericHID &leftStick, UINT32 leftAxis,
  */
 void RobotDrive::TankDrive(float leftValue, float rightValue)
 {
-	// square the inputs (while preserving the sign) to increase fine control while permitting full power
-	leftValue = Limit(leftValue);
-	rightValue = Limit(rightValue);
-	if (leftValue >= 0.0)
-	{
-		leftValue = (leftValue * leftValue);
-	}
-	else
-	{
-		leftValue = -(leftValue * leftValue);
-	}
-	if (rightValue >= 0.0)
-	{
-		rightValue = (rightValue * rightValue);
-	}
-	else
-	{
-		rightValue = -(rightValue * rightValue);
-	}
+    // square the inputs (while preserving the sign) to increase fine control while permitting full power
+    leftValue = Limit(leftValue);
+    rightValue = Limit(rightValue);
+    if (leftValue >= 0.0)
+    {
+        leftValue = (leftValue * leftValue);
+    }
+    else
+    {
+        leftValue = -(leftValue * leftValue);
+    }
+    if (rightValue >= 0.0)
+    {
+        rightValue = (rightValue * rightValue);
+    }
+    else
+    {
+        rightValue = -(rightValue * rightValue);
+    }
 
-	SetLeftRightMotorSpeeds(leftValue, rightValue);
+    SetLeftRightMotorSpeeds(leftValue, rightValue);
 }
 
 /**
@@ -307,10 +317,10 @@ void RobotDrive::TankDrive(float leftValue, float rightValue)
  * for forwards/backwards and the X-axis will be selected for rotation rate.
  * @param squaredInputs If true, the sensitivity will be increased for small values
  */
-void RobotDrive::ArcadeDrive(GenericHID *stick, bool squaredInputs)
+void RobotDrive::ArcadeDrive(GenericHID * stick, bool squaredInputs)
 {
-	// simply call the full-featured ArcadeDrive with the appropriate values
-	ArcadeDrive(stick->GetY(), stick->GetX(), stick->GetTrigger());
+    // simply call the full-featured ArcadeDrive with the appropriate values
+    ArcadeDrive(stick->GetY(), stick->GetX(), stick->GetTrigger());
 }
 
 /**
@@ -322,10 +332,10 @@ void RobotDrive::ArcadeDrive(GenericHID *stick, bool squaredInputs)
  * for forwards/backwards and the X-axis will be selected for rotation rate.
  * @param squaredInputs If true, the sensitivity will be increased for small values
  */
-void RobotDrive::ArcadeDrive(GenericHID &stick, bool squaredInputs)
+void RobotDrive::ArcadeDrive(GenericHID & stick, bool squaredInputs)
 {
-	// simply call the full-featured ArcadeDrive with the appropriate values
-	ArcadeDrive(stick.GetY(), stick.GetX(), stick.GetTrigger());
+    // simply call the full-featured ArcadeDrive with the appropriate values
+    ArcadeDrive(stick.GetY(), stick.GetX(), stick.GetTrigger());
 }
 
 /**
@@ -338,14 +348,14 @@ void RobotDrive::ArcadeDrive(GenericHID &stick, bool squaredInputs)
  * @param rotateAxis The axis on the rotation object to use for the rotate right/left (typically X_AXIS)
  * @param squaredInputs Setting this parameter to true increases the sensitivity at lower speeds
  */
-void RobotDrive::ArcadeDrive(GenericHID* moveStick, UINT32 moveAxis,
-								GenericHID* rotateStick, UINT32 rotateAxis,
-								bool squaredInputs)
+void RobotDrive::ArcadeDrive(GenericHID * moveStick, UINT32 moveAxis,
+                             GenericHID * rotateStick, UINT32 rotateAxis,
+                             bool squaredInputs)
 {
-	float moveValue = moveStick->GetRawAxis(moveAxis);
-	float rotateValue = rotateStick->GetRawAxis(rotateAxis);
+    float moveValue = moveStick->GetRawAxis(moveAxis);
+    float rotateValue = rotateStick->GetRawAxis(rotateAxis);
 
-	ArcadeDrive(moveValue, rotateValue, squaredInputs);
+    ArcadeDrive(moveValue, rotateValue, squaredInputs);
 }
 
 /**
@@ -359,14 +369,14 @@ void RobotDrive::ArcadeDrive(GenericHID* moveStick, UINT32 moveAxis,
  * @param squaredInputs Setting this parameter to true increases the sensitivity at lower speeds
  */
 
-void RobotDrive::ArcadeDrive(GenericHID &moveStick, UINT32 moveAxis,
-								GenericHID &rotateStick, UINT32 rotateAxis,
-								bool squaredInputs)
+void RobotDrive::ArcadeDrive(GenericHID & moveStick, UINT32 moveAxis,
+                             GenericHID & rotateStick, UINT32 rotateAxis,
+                             bool squaredInputs)
 {
-	float moveValue = moveStick.GetRawAxis(moveAxis);
-	float rotateValue = rotateStick.GetRawAxis(rotateAxis);
+    float moveValue = moveStick.GetRawAxis(moveAxis);
+    float rotateValue = rotateStick.GetRawAxis(rotateAxis);
 
-	ArcadeDrive(moveValue, rotateValue, squaredInputs);
+    ArcadeDrive(moveValue, rotateValue, squaredInputs);
 }
 
 /**
@@ -376,63 +386,64 @@ void RobotDrive::ArcadeDrive(GenericHID &moveStick, UINT32 moveAxis,
  * @param rotateValue The value to use for the rotate right/left
  * @param squaredInputs If set, increases the sensitivity at low speeds
  */
-void RobotDrive::ArcadeDrive(float moveValue, float rotateValue, bool squaredInputs)
+void RobotDrive::ArcadeDrive(float moveValue, float rotateValue,
+                             bool squaredInputs)
 {
-	// local variables to hold the computed PWM values for the motors
-	float leftMotorSpeed;
-	float rightMotorSpeed;
+    // local variables to hold the computed PWM values for the motors
+    float leftMotorSpeed;
+    float rightMotorSpeed;
 
-	moveValue = Limit(moveValue);
-	rotateValue = Limit(rotateValue);
+    moveValue = Limit(moveValue);
+    rotateValue = Limit(rotateValue);
 
-	if (squaredInputs)
-	{
-		// square the inputs (while preserving the sign) to increase fine control while permitting full power
-		if (moveValue >= 0.0)
-		{
-			moveValue = (moveValue * moveValue);
-		}
-		else
-		{
-			moveValue = -(moveValue * moveValue);
-		}
-		if (rotateValue >= 0.0)
-		{
-			rotateValue = (rotateValue * rotateValue);
-		}
-		else
-		{
-			rotateValue = -(rotateValue * rotateValue);
-		}
-	}
+    if (squaredInputs)
+    {
+        // square the inputs (while preserving the sign) to increase fine control while permitting full power
+        if (moveValue >= 0.0)
+        {
+            moveValue = (moveValue * moveValue);
+        }
+        else
+        {
+            moveValue = -(moveValue * moveValue);
+        }
+        if (rotateValue >= 0.0)
+        {
+            rotateValue = (rotateValue * rotateValue);
+        }
+        else
+        {
+            rotateValue = -(rotateValue * rotateValue);
+        }
+    }
 
-	if (moveValue > 0.0)
-	{
-		if (rotateValue > 0.0)
-		{
-			leftMotorSpeed = moveValue - rotateValue;
-			rightMotorSpeed = max(moveValue, rotateValue);
-		}
-		else
-		{
-			leftMotorSpeed = max(moveValue, -rotateValue);
-			rightMotorSpeed = moveValue + rotateValue;
-		}
-	}
-	else
-	{
-		if (rotateValue > 0.0)
-		{
-			leftMotorSpeed = - max(-moveValue, rotateValue);
-			rightMotorSpeed = moveValue + rotateValue;
-		}
-		else
-		{
-			leftMotorSpeed = moveValue - rotateValue;
-			rightMotorSpeed = - max(-moveValue, -rotateValue);
-		}
-	}
-	SetLeftRightMotorSpeeds(leftMotorSpeed, rightMotorSpeed);
+    if (moveValue > 0.0)
+    {
+        if (rotateValue > 0.0)
+        {
+            leftMotorSpeed = moveValue - rotateValue;
+            rightMotorSpeed = max(moveValue, rotateValue);
+        }
+        else
+        {
+            leftMotorSpeed = max(moveValue, -rotateValue);
+            rightMotorSpeed = moveValue + rotateValue;
+        }
+    }
+    else
+    {
+        if (rotateValue > 0.0)
+        {
+            leftMotorSpeed = -max(-moveValue, rotateValue);
+            rightMotorSpeed = moveValue + rotateValue;
+        }
+        else
+        {
+            leftMotorSpeed = moveValue - rotateValue;
+            rightMotorSpeed = -max(-moveValue, -rotateValue);
+        }
+    }
+    SetLeftRightMotorSpeeds(leftMotorSpeed, rightMotorSpeed);
 
 }
 
@@ -448,21 +459,25 @@ void RobotDrive::ArcadeDrive(float moveValue, float rotateValue, bool squaredInp
  * @param rotation The rate of rotation for the robot that is completely independent of
  * the magnitute or direction.
  */
-void RobotDrive::HolonomicDrive(float magnitude, float direction, float rotation)
+void RobotDrive::HolonomicDrive(float magnitude, float direction,
+                                float rotation)
 {
-	float frontLeftSpeed, rearLeftSpeed, frontRightSpeed, rearRightSpeed;
-	magnitude = Limit(magnitude);
-	float cosD = cos((float)(direction + 45.0) * 3.14159 / 180.0);
-	float sinD = cos((float)(direction - 45.0) * 3.14159 / 180.0);
-	frontLeftSpeed = Limit((float)(sinD * (float)magnitude + rotation));
-	rearLeftSpeed = Limit((float)(cosD * (float)magnitude + rotation));
-	frontRightSpeed = Limit((float)(cosD * (float)magnitude - rotation));
-	rearRightSpeed = Limit((float)(sinD * (float)magnitude - rotation));
+    float frontLeftSpeed, rearLeftSpeed, frontRightSpeed, rearRightSpeed;
+    magnitude = Limit(magnitude);
+    float cosD = cos((float)(direction + 45.0) * 3.14159 / 180.0);
+    float sinD = cos((float)(direction - 45.0) * 3.14159 / 180.0);
+    frontLeftSpeed = Limit((float)(sinD * (float)magnitude + rotation));
+    rearLeftSpeed = Limit((float)(cosD * (float)magnitude + rotation));
+    frontRightSpeed = Limit((float)(cosD * (float)magnitude - rotation));
+    rearRightSpeed = Limit((float)(sinD * (float)magnitude - rotation));
 
-	m_frontLeftMotor->Set(frontLeftSpeed * m_invertedMotors[kFrontLeftMotor]);
-	m_frontRightMotor->Set(frontRightSpeed * m_invertedMotors[kFrontRightMotor]);
-	m_rearLeftMotor->Set(rearLeftSpeed * m_invertedMotors[kRearLeftMotor]);
-	m_rearRightMotor->Set(rearRightSpeed * m_invertedMotors[kRearRightMotor]);
+    m_frontLeftMotor->Set(frontLeftSpeed *
+                          m_invertedMotors[kFrontLeftMotor]);
+    m_frontRightMotor->Set(frontRightSpeed *
+                           m_invertedMotors[kFrontRightMotor]);
+    m_rearLeftMotor->Set(rearLeftSpeed * m_invertedMotors[kRearLeftMotor]);
+    m_rearRightMotor->Set(rearRightSpeed *
+                          m_invertedMotors[kRearRightMotor]);
 }
 
 /** Set the speed of the right and left motors.
@@ -474,18 +489,22 @@ void RobotDrive::HolonomicDrive(float magnitude, float direction, float rotation
  */
 void RobotDrive::SetLeftRightMotorSpeeds(float leftSpeed, float rightSpeed)
 {
-	wpi_assert(m_rearLeftMotor != NULL && m_rearRightMotor != NULL);
+    wpi_assert(m_rearLeftMotor != NULL && m_rearRightMotor != NULL);
 
-	leftSpeed = Limit(leftSpeed);
-	rightSpeed = Limit(rightSpeed);
+    leftSpeed = Limit(leftSpeed);
+    rightSpeed = Limit(rightSpeed);
 
-	if (m_frontLeftMotor != NULL)
-		m_frontLeftMotor->Set(Limit(leftSpeed) * m_invertedMotors[kFrontLeftMotor]);
-	m_rearLeftMotor->Set(Limit(leftSpeed) * m_invertedMotors[kRearLeftMotor]);
+    if (m_frontLeftMotor != NULL)
+        m_frontLeftMotor->Set(Limit(leftSpeed) *
+                              m_invertedMotors[kFrontLeftMotor]);
+    m_rearLeftMotor->Set(Limit(leftSpeed) *
+                         m_invertedMotors[kRearLeftMotor]);
 
-	if (m_frontRightMotor != NULL)
-		m_frontRightMotor->Set(-Limit(rightSpeed) * m_invertedMotors[kFrontRightMotor]);
-	m_rearRightMotor->Set(-Limit(rightSpeed) * m_invertedMotors[kRearRightMotor]);
+    if (m_frontRightMotor != NULL)
+        m_frontRightMotor->Set(-Limit(rightSpeed) *
+                               m_invertedMotors[kFrontRightMotor]);
+    m_rearRightMotor->Set(-Limit(rightSpeed) *
+                          m_invertedMotors[kRearRightMotor]);
 }
 
 /**
@@ -493,15 +512,15 @@ void RobotDrive::SetLeftRightMotorSpeeds(float leftSpeed, float rightSpeed)
  */
 float RobotDrive::Limit(float num)
 {
-	if (num > 1.0)
-	{
-		return 1.0;
-	}
-	if (num < -1.0)
-	{
-		return -1.0;
-	}
-	return num;
+    if (num > 1.0)
+    {
+        return 1.0;
+    }
+    if (num < -1.0)
+    {
+        return -1.0;
+    }
+    return num;
 }
 
 /*
@@ -514,12 +533,10 @@ float RobotDrive::Limit(float num)
  */
 void RobotDrive::SetInvertedMotor(MotorType motor, bool isInverted)
 {
-	if (motor < 0 || motor > 3)
-	{
-		wpi_fatal(InvalidMotorIndex);
-		return;
-	}
-	m_invertedMotors[motor] = isInverted ? -1 : 1;
+    if (motor < 0 || motor > 3)
+    {
+        wpi_fatal(InvalidMotorIndex);
+        return;
+    }
+    m_invertedMotors[motor] = isInverted ? -1 : 1;
 }
-
-

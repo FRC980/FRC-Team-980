@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -20,14 +20,15 @@ static Resource *triggers = NULL;
  */
 void AnalogTrigger::InitTrigger(UINT32 slot, UINT32 channel)
 {
-	Resource::CreateResourceObject(&triggers, tAnalogTrigger::kNumSystems);
-	m_channel = channel;
-	m_analogModule = AnalogModule::GetInstance(slot);
-	m_index = triggers->Allocate();
-	m_trigger = new tAnalogTrigger(m_index, &status);
-	m_trigger->writeSourceSelect_Channel(m_channel - 1, &status);
-	m_trigger->writeSourceSelect_Module(AnalogModule::SlotToIndex(slot), &status);
-	wpi_assertCleanStatus(status);
+    Resource::CreateResourceObject(&triggers, tAnalogTrigger::kNumSystems);
+    m_channel = channel;
+    m_analogModule = AnalogModule::GetInstance(slot);
+    m_index = triggers->Allocate();
+    m_trigger = new tAnalogTrigger(m_index, &status);
+    m_trigger->writeSourceSelect_Channel(m_channel - 1, &status);
+    m_trigger->writeSourceSelect_Module(AnalogModule::SlotToIndex(slot),
+                                        &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -36,7 +37,7 @@ void AnalogTrigger::InitTrigger(UINT32 slot, UINT32 channel)
  */
 AnalogTrigger::AnalogTrigger(UINT32 channel)
 {
-	InitTrigger(GetDefaultAnalogModule(), channel);
+    InitTrigger(GetDefaultAnalogModule(), channel);
 }
 
 /**
@@ -44,7 +45,7 @@ AnalogTrigger::AnalogTrigger(UINT32 channel)
  */
 AnalogTrigger::AnalogTrigger(UINT32 slot, UINT32 channel)
 {
-	InitTrigger(slot, channel);
+    InitTrigger(slot, channel);
 }
 
 /**
@@ -52,15 +53,15 @@ AnalogTrigger::AnalogTrigger(UINT32 slot, UINT32 channel)
  * This should be used in the case of sharing an analog channel between the trigger
  * and an analog input object.
  */
-AnalogTrigger::AnalogTrigger(AnalogChannel *channel)
+AnalogTrigger::AnalogTrigger(AnalogChannel * channel)
 {
-	InitTrigger(channel->GetSlot(), channel->GetChannel());
+    InitTrigger(channel->GetSlot(), channel->GetChannel());
 }
 
 AnalogTrigger::~AnalogTrigger()
 {
-	triggers->Free(m_index);
-	delete m_trigger;
+    triggers->Free(m_index);
+    delete m_trigger;
 }
 
 /**
@@ -70,13 +71,13 @@ AnalogTrigger::~AnalogTrigger()
  */
 void AnalogTrigger::SetLimitsRaw(INT32 lower, INT32 upper)
 {
-	if (lower > upper)
-	{
-		wpi_fatal(AnalogTriggerLimitOrderError);
-	}
-	m_trigger->writeLowerLimit(lower, &status);
-	m_trigger->writeUpperLimit(upper, &status);
-	wpi_assertCleanStatus(status);
+    if (lower > upper)
+    {
+        wpi_fatal(AnalogTriggerLimitOrderError);
+    }
+    m_trigger->writeLowerLimit(lower, &status);
+    m_trigger->writeUpperLimit(upper, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -85,14 +86,16 @@ void AnalogTrigger::SetLimitsRaw(INT32 lower, INT32 upper)
  */
 void AnalogTrigger::SetLimitsVoltage(float lower, float upper)
 {
-	if (lower > upper)
-	{
-		wpi_fatal(AnalogTriggerLimitOrderError);
-	}
-	// TODO: This depends on the averaged setting.  Only raw values will work as is.
-	m_trigger->writeLowerLimit(m_analogModule->VoltsToValue(m_channel, lower), &status);
-	m_trigger->writeUpperLimit(m_analogModule->VoltsToValue(m_channel, upper), &status);
-	wpi_assertCleanStatus(status);
+    if (lower > upper)
+    {
+        wpi_fatal(AnalogTriggerLimitOrderError);
+    }
+    // TODO: This depends on the averaged setting.  Only raw values will work as is.
+    m_trigger->writeLowerLimit(m_analogModule->
+                               VoltsToValue(m_channel, lower), &status);
+    m_trigger->writeUpperLimit(m_analogModule->
+                               VoltsToValue(m_channel, upper), &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -102,9 +105,9 @@ void AnalogTrigger::SetLimitsVoltage(float lower, float upper)
  */
 void AnalogTrigger::SetAveraged(bool useAveragedValue)
 {
-	wpi_assert(m_trigger->readSourceSelect_Filter(&status) == 0);
-	m_trigger->writeSourceSelect_Averaged(useAveragedValue, &status);
-	wpi_assertCleanStatus(status);
+    wpi_assert(m_trigger->readSourceSelect_Filter(&status) == 0);
+    m_trigger->writeSourceSelect_Averaged(useAveragedValue, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -114,9 +117,9 @@ void AnalogTrigger::SetAveraged(bool useAveragedValue)
  */
 void AnalogTrigger::SetFiltered(bool useFilteredValue)
 {
-	wpi_assert(m_trigger->readSourceSelect_Averaged(&status) == 0);
-	m_trigger->writeSourceSelect_Filter(useFilteredValue, &status);
-	wpi_assertCleanStatus(status);
+    wpi_assert(m_trigger->readSourceSelect_Averaged(&status) == 0);
+    m_trigger->writeSourceSelect_Filter(useFilteredValue, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -126,7 +129,7 @@ void AnalogTrigger::SetFiltered(bool useFilteredValue)
  */
 UINT32 AnalogTrigger::GetIndex()
 {
-	return m_index;
+    return m_index;
 }
 
 /**
@@ -136,7 +139,7 @@ UINT32 AnalogTrigger::GetIndex()
  */
 bool AnalogTrigger::GetInWindow()
 {
-	return m_trigger->readOutput_InHysteresis(m_index, &status) != 0;
+    return m_trigger->readOutput_InHysteresis(m_index, &status) != 0;
 }
 
 /**
@@ -148,7 +151,7 @@ bool AnalogTrigger::GetInWindow()
  */
 bool AnalogTrigger::GetTriggerState()
 {
-	return m_trigger->readOutput_OverLimit(m_index, &status) != 0;
+    return m_trigger->readOutput_OverLimit(m_index, &status) != 0;
 }
 
 /**
@@ -158,8 +161,8 @@ bool AnalogTrigger::GetTriggerState()
  * @param type An enum of the type of output object to create.
  * @return A pointer to a new AnalogTriggerOutput object.
  */
-AnalogTriggerOutput *AnalogTrigger::CreateOutput(AnalogTriggerOutput::Type type)
+AnalogTriggerOutput *AnalogTrigger::CreateOutput(AnalogTriggerOutput::
+                                                 Type type)
 {
-	return new AnalogTriggerOutput(this, type);
+    return new AnalogTriggerOutput(this, type);
 }
-

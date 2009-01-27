@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -11,13 +11,12 @@
 /**
  * The Watchdog is born.
  */
-Watchdog::Watchdog()
-	:	m_fpgaWatchDog(NULL)
+Watchdog::Watchdog():m_fpgaWatchDog(NULL)
 {
-	m_fpgaWatchDog = new tWatchdog(&status);
-	wpi_assertCleanStatus(status);
-	SetExpiration(kDefaultWatchdogExpiration_ms);
-	SetEnabled(true);
+    m_fpgaWatchDog = new tWatchdog(&status);
+    wpi_assertCleanStatus(status);
+    SetExpiration(kDefaultWatchdogExpiration_ms);
+    SetEnabled(true);
 }
 
 /**
@@ -25,9 +24,9 @@ Watchdog::Watchdog()
  */
 Watchdog::~Watchdog()
 {
-	SetEnabled(false);
-	delete m_fpgaWatchDog;
-	m_fpgaWatchDog = NULL;
+    SetEnabled(false);
+    delete m_fpgaWatchDog;
+    m_fpgaWatchDog = NULL;
 }
 
 /**
@@ -44,10 +43,10 @@ Watchdog::~Watchdog()
  */
 bool Watchdog::Feed()
 {
-	bool previous = GetEnabled();
-	m_fpgaWatchDog->strobeFeed(&status);
-	wpi_assertCleanStatus(status);
-	return previous;
+    bool previous = GetEnabled();
+    m_fpgaWatchDog->strobeFeed(&status);
+    wpi_assertCleanStatus(status);
+    return previous;
 }
 
 /**
@@ -58,8 +57,8 @@ bool Watchdog::Feed()
  */
 void Watchdog::Kill()
 {
-	m_fpgaWatchDog->strobeKill(&status);
-	wpi_assertCleanStatus(status);
+    m_fpgaWatchDog->strobeKill(&status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -69,9 +68,9 @@ void Watchdog::Kill()
  */
 float Watchdog::GetTimer()
 {
-	UINT32 timer = m_fpgaWatchDog->readTimer(&status);
-	wpi_assertCleanStatus(status);
-	return timer / (kSystemClockTicksPerMicrosecond * 1e6);
+    UINT32 timer = m_fpgaWatchDog->readTimer(&status);
+    wpi_assertCleanStatus(status);
+    return timer / (kSystemClockTicksPerMicrosecond * 1e6);
 }
 
 /**
@@ -81,9 +80,9 @@ float Watchdog::GetTimer()
  */
 float Watchdog::GetExpiration()
 {
-	UINT32 expiration = m_fpgaWatchDog->readExpiration(&status);
-	wpi_assertCleanStatus(status);
-	return expiration / (kSystemClockTicksPerMicrosecond * 1e6);
+    UINT32 expiration = m_fpgaWatchDog->readExpiration(&status);
+    wpi_assertCleanStatus(status);
+    return expiration / (kSystemClockTicksPerMicrosecond * 1e6);
 }
 
 /**
@@ -93,8 +92,11 @@ float Watchdog::GetExpiration()
  */
 void Watchdog::SetExpiration(float expiration)
 {
-	m_fpgaWatchDog->writeExpiration((UINT32)(expiration * (kSystemClockTicksPerMicrosecond * 1e6)), &status);
-	wpi_assertCleanStatus(status);
+    m_fpgaWatchDog->
+        writeExpiration((UINT32)
+                        (expiration *
+                         (kSystemClockTicksPerMicrosecond * 1e6)), &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -104,9 +106,9 @@ void Watchdog::SetExpiration(float expiration)
  */
 bool Watchdog::GetEnabled()
 {
-	bool enabled = !m_fpgaWatchDog->readImmortal(&status);
-	wpi_assertCleanStatus(status);
-	return enabled;
+    bool enabled = !m_fpgaWatchDog->readImmortal(&status);
+    wpi_assertCleanStatus(status);
+    return enabled;
 }
 
 /**
@@ -123,8 +125,8 @@ bool Watchdog::GetEnabled()
  */
 void Watchdog::SetEnabled(bool enabled)
 {
-	m_fpgaWatchDog->writeImmortal(!enabled, &status);
-	wpi_assertCleanStatus(status);
+    m_fpgaWatchDog->writeImmortal(!enabled, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -141,9 +143,9 @@ void Watchdog::SetEnabled(bool enabled)
  */
 bool Watchdog::IsAlive()
 {
-	bool alive = m_fpgaWatchDog->readStatus_Alive(&status);
-	wpi_assertCleanStatus(status);
-	return alive;
+    bool alive = m_fpgaWatchDog->readStatus_Alive(&status);
+    wpi_assertCleanStatus(status);
+    return alive;
 }
 
 /**
@@ -153,8 +155,7 @@ bool Watchdog::IsAlive()
  */
 bool Watchdog::IsSystemActive()
 {
-	bool alive = m_fpgaWatchDog->readStatus_SystemActive(&status);
-	wpi_assertCleanStatus(status);
-	return alive;
+    bool alive = m_fpgaWatchDog->readStatus_SystemActive(&status);
+    wpi_assertCleanStatus(status);
+    return alive;
 }
-

@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -15,24 +15,27 @@
  * 
  * @param slot The slot of the digital module that the sensor is plugged into.
  */
-HiTechnicCompass::HiTechnicCompass(UINT32 slot)
-	: m_i2c (NULL)
+HiTechnicCompass::HiTechnicCompass(UINT32 slot):m_i2c(NULL)
 {
-	DigitalModule *module = DigitalModule::GetInstance(slot);
-	m_i2c = module->GetI2C(kAddress);
+    DigitalModule *module = DigitalModule::GetInstance(slot);
+    m_i2c = module->GetI2C(kAddress);
 
-	// Verify Sensor
-	const UINT8 kExpectedManufacturer[] = "HiTechnc";
-	const UINT8 kExpectedSensorType[] = "Compass ";
-	if ( ! m_i2c->VerifySensor(kManufacturerBaseRegister, kManufacturerSize, kExpectedManufacturer) )
-	{
-		wpi_fatal(CompassManufacturerError);
-		return;
-	}
-	if ( ! m_i2c->VerifySensor(kSensorTypeBaseRegister, kSensorTypeSize, kExpectedSensorType) )
-	{
-		wpi_fatal(CompassTypeError);
-	}
+    // Verify Sensor
+    const UINT8 kExpectedManufacturer[] = "HiTechnc";
+    const UINT8 kExpectedSensorType[] = "Compass ";
+    if (!m_i2c->
+        VerifySensor(kManufacturerBaseRegister, kManufacturerSize,
+                     kExpectedManufacturer))
+    {
+        wpi_fatal(CompassManufacturerError);
+        return;
+    }
+    if (!m_i2c->
+        VerifySensor(kSensorTypeBaseRegister, kSensorTypeSize,
+                     kExpectedSensorType))
+    {
+        wpi_fatal(CompassTypeError);
+    }
 }
 
 /**
@@ -40,8 +43,8 @@ HiTechnicCompass::HiTechnicCompass(UINT32 slot)
  */
 HiTechnicCompass::~HiTechnicCompass()
 {
-	delete m_i2c;
-	m_i2c = NULL;
+    delete m_i2c;
+    m_i2c = NULL;
 }
 
 /**
@@ -53,12 +56,11 @@ HiTechnicCompass::~HiTechnicCompass()
  */
 float HiTechnicCompass::GetAngle()
 {
-	UINT16 heading;
-	m_i2c->Read(kHeadingRegister, sizeof(heading), (UINT8 *)&heading);
+    UINT16 heading;
+    m_i2c->Read(kHeadingRegister, sizeof(heading), (UINT8 *) & heading);
 
-	// Sensor is little endian... swap bytes
-	heading = (heading >> 8) | (heading << 8);
+    // Sensor is little endian... swap bytes
+    heading = (heading >> 8) | (heading << 8);
 
-	return (float)heading;
+    return (float)heading;
 }
-

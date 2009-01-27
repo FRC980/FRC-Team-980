@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -9,9 +9,9 @@
 
 void DigitalOutput::InitDigitalOutput(UINT32 slot, UINT32 channel)
 {
-	m_channel = channel;
-	m_module = DigitalModule::GetInstance(slot);
-	m_module->AllocateDIO(m_channel, false);
+    m_channel = channel;
+    m_module = DigitalModule::GetInstance(slot);
+    m_module->AllocateDIO(m_channel, false);
 }
 
 /**
@@ -20,7 +20,7 @@ void DigitalOutput::InitDigitalOutput(UINT32 slot, UINT32 channel)
  */
 DigitalOutput::DigitalOutput(UINT32 channel)
 {
-	InitDigitalOutput(GetDefaultDigitalModule(), channel);
+    InitDigitalOutput(GetDefaultDigitalModule(), channel);
 }
 
 /**
@@ -29,7 +29,7 @@ DigitalOutput::DigitalOutput(UINT32 channel)
  */
 DigitalOutput::DigitalOutput(UINT32 slot, UINT32 channel)
 {
-	InitDigitalOutput(slot, channel);
+    InitDigitalOutput(slot, channel);
 }
 
 /**
@@ -37,7 +37,7 @@ DigitalOutput::DigitalOutput(UINT32 slot, UINT32 channel)
  */
 DigitalOutput::~DigitalOutput()
 {
-	m_module->FreeDIO(m_channel);
+    m_module->FreeDIO(m_channel);
 }
 
 /**
@@ -46,7 +46,7 @@ DigitalOutput::~DigitalOutput()
  */
 void DigitalOutput::Set(UINT32 value)
 {
-	m_module->SetDIO(m_channel, value);
+    m_module->SetDIO(m_channel, value);
 }
 
 /**
@@ -57,8 +57,10 @@ void DigitalOutput::Set(UINT32 value)
  */
 void DigitalOutput::Pulse(float length)
 {
-	tRioStatusCode localStatus = 0;
-	m_module->Pulse(m_channel, (UINT8)(1e9 * length / (tDIO::readLoopTiming(&localStatus) * 25)));
+    tRioStatusCode localStatus = 0;
+    m_module->Pulse(m_channel,
+                    (UINT8) (1e9 * length /
+                             (tDIO::readLoopTiming(&localStatus) * 25)));
 }
 
 /**
@@ -67,5 +69,5 @@ void DigitalOutput::Pulse(float length)
  */
 bool DigitalOutput::IsPulsing()
 {
-	return m_module->IsPulsing(m_channel);
+    return m_module->IsPulsing(m_channel);
 }

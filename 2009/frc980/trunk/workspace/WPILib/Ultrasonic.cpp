@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -13,10 +13,10 @@
 #include "Utility.h"
 #include "WPIStatus.h"
 
-Task Ultrasonic::m_task("UltrasonicChecker", (FUNCPTR)UltrasonicChecker); // task doing the round-robin automatic sensing
-Ultrasonic *Ultrasonic::m_firstSensor = NULL; // head of the ultrasonic sensor list
-bool Ultrasonic::m_automaticEnabled = false; // automatic round robin mode
-SEM_ID Ultrasonic::m_semaphore = semBCreate(SEM_Q_PRIORITY, SEM_FULL); // synchronize access to the list of sensors
+Task Ultrasonic::m_task("UltrasonicChecker", (FUNCPTR) UltrasonicChecker);      // task doing the round-robin automatic sensing
+Ultrasonic *Ultrasonic::m_firstSensor = NULL;   // head of the ultrasonic sensor list
+bool Ultrasonic::m_automaticEnabled = false;    // automatic round robin mode
+SEM_ID Ultrasonic::m_semaphore = semBCreate(SEM_Q_PRIORITY, SEM_FULL);  // synchronize access to the list of sensors
 
 /**
  * Background task that goes through the list of ultrasonic sensors and pings each one in turn. The counter
@@ -29,16 +29,18 @@ SEM_ID Ultrasonic::m_semaphore = semBCreate(SEM_Q_PRIORITY, SEM_FULL); // synchr
  */
 void Ultrasonic::UltrasonicChecker()
 {
-	Ultrasonic *u = NULL;
-	while (m_automaticEnabled)
-	{
-		if (u == NULL) u = m_firstSensor;
-		if (u == NULL) return;
-		if (u->IsEnabled())
-			u->m_pingChannel->Pulse(kPingTime);	// do the ping
-		u = u->m_nextSensor;
-		Wait(0.1);							// wait for ping to return
-	}
+    Ultrasonic *u = NULL;
+    while (m_automaticEnabled)
+    {
+        if (u == NULL)
+            u = m_firstSensor;
+        if (u == NULL)
+            return;
+        if (u->IsEnabled())
+            u->m_pingChannel->Pulse(kPingTime); // do the ping
+        u = u->m_nextSensor;
+        Wait(0.1);              // wait for ping to return
+    }
 }
 
 /**
@@ -50,21 +52,21 @@ void Ultrasonic::UltrasonicChecker()
  */
 void Ultrasonic::Initialize()
 {
-	bool originalMode = m_automaticEnabled;
-	SetAutomaticMode(false); // kill task when adding a new sensor
-	semTake(m_semaphore, WAIT_FOREVER); // link this instance on the list
-	{
-		m_nextSensor = m_firstSensor;
-		m_firstSensor = this;
-	}
-	semGive(m_semaphore);
+    bool originalMode = m_automaticEnabled;
+    SetAutomaticMode(false);    // kill task when adding a new sensor
+    semTake(m_semaphore, WAIT_FOREVER); // link this instance on the list
+    {
+        m_nextSensor = m_firstSensor;
+        m_firstSensor = this;
+    }
+    semGive(m_semaphore);
 
-	m_counter = new Counter(m_echoChannel); // set up counter for this sensor
-	m_counter->SetSemiPeriodMode(true);
-	m_counter->Reset();
-	m_counter->Start();
-	m_enabled = true; // make it available for round robin scheduling
-	SetAutomaticMode(originalMode);
+    m_counter = new Counter(m_echoChannel);     // set up counter for this sensor
+    m_counter->SetSemiPeriodMode(true);
+    m_counter->Reset();
+    m_counter->Start();
+    m_enabled = true;           // make it available for round robin scheduling
+    SetAutomaticMode(originalMode);
 }
 
 /**
@@ -78,10 +80,10 @@ void Ultrasonic::Initialize()
  */
 Ultrasonic::Ultrasonic(UINT32 pingChannel, UINT32 echoChannel)
 {
-	m_pingChannel = new DigitalOutput(pingChannel);
-	m_echoChannel = new DigitalInput(echoChannel);
-	m_allocatedChannels = true;
-	Initialize();
+    m_pingChannel = new DigitalOutput(pingChannel);
+    m_echoChannel = new DigitalInput(echoChannel);
+    m_allocatedChannels = true;
+    Initialize();
 }
 
 /**
@@ -90,17 +92,18 @@ Ultrasonic::Ultrasonic(UINT32 pingChannel, UINT32 echoChannel)
  * @param pingChannel The digital output object that starts the sensor doing a ping. Requires a 10uS pulse to start.
  * @param echoChannel The digital input object that times the return pulse to determine the range.
  */
-Ultrasonic::Ultrasonic(DigitalOutput *pingChannel, DigitalInput *echoChannel)
+Ultrasonic::Ultrasonic(DigitalOutput * pingChannel,
+                       DigitalInput * echoChannel)
 {
-	if (pingChannel == NULL || echoChannel == NULL)
-	{
-		wpi_fatal(NullParameter);
-		return;
-	}
-	m_allocatedChannels = false;
-	m_pingChannel = pingChannel;
-	m_echoChannel = echoChannel;
-	Initialize();
+    if (pingChannel == NULL || echoChannel == NULL)
+    {
+        wpi_fatal(NullParameter);
+        return;
+    }
+    m_allocatedChannels = false;
+    m_pingChannel = pingChannel;
+    m_echoChannel = echoChannel;
+    Initialize();
 }
 
 /**
@@ -109,12 +112,13 @@ Ultrasonic::Ultrasonic(DigitalOutput *pingChannel, DigitalInput *echoChannel)
  * @param pingChannel The digital output object that starts the sensor doing a ping. Requires a 10uS pulse to start.
  * @param echoChannel The digital input object that times the return pulse to determine the range.
  */
-Ultrasonic::Ultrasonic(DigitalOutput &pingChannel, DigitalInput &echoChannel)
+Ultrasonic::Ultrasonic(DigitalOutput & pingChannel,
+                       DigitalInput & echoChannel)
 {
-	m_allocatedChannels = false;
-	m_pingChannel = &pingChannel;
-	m_echoChannel = &echoChannel;
-	Initialize();
+    m_allocatedChannels = false;
+    m_pingChannel = &pingChannel;
+    m_echoChannel = &echoChannel;
+    Initialize();
 }
 
 /**
@@ -129,12 +133,12 @@ Ultrasonic::Ultrasonic(DigitalOutput &pingChannel, DigitalInput &echoChannel)
  * that the echo is high represents the round trip time of the ping, and the distance.
  */
 Ultrasonic::Ultrasonic(UINT32 pingSlot, UINT32 pingChannel,
-		UINT32 echoSlot, UINT32 echoChannel)
+                       UINT32 echoSlot, UINT32 echoChannel)
 {
-	m_pingChannel = new DigitalOutput(pingSlot, pingChannel);
-	m_echoChannel = new DigitalInput(echoSlot, echoChannel);
-	m_allocatedChannels = true;
-	Initialize();
+    m_pingChannel = new DigitalOutput(pingSlot, pingChannel);
+    m_echoChannel = new DigitalInput(echoSlot, echoChannel);
+    m_allocatedChannels = true;
+    Initialize();
 }
 
 /**
@@ -145,41 +149,42 @@ Ultrasonic::Ultrasonic(UINT32 pingSlot, UINT32 pingChannel,
  */
 Ultrasonic::~Ultrasonic()
 {
-	bool wasAutomaticMode = m_automaticEnabled;
-	SetAutomaticMode(false);
-	if (m_allocatedChannels)
-	{
-		delete m_pingChannel;
-		delete m_echoChannel;
-	}
-	wpi_assert(m_firstSensor != NULL);
+    bool wasAutomaticMode = m_automaticEnabled;
+    SetAutomaticMode(false);
+    if (m_allocatedChannels)
+    {
+        delete m_pingChannel;
+        delete m_echoChannel;
+    }
+    wpi_assert(m_firstSensor != NULL);
 
-	semTake(m_semaphore, WAIT_FOREVER);
-	{
-		if (this == m_firstSensor)
-		{
-			m_firstSensor = m_nextSensor;
-			if (m_firstSensor == NULL)
-			{
-				SetAutomaticMode(false);
-			}
-		}
-		else
-		{
-			wpi_assert(m_firstSensor->m_nextSensor != NULL);
-			for (Ultrasonic *s = m_firstSensor; s != NULL; s = s->m_nextSensor)
-			{
-				if (this == s->m_nextSensor)
-				{
-					s->m_nextSensor = s->m_nextSensor->m_nextSensor;
-					break;
-				}
-			}
-		}
-	}
-	semGive(m_semaphore);
-	if (m_firstSensor != NULL && wasAutomaticMode)
-		SetAutomaticMode(true);
+    semTake(m_semaphore, WAIT_FOREVER);
+    {
+        if (this == m_firstSensor)
+        {
+            m_firstSensor = m_nextSensor;
+            if (m_firstSensor == NULL)
+            {
+                SetAutomaticMode(false);
+            }
+        }
+        else
+        {
+            wpi_assert(m_firstSensor->m_nextSensor != NULL);
+            for (Ultrasonic * s = m_firstSensor; s != NULL;
+                 s = s->m_nextSensor)
+            {
+                if (this == s->m_nextSensor)
+                {
+                    s->m_nextSensor = s->m_nextSensor->m_nextSensor;
+                    break;
+                }
+            }
+        }
+    }
+    semGive(m_semaphore);
+    if (m_firstSensor != NULL && wasAutomaticMode)
+        SetAutomaticMode(true);
 }
 
 /**
@@ -193,35 +198,35 @@ Ultrasonic::~Ultrasonic()
  */
 void Ultrasonic::SetAutomaticMode(bool enabling)
 {
-	if (enabling == m_automaticEnabled)
-		return; // ignore the case of no change
+    if (enabling == m_automaticEnabled)
+        return;                 // ignore the case of no change
 
-	m_automaticEnabled = enabling;
-	if (enabling)
-	{
-		// enabling automatic mode.
-		// Clear all the counters so no data is valid
-		for (Ultrasonic *u = m_firstSensor; u != NULL; u = u->m_nextSensor)
-		{
-			u->m_counter->Reset();
-		}
-		// Start round robin task
-		wpi_assert(m_task.Verify() == false);	// should be false since was previously disabled
-		m_task.Start();
-	}
-	else
-	{
-		// disabling automatic mode. Wait for background task to stop running.
-		while (m_task.Verify())
-			Wait(0.15);	// just a little longer than the ping time for round-robin to stop
+    m_automaticEnabled = enabling;
+    if (enabling)
+    {
+        // enabling automatic mode.
+        // Clear all the counters so no data is valid
+        for (Ultrasonic * u = m_firstSensor; u != NULL; u = u->m_nextSensor)
+        {
+            u->m_counter->Reset();
+        }
+        // Start round robin task
+        wpi_assert(m_task.Verify() == false);   // should be false since was previously disabled
+        m_task.Start();
+    }
+    else
+    {
+        // disabling automatic mode. Wait for background task to stop running.
+        while (m_task.Verify())
+            Wait(0.15);         // just a little longer than the ping time for round-robin to stop
 
-		// clear all the counters (data now invalid) since automatic mode is stopped
-		for (Ultrasonic *u = m_firstSensor; u != NULL; u = u->m_nextSensor)
-		{
-			u->m_counter->Reset();
-		}
-		m_task.Stop();
-	}
+        // clear all the counters (data now invalid) since automatic mode is stopped
+        for (Ultrasonic * u = m_firstSensor; u != NULL; u = u->m_nextSensor)
+        {
+            u->m_counter->Reset();
+        }
+        m_task.Stop();
+    }
 }
 
 /**
@@ -232,11 +237,11 @@ void Ultrasonic::SetAutomaticMode(bool enabling)
  */
 void Ultrasonic::Ping()
 {
-	// TODO: Either assert or disable, not both.
-	wpi_assert(!m_automaticEnabled);
-	SetAutomaticMode(false); // turn off automatic round robin if pinging single sensor
-	m_counter->Reset(); // reset the counter to zero (invalid data now)
-	m_pingChannel->Pulse(kPingTime); // do the ping to start getting a single range
+    // TODO: Either assert or disable, not both.
+    wpi_assert(!m_automaticEnabled);
+    SetAutomaticMode(false);    // turn off automatic round robin if pinging single sensor
+    m_counter->Reset();         // reset the counter to zero (invalid data now)
+    m_pingChannel->Pulse(kPingTime);    // do the ping to start getting a single range
 }
 
 /**
@@ -246,7 +251,7 @@ void Ultrasonic::Ping()
  */
 bool Ultrasonic::IsRangeValid()
 {
-	return m_counter->Get() > 1;
+    return m_counter->Get() > 1;
 }
 
 /**
@@ -256,10 +261,10 @@ bool Ultrasonic::IsRangeValid()
  */
 double Ultrasonic::GetRangeInches()
 {
-	if (IsRangeValid())
-		return m_counter->GetPeriod() * kSpeedOfSoundInchesPerSec / 2.0;
-	else
-		return 0;
+    if (IsRangeValid())
+        return m_counter->GetPeriod() * kSpeedOfSoundInchesPerSec / 2.0;
+    else
+        return 0;
 }
 
 /**
@@ -269,6 +274,5 @@ double Ultrasonic::GetRangeInches()
  */
 double Ultrasonic::GetRangeMM()
 {
-	return GetRangeInches() * 25.4;
+    return GetRangeInches() * 25.4;
 }
-

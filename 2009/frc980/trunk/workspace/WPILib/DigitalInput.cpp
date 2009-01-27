@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -19,12 +19,12 @@ static Resource *interrupts = NULL;
  */
 void DigitalInput::InitDigitalInput(UINT32 slot, UINT32 channel)
 {
-	Resource::CreateResourceObject(&interrupts, 8);
-	CheckDigitalChannel(channel);
-	CheckDigitalModule(slot);
-	m_channel = channel;
-	m_module = DigitalModule::GetInstance(slot);
-	m_module->AllocateDIO(channel, true);
+    Resource::CreateResourceObject(&interrupts, 8);
+    CheckDigitalChannel(channel);
+    CheckDigitalModule(slot);
+    m_channel = channel;
+    m_module = DigitalModule::GetInstance(slot);
+    m_module->AllocateDIO(channel, true);
 }
 
 /**
@@ -33,7 +33,7 @@ void DigitalInput::InitDigitalInput(UINT32 slot, UINT32 channel)
  */
 DigitalInput::DigitalInput(UINT32 channel)
 {
-	InitDigitalInput(GetDefaultDigitalModule(), channel);
+    InitDigitalInput(GetDefaultDigitalModule(), channel);
 }
 
 /**
@@ -42,7 +42,7 @@ DigitalInput::DigitalInput(UINT32 channel)
  */
 DigitalInput::DigitalInput(UINT32 slot, UINT32 channel)
 {
-	InitDigitalInput(slot, channel);
+    InitDigitalInput(slot, channel);
 }
 
 /**
@@ -50,13 +50,13 @@ DigitalInput::DigitalInput(UINT32 slot, UINT32 channel)
  */
 DigitalInput::~DigitalInput()
 {
-	if (m_manager != NULL)
-	{
-		delete m_manager;
-		delete m_interrupt;
-		interrupts->Free(m_interruptIndex);
-	}
-	m_module->FreeDIO(m_channel);
+    if (m_manager != NULL)
+    {
+        delete m_manager;
+        delete m_interrupt;
+        interrupts->Free(m_interruptIndex);
+    }
+    m_module->FreeDIO(m_channel);
 }
 
 /*
@@ -65,7 +65,7 @@ DigitalInput::~DigitalInput()
  */
 UINT32 DigitalInput::Get()
 {
-	return m_module->GetDIO(m_channel);
+    return m_module->GetDIO(m_channel);
 }
 
 /**
@@ -73,7 +73,7 @@ UINT32 DigitalInput::Get()
  */
 UINT32 DigitalInput::GetChannel()
 {
-	return m_channel;
+    return m_channel;
 }
 
 /**
@@ -81,7 +81,7 @@ UINT32 DigitalInput::GetChannel()
  */
 UINT32 DigitalInput::GetChannelForRouting()
 {
-	return DigitalModule::RemapDigitalChannel(GetChannel() - 1);
+    return DigitalModule::RemapDigitalChannel(GetChannel() - 1);
 }
 
 /**
@@ -89,7 +89,7 @@ UINT32 DigitalInput::GetChannelForRouting()
  */
 UINT32 DigitalInput::GetModuleForRouting()
 {
-	return DigitalModule::SlotToIndex(m_module->GetSlot());
+    return DigitalModule::SlotToIndex(m_module->GetSlot());
 }
 
 /**
@@ -97,7 +97,7 @@ UINT32 DigitalInput::GetModuleForRouting()
  */
 bool DigitalInput::GetAnalogTriggerForRouting()
 {
-	return false;
+    return false;
 }
 
 /**
@@ -110,20 +110,23 @@ bool DigitalInput::GetAnalogTriggerForRouting()
  */
 void DigitalInput::RequestInterrupts(tInterruptHandler handler)
 {
-	m_interruptIndex = interrupts->Allocate();
-//TODO: check for error on allocation
+    m_interruptIndex = interrupts->Allocate();
+    //TODO: check for error on allocation
 
-	AllocateInterrupts(false);
+    AllocateInterrupts(false);
 
-	m_interrupt->writeConfig_WaitForAck(false, &status);
-	m_interrupt->writeConfig_Source_AnalogTrigger(GetAnalogTriggerForRouting(), &status);
-	m_interrupt->writeConfig_Source_Channel(GetChannelForRouting(), &status);
-	m_interrupt->writeConfig_Source_Module(GetModuleForRouting(), &status);
-	m_interrupt->writeConfig_RisingEdge(true, &status);
-	m_interrupt->writeConfig_FallingEdge(false, &status);
+    m_interrupt->writeConfig_WaitForAck(false, &status);
+    m_interrupt->
+        writeConfig_Source_AnalogTrigger(GetAnalogTriggerForRouting(),
+                                         &status);
+    m_interrupt->writeConfig_Source_Channel(GetChannelForRouting(),
+                                            &status);
+    m_interrupt->writeConfig_Source_Module(GetModuleForRouting(), &status);
+    m_interrupt->writeConfig_RisingEdge(true, &status);
+    m_interrupt->writeConfig_FallingEdge(false, &status);
 
-	m_manager->registerHandler(handler, NULL, &status);
-	wpi_assertCleanStatus(status);
+    m_manager->registerHandler(handler, NULL, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -134,26 +137,28 @@ void DigitalInput::RequestInterrupts(tInterruptHandler handler)
  */
 void DigitalInput::RequestInterrupts()
 {
-	m_interruptIndex = interrupts->Allocate();
-//TODO: check for errors
+    m_interruptIndex = interrupts->Allocate();
+    //TODO: check for errors
 
-	AllocateInterrupts(true);
+    AllocateInterrupts(true);
 
-	m_interrupt->writeConfig_Source_AnalogTrigger(GetAnalogTriggerForRouting(), &status);
-	m_interrupt->writeConfig_Source_Channel(GetChannelForRouting(), &status);
-	m_interrupt->writeConfig_Source_Module(GetModuleForRouting(), &status);
-	SetUpSourceEdge(true, false);
-	wpi_assertCleanStatus(status);
+    m_interrupt->
+        writeConfig_Source_AnalogTrigger(GetAnalogTriggerForRouting(),
+                                         &status);
+    m_interrupt->writeConfig_Source_Channel(GetChannelForRouting(),
+                                            &status);
+    m_interrupt->writeConfig_Source_Module(GetModuleForRouting(), &status);
+    SetUpSourceEdge(true, false);
+    wpi_assertCleanStatus(status);
 }
 
 void DigitalInput::SetUpSourceEdge(bool risingEdge, bool fallingEdge)
 {
-	wpi_assert(m_interrupt != NULL);
-	if (m_interrupt != NULL)
-	{
-		m_interrupt->writeConfig_RisingEdge(risingEdge, &status);
-		m_interrupt->writeConfig_FallingEdge(fallingEdge, &status);
-	}
-	wpi_assertCleanStatus(status);
+    wpi_assert(m_interrupt != NULL);
+    if (m_interrupt != NULL)
+    {
+        m_interrupt->writeConfig_RisingEdge(risingEdge, &status);
+        m_interrupt->writeConfig_FallingEdge(fallingEdge, &status);
+    }
+    wpi_assertCleanStatus(status);
 }
-

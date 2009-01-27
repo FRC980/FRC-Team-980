@@ -1,14 +1,14 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
 
 #include "Timer.h"
 
-#include "sysLib.h" // for sysClkRateGet
+#include "sysLib.h"             // for sysClkRateGet
 #include "time.h"
-#include "usrLib.h" // for taskDelay
+#include "usrLib.h"             // for taskDelay
 
 #include "Synchronized.h"
 #include "Utility.h"
@@ -24,8 +24,9 @@
  */
 void Wait(double seconds)
 {
-	if (seconds < 0.0) return;
-	taskDelay( (INT32)((double)sysClkRateGet() * seconds) );
+    if (seconds < 0.0)
+        return;
+    taskDelay((INT32) ((double)sysClkRateGet() * seconds));
 }
 
 /*
@@ -37,21 +38,22 @@ void Wait(double seconds)
  */
 double GetClock(void)
 {
-	return GetFPGATime() * 1e-6;
+    return GetFPGATime() * 1e-6;
 }
 
 /**
  * @brief Gives real-time clock system time with nanosecond resolution
  * @return The time, just in case you want the robot to start autonomous at 8pm on Saturday.
 */
-double GetTime(void)  
+double GetTime(void)
 {
-	struct timespec tp;
-	
-	clock_gettime(CLOCK_REALTIME,&tp);
-	double realTime = (double)tp.tv_sec + (double)((double)tp.tv_nsec*1e-9);
-	
-	return (realTime);
+    struct timespec tp;
+
+    clock_gettime(CLOCK_REALTIME, &tp);
+    double realTime =
+        (double)tp.tv_sec + (double)((double)tp.tv_nsec * 1e-9);
+
+    return (realTime);
 }
 
 /**
@@ -60,21 +62,18 @@ double GetTime(void)
  * Create a new timer object and reset the time to zero. The timer is initially not running and
  * must be started.
  */
-Timer::Timer()
-	: m_startTime (0.0)
-	, m_accumulatedTime (0.0)
-	, m_running (false)
-	, m_semaphore (0)
+Timer::Timer():m_startTime(0.0), m_accumulatedTime(0.0), m_running(false),
+m_semaphore(0)
 {
-	//Creates a semaphore to control access to critical regions.
-	//Initially 'open'
-	m_semaphore = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
-	Reset();
+    //Creates a semaphore to control access to critical regions.
+    //Initially 'open'
+    m_semaphore = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
+    Reset();
 }
 
 Timer::~Timer()
 {
-	semFlush(m_semaphore);
+    semFlush(m_semaphore);
 }
 
 /**
@@ -86,23 +85,23 @@ Timer::~Timer()
  */
 double Timer::Get()
 {
-	double result;
-	double currentTime = GetClock();
+    double result;
+    double currentTime = GetClock();
 
-	CRITICAL_REGION(m_semaphore)
-	{
-		if(m_running)
-		{
-			result = (currentTime - m_startTime) + m_accumulatedTime;
-		}
-		else
-		{
-			result = m_accumulatedTime;
-		}
-	}
-	END_REGION;
+    CRITICAL_REGION(m_semaphore)
+    {
+        if (m_running)
+        {
+            result = (currentTime - m_startTime) + m_accumulatedTime;
+        }
+        else
+        {
+            result = m_accumulatedTime;
+        }
+    }
+    END_REGION;
 
-	return result;
+    return result;
 }
 
 /**
@@ -112,12 +111,12 @@ double Timer::Get()
  */
 void Timer::Reset()
 {
-	CRITICAL_REGION(m_semaphore)
-	{
-		m_accumulatedTime = 0;
-		m_startTime = GetClock();
-	}
-	END_REGION;
+    CRITICAL_REGION(m_semaphore)
+    {
+        m_accumulatedTime = 0;
+        m_startTime = GetClock();
+    }
+    END_REGION;
 }
 
 /**
@@ -127,15 +126,15 @@ void Timer::Reset()
  */
 void Timer::Start()
 {
-	CRITICAL_REGION(m_semaphore)
-	{
-		if (!m_running)
-		{
-			m_startTime = GetClock();
-			m_running = true;
-		}
-	}
-	END_REGION;
+    CRITICAL_REGION(m_semaphore)
+    {
+        if (!m_running)
+        {
+            m_startTime = GetClock();
+            m_running = true;
+        }
+    }
+    END_REGION;
 }
 
 /**
@@ -146,15 +145,15 @@ void Timer::Start()
  */
 void Timer::Stop()
 {
-	double temp = Get();
-	
-	CRITICAL_REGION(m_semaphore)
-	{
-		if (m_running)
-		{
-			m_accumulatedTime += temp;	
-			m_running = false;
-		}
-	}
-	END_REGION;
+    double temp = Get();
+
+    CRITICAL_REGION(m_semaphore)
+    {
+        if (m_running)
+        {
+            m_accumulatedTime += temp;
+            m_running = false;
+        }
+    }
+    END_REGION;
 }

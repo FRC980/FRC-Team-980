@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -18,20 +18,28 @@ static Resource *quadEncoders = NULL;
  */
 void Encoder::InitEncoder(bool reverseDirection)
 {
-	Resource::CreateResourceObject(&quadEncoders, tEncoder::kNumSystems);
-	//TODO: need to check for errors here
-	m_index = quadEncoders->Allocate();
-	m_encoder = new tEncoder(m_index, &status);
-	m_encoder->writeConfig_ASource_Module(m_aSource->GetModuleForRouting(), &status);
-	m_encoder->writeConfig_ASource_Channel(m_aSource->GetChannelForRouting(), &status);
-	m_encoder->writeConfig_ASource_AnalogTrigger(m_aSource->GetAnalogTriggerForRouting(), &status);
-	m_encoder->writeConfig_BSource_Module(m_bSource->GetModuleForRouting(), &status);
-	m_encoder->writeConfig_BSource_Channel(m_bSource->GetChannelForRouting(), &status);
-	m_encoder->writeConfig_BSource_AnalogTrigger(m_bSource->GetAnalogTriggerForRouting(), &status);
-	m_encoder->strobeReset(&status);
-	m_encoder->writeConfig_Reverse(reverseDirection, &status);
-	m_distancePerTick = 1.0;
-	wpi_assertCleanStatus(status);
+    Resource::CreateResourceObject(&quadEncoders, tEncoder::kNumSystems);
+    //TODO: need to check for errors here
+    m_index = quadEncoders->Allocate();
+    m_encoder = new tEncoder(m_index, &status);
+    m_encoder->writeConfig_ASource_Module(m_aSource->GetModuleForRouting(),
+                                          &status);
+    m_encoder->writeConfig_ASource_Channel(m_aSource->
+                                           GetChannelForRouting(), &status);
+    m_encoder->writeConfig_ASource_AnalogTrigger(m_aSource->
+                                                 GetAnalogTriggerForRouting
+                                                 (), &status);
+    m_encoder->writeConfig_BSource_Module(m_bSource->GetModuleForRouting(),
+                                          &status);
+    m_encoder->writeConfig_BSource_Channel(m_bSource->
+                                           GetChannelForRouting(), &status);
+    m_encoder->writeConfig_BSource_AnalogTrigger(m_bSource->
+                                                 GetAnalogTriggerForRouting
+                                                 (), &status);
+    m_encoder->strobeReset(&status);
+    m_encoder->writeConfig_Reverse(reverseDirection, &status);
+    m_distancePerTick = 1.0;
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -45,14 +53,13 @@ void Encoder::InitEncoder(bool reverseDirection)
  * if necessary so forward represents positive values.
  */
 Encoder::Encoder(UINT32 aSlot, UINT32 aChannel,
-						UINT32 bSlot, UINT32 bChannel,
-						bool reverseDirection)
+                 UINT32 bSlot, UINT32 bChannel, bool reverseDirection)
 {
-	m_aSource = new DigitalInput(aSlot, aChannel);
-	m_bSource = new DigitalInput(bSlot, bChannel);
-	InitEncoder(reverseDirection);
-	m_allocatedASource = true;
-	m_allocatedBSource = true;
+    m_aSource = new DigitalInput(aSlot, aChannel);
+    m_bSource = new DigitalInput(bSlot, bChannel);
+    InitEncoder(reverseDirection);
+    m_allocatedASource = true;
+    m_allocatedBSource = true;
 }
 
 /**
@@ -65,11 +72,11 @@ Encoder::Encoder(UINT32 aSlot, UINT32 aChannel,
  */
 Encoder::Encoder(UINT32 aChannel, UINT32 bChannel, bool reverseDirection)
 {
-	m_aSource = new DigitalInput(aChannel);
-	m_bSource = new DigitalInput(bChannel);
-	InitEncoder(reverseDirection);
-	m_allocatedASource = true;
-	m_allocatedBSource = true;
+    m_aSource = new DigitalInput(aChannel);
+    m_bSource = new DigitalInput(bChannel);
+    InitEncoder(reverseDirection);
+    m_allocatedASource = true;
+    m_allocatedBSource = true;
 }
 
 /**
@@ -82,25 +89,27 @@ Encoder::Encoder(UINT32 aChannel, UINT32 bChannel, bool reverseDirection)
  * @param reverseDirection represents the orientation of the encoder and inverts the output values
  * if necessary so forward represents positive values.
  */
-Encoder::Encoder(DigitalSource *aSource, DigitalSource *bSource, bool reverseDirection)
+Encoder::Encoder(DigitalSource * aSource, DigitalSource * bSource,
+                 bool reverseDirection)
 {
-	m_aSource = aSource;
-	m_bSource = bSource;
-	m_allocatedASource = false;
-	m_allocatedBSource = false;
-	if (m_aSource == NULL || m_bSource == NULL)
-		wpi_fatal(NullParameter);
-	else
-		InitEncoder(reverseDirection);
+    m_aSource = aSource;
+    m_bSource = bSource;
+    m_allocatedASource = false;
+    m_allocatedBSource = false;
+    if (m_aSource == NULL || m_bSource == NULL)
+        wpi_fatal(NullParameter);
+    else
+        InitEncoder(reverseDirection);
 }
 
-Encoder::Encoder(DigitalSource &aSource, DigitalSource &bSource, bool reverseDirection)
+Encoder::Encoder(DigitalSource & aSource, DigitalSource & bSource,
+                 bool reverseDirection)
 {
-	m_aSource = &aSource;
-	m_bSource = &bSource;
-	m_allocatedASource = false;
-	m_allocatedBSource = false;
-	InitEncoder(reverseDirection);
+    m_aSource = &aSource;
+    m_bSource = &bSource;
+    m_allocatedASource = false;
+    m_allocatedBSource = false;
+    InitEncoder(reverseDirection);
 }
 
 /**
@@ -109,10 +118,12 @@ Encoder::Encoder(DigitalSource &aSource, DigitalSource &bSource, bool reverseDir
  */
 Encoder::~Encoder()
 {
-	if (m_allocatedASource) delete m_aSource;
-	if (m_allocatedBSource) delete m_bSource;
-	quadEncoders->Free(m_index);
-	delete m_encoder;
+    if (m_allocatedASource)
+        delete m_aSource;
+    if (m_allocatedBSource)
+        delete m_bSource;
+    quadEncoders->Free(m_index);
+    delete m_encoder;
 }
 
 /**
@@ -121,8 +132,8 @@ Encoder::~Encoder()
  */
 void Encoder::Start()
 {
-	m_encoder->writeEnable(1, &status);
-	wpi_assertCleanStatus(status);
+    m_encoder->writeEnable(1, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -130,8 +141,8 @@ void Encoder::Start()
  */
 void Encoder::Stop()
 {
-	m_encoder->writeEnable(0, &status);
-	wpi_assertCleanStatus(status);
+    m_encoder->writeEnable(0, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -144,9 +155,9 @@ void Encoder::Stop()
  */
 INT32 Encoder::Get()
 {
-	INT32 value = m_encoder->readOutput_Value(&status);
-	wpi_assertCleanStatus(status);
-	return value;
+    INT32 value = m_encoder->readOutput_Value(&status);
+    wpi_assertCleanStatus(status);
+    return value;
 }
 
 /**
@@ -155,8 +166,8 @@ INT32 Encoder::Get()
  */
 void Encoder::Reset()
 {
-	m_encoder->strobeReset(&status);
-	wpi_assertCleanStatus(status);
+    m_encoder->strobeReset(&status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -166,9 +177,9 @@ void Encoder::Reset()
  */
 double Encoder::GetPeriod()
 {
-	UINT32 value = m_encoder->readTimerOutput_Period(&status);
-	wpi_assertCleanStatus(status);
-	return value / 1.0e6;
+    UINT32 value = m_encoder->readTimerOutput_Period(&status);
+    wpi_assertCleanStatus(status);
+    return value / 1.0e6;
 }
 
 /**
@@ -181,8 +192,9 @@ double Encoder::GetPeriod()
  */
 void Encoder::SetMaxPeriod(double maxPeriod)
 {
-	m_encoder->writeTimerConfig_StallPeriod((UINT32)(maxPeriod * 1.0e6), &status);
-	wpi_assertCleanStatus(status);
+    m_encoder->writeTimerConfig_StallPeriod((UINT32) (maxPeriod * 1.0e6),
+                                            &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -194,9 +206,9 @@ void Encoder::SetMaxPeriod(double maxPeriod)
  */
 bool Encoder::GetStopped()
 {
-	bool value = m_encoder->readTimerOutput_Stalled(&status) != 0;
-	wpi_assertCleanStatus(status);
-	return value;
+    bool value = m_encoder->readTimerOutput_Stalled(&status) != 0;
+    wpi_assertCleanStatus(status);
+    return value;
 }
 
 /**
@@ -205,9 +217,9 @@ bool Encoder::GetStopped()
  */
 bool Encoder::GetDirection()
 {
-	bool value = m_encoder->readOutput_Direction(&status);
-	wpi_assertCleanStatus(status);
-	return value;
+    bool value = m_encoder->readOutput_Direction(&status);
+    wpi_assertCleanStatus(status);
+    return value;
 }
 
 /**
@@ -218,7 +230,7 @@ bool Encoder::GetDirection()
  */
 float Encoder::GetDistance()
 {
-	return Get() * m_distancePerTick;
+    return Get() * m_distancePerTick;
 }
 
 /**
@@ -229,7 +241,7 @@ float Encoder::GetDistance()
  */
 void Encoder::SetDistancePerTick(float distancePerTick)
 {
-	m_distancePerTick = distancePerTick;
+    m_distancePerTick = distancePerTick;
 }
 
 /**
@@ -240,6 +252,6 @@ void Encoder::SetDistancePerTick(float distancePerTick)
  */
 void Encoder::SetReverseDirection(bool reverseDirection)
 {
-	m_encoder->writeConfig_Reverse(reverseDirection, &status);
-	wpi_assertCleanStatus(status);
+    m_encoder->writeConfig_Reverse(reverseDirection, &status);
+    wpi_assertCleanStatus(status);
 }

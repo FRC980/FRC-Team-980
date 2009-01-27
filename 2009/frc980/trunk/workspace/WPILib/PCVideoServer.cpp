@@ -60,7 +60,7 @@ class ScopedSocket
     }
     //  Cast to int allows you to pass this to any function that
     //  takes the socket as an int.
-    operator  int () const
+    operator   int () const
     {
         return m_camSock;
     }
@@ -125,11 +125,11 @@ PCVideoServer::~PCVideoServer()
 
         if (((int)
              (selfAddr.sin_addr.s_addr =
-              inet_addr(const_cast<char*>("localhost"))) != ERROR)
+              inet_addr(const_cast < char *>("localhost"))) != ERROR)
             ||
             ((int)
              (selfAddr.sin_addr.s_addr =
-              hostGetByName(const_cast<char*>("localhost"))) != ERROR))
+              hostGetByName(const_cast < char *>("localhost"))) != ERROR))
         {
             connect(camSock, (struct sockaddr *)&selfAddr, sockAddrSize);
         }
@@ -244,7 +244,7 @@ int ImageToPCServer()
         //  wait state.
         int reuseAddr = 1;
         setsockopt(pcSock, SOL_SOCKET, SO_REUSEADDR,
-                   reinterpret_cast<char*>(&reuseAddr),
+                   reinterpret_cast < char *>(&reuseAddr),
                    sizeof(reuseAddr));
         //  Bind socket to local address.
         // printf ("Binding to socket\n");
@@ -268,7 +268,7 @@ int ImageToPCServer()
         int clientAddrSize;
         printf("accept socket\n");
         int newPCSock =
-            accept(pcSock, reinterpret_cast<sockaddr*>(&clientAddr),
+            accept(pcSock, reinterpret_cast < sockaddr * >(&clientAddr),
                    &clientAddrSize);
         if (newPCSock == ERROR)
         {
@@ -308,11 +308,11 @@ int ImageToPCServer()
                 /* Write header to PC */
                 static const char header[4] = { 1, 0, 0, 0 };
                 int headerSend = write(newPCSock,
-                                       const_cast<char*>(header), 4);
+                                       const_cast < char *>(header), 4);
 
                 /* Write image length to PC */
                 int presend = write(newPCSock,
-                                    reinterpret_cast<char*>(&numBytes),
+                                    reinterpret_cast < char *>(&numBytes),
                                     4);
 
                 /* Write image to PC */

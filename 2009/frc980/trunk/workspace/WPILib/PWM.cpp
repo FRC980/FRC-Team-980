@@ -22,10 +22,12 @@ static Resource *allocated = NULL;
  */
 void PWM::InitPWM(UINT32 slot, UINT32 channel)
 {
-    Resource::CreateResourceObject(&allocated, tDIO::kNumSystems * kPwmChannels);
+    Resource::CreateResourceObject(&allocated,
+                                   tDIO::kNumSystems * kPwmChannels);
     CheckPWMModule(slot);
     CheckPWMChannel(channel);
-    allocated->Allocate(DigitalModule::SlotToIndex(slot) * kPwmChannels + channel - 1);
+    allocated->Allocate(DigitalModule::SlotToIndex(slot) * kPwmChannels +
+                        channel - 1);
     m_channel = channel;
     m_module = DigitalModule::GetInstance(slot);
     m_module->SetPWM(m_channel, kPwmDisabled);
@@ -65,7 +67,8 @@ PWM::PWM(UINT32 channel)
 PWM::~PWM()
 {
     m_module->SetPWM(m_channel, kPwmDisabled);
-    allocated->Free(DigitalModule::SlotToIndex(m_module->GetSlot()) * kPwmChannels + m_channel - 1);
+    allocated->Free(DigitalModule::SlotToIndex(m_module->GetSlot()) *
+                    kPwmChannels + m_channel - 1);
 }
 
 /**
@@ -90,7 +93,8 @@ void PWM::EnableDeadbandElimination(bool eliminateDeadband)
  * @param deadbandMin The low end of the deadband range
  * @param min The minimum pwm value
  */
-void PWM::SetBounds(INT32 max, INT32 deadbandMax, INT32 center, INT32 deadbandMin, INT32 min)
+void PWM::SetBounds(INT32 max, INT32 deadbandMax, INT32 center,
+                    INT32 deadbandMin, INT32 min)
 {
     m_maxPwm = max;
     m_deadbandMaxPwm = deadbandMax;
@@ -98,7 +102,6 @@ void PWM::SetBounds(INT32 max, INT32 deadbandMax, INT32 center, INT32 deadbandMi
     m_deadbandMinPwm = deadbandMin;
     m_minPwm = min;
 }
-
 
 /**
  * Set the PWM value based on a position.
@@ -124,13 +127,16 @@ void PWM::SetPosition(float pos)
     INT32 rawValue;
     // note, need to perform the multiplication below as floating point
     // before converting to int
-    rawValue = (INT32)( (pos * (float) GetFullRangeScaleFactor()) + GetMinNegativePwm());
+    rawValue =
+        (INT32) ((pos * (float)GetFullRangeScaleFactor()) +
+                 GetMinNegativePwm());
 
-    wpi_assert((rawValue >= GetMinNegativePwm()) && (rawValue <= GetMaxPositivePwm()));
+    wpi_assert((rawValue >= GetMinNegativePwm())
+               && (rawValue <= GetMaxPositivePwm()));
     wpi_assert(rawValue != kPwmDisabled);
 
     // send the computed pwm value to the FPGA
-    SetRaw((UINT8)rawValue);
+    SetRaw((UINT8) rawValue);
 }
 
 /**
@@ -156,7 +162,9 @@ float PWM::GetPosition()
     }
     else
     {
-        return (float)(value - GetMinNegativePwm()) / (float)GetFullRangeScaleFactor();
+        return (float)(value -
+                       GetMinNegativePwm()) /
+            (float)GetFullRangeScaleFactor();
     }
 }
 
@@ -193,21 +201,22 @@ void PWM::SetSpeed(float speed)
     }
     else if (speed > 0.0)
     {
-        rawValue = (INT32)(speed * ((float)GetPositiveScaleFactor()) +
-                                    ((float) GetMinPositivePwm()) + 0.5);
+        rawValue = (INT32) (speed * ((float)GetPositiveScaleFactor()) +
+                            ((float)GetMinPositivePwm()) + 0.5);
     }
     else
     {
-        rawValue = (INT32)(speed * ((float)GetNegativeScaleFactor()) +
-                                    ((float) GetMaxNegativePwm()) + 0.5);
+        rawValue = (INT32) (speed * ((float)GetNegativeScaleFactor()) +
+                            ((float)GetMaxNegativePwm()) + 0.5);
     }
 
     // the above should result in a pwm_value in the valid range
-    wpi_assert((rawValue >= GetMinNegativePwm()) && (rawValue <= GetMaxPositivePwm()));
+    wpi_assert((rawValue >= GetMinNegativePwm())
+               && (rawValue <= GetMaxPositivePwm()));
     wpi_assert(rawValue != kPwmDisabled);
 
     // send the computed pwm value to the FPGA
-    SetRaw((UINT8)rawValue);
+    SetRaw((UINT8) rawValue);
 }
 
 /**
@@ -235,11 +244,15 @@ float PWM::GetSpeed()
     }
     else if (value > GetMinPositivePwm())
     {
-        return (float)(value - GetMinPositivePwm()) / (float)GetPositiveScaleFactor();
+        return (float)(value -
+                       GetMinPositivePwm()) /
+            (float)GetPositiveScaleFactor();
     }
     else if (value < GetMaxNegativePwm())
     {
-        return (float)(value - GetMaxNegativePwm()) / (float)GetNegativeScaleFactor();
+        return (float)(value -
+                       GetMaxNegativePwm()) /
+            (float)GetNegativeScaleFactor();
     }
     else
     {
@@ -278,16 +291,16 @@ UINT8 PWM::GetRaw()
  */
 void PWM::SetPeriodMultiplier(PeriodMultiplier mult)
 {
-    switch(mult)
+    switch (mult)
     {
     case kPeriodMultiplier_4X:
-        m_module->SetPWMPeriodScale(m_channel, 3); // Squelch 3 out of 4 outputs
+        m_module->SetPWMPeriodScale(m_channel, 3);      // Squelch 3 out of 4 outputs
         break;
     case kPeriodMultiplier_2X:
-        m_module->SetPWMPeriodScale(m_channel, 1); // Squelch 1 out of 2 outputs
+        m_module->SetPWMPeriodScale(m_channel, 1);      // Squelch 1 out of 2 outputs
         break;
     case kPeriodMultiplier_1X:
-        m_module->SetPWMPeriodScale(m_channel, 0); // Don't squelch any outputs
+        m_module->SetPWMPeriodScale(m_channel, 0);      // Don't squelch any outputs
         break;
     default:
         wpi_assert(false);

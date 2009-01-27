@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -19,36 +19,38 @@
  * @param parity Select the type of parity checking to use.
  * @param stopBits The number of stop bits to use as defined by the enum StopBits.
  */
-SerialPort::SerialPort(UINT32 baudRate, UINT8 dataBits, SerialPort::Parity parity, SerialPort::StopBits stopBits)
-	: m_resourceManagerHandle (0)
-	, m_portHandle (0)
+SerialPort::SerialPort(UINT32 baudRate, UINT8 dataBits, SerialPort::Parity parity, SerialPort::StopBits stopBits):m_resourceManagerHandle(0),
+m_portHandle
+(0)
 {
-	ViStatus status = VI_SUCCESS;
-	status = viOpenDefaultRM((ViSession*)&m_resourceManagerHandle);
-	wpi_assertCleanStatus(status);
+    ViStatus status = VI_SUCCESS;
+    status = viOpenDefaultRM((ViSession *) & m_resourceManagerHandle);
+    wpi_assertCleanStatus(status);
 
-	status = viOpen(m_resourceManagerHandle, "ASRL1::INSTR", VI_NULL, VI_NULL, (ViSession*)&m_portHandle);
-	wpi_assertCleanStatus(status);
+    status =
+        viOpen(m_resourceManagerHandle, "ASRL1::INSTR", VI_NULL, VI_NULL,
+               (ViSession *) & m_portHandle);
+    wpi_assertCleanStatus(status);
 
-	status = viSetAttribute(m_portHandle, VI_ATTR_ASRL_BAUD, baudRate);
-	wpi_assertCleanStatus(status);
-	status = viSetAttribute(m_portHandle, VI_ATTR_ASRL_DATA_BITS, dataBits);
-	wpi_assertCleanStatus(status);
-	status = viSetAttribute(m_portHandle, VI_ATTR_ASRL_PARITY, parity);
-	wpi_assertCleanStatus(status);
-	status = viSetAttribute(m_portHandle, VI_ATTR_ASRL_STOP_BITS, stopBits);
-	wpi_assertCleanStatus(status);
+    status = viSetAttribute(m_portHandle, VI_ATTR_ASRL_BAUD, baudRate);
+    wpi_assertCleanStatus(status);
+    status = viSetAttribute(m_portHandle, VI_ATTR_ASRL_DATA_BITS, dataBits);
+    wpi_assertCleanStatus(status);
+    status = viSetAttribute(m_portHandle, VI_ATTR_ASRL_PARITY, parity);
+    wpi_assertCleanStatus(status);
+    status = viSetAttribute(m_portHandle, VI_ATTR_ASRL_STOP_BITS, stopBits);
+    wpi_assertCleanStatus(status);
 
-	// Set the default timeout to 5 seconds.
-	SetTimeout(5.0f);
+    // Set the default timeout to 5 seconds.
+    SetTimeout(5.0f);
 
-	// Don't wait until the buffer is full to transmit.
-	SetWriteBufferMode(kFlushOnAccess);
+    // Don't wait until the buffer is full to transmit.
+    SetWriteBufferMode(kFlushOnAccess);
 
-	EnableTermination();
+    EnableTermination();
 
-	//viInstallHandler(m_portHandle, VI_EVENT_IO_COMPLETION, ioCompleteHandler, this);
-	//viEnableEvent(m_portHandle, VI_EVENT_IO_COMPLETION, VI_HNDLR, VI_NULL);
+    //viInstallHandler(m_portHandle, VI_EVENT_IO_COMPLETION, ioCompleteHandler, this);
+    //viEnableEvent(m_portHandle, VI_EVENT_IO_COMPLETION, VI_HNDLR, VI_NULL);
 }
 
 /**
@@ -56,9 +58,9 @@ SerialPort::SerialPort(UINT32 baudRate, UINT8 dataBits, SerialPort::Parity parit
  */
 SerialPort::~SerialPort()
 {
-	//viUninstallHandler(m_portHandle, VI_EVENT_IO_COMPLETION, ioCompleteHandler, this);
-	viClose(m_portHandle);
-	viClose(m_resourceManagerHandle);
+    //viUninstallHandler(m_portHandle, VI_EVENT_IO_COMPLETION, ioCompleteHandler, this);
+    viClose(m_portHandle);
+    viClose(m_resourceManagerHandle);
 }
 
 /**
@@ -68,8 +70,9 @@ SerialPort::~SerialPort()
  */
 void SerialPort::SetFlowControl(SerialPort::FlowControl flowControl)
 {
-	ViStatus status = viSetAttribute (m_portHandle, VI_ATTR_ASRL_FLOW_CNTRL, flowControl);
-	wpi_assertCleanStatus(status);
+    ViStatus status =
+        viSetAttribute(m_portHandle, VI_ATTR_ASRL_FLOW_CNTRL, flowControl);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -83,9 +86,9 @@ void SerialPort::SetFlowControl(SerialPort::FlowControl flowControl)
  */
 void SerialPort::EnableTermination(char terminator)
 {
-	viSetAttribute(m_portHandle, VI_ATTR_TERMCHAR_EN, VI_TRUE); 
-	viSetAttribute(m_portHandle, VI_ATTR_TERMCHAR, terminator);
-	viSetAttribute(m_portHandle, VI_ATTR_ASRL_END_IN, VI_ASRL_END_TERMCHAR);
+    viSetAttribute(m_portHandle, VI_ATTR_TERMCHAR_EN, VI_TRUE);
+    viSetAttribute(m_portHandle, VI_ATTR_TERMCHAR, terminator);
+    viSetAttribute(m_portHandle, VI_ATTR_ASRL_END_IN, VI_ASRL_END_TERMCHAR);
 }
 
 /**
@@ -93,8 +96,8 @@ void SerialPort::EnableTermination(char terminator)
  */
 void SerialPort::DisableTermination()
 {
-	viSetAttribute(m_portHandle, VI_ATTR_TERMCHAR_EN, VI_FALSE); 
-	viSetAttribute(m_portHandle, VI_ATTR_ASRL_END_IN, VI_ASRL_END_NONE);
+    viSetAttribute(m_portHandle, VI_ATTR_TERMCHAR_EN, VI_FALSE);
+    viSetAttribute(m_portHandle, VI_ATTR_ASRL_END_IN, VI_ASRL_END_NONE);
 }
 
 /**
@@ -104,10 +107,11 @@ void SerialPort::DisableTermination()
  */
 INT32 SerialPort::GetBytesReceived()
 {
-	INT32 bytes = 0;
-	ViStatus status = viGetAttribute(m_portHandle, VI_ATTR_ASRL_AVAIL_NUM, &bytes);
-	wpi_assertCleanStatus(status);
-	return bytes;
+    INT32 bytes = 0;
+    ViStatus status =
+        viGetAttribute(m_portHandle, VI_ATTR_ASRL_AVAIL_NUM, &bytes);
+    wpi_assertCleanStatus(status);
+    return bytes;
 }
 
 /**
@@ -119,12 +123,12 @@ INT32 SerialPort::GetBytesReceived()
  */
 void SerialPort::Printf(const char *writeFmt, ...)
 {
-	va_list args;
+    va_list args;
 
-	va_start (args, writeFmt);
-	ViStatus status = viVPrintf(m_portHandle, (ViString)writeFmt, args);
-	va_end (args);
-	wpi_assertCleanStatus(status);
+    va_start(args, writeFmt);
+    ViStatus status = viVPrintf(m_portHandle, (ViString) writeFmt, args);
+    va_end(args);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -136,12 +140,12 @@ void SerialPort::Printf(const char *writeFmt, ...)
  */
 void SerialPort::Scanf(const char *readFmt, ...)
 {
-	va_list args;
+    va_list args;
 
-	va_start (args, readFmt);
-	ViStatus status = viVScanf(m_portHandle, (ViString)readFmt, args);
-	va_end (args);
-	wpi_assertCleanStatus(status);
+    va_start(args, readFmt);
+    ViStatus status = viVScanf(m_portHandle, (ViString) readFmt, args);
+    va_end(args);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -150,20 +154,22 @@ void SerialPort::Scanf(const char *readFmt, ...)
  * @param buffer Pointer to the buffer to store the bytes in.
  * @param count The maximum number of bytes to read.
  * @return The number of bytes actually read into the buffer.
- */ 
+ */
 UINT32 SerialPort::Read(char *buffer, INT32 count)
 {
-	UINT32 retCount = 0;
-	ViStatus status = viBufRead(m_portHandle, (ViPBuf)buffer, count, (ViPUInt32)&retCount);
-	switch (status)
-	{
-	case VI_SUCCESS_TERM_CHAR:
-	case VI_SUCCESS_MAX_CNT:
-		break;
-	default:
-		wpi_assertCleanStatus(status);
-	}
-	return retCount;
+    UINT32 retCount = 0;
+    ViStatus status =
+        viBufRead(m_portHandle, (ViPBuf) buffer, count,
+                  (ViPUInt32) & retCount);
+    switch (status)
+    {
+    case VI_SUCCESS_TERM_CHAR:
+    case VI_SUCCESS_MAX_CNT:
+        break;
+    default:
+        wpi_assertCleanStatus(status);
+    }
+    return retCount;
 }
 
 /**
@@ -172,13 +178,15 @@ UINT32 SerialPort::Read(char *buffer, INT32 count)
  * @param buffer Pointer to the buffer to read the bytes from.
  * @param count The maximum number of bytes to write.
  * @return The number of bytes actually written into the port.
- */ 
+ */
 UINT32 SerialPort::Write(const char *buffer, INT32 count)
 {
-	UINT32 retCount = 0;
-	ViStatus status = viBufWrite(m_portHandle, (ViPBuf)buffer, count, (ViPUInt32)&retCount);
-	wpi_assertCleanStatus(status);
-	return retCount;
+    UINT32 retCount = 0;
+    ViStatus status =
+        viBufWrite(m_portHandle, (ViPBuf) buffer, count,
+                   (ViPUInt32) & retCount);
+    wpi_assertCleanStatus(status);
+    return retCount;
 }
 
 /**
@@ -191,8 +199,10 @@ UINT32 SerialPort::Write(const char *buffer, INT32 count)
  */
 void SerialPort::SetTimeout(float timeout)
 {
-	ViStatus status = viSetAttribute(m_portHandle, VI_ATTR_TMO_VALUE, (UINT32)(timeout * 1e3));
-	wpi_assertCleanStatus(status);
+    ViStatus status =
+        viSetAttribute(m_portHandle, VI_ATTR_TMO_VALUE,
+                       (UINT32) (timeout * 1e3));
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -208,8 +218,9 @@ void SerialPort::SetTimeout(float timeout)
  */
 void SerialPort::SetWriteBufferMode(SerialPort::WriteBufferMode mode)
 {
-	ViStatus status = viSetAttribute(m_portHandle, VI_ATTR_WR_BUF_OPER_MODE, mode);
-	wpi_assertCleanStatus(status);
+    ViStatus status =
+        viSetAttribute(m_portHandle, VI_ATTR_WR_BUF_OPER_MODE, mode);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -220,8 +231,8 @@ void SerialPort::SetWriteBufferMode(SerialPort::WriteBufferMode mode)
  */
 void SerialPort::Flush()
 {
-	ViStatus status = viFlush(m_portHandle, VI_WRITE_BUF);
-	wpi_assertCleanStatus(status);
+    ViStatus status = viFlush(m_portHandle, VI_WRITE_BUF);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -231,8 +242,8 @@ void SerialPort::Flush()
  */
 void SerialPort::Reset()
 {
-	ViStatus status = viClear(m_portHandle);
-	wpi_assertCleanStatus(status);
+    ViStatus status = viClear(m_portHandle);
+    wpi_assertCleanStatus(status);
 }
 
 //void SerialPort::_internalHandler(UINT32 port, UINT32 eventType, UINT32 event)
@@ -241,7 +252,6 @@ void SerialPort::Reset()
 
 //ViStatus _VI_FUNCH ioCompleteHandler (ViSession vi, ViEventType eventType, ViEvent event, ViAddr userHandle)
 //{
-//	((SerialPort*) userHandle)->_internalHandler(vi, eventType, event);
-//	return VI_SUCCESS;
+//      ((SerialPort*) userHandle)->_internalHandler(vi, eventType, event);
+//      return VI_SUCCESS;
 //}
-

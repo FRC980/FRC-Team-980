@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -12,17 +12,17 @@
 #include <taskLib.h>
 #include <unldLib.h>
 
-RobotBase* RobotBase::m_instance = NULL;
+RobotBase *RobotBase::m_instance = NULL;
 
-void RobotBase::setInstance(RobotBase* robot)
+void RobotBase::setInstance(RobotBase * robot)
 {
-	wpi_assert(m_instance == NULL);
-	m_instance = robot;
+    wpi_assert(m_instance == NULL);
+    m_instance = robot;
 }
 
-RobotBase &RobotBase::getInstance()
+RobotBase & RobotBase::getInstance()
 {
-	return *m_instance;
+    return *m_instance;
 }
 
 /**
@@ -33,11 +33,9 @@ RobotBase &RobotBase::getInstance()
  * This must be used to ensure that the communications code starts. In the future it would be
  * nice to put this code into it's own task that loads on boot so ensure that it runs.
  */
-RobotBase::RobotBase()
-	: m_task (NULL)
-	, m_ds (NULL)
+RobotBase::RobotBase():m_task(NULL), m_ds(NULL)
 {
-	m_ds = DriverStation::GetInstance();
+    m_ds = DriverStation::GetInstance();
 }
 
 /**
@@ -47,10 +45,10 @@ RobotBase::RobotBase()
  */
 RobotBase::~RobotBase()
 {
-	SensorBase::DeleteSingletons();
-	delete m_task;
-	m_task = NULL;
-	m_instance = NULL;
+    SensorBase::DeleteSingletons();
+    delete m_task;
+    m_task = NULL;
+    m_instance = NULL;
 }
 
 /**
@@ -60,7 +58,7 @@ RobotBase::~RobotBase()
  */
 bool RobotBase::IsSystemActive()
 {
-	return m_watchdog.IsSystemActive();
+    return m_watchdog.IsSystemActive();
 }
 
 /**
@@ -68,9 +66,9 @@ bool RobotBase::IsSystemActive()
  * Get the watchdog timer so the user program can either disable it or feed it when
  * necessary.
  */
-Watchdog &RobotBase::GetWatchdog()
+Watchdog & RobotBase::GetWatchdog()
 {
-	return m_watchdog;
+    return m_watchdog;
 }
 
 /**
@@ -79,7 +77,7 @@ Watchdog &RobotBase::GetWatchdog()
  */
 bool RobotBase::IsDisabled()
 {
-	return m_ds->IsDisabled();
+    return m_ds->IsDisabled();
 }
 
 /**
@@ -88,7 +86,7 @@ bool RobotBase::IsDisabled()
  */
 bool RobotBase::IsAutonomous()
 {
-	return m_ds->IsAutonomous();
+    return m_ds->IsAutonomous();
 }
 
 /**
@@ -97,7 +95,7 @@ bool RobotBase::IsAutonomous()
  */
 bool RobotBase::IsOperatorControl()
 {
-	return m_ds->IsOperatorControl();
+    return m_ds->IsOperatorControl();
 }
 
 /**
@@ -107,25 +105,25 @@ bool RobotBase::IsOperatorControl()
  */
 bool RobotBase::IsNewDataAvailable()
 {
-	static UINT32 previousPacketNumber = 0;
+    static UINT32 previousPacketNumber = 0;
 
-	if (m_ds->GetPacketNumber() == previousPacketNumber)
-	{
-		return false;
-	}
+    if (m_ds->GetPacketNumber() == previousPacketNumber)
+    {
+        return false;
+    }
 
-	previousPacketNumber = m_ds->GetPacketNumber();
-	return true;
+    previousPacketNumber = m_ds->GetPacketNumber();
+    return true;
 }
 
 /**
  * Static interface that will start the competition in the new task.
  */
-void RobotBase::robotTask(FUNCPTR factory, Task *task)
+void RobotBase::robotTask(FUNCPTR factory, Task * task)
 {
-	RobotBase::setInstance((RobotBase*)factory());
-	RobotBase::getInstance().m_task = task;
-	RobotBase::getInstance().StartCompetition();
+    RobotBase::setInstance((RobotBase *) factory());
+    RobotBase::getInstance().m_task = task;
+    RobotBase::getInstance().StartCompetition();
 }
 
 /**
@@ -138,30 +136,34 @@ void RobotBase::robotTask(FUNCPTR factory, Task *task)
  */
 void RobotBase::startRobotTask(FUNCPTR factory)
 {
-	printf("WPILib was compiled from SVN revision %s\n", SVN_REV);
+    printf("WPILib was compiled from SVN revision %s\n", SVN_REV);
 
-	// Check for startup code already running
-	INT32 oldId = taskNameToId("FRC_RobotTask");
-	if (oldId != ERROR)
-	{
-		// Find the startup code module.
-		MODULE_ID startupModId = moduleFindByName("FRC_UserProgram.out");
-		if (startupModId != NULL)
-		{
-			// Remove the startup code.
-			unldByModuleId(startupModId, 0);
-			printf("!!!   Error: Default code was still running... Please try again.\n");
-			return;
-		}
-		printf("!!!   Error: Other robot code is still running... Unload it and then try again.\n");
-		return;
-	}
+    // Check for startup code already running
+    INT32 oldId = taskNameToId("FRC_RobotTask");
+    if (oldId != ERROR)
+    {
+        // Find the startup code module.
+        MODULE_ID startupModId = moduleFindByName("FRC_UserProgram.out");
+        if (startupModId != NULL)
+        {
+            // Remove the startup code.
+            unldByModuleId(startupModId, 0);
+            printf
+                ("!!!   Error: Default code was still running... Please try again.\n");
+            return;
+        }
+        printf
+            ("!!!   Error: Other robot code is still running... Unload it and then try again.\n");
+        return;
+    }
 
-	// Start robot task
-	// This is done to ensure that the C++ robot task is spawned with the floating point
-	// context save parameter.
-	Task *task = new Task("RobotTask", (FUNCPTR)RobotBase::robotTask, Task::kDefaultPriority, 64000);
-	task->Start((INT32)factory, (INT32)task);
+    // Start robot task
+    // This is done to ensure that the C++ robot task is spawned with the floating point
+    // context save parameter.
+    Task *task =
+        new Task("RobotTask", (FUNCPTR) RobotBase::robotTask,
+                 Task::kDefaultPriority, 64000);
+    task->Start((INT32) factory, (INT32) task);
 }
 
 /**
@@ -172,12 +174,13 @@ void RobotBase::startRobotTask(FUNCPTR factory)
  */
 class RobotDeleter
 {
-public:
-	RobotDeleter(void){}
-	~RobotDeleter()
-	{
-		delete &RobotBase::getInstance();
-	}
+  public:
+    RobotDeleter(void)
+    {
+    }
+    ~RobotDeleter()
+    {
+        delete & RobotBase::getInstance();
+    }
 };
 static RobotDeleter g_robotDeleter;
-

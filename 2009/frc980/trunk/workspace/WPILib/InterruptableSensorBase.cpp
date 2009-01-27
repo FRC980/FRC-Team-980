@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -9,8 +9,8 @@
 
 InterruptableSensorBase::InterruptableSensorBase()
 {
-	m_manager = NULL;
-	m_interrupt = NULL;
+    m_manager = NULL;
+    m_interrupt = NULL;
 }
 
 InterruptableSensorBase::~InterruptableSensorBase()
@@ -20,11 +20,12 @@ InterruptableSensorBase::~InterruptableSensorBase()
 
 void InterruptableSensorBase::AllocateInterrupts(bool watcher)
 {
-	wpi_assert(m_interrupt == NULL);
-	wpi_assert(m_manager == NULL);
-	m_interrupt = new tInterrupt(m_interruptIndex, &status);
-	m_interrupt->writeConfig_WaitForAck(false, &status);
-	m_manager = new tInterruptManager(1 << m_interruptIndex, watcher, &status);
+    wpi_assert(m_interrupt == NULL);
+    wpi_assert(m_manager == NULL);
+    m_interrupt = new tInterrupt(m_interruptIndex, &status);
+    m_interrupt->writeConfig_WaitForAck(false, &status);
+    m_manager =
+        new tInterruptManager(1 << m_interruptIndex, watcher, &status);
 }
 
 /**
@@ -33,12 +34,12 @@ void InterruptableSensorBase::AllocateInterrupts(bool watcher)
  */
 void InterruptableSensorBase::CancelInterrupts()
 {
-	wpi_assert(m_manager != NULL);
-	wpi_assert(m_interrupt != NULL);
-	delete m_interrupt;
-	delete m_manager;
-	m_interrupt = NULL;
-	m_manager = NULL;
+    wpi_assert(m_manager != NULL);
+    wpi_assert(m_interrupt != NULL);
+    delete m_interrupt;
+    delete m_manager;
+    m_interrupt = NULL;
+    m_manager = NULL;
 }
 
 /**
@@ -46,10 +47,10 @@ void InterruptableSensorBase::CancelInterrupts()
  */
 void InterruptableSensorBase::WaitForInterrupt(INT32 msTimeout)
 {
-	wpi_assert(m_manager != NULL);
-	wpi_assert(m_interrupt != NULL);
-	m_manager->watch(msTimeout, &status);
-	wpi_assertCleanStatus(status);
+    wpi_assert(m_manager != NULL);
+    wpi_assert(m_interrupt != NULL);
+    m_manager->watch(msTimeout, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -61,10 +62,10 @@ void InterruptableSensorBase::WaitForInterrupt(INT32 msTimeout)
  */
 void InterruptableSensorBase::EnableInterrupts()
 {
-	wpi_assert(m_manager != NULL);
-	wpi_assert(m_interrupt != NULL);
-	m_manager->enable(&status);
-	wpi_assertCleanStatus(status);
+    wpi_assert(m_manager != NULL);
+    wpi_assert(m_interrupt != NULL);
+    m_manager->enable(&status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -74,8 +75,8 @@ void InterruptableSensorBase::EnableInterrupts()
  */
 void InterruptableSensorBase::DisableInterrupts()
 {
-	wpi_assert(m_manager != NULL);
-	wpi_assert(m_interrupt != NULL);
-	m_manager->disable(&status);
-	wpi_assertCleanStatus(status);
+    wpi_assert(m_manager != NULL);
+    wpi_assert(m_interrupt != NULL);
+    m_manager->disable(&status);
+    wpi_assertCleanStatus(status);
 }

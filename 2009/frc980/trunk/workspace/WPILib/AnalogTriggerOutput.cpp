@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -18,9 +18,9 @@
  * @param trigger A pointer to the trigger for which this is an output.
  * @param outputType An enum that specifies the output on the trigger to represent.
  */
-AnalogTriggerOutput::AnalogTriggerOutput(AnalogTrigger *trigger, AnalogTriggerOutput::Type outputType)
-	: m_trigger (trigger)
-	, m_outputType (outputType)
+AnalogTriggerOutput::AnalogTriggerOutput(AnalogTrigger * trigger, AnalogTriggerOutput::Type outputType):m_trigger(trigger),
+m_outputType
+(outputType)
 {
 }
 
@@ -34,20 +34,23 @@ AnalogTriggerOutput::~AnalogTriggerOutput()
  */
 bool AnalogTriggerOutput::Get()
 {
-	tRioStatusCode status=0;
-	switch(m_outputType)
-	{
-	case kInWindow:
-		return m_trigger->m_trigger->readOutput_InHysteresis(m_trigger->m_index, &status);
-	case kState:
-		return m_trigger->m_trigger->readOutput_OverLimit(m_trigger->m_index, &status);
-	case kRisingPulse:
-	case kFallingPulse:
-		wpi_fatal(AnalogTriggerPulseOutputError);
-	}
-	// Should never get here.
-	wpi_assert(false);
-	return false;
+    tRioStatusCode status = 0;
+    switch (m_outputType)
+    {
+    case kInWindow:
+        return m_trigger->m_trigger->readOutput_InHysteresis(m_trigger->
+                                                             m_index,
+                                                             &status);
+    case kState:
+        return m_trigger->m_trigger->readOutput_OverLimit(m_trigger->
+                                                          m_index, &status);
+    case kRisingPulse:
+    case kFallingPulse:
+        wpi_fatal(AnalogTriggerPulseOutputError);
+    }
+    // Should never get here.
+    wpi_assert(false);
+    return false;
 }
 
 /**
@@ -55,7 +58,7 @@ bool AnalogTriggerOutput::Get()
  */
 UINT32 AnalogTriggerOutput::GetChannelForRouting()
 {
-	return (m_trigger->m_index << 2) + m_outputType;
+    return (m_trigger->m_index << 2) + m_outputType;
 }
 
 /**
@@ -63,7 +66,7 @@ UINT32 AnalogTriggerOutput::GetChannelForRouting()
  */
 UINT32 AnalogTriggerOutput::GetModuleForRouting()
 {
-	return m_trigger->m_index >> 2;
+    return m_trigger->m_index >> 2;
 }
 
 /**
@@ -71,17 +74,15 @@ UINT32 AnalogTriggerOutput::GetModuleForRouting()
  */
 bool AnalogTriggerOutput::GetAnalogTriggerForRouting()
 {
-	return true;
+    return true;
 }
-
-
 
 /**
  * Request interrupts asynchronously on this digital input.
  */
 void AnalogTriggerOutput::RequestInterrupts(tInterruptHandler handler)
 {
-	wpi_assert(false);
+    wpi_assert(false);
 }
 
 /**
@@ -89,6 +90,5 @@ void AnalogTriggerOutput::RequestInterrupts(tInterruptHandler handler)
  */
 void AnalogTriggerOutput::RequestInterrupts()
 {
-	wpi_assert(false);
+    wpi_assert(false);
 }
-

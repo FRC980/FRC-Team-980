@@ -18,19 +18,31 @@
  * Stores most recent status information as well as containing utility
  * functions for checking channels and error processing.
  */
-class SensorBase: public ErrorBase {
-public:
+class SensorBase : public ErrorBase
+{
+  public:
     static const UINT32 kSystemClockTicksPerMicrosecond = 40;
 
     SensorBase();
     virtual ~SensorBase();
+
     static void SetDefaultAnalogModule(UINT32 slot);
     static void SetDefaultDigitalModule(UINT32 slot);
     static void SetDefaultSolenoidModule(UINT32 slot);
     static void DeleteSingletons();
-    static UINT32 GetDefaultAnalogModule() { return m_defaultAnalogModule; }
-    static UINT32 GetDefaultDigitalModule() { return m_defaultDigitalModule; }
-    static UINT32 GetDefaultSolenoidModule() { return m_defaultSolenoidModule; }
+    static UINT32 GetDefaultAnalogModule()
+    {
+        return m_defaultAnalogModule;
+    }
+    static UINT32 GetDefaultDigitalModule()
+    {
+        return m_defaultDigitalModule;
+    }
+    static UINT32 GetDefaultSolenoidModule()
+    {
+        return m_defaultSolenoidModule;
+    }
+
     static bool CheckDigitalModule(UINT32 slot);
     static bool CheckRelayModule(UINT32 slot);
     static bool CheckPWMModule(UINT32 slot);
@@ -50,10 +62,11 @@ public:
     static const UINT32 kPwmChannels = 10;
     static const UINT32 kRelayChannels = 8;
     static const UINT32 kChassisSlots = 8;
+
 protected:
     void AddToSingletonList();
 
-private:
+  private:
     DISALLOW_COPY_AND_ASSIGN(SensorBase);
     static UINT32 m_defaultAnalogModule;
     static UINT32 m_defaultDigitalModule;
@@ -61,6 +74,5 @@ private:
     static SensorBase *m_singletonList;
     SensorBase *m_nextSingleton;
 };
-
 
 #endif

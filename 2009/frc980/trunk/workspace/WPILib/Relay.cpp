@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -19,23 +19,29 @@ static Resource *relayChannels = NULL;
  * all resources that need to be locked. Initially the relay is set to both lines at 0v.
  * @param slot The module slot number this relay is connected to.
  */
-void Relay::InitRelay (UINT32 slot)
+void Relay::InitRelay(UINT32 slot)
 {
-	Resource::CreateResourceObject(&relayChannels, tDIO::kNumSystems * kRelayChannels * 2);
-	if (SensorBase::CheckRelayModule(slot) && SensorBase::CheckRelayChannel(m_channel))
-	{
-		if (m_direction == kBothDirections || m_direction == kForwardOnly)
-		{
-			relayChannels->Allocate((DigitalModule::SlotToIndex(slot) * kRelayChannels + m_channel - 1) * 2);
-		}
-		if (m_direction == kBothDirections || m_direction == kReverseOnly)
-		{
-			relayChannels->Allocate((DigitalModule::SlotToIndex(slot) * kRelayChannels + m_channel - 1) * 2 + 1);
-		}
-		m_module = DigitalModule::GetInstance(slot);
-		m_module->SetRelayForward(m_channel, false);
-		m_module->SetRelayReverse(m_channel, false);
-	}
+    Resource::CreateResourceObject(&relayChannels,
+                                   tDIO::kNumSystems * kRelayChannels * 2);
+    if (SensorBase::CheckRelayModule(slot)
+        && SensorBase::CheckRelayChannel(m_channel))
+    {
+        if (m_direction == kBothDirections || m_direction == kForwardOnly)
+        {
+            relayChannels->
+                Allocate((DigitalModule::SlotToIndex(slot) *
+                          kRelayChannels + m_channel - 1) * 2);
+        }
+        if (m_direction == kBothDirections || m_direction == kReverseOnly)
+        {
+            relayChannels->
+                Allocate((DigitalModule::SlotToIndex(slot) *
+                          kRelayChannels + m_channel - 1) * 2 + 1);
+        }
+        m_module = DigitalModule::GetInstance(slot);
+        m_module->SetRelayForward(m_channel, false);
+        m_module->SetRelayReverse(m_channel, false);
+    }
 }
 
 /**
@@ -44,11 +50,11 @@ void Relay::InitRelay (UINT32 slot)
  * @param channel The channel number within the module for this relay.
  * @param direction The direction that the Relay object will control.
  */
-Relay::Relay(UINT32 slot, UINT32 channel, Relay::Direction direction)
-	: m_channel (channel)
-	, m_direction (direction)
+Relay::Relay(UINT32 slot, UINT32 channel, Relay::Direction direction):m_channel(channel),
+m_direction
+(direction)
 {
-	InitRelay(slot);
+    InitRelay(slot);
 }
 
 /**
@@ -56,11 +62,11 @@ Relay::Relay(UINT32 slot, UINT32 channel, Relay::Direction direction)
  * @param channel The channel number within the default module for this relay.
  * @param direction The direction that the Relay object will control.
  */
-Relay::Relay(UINT32 channel, Relay::Direction direction)
-	: m_channel (channel)
-	, m_direction (direction)
+Relay::Relay(UINT32 channel, Relay::Direction direction):m_channel(channel),
+m_direction
+(direction)
 {
-	InitRelay(GetDefaultDigitalModule());
+    InitRelay(GetDefaultDigitalModule());
 }
 
 /**
@@ -69,17 +75,21 @@ Relay::Relay(UINT32 channel, Relay::Direction direction)
  */
 Relay::~Relay()
 {
-	m_module->SetRelayForward(m_channel, false);
-	m_module->SetRelayReverse(m_channel, false);
+    m_module->SetRelayForward(m_channel, false);
+    m_module->SetRelayReverse(m_channel, false);
 
-	if (m_direction == kBothDirections || m_direction == kForwardOnly)
-	{
-		relayChannels->Free((DigitalModule::SlotToIndex(m_module->GetSlot()) * kRelayChannels + m_channel - 1) * 2);
-	}
-	if (m_direction == kBothDirections || m_direction == kReverseOnly)
-	{
-		relayChannels->Free((DigitalModule::SlotToIndex(m_module->GetSlot()) * kRelayChannels + m_channel - 1) * 2 + 1);
-	}
+    if (m_direction == kBothDirections || m_direction == kForwardOnly)
+    {
+        relayChannels->
+            Free((DigitalModule::SlotToIndex(m_module->GetSlot()) *
+                  kRelayChannels + m_channel - 1) * 2);
+    }
+    if (m_direction == kBothDirections || m_direction == kReverseOnly)
+    {
+        relayChannels->
+            Free((DigitalModule::SlotToIndex(m_module->GetSlot()) *
+                  kRelayChannels + m_channel - 1) * 2 + 1);
+    }
 }
 
 /**
@@ -98,52 +108,52 @@ Relay::~Relay()
  */
 void Relay::Set(Relay::Value value)
 {
-	switch (value)
-	{
-	case kOff:
-		if (m_direction == kBothDirections || m_direction == kForwardOnly)
-		{
-			m_module->SetRelayForward(m_channel, false);
-		}
-		if (m_direction == kBothDirections || m_direction == kReverseOnly)
-		{
-			m_module->SetRelayReverse(m_channel, false);
-		}
-		break;
-	case kOn:
-		wpi_assert(m_direction != kBothDirections);
-		if (m_direction == kForwardOnly)
-		{
-			m_module->SetRelayForward(m_channel, true);
-		}
-		else if (m_direction == kReverseOnly)
-		{
-			m_module->SetRelayReverse(m_channel, true);
-		}
-		break;
-	case kForward:
-		wpi_assert(m_direction != kReverseOnly);
-		if (m_direction == kBothDirections || m_direction == kForwardOnly)
-		{
-			m_module->SetRelayForward(m_channel, true);
-		}
-		if (m_direction == kBothDirections)
-		{
-			m_module->SetRelayReverse(m_channel, false);
-		}
-		break;
-	case kReverse:
-		wpi_assert(m_direction != kForwardOnly);
-		if (m_direction == kBothDirections)
-		{
-			m_module->SetRelayForward(m_channel, false);
-		}
-		if (m_direction == kBothDirections || m_direction == kReverseOnly)
-		{
-			m_module->SetRelayReverse(m_channel, true);
-		}
-		break;
-	default:
-		wpi_assert(false);
-	}
+    switch (value)
+    {
+    case kOff:
+        if (m_direction == kBothDirections || m_direction == kForwardOnly)
+        {
+            m_module->SetRelayForward(m_channel, false);
+        }
+        if (m_direction == kBothDirections || m_direction == kReverseOnly)
+        {
+            m_module->SetRelayReverse(m_channel, false);
+        }
+        break;
+    case kOn:
+        wpi_assert(m_direction != kBothDirections);
+        if (m_direction == kForwardOnly)
+        {
+            m_module->SetRelayForward(m_channel, true);
+        }
+        else if (m_direction == kReverseOnly)
+        {
+            m_module->SetRelayReverse(m_channel, true);
+        }
+        break;
+    case kForward:
+        wpi_assert(m_direction != kReverseOnly);
+        if (m_direction == kBothDirections || m_direction == kForwardOnly)
+        {
+            m_module->SetRelayForward(m_channel, true);
+        }
+        if (m_direction == kBothDirections)
+        {
+            m_module->SetRelayReverse(m_channel, false);
+        }
+        break;
+    case kReverse:
+        wpi_assert(m_direction != kForwardOnly);
+        if (m_direction == kBothDirections)
+        {
+            m_module->SetRelayForward(m_channel, false);
+        }
+        if (m_direction == kBothDirections || m_direction == kReverseOnly)
+        {
+            m_module->SetRelayReverse(m_channel, true);
+        }
+        break;
+    default:
+        wpi_assert(false);
+    }
 }

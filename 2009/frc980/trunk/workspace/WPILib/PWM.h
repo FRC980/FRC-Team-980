@@ -32,23 +32,25 @@ class PWM : public SensorBase
 {
     friend class DigitalModule;
 
-public:
-    typedef enum {
+  public:
+    typedef enum
+    {
         kPeriodMultiplier_1X = 1,
         kPeriodMultiplier_2X = 2,
         kPeriodMultiplier_4X = 4
     } PeriodMultiplier;
 
     explicit PWM(UINT32 channel);
-    PWM(UINT32 slot, UINT32 channel);
-    virtual ~PWM();
+         PWM(UINT32 slot, UINT32 channel);
+         virtual ~ PWM();
     void SetRaw(UINT8 value);
     UINT8 GetRaw();
     void SetPeriodMultiplier(PeriodMultiplier mult);
     void EnableDeadbandElimination(bool eliminateDeadband);
-    void SetBounds(INT32 max, INT32 deadbandMax, INT32 center, INT32 deadbandMin, INT32 min);
+    void SetBounds(INT32 max, INT32 deadbandMax, INT32 center,
+                   INT32 deadbandMin, INT32 min);
 
-protected:
+  protected:
     /**
      * kDefaultPwmPeriod is "ticks" where each tick is 6.525us
      *
@@ -95,23 +97,42 @@ protected:
     INT32 m_deadbandMinPwm;
     INT32 m_minPwm;
 
-private:
+  private:
     void InitPWM(UINT32 slot, UINT32 channel);
     UINT32 m_channel;
     DigitalModule *m_module;
-    INT32 GetMaxPositivePwm() { return m_maxPwm; };
+    INT32 GetMaxPositivePwm()
+    {
+        return m_maxPwm;
+    };
     INT32 GetMinPositivePwm()
-        { return m_eliminateDeadband ? m_deadbandMaxPwm : m_centerPwm + 1; };
-    INT32 GetCenterPwm() { return m_centerPwm; };
+    {
+        return m_eliminateDeadband ? m_deadbandMaxPwm : m_centerPwm + 1;
+    };
+    INT32 GetCenterPwm()
+    {
+        return m_centerPwm;
+    };
     INT32 GetMaxNegativePwm()
-        { return m_eliminateDeadband ? m_deadbandMinPwm : m_centerPwm - 1; };
-    INT32 GetMinNegativePwm() { return m_minPwm; };
-    INT32 GetPositiveScaleFactor() ///< The scale for positive speeds.
-        { return GetMaxPositivePwm() - GetMinPositivePwm(); }
-    INT32 GetNegativeScaleFactor() ///< The scale for negative speeds.
-        { return GetMaxNegativePwm() - GetMinNegativePwm(); }
-    INT32 GetFullRangeScaleFactor() ///< The scale for positions.
-        { return GetMaxPositivePwm() - GetMinNegativePwm(); }
+    {
+        return m_eliminateDeadband ? m_deadbandMinPwm : m_centerPwm - 1;
+    };
+    INT32 GetMinNegativePwm()
+    {
+        return m_minPwm;
+    };
+    INT32 GetPositiveScaleFactor() // The scale for positive speeds.
+    {
+        return GetMaxPositivePwm() - GetMinPositivePwm();
+    }
+    INT32 GetNegativeScaleFactor() // The scale for negative speeds.
+    {
+        return GetMaxNegativePwm() - GetMinNegativePwm();
+    }
+    INT32 GetFullRangeScaleFactor() // The scale for positions.
+    {
+        return GetMaxPositivePwm() - GetMinNegativePwm();
+    }
 };
 
 #endif

@@ -28,7 +28,7 @@ class AnalogModule;
  */
 class AnalogChannel : public SensorBase
 {
-public:
+  public:
     static const UINT32 kAccumulatorSlot = 1;
     static const UINT32 kAccumulatorNumChannels = 2;
     static const UINT32 kAccumulatorChannels[kAccumulatorNumChannels];
@@ -64,9 +64,9 @@ public:
     void SetAccumulatorDeadband(INT32 deadband);
     INT64 GetAccumulatorValue();
     UINT32 GetAccumulatorCount();
-    void GetAccumulatorOutput(INT64 *value, UINT32 *count);
+    void GetAccumulatorOutput(INT64 * value, UINT32 * count);
 
-private:
+  private:
     void InitChannel(UINT32 slot, UINT32 channel);
     UINT32 m_channel;
     AnalogModule *m_module;

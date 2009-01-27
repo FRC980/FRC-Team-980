@@ -13,23 +13,25 @@
 
 static Resource *channels = NULL;
 
-const UINT32 AnalogChannel::kAccumulatorChannels[] = {1, 2};
+const UINT32 AnalogChannel::kAccumulatorChannels[] = { 1, 2 };
 
 /**
  * Common initialization.
  */
 void AnalogChannel::InitChannel(UINT32 slot, UINT32 channel)
 {
-    Resource::CreateResourceObject(&channels, kAnalogModules * kAnalogChannels);
+    Resource::CreateResourceObject(&channels,
+                                   kAnalogModules * kAnalogChannels);
     CheckAnalogModule(slot);
     CheckAnalogChannel(slot);
-    channels->Allocate(AnalogModule::SlotToIndex(slot) * kAnalogModules + channel - 1);
+    channels->Allocate(AnalogModule::SlotToIndex(slot) * kAnalogModules +
+                       channel - 1);
     m_channel = channel;
     m_module = AnalogModule::GetInstance(slot);
     if (IsAccumulatorChannel())
     {
         m_accumulator = new tAccumulator(channel - 1, &status);
-        m_accumulatorOffset=0;
+        m_accumulatorOffset = 0;
     }
     else
     {
@@ -63,7 +65,8 @@ AnalogChannel::AnalogChannel(UINT32 channel)
  */
 AnalogChannel::~AnalogChannel()
 {
-    channels->Free(AnalogModule::SlotToIndex(GetSlot()) * kAnalogModules + m_channel - 1);
+    channels->Free(AnalogModule::SlotToIndex(GetSlot()) * kAnalogModules +
+                   m_channel - 1);
 }
 
 /**
@@ -225,10 +228,12 @@ UINT32 AnalogChannel::GetOversampleBits()
  */
 bool AnalogChannel::IsAccumulatorChannel()
 {
-    if(m_module->GetSlot() != kAccumulatorSlot) return false;
-    for (UINT32 i=0; i<kAccumulatorNumChannels; i++)
+    if (m_module->GetSlot() != kAccumulatorSlot)
+        return false;
+    for (UINT32 i = 0; i < kAccumulatorNumChannels; i++)
     {
-        if (m_channel == kAccumulatorChannels[i]) return true;
+        if (m_channel == kAccumulatorChannels[i])
+            return true;
     }
     return false;
 }
@@ -242,7 +247,6 @@ void AnalogChannel::InitAccumulator()
     SetAccumulatorCenter(0);
     ResetAccumulator();
 }
-
 
 /**
  * Set an inital value for the accumulator.
@@ -319,7 +323,8 @@ INT64 AnalogChannel::GetAccumulatorValue()
         wpi_fatal(NullParameter);
         return 0;
     }
-    INT64 value = m_accumulator->readOutput_Value(&status) + m_accumulatorOffset;
+    INT64 value =
+        m_accumulator->readOutput_Value(&status) + m_accumulatorOffset;
     wpi_assertCleanStatus(status);
     return value;
 }
@@ -344,7 +349,6 @@ UINT32 AnalogChannel::GetAccumulatorCount()
     return count;
 }
 
-
 /**
  * Read the accumulated value and the number of accumulated values atomically.
  *
@@ -354,7 +358,7 @@ UINT32 AnalogChannel::GetAccumulatorCount()
  * @param value Pointer to the 64-bit accumulated output.
  * @param count Pointer to the number of accumulation cycles.
  */
-void AnalogChannel::GetAccumulatorOutput(INT64 *value, UINT32 *count)
+void AnalogChannel::GetAccumulatorOutput(INT64 * value, UINT32 * count)
 {
     status = 0;
     if (m_accumulator == NULL)
@@ -373,4 +377,3 @@ void AnalogChannel::GetAccumulatorOutput(INT64 *value, UINT32 *count)
     *count = output.Count;
     wpi_assertCleanStatus(status);
 }
-

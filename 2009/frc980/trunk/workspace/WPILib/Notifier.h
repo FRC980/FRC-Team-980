@@ -10,18 +10,19 @@
 #include "ChipObject.h"
 #include "Base.h"
 
-typedef void (*TimerEventHandler)(void *param);
+typedef void (*TimerEventHandler) (void *param);
 
 class Notifier
 {
-public:
+  public:
     Notifier(TimerEventHandler handler, void *param);
     virtual ~Notifier();
+
     void StartSingle(double period);
     void StartPeriodic(double period);
     void Stop();
 
-private:
+  private:
     static const UINT32 kTimerInterruptNumber = 28;
     static void ProcessQueue(tNIRIO_u32 mask, void *params); // process the timer queue on a timer event
     static void UpdateAlarm(); // update the FPGA alarm since the queue has changed

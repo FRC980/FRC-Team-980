@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #ifndef WPI_STATUS_H
 #define WPI_STATUS_H
@@ -40,6 +40,7 @@ S(CompressorUndefined, -21, "Using compressor functions without defining compres
 S(InconsistentArrayValueAdded, -22, "When packing data into an array to the dashboard, not all values added were of the same type.");
 S(MismatchedComplexTypeClose, -23, "When packing data to the dashboard, a Close for a complex type was called without a matching Open.");
 S(DashboardDataOverflow, -24, "When packing data to the dashboard, too much data was packed and the buffer overflowed.");
+
 /*
  * Warnings
  */

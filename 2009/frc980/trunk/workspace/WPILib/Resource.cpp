@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -20,18 +20,19 @@ Resource *Resource::m_resourceList = NULL;
  */
 Resource::Resource(UINT32 elements)
 {
-	m_size = elements;
-	m_isAllocated = new bool[m_size];
-	for (UINT32 i=0; i < m_size; i++)
-		m_isAllocated[i] = false;
-	m_nextResource = m_resourceList;
-	m_resourceList = this;
+    m_size = elements;
+    m_isAllocated = new bool[m_size];
+    for (UINT32 i = 0; i < m_size; i++)
+        m_isAllocated[i] = false;
+    m_nextResource = m_resourceList;
+    m_resourceList = this;
 }
 
-/*static*/ void Resource::CreateResourceObject(Resource **r, UINT32 elements)
+/*static */ void Resource::CreateResourceObject(Resource ** r,
+                                                UINT32 elements)
 {
-	if (*r == NULL)
-		*r = new Resource(elements);
+    if (*r == NULL)
+        *r = new Resource(elements);
 }
 
 /**
@@ -40,7 +41,7 @@ Resource::Resource(UINT32 elements)
  */
 Resource::~Resource()
 {
-	delete[] m_isAllocated;
+    delete[]m_isAllocated;
 }
 
 /**
@@ -50,16 +51,16 @@ Resource::~Resource()
  */
 UINT32 Resource::Allocate()
 {
-	for (UINT32 i=0; i < m_size; i++)
-	{
-		if ( ! m_isAllocated[i])
-		{
-			m_isAllocated[i] = true;
-			return i;
-		}
-	}
-	wpi_fatal(NoAvailablePorts);
-	return 0;
+    for (UINT32 i = 0; i < m_size; i++)
+    {
+        if (!m_isAllocated[i])
+        {
+            m_isAllocated[i] = true;
+            return i;
+        }
+    }
+    wpi_fatal(NoAvailablePorts);
+    return 0;
 }
 
 /**
@@ -69,20 +70,19 @@ UINT32 Resource::Allocate()
  */
 UINT32 Resource::Allocate(UINT32 index)
 {
-	if (index >= m_size)
-	{
-		wpi_fatal(IndexOutOfRange);
-		return 0;
-	}
-	if ( m_isAllocated[index] )
-	{
-		wpi_fatal(ResourceAlreadyAllocated);
-		return 0;
-	}
-	m_isAllocated[index] = true;
-	return index;
+    if (index >= m_size)
+    {
+        wpi_fatal(IndexOutOfRange);
+        return 0;
+    }
+    if (m_isAllocated[index])
+    {
+        wpi_fatal(ResourceAlreadyAllocated);
+        return 0;
+    }
+    m_isAllocated[index] = true;
+    return index;
 }
-
 
 /**
  * Free an allocated resource.
@@ -91,15 +91,15 @@ UINT32 Resource::Allocate(UINT32 index)
  */
 void Resource::Free(UINT32 index)
 {
-	if (index >= m_size)
-	{
-		wpi_fatal(IndexOutOfRange);
-		return;
-	}
-	if ( ! m_isAllocated[index] )
-	{
-		wpi_fatal(NotAllocated);
-		return;
-	}
-	m_isAllocated[index] = false;
+    if (index >= m_size)
+    {
+        wpi_fatal(IndexOutOfRange);
+        return;
+    }
+    if (!m_isAllocated[index])
+    {
+        wpi_fatal(NotAllocated);
+        return;
+    }
+    m_isAllocated[index] = false;
 }

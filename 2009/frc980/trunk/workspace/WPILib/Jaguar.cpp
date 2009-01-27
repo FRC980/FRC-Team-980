@@ -1,9 +1,8 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
-
 
 #include "Jaguar.h"
 #include "DigitalModule.h"
@@ -13,18 +12,18 @@
  */
 void Jaguar::InitJaguar()
 {
-	/*
-	 * Input profile defined by Luminary Micro.
-	 * 
-	 * Full reverse ranges from 0.671325ms to 0.6972211ms
-	 * Proportional reverse ranges from 0.6972211ms to 1.4482078ms
-	 * Neutral ranges from 1.4482078ms to 1.5517922ms
-	 * Proportional forward ranges from 1.5517922ms to 2.3027789ms
-	 * Full forward ranges from 2.3027789ms to 2.328675ms
-	 */
-	SetBounds(251, 135, 128, 120, 4);
-	SetPeriodMultiplier(kPeriodMultiplier_1X);
-	SetRaw(m_centerPwm);
+    /*
+     * Input profile defined by Luminary Micro.
+     * 
+     * Full reverse ranges from 0.671325ms to 0.6972211ms
+     * Proportional reverse ranges from 0.6972211ms to 1.4482078ms
+     * Neutral ranges from 1.4482078ms to 1.5517922ms
+     * Proportional forward ranges from 1.5517922ms to 2.3027789ms
+     * Full forward ranges from 2.3027789ms to 2.328675ms
+     */
+    SetBounds(251, 135, 128, 120, 4);
+    SetPeriodMultiplier(kPeriodMultiplier_1X);
+    SetRaw(m_centerPwm);
 }
 
 /**
@@ -32,9 +31,9 @@ void Jaguar::InitJaguar()
  * 
  * @param channel The PWM channel on the digital module that the Jaguar is attached to.
  */
-Jaguar::Jaguar(UINT32 channel) : PWM(channel)
+Jaguar::Jaguar(UINT32 channel):PWM(channel)
 {
-	InitJaguar();
+    InitJaguar();
 }
 
 /**
@@ -43,9 +42,9 @@ Jaguar::Jaguar(UINT32 channel) : PWM(channel)
  * @param slot The slot in the chassis that the digital module is plugged into.
  * @param channel The PWM channel on the digital module that the Jaguar is attached to.
  */
-Jaguar::Jaguar(UINT32 slot, UINT32 channel) : PWM(slot, channel)
+Jaguar::Jaguar(UINT32 slot, UINT32 channel):PWM(slot, channel)
 {
-	InitJaguar();
+    InitJaguar();
 }
 
 Jaguar::~Jaguar()
@@ -62,7 +61,7 @@ Jaguar::~Jaguar()
  */
 void Jaguar::Set(float speed)
 {
-	SetSpeed(speed);
+    SetSpeed(speed);
 }
 
 /**
@@ -72,6 +71,5 @@ void Jaguar::Set(float speed)
  */
 float Jaguar::Get()
 {
-	return GetSpeed();
+    return GetSpeed();
 }
-

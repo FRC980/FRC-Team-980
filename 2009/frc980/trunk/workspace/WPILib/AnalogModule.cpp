@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -9,7 +9,7 @@
 #include "Utility.h"
 #include "WPIStatus.h"
 
-static SEM_ID semaphore = semMCreate(SEM_DELETE_SAFE | SEM_INVERSION_SAFE); // synchronize access to multi-value registers
+static SEM_ID semaphore = semMCreate(SEM_DELETE_SAFE | SEM_INVERSION_SAFE);     // synchronize access to multi-value registers
 
 /**
  * Get an instance of an Analog Module.
@@ -20,14 +20,14 @@ static SEM_ID semaphore = semMCreate(SEM_DELETE_SAFE | SEM_INVERSION_SAFE); // s
  * @param slot The physical slot in the cRIO chassis where this analog module is installed.
  * @return A pointer to the AnalogModule.
  */
-AnalogModule* AnalogModule::GetInstance(UINT32 slot)
+AnalogModule *AnalogModule::GetInstance(UINT32 slot)
 {
-	CheckAnalogModule(slot);
-	if (m_modules[slot] == NULL)
-	{
-		m_modules[slot] = new AnalogModule(slot);
-	}
-	return (AnalogModule*)m_modules[slot]; 
+    CheckAnalogModule(slot);
+    if (m_modules[slot] == NULL)
+    {
+        m_modules[slot] = new AnalogModule(slot);
+    }
+    return (AnalogModule *) m_modules[slot];
 }
 
 /**
@@ -38,7 +38,7 @@ AnalogModule* AnalogModule::GetInstance(UINT32 slot)
  */
 UINT32 AnalogModule::SlotToIndex(UINT32 slot)
 {
-	return slot - 1;
+    return slot - 1;
 }
 
 /**
@@ -52,29 +52,26 @@ UINT32 AnalogModule::SlotToIndex(UINT32 slot)
  * 
  * @param slot The slot in the chassis that the module is plugged into.
  */
-AnalogModule::AnalogModule(UINT32 slot)
-	: Module(slot)
-	, m_module (NULL)
-	, m_sampleRateSet (false)
-	, m_numChannelsToActivate (0)
+AnalogModule::AnalogModule(UINT32 slot):Module(slot), m_module(NULL), m_sampleRateSet(false),
+m_numChannelsToActivate(0)
 {
-	status = 0;
-	AddToSingletonList();
-	m_module = new tAI(SlotToIndex(slot), &status);
-	SetNumChannelsToActivate(kAnalogChannels);
-	SetSampleRate(kDefaultSampleRate);
+    status = 0;
+    AddToSingletonList();
+    m_module = new tAI(SlotToIndex(slot), &status);
+    SetNumChannelsToActivate(kAnalogChannels);
+    SetSampleRate(kDefaultSampleRate);
 
-	for (UINT32 i = 0; i < kAnalogChannels; i++)
-	{
-		m_module->writeScanList(i, i, &status);
-		SetAverageBits(i + 1, kDefaultAverageBits);
-		SetOversampleBits(i + 1, kDefaultOversampleBits);
-	}
+    for (UINT32 i = 0; i < kAnalogChannels; i++)
+    {
+        m_module->writeScanList(i, i, &status);
+        SetAverageBits(i + 1, kDefaultAverageBits);
+        SetOversampleBits(i + 1, kDefaultOversampleBits);
+    }
 
-	while ( ! m_module->readCalOK(&status) )
-		Wait(.001);
+    while (!m_module->readCalOK(&status))
+        Wait(.001);
 
-	wpi_assertCleanStatus(status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -82,8 +79,8 @@ AnalogModule::AnalogModule(UINT32 slot)
  */
 AnalogModule::~AnalogModule()
 {
-	delete m_module;
-	m_modules[m_slot] = NULL;
+    delete m_module;
+    m_modules[m_slot] = NULL;
 }
 
 /**
@@ -95,31 +92,31 @@ AnalogModule::~AnalogModule()
  */
 void AnalogModule::SetSampleRate(float samplesPerSecond)
 {
-	// TODO: This will change when variable size scan lists are implemented.
-	// TODO: Need float comparison with epsilon.
-	//wpi_assert(!sampleRateSet || GetSampleRate() == samplesPerSecond);
-	m_sampleRateSet = true;
+    // TODO: This will change when variable size scan lists are implemented.
+    // TODO: Need float comparison with epsilon.
+    //wpi_assert(!sampleRateSet || GetSampleRate() == samplesPerSecond);
+    m_sampleRateSet = true;
 
-	// Compute the convert rate
-	UINT32 ticksPerSample = (UINT32)((float)kTimebase / samplesPerSecond);
-	UINT32 ticksPerConversion = ticksPerSample / GetNumChannelsToActivate();
-	// ticksPerConversion must be at least 80
-	if (ticksPerConversion < 80)
-	{
-		wpi_fatal(SampleRateTooHigh);
-		ticksPerConversion = 80;
-	}
+    // Compute the convert rate
+    UINT32 ticksPerSample = (UINT32) ((float)kTimebase / samplesPerSecond);
+    UINT32 ticksPerConversion = ticksPerSample / GetNumChannelsToActivate();
+    // ticksPerConversion must be at least 80
+    if (ticksPerConversion < 80)
+    {
+        wpi_fatal(SampleRateTooHigh);
+        ticksPerConversion = 80;
+    }
 
-	// Atomically set the scan size and the convert rate so that the sample rate is constant
-	tAI::tConfig config;
-	config.ScanSize = GetNumChannelsToActivate();
-	config.ConvertRate = ticksPerConversion;
-	m_module->writeConfig(config, &status);
+    // Atomically set the scan size and the convert rate so that the sample rate is constant
+    tAI::tConfig config;
+    config.ScanSize = GetNumChannelsToActivate();
+    config.ConvertRate = ticksPerConversion;
+    m_module->writeConfig(config, &status);
 
-	// Indicate that the scan size has been commited to hardware.
-	SetNumChannelsToActivate(0);
+    // Indicate that the scan size has been commited to hardware.
+    SetNumChannelsToActivate(0);
 
-	wpi_assertCleanStatus(status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -132,11 +129,11 @@ void AnalogModule::SetSampleRate(float samplesPerSecond)
  */
 float AnalogModule::GetSampleRate()
 {
-	UINT32 ticksPerConversion = m_module->readLoopTiming(&status);
-	wpi_assertCleanStatus(status);
-	UINT32 ticksPerSample = ticksPerConversion * GetNumActiveChannels();
-	wpi_assertCleanStatus(status);
-	return (float)kTimebase / (float)ticksPerSample;
+    UINT32 ticksPerConversion = m_module->readLoopTiming(&status);
+    wpi_assertCleanStatus(status);
+    UINT32 ticksPerSample = ticksPerConversion * GetNumActiveChannels();
+    wpi_assertCleanStatus(status);
+    return (float)kTimebase / (float)ticksPerSample;
 }
 
 /**
@@ -146,11 +143,11 @@ float AnalogModule::GetSampleRate()
  */
 UINT32 AnalogModule::GetNumActiveChannels()
 {
-	UINT32 scanSize = m_module->readConfig_ScanSize(&status);
-	wpi_assertCleanStatus(status);
-	if (scanSize == 0)
-		return 8;
-	return scanSize;
+    UINT32 scanSize = m_module->readConfig_ScanSize(&status);
+    wpi_assertCleanStatus(status);
+    if (scanSize == 0)
+        return 8;
+    return scanSize;
 }
 
 /**
@@ -166,8 +163,9 @@ UINT32 AnalogModule::GetNumActiveChannels()
  */
 UINT32 AnalogModule::GetNumChannelsToActivate()
 {
-	if(m_numChannelsToActivate == 0) return GetNumActiveChannels();
-	return m_numChannelsToActivate;
+    if (m_numChannelsToActivate == 0)
+        return GetNumActiveChannels();
+    return m_numChannelsToActivate;
 }
 
 /**
@@ -180,7 +178,7 @@ UINT32 AnalogModule::GetNumChannelsToActivate()
  */
 void AnalogModule::SetNumChannelsToActivate(UINT32 channels)
 {
-	m_numChannelsToActivate = channels;
+    m_numChannelsToActivate = channels;
 }
 
 /**
@@ -195,8 +193,8 @@ void AnalogModule::SetNumChannelsToActivate(UINT32 channels)
  */
 void AnalogModule::SetAverageBits(UINT32 channel, UINT32 bits)
 {
-	m_module->writeAverageBits(channel - 1, bits, &status);
-	wpi_assertCleanStatus(status);
+    m_module->writeAverageBits(channel - 1, bits, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -210,9 +208,9 @@ void AnalogModule::SetAverageBits(UINT32 channel, UINT32 bits)
  */
 UINT32 AnalogModule::GetAverageBits(UINT32 channel)
 {
-	UINT32 result = m_module->readAverageBits(channel - 1, &status);
-	wpi_assertCleanStatus(status);
-	return result;
+    UINT32 result = m_module->readAverageBits(channel - 1, &status);
+    wpi_assertCleanStatus(status);
+    return result;
 }
 
 /**
@@ -227,8 +225,8 @@ UINT32 AnalogModule::GetAverageBits(UINT32 channel)
  */
 void AnalogModule::SetOversampleBits(UINT32 channel, UINT32 bits)
 {
-	m_module->writeOversampleBits(channel - 1, bits, &status);
-	wpi_assertCleanStatus(status);
+    m_module->writeOversampleBits(channel - 1, bits, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -242,9 +240,9 @@ void AnalogModule::SetOversampleBits(UINT32 channel, UINT32 bits)
  */
 UINT32 AnalogModule::GetOversampleBits(UINT32 channel)
 {
-	UINT32 result = m_module->readOversampleBits(channel - 1, &status);
-	wpi_assertCleanStatus(status);
-	return result;
+    UINT32 result = m_module->readOversampleBits(channel - 1, &status);
+    wpi_assertCleanStatus(status);
+    return result;
 }
 
 /**
@@ -257,24 +255,24 @@ UINT32 AnalogModule::GetOversampleBits(UINT32 channel)
  */
 INT16 AnalogModule::GetValue(UINT32 channel)
 {
-	INT16 value;
-	CheckAnalogChannel(channel);
+    INT16 value;
+    CheckAnalogChannel(channel);
 
-	tAI::tReadSelect readSelect;
-	readSelect.Channel = channel - 1;
-	readSelect.Module = SlotToIndex(m_slot);
-	readSelect.Averaged = false;
+    tAI::tReadSelect readSelect;
+    readSelect.Channel = channel - 1;
+    readSelect.Module = SlotToIndex(m_slot);
+    readSelect.Averaged = false;
 
-	semTake(semaphore, WAIT_FOREVER);
-	{
-		m_module->writeReadSelect(readSelect, &status);
-		m_module->strobeLatchOutput(&status);
-		value = (INT16) m_module->readOutput(&status);
-	}
-	semGive(semaphore);
+    semTake(semaphore, WAIT_FOREVER);
+    {
+        m_module->writeReadSelect(readSelect, &status);
+        m_module->strobeLatchOutput(&status);
+        value = (INT16) m_module->readOutput(&status);
+    }
+    semGive(semaphore);
 
-	wpi_assertCleanStatus(status);
-	return value;
+    wpi_assertCleanStatus(status);
+    return value;
 }
 
 /**
@@ -291,24 +289,24 @@ INT16 AnalogModule::GetValue(UINT32 channel)
  */
 INT32 AnalogModule::GetAverageValue(UINT32 channel)
 {
-	INT32 value;
-	CheckAnalogChannel(channel);
+    INT32 value;
+    CheckAnalogChannel(channel);
 
-	tAI::tReadSelect readSelect;
-	readSelect.Channel = channel - 1;
-	readSelect.Module = SlotToIndex(m_slot);
-	readSelect.Averaged = true;
+    tAI::tReadSelect readSelect;
+    readSelect.Channel = channel - 1;
+    readSelect.Module = SlotToIndex(m_slot);
+    readSelect.Averaged = true;
 
-	semTake(semaphore, WAIT_FOREVER); // link this instance on the list
-	{
-		m_module->writeReadSelect(readSelect, &status);
-		m_module->strobeLatchOutput(&status);
-		value = m_module->readOutput(&status);
-	}
-	semGive(semaphore);
+    semTake(semaphore, WAIT_FOREVER);   // link this instance on the list
+    {
+        m_module->writeReadSelect(readSelect, &status);
+        m_module->strobeLatchOutput(&status);
+        value = m_module->readOutput(&status);
+    }
+    semGive(semaphore);
 
-	wpi_assertCleanStatus(status);
-	return value;
+    wpi_assertCleanStatus(status);
+    return value;
 }
 
 /**
@@ -325,21 +323,22 @@ INT32 AnalogModule::GetAverageValue(UINT32 channel)
  */
 INT32 AnalogModule::VoltsToValue(INT32 channel, float voltage)
 {
-	if (voltage > 10.0)
-	{
-		voltage = 10.0;
-		wpi_fatal(VoltageOutOfRange);
-	}
-	if (voltage < -10.0)
-	{
-		voltage = -10.0;
-		wpi_fatal(VoltageOutOfRange);
-	}
-	UINT32 LSBWeight = m_module->readLSBWeight(channel - 1, &status);
-	INT32 offset = m_module->readOffset(channel - 1, &status);
-	INT32 value = (INT32) ((voltage + offset * 1.0e-9) / LSBWeight * 1.0e-9);
-	wpi_assertCleanStatus(status);
-	return value;
+    if (voltage > 10.0)
+    {
+        voltage = 10.0;
+        wpi_fatal(VoltageOutOfRange);
+    }
+    if (voltage < -10.0)
+    {
+        voltage = -10.0;
+        wpi_fatal(VoltageOutOfRange);
+    }
+    UINT32 LSBWeight = m_module->readLSBWeight(channel - 1, &status);
+    INT32 offset = m_module->readOffset(channel - 1, &status);
+    INT32 value =
+        (INT32) ((voltage + offset * 1.0e-9) / LSBWeight * 1.0e-9);
+    wpi_assertCleanStatus(status);
+    return value;
 }
 
 /**
@@ -352,12 +351,12 @@ INT32 AnalogModule::VoltsToValue(INT32 channel, float voltage)
  */
 float AnalogModule::GetVoltage(UINT32 channel)
 {
-	INT16 value = GetValue(channel);
-	UINT32 LSBWeight = m_module->readLSBWeight(channel - 1, &status);
-	INT32 offset = m_module->readOffset(channel - 1, &status);
-	float voltage = LSBWeight * 1.0e-9 * value - offset * 1.0e-9;
-	wpi_assertCleanStatus(status);
-	return voltage;
+    INT16 value = GetValue(channel);
+    UINT32 LSBWeight = m_module->readLSBWeight(channel - 1, &status);
+    INT32 offset = m_module->readOffset(channel - 1, &status);
+    float voltage = LSBWeight * 1.0e-9 * value - offset * 1.0e-9;
+    wpi_assertCleanStatus(status);
+    return voltage;
 }
 
 /**
@@ -372,13 +371,15 @@ float AnalogModule::GetVoltage(UINT32 channel)
  */
 float AnalogModule::GetAverageVoltage(UINT32 channel)
 {
-	INT32 value = GetAverageValue(channel);
-	UINT32 LSBWeight = m_module->readLSBWeight(channel - 1, &status);
-	INT32 offset = m_module->readOffset(channel - 1, &status);
-	UINT32 oversampleBits = GetOversampleBits(channel);
-	float voltage = ((LSBWeight * 1.0e-9 * value) / (float)(1 << oversampleBits)) - offset * 1.0e-9;
-	wpi_assertCleanStatus(status);
-	return voltage;
+    INT32 value = GetAverageValue(channel);
+    UINT32 LSBWeight = m_module->readLSBWeight(channel - 1, &status);
+    INT32 offset = m_module->readOffset(channel - 1, &status);
+    UINT32 oversampleBits = GetOversampleBits(channel);
+    float voltage =
+        ((LSBWeight * 1.0e-9 * value) / (float)(1 << oversampleBits)) -
+        offset * 1.0e-9;
+    wpi_assertCleanStatus(status);
+    return voltage;
 }
 
 /**
@@ -391,13 +392,13 @@ float AnalogModule::GetAverageVoltage(UINT32 channel)
  * @param channel The channel to get calibration data for.
  * @return Least significant bit weight.
  */
-UINT32 AnalogModule::GetLSBWeight(UINT32 channel) 
+UINT32 AnalogModule::GetLSBWeight(UINT32 channel)
 {
-	// TODO: add scaling to make this worth while.
-	// TODO: actually use this function.
-	INT32 lsbWeight = m_module->readLSBWeight(channel - 1, &status);
-	wpi_assertCleanStatus(status);
-	return lsbWeight;
+    // TODO: add scaling to make this worth while.
+    // TODO: actually use this function.
+    INT32 lsbWeight = m_module->readLSBWeight(channel - 1, &status);
+    wpi_assertCleanStatus(status);
+    return lsbWeight;
 }
 
 /**
@@ -412,11 +413,9 @@ UINT32 AnalogModule::GetLSBWeight(UINT32 channel)
  */
 INT32 AnalogModule::GetOffset(UINT32 channel)
 {
-	// TODO: add scaling to make this worth while.
-	// TODO: actually use this function.
-	INT32 offset = m_module->readOffset(channel - 1, &status); 
-	wpi_assertCleanStatus(status);
-	return offset;
+    // TODO: add scaling to make this worth while.
+    // TODO: actually use this function.
+    INT32 offset = m_module->readOffset(channel - 1, &status);
+    wpi_assertCleanStatus(status);
+    return offset;
 }
-
-

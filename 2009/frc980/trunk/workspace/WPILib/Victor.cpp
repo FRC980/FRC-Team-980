@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -25,9 +25,9 @@
  */
 void Victor::InitVictor()
 {
-	SetBounds(210, 138, 132, 126, 56);
-	SetPeriodMultiplier(kPeriodMultiplier_2X);
-	SetRaw(m_centerPwm);
+    SetBounds(210, 138, 132, 126, 56);
+    SetPeriodMultiplier(kPeriodMultiplier_2X);
+    SetRaw(m_centerPwm);
 }
 
 /**
@@ -35,9 +35,9 @@ void Victor::InitVictor()
  * 
  * @param channel The PWM channel on the digital module that the Victor is attached to.
  */
-Victor::Victor(UINT32 channel) : PWM(channel)
+Victor::Victor(UINT32 channel):PWM(channel)
 {
-	InitVictor();
+    InitVictor();
 }
 
 /**
@@ -46,9 +46,9 @@ Victor::Victor(UINT32 channel) : PWM(channel)
  * @param slot The slot in the chassis that the digital module is plugged into.
  * @param channel The PWM channel on the digital module that the Victor is attached to.
  */
-Victor::Victor(UINT32 slot, UINT32 channel) : PWM(slot, channel)
+Victor::Victor(UINT32 slot, UINT32 channel):PWM(slot, channel)
 {
-	InitVictor();
+    InitVictor();
 }
 
 Victor::~Victor()
@@ -65,7 +65,7 @@ Victor::~Victor()
  */
 void Victor::Set(float speed)
 {
-	SetSpeed(speed);
+    SetSpeed(speed);
 }
 
 /**
@@ -75,7 +75,5 @@ void Victor::Set(float speed)
  */
 float Victor::Get()
 {
-	return GetSpeed();
+    return GetSpeed();
 }
-
-

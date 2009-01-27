@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -16,7 +16,8 @@ UINT32 SensorBase::m_defaultSolenoidModule = 8;
 SensorBase *SensorBase::m_singletonList = NULL;
 
 // Slots are one based index, so ignore element 0.
-static const UINT32 modulePopulation[] = {0,  9201, 9201, 0, 9403, 0, 9403, 0, 9472};
+static const UINT32 modulePopulation[] =
+    { 0, 9201, 9201, 0, 9403, 0, 9403, 0, 9472 };
 
 /**
  * Creates an instance of the sensor base and gets an FPGA handle
@@ -43,8 +44,8 @@ SensorBase::~SensorBase()
  */
 void SensorBase::AddToSingletonList()
 {
-	m_nextSingleton = m_singletonList;
-	m_singletonList = this;
+    m_nextSingleton = m_singletonList;
+    m_singletonList = this;
 }
 
 /**
@@ -54,11 +55,12 @@ void SensorBase::AddToSingletonList()
  */
 void SensorBase::DeleteSingletons()
 {
-	for (SensorBase *b = m_singletonList; b != NULL; b = b->m_nextSingleton)
-	{
-		delete b;
-	}
-	m_singletonList = NULL;
+    for (SensorBase * b = m_singletonList; b != NULL;
+         b = b->m_nextSingleton)
+    {
+        delete b;
+    }
+    m_singletonList = NULL;
 }
 
 /**
@@ -69,8 +71,8 @@ void SensorBase::DeleteSingletons()
  */
 void SensorBase::SetDefaultDigitalModule(UINT32 slot)
 {
-	wpi_assert(slot <= kChassisSlots && modulePopulation[slot] == 9403);
-	m_defaultDigitalModule = slot;
+    wpi_assert(slot <= kChassisSlots && modulePopulation[slot] == 9403);
+    m_defaultDigitalModule = slot;
 }
 
 /**
@@ -81,8 +83,8 @@ void SensorBase::SetDefaultDigitalModule(UINT32 slot)
  */
 void SensorBase::SetDefaultAnalogModule(UINT32 slot)
 {
-	wpi_assert(slot <= kChassisSlots && modulePopulation[slot] == 9201);
-	m_defaultAnalogModule = slot;
+    wpi_assert(slot <= kChassisSlots && modulePopulation[slot] == 9201);
+    m_defaultAnalogModule = slot;
 }
 
 /**
@@ -91,8 +93,8 @@ void SensorBase::SetDefaultAnalogModule(UINT32 slot)
  */
 void SensorBase::SetDefaultSolenoidModule(UINT32 slot)
 {
-	wpi_assert(slot <= kChassisSlots && modulePopulation[slot] == 9472);
-	m_defaultSolenoidModule = slot;
+    wpi_assert(slot <= kChassisSlots && modulePopulation[slot] == 9472);
+    m_defaultSolenoidModule = slot;
 }
 
 /**
@@ -101,10 +103,10 @@ void SensorBase::SetDefaultSolenoidModule(UINT32 slot)
  */
 bool SensorBase::CheckDigitalModule(UINT32 slot)
 {
-	if (slot <= kChassisSlots && modulePopulation[slot] == 9403)
-		return true;
-	wpi_fatal(IndexOutOfRange);
-	return false;
+    if (slot <= kChassisSlots && modulePopulation[slot] == 9403)
+        return true;
+    wpi_fatal(IndexOutOfRange);
+    return false;
 }
 
 /**
@@ -113,7 +115,7 @@ bool SensorBase::CheckDigitalModule(UINT32 slot)
  */
 bool SensorBase::CheckRelayModule(UINT32 slot)
 {
-	return CheckDigitalModule(slot);
+    return CheckDigitalModule(slot);
 }
 
 /**
@@ -122,7 +124,7 @@ bool SensorBase::CheckRelayModule(UINT32 slot)
  */
 bool SensorBase::CheckPWMModule(UINT32 slot)
 {
-	return CheckDigitalModule(slot);
+    return CheckDigitalModule(slot);
 }
 
 /**
@@ -131,10 +133,10 @@ bool SensorBase::CheckPWMModule(UINT32 slot)
  */
 bool SensorBase::CheckAnalogModule(UINT32 slot)
 {
-	if (slot <= kChassisSlots && modulePopulation[slot] == 9201)
-		return true;
-	wpi_fatal(IndexOutOfRange);
-	return false;
+    if (slot <= kChassisSlots && modulePopulation[slot] == 9201)
+        return true;
+    wpi_fatal(IndexOutOfRange);
+    return false;
 }
 
 /**
@@ -143,10 +145,10 @@ bool SensorBase::CheckAnalogModule(UINT32 slot)
  */
 bool SensorBase::CheckSolenoidModule(UINT32 slot)
 {
-	if (slot <= kChassisSlots && modulePopulation[slot] == 9472)
-		return true;
-	wpi_fatal(IndexOutOfRange);
-	return false;
+    if (slot <= kChassisSlots && modulePopulation[slot] == 9472)
+        return true;
+    wpi_fatal(IndexOutOfRange);
+    return false;
 }
 
 /**
@@ -156,10 +158,10 @@ bool SensorBase::CheckSolenoidModule(UINT32 slot)
  */
 bool SensorBase::CheckDigitalChannel(UINT32 channel)
 {
-	if (channel > 0 && channel <= kDigitalChannels)
-		return true;
-	wpi_fatal(IndexOutOfRange);
-	return false;
+    if (channel > 0 && channel <= kDigitalChannels)
+        return true;
+    wpi_fatal(IndexOutOfRange);
+    return false;
 }
 
 /**
@@ -169,10 +171,10 @@ bool SensorBase::CheckDigitalChannel(UINT32 channel)
  */
 bool SensorBase::CheckRelayChannel(UINT32 channel)
 {
-	if (channel > 0 && channel <= kRelayChannels)
-		return true;
-	wpi_fatal(IndexOutOfRange);
-	return false;
+    if (channel > 0 && channel <= kRelayChannels)
+        return true;
+    wpi_fatal(IndexOutOfRange);
+    return false;
 }
 
 /**
@@ -182,10 +184,10 @@ bool SensorBase::CheckRelayChannel(UINT32 channel)
  */
 bool SensorBase::CheckPWMChannel(UINT32 channel)
 {
-	if (channel > 0 && channel <= kPwmChannels)
-		return true;
-	wpi_fatal(IndexOutOfRange);
-	return false;
+    if (channel > 0 && channel <= kPwmChannels)
+        return true;
+    wpi_fatal(IndexOutOfRange);
+    return false;
 }
 
 /**
@@ -195,10 +197,10 @@ bool SensorBase::CheckPWMChannel(UINT32 channel)
  */
 bool SensorBase::CheckAnalogChannel(UINT32 channel)
 {
-	if (channel > 0 && channel <= kAnalogChannels)
-		return true;
-	wpi_fatal(IndexOutOfRange);
-	return false;
+    if (channel > 0 && channel <= kAnalogChannels)
+        return true;
+    wpi_fatal(IndexOutOfRange);
+    return false;
 }
 
 /**
@@ -206,9 +208,8 @@ bool SensorBase::CheckAnalogChannel(UINT32 channel)
  */
 bool SensorBase::CheckSolenoidChannel(UINT32 channel)
 {
-	if (channel > 0 && channel <= kSolenoidChannels)
-		return true;
-	wpi_fatal(IndexOutOfRange);
-	return false;
+    if (channel > 0 && channel <= kSolenoidChannels)
+        return true;
+    wpi_fatal(IndexOutOfRange);
+    return false;
 }
-

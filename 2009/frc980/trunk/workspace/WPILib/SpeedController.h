@@ -12,8 +12,8 @@
  */
 class SpeedController
 {
-public:
-    virtual ~SpeedController() {};
+  public:
+    virtual ~ SpeedController() {};
 
     /**
      * Common interface for setting the speed of a speed controller.

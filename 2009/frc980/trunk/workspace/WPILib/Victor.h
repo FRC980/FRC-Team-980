@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #ifndef VICTOR_H
 #define VICTOR_H
@@ -15,16 +15,15 @@
  */
 class Victor : public PWM, public SpeedController
 {
-public:
-	explicit Victor(UINT32 channel);
-	Victor(UINT32 slot, UINT32 channel);
-	virtual ~Victor();
-	void Set(float value);
-	float Get();
+  public:
+    explicit Victor(UINT32 channel);
+    Victor(UINT32 slot, UINT32 channel);
+    virtual ~ Victor();
+    void Set(float value);
+    float Get();
 
-private:
-	void InitVictor();
+  private:
+    void InitVictor();
 };
 
 #endif
-

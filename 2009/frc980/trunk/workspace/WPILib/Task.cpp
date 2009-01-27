@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -11,9 +11,12 @@
 #include <string.h>
 #include <taskLib.h>
 
-extern "C" { INT32 ERRNO; }
+extern "C"
+{
+    INT32 ERRNO;
+}
 
-std::set<INT32> Task::m_tasks;
+std::set < INT32 > Task::m_tasks;
 
 /**
  * Create but don't launch a task.
@@ -22,42 +25,44 @@ std::set<INT32> Task::m_tasks;
  * @param priority The VxWorks priority for the task.
  * @param stackSize The size of the stack for the task
  */
-Task::Task(char* name, FUNCPTR function, INT32 priority, UINT32 stackSize)
+Task::Task(char *name, FUNCPTR function, INT32 priority, UINT32 stackSize)
 {
-	m_taskID = 0;
-	m_function = function;
-	m_priority = priority;
-	m_stackSize = stackSize;
-	m_taskName = new char[strlen(name) + 5];
-	strcpy(m_taskName, "FRC_");
-	strcpy(m_taskName+4, name);
+    m_taskID = 0;
+    m_function = function;
+    m_priority = priority;
+    m_stackSize = stackSize;
+    m_taskName = new char[strlen(name) + 5];
+    strcpy(m_taskName, "FRC_");
+    strcpy(m_taskName + 4, name);
 }
 
 Task::~Task()
 {
-	if (m_taskID != 0) Stop();
-	delete [] m_taskName;
-	m_taskName = NULL;
+    if (m_taskID != 0)
+        Stop();
+    delete[]m_taskName;
+    m_taskName = NULL;
 }
 
 /**
  * Starts this task.
  * If it is already running or unable to start, it fails and returns false.
  */
-bool Task::Start(UINT32 arg0, UINT32 arg1, UINT32 arg2, UINT32 arg3, UINT32 arg4, 
-		UINT32 arg5, UINT32 arg6, UINT32 arg7, UINT32 arg8, UINT32 arg9)
+bool Task::Start(UINT32 arg0, UINT32 arg1, UINT32 arg2, UINT32 arg3,
+                 UINT32 arg4, UINT32 arg5, UINT32 arg6, UINT32 arg7,
+                 UINT32 arg8, UINT32 arg9)
 {
-	m_taskID = taskSpawn(m_taskName,
-						m_priority,
-						VX_FP_TASK,							// options
-						m_stackSize,						// stack size
-						m_function,							// function to start
-						arg0, arg1, arg2, arg3, arg4,	// parameter 1 - pointer to this class
-						arg5, arg6, arg7, arg8, arg9);// additional unused parameters
-	bool ok = HandleError(m_taskID);
-	if (ok) m_tasks.insert(m_taskID);
-	else m_taskID = 0;
-	return ok;
+    m_taskID = taskSpawn(m_taskName, m_priority, VX_FP_TASK,    // options
+                         m_stackSize,   // stack size
+                         m_function,    // function to start
+                         arg0, arg1, arg2, arg3, arg4,  // parameter 1 - pointer to this class
+                         arg5, arg6, arg7, arg8, arg9); // additional unused parameters
+    bool ok = HandleError(m_taskID);
+    if (ok)
+        m_tasks.insert(m_taskID);
+    else
+        m_taskID = 0;
+    return ok;
 }
 
 /**
@@ -67,7 +72,7 @@ bool Task::Start(UINT32 arg0, UINT32 arg1, UINT32 arg2, UINT32 arg3, UINT32 arg4
  */
 bool Task::Restart(void)
 {
-	return HandleError(taskRestart(m_taskID));
+    return HandleError(taskRestart(m_taskID));
 }
 
 /**
@@ -76,14 +81,14 @@ bool Task::Restart(void)
  */
 bool Task::Stop(void)
 {
-	m_tasks.erase(m_taskID);
-	bool ok = true;
-	if (Verify())
-	{
-		ok = HandleError(taskDelete(m_taskID));
-	}
-	m_taskID = 0;
-	return ok;
+    m_tasks.erase(m_taskID);
+    bool ok = true;
+    if (Verify())
+    {
+        ok = HandleError(taskDelete(m_taskID));
+    }
+    m_taskID = 0;
+    return ok;
 }
 
 /**
@@ -92,7 +97,7 @@ bool Task::Stop(void)
  */
 bool Task::IsReady(void)
 {
-	return taskIsReady(m_taskID);
+    return taskIsReady(m_taskID);
 }
 
 /**
@@ -101,7 +106,7 @@ bool Task::IsReady(void)
  */
 bool Task::IsSuspended(void)
 {
-	return taskIsSuspended(m_taskID);
+    return taskIsSuspended(m_taskID);
 }
 
 /**
@@ -110,7 +115,7 @@ bool Task::IsSuspended(void)
  */
 bool Task::Suspend(void)
 {
-	return HandleError(taskSuspend(m_taskID));
+    return HandleError(taskSuspend(m_taskID));
 }
 
 /**
@@ -119,7 +124,7 @@ bool Task::Suspend(void)
  */
 bool Task::Resume(void)
 {
-	return HandleError(taskResume(m_taskID));
+    return HandleError(taskResume(m_taskID));
 }
 
 /**
@@ -128,7 +133,7 @@ bool Task::Resume(void)
  */
 bool Task::Verify(void)
 {
-	return taskIdVerify(m_taskID) == OK;
+    return taskIdVerify(m_taskID) == OK;
 }
 
 /**
@@ -137,10 +142,10 @@ bool Task::Verify(void)
  */
 INT32 Task::GetPriority(void)
 {
-	if (HandleError(taskPriorityGet(m_taskID, &m_priority)))
-		return m_priority;
-	else
-		return 0;
+    if (HandleError(taskPriorityGet(m_taskID, &m_priority)))
+        return m_priority;
+    else
+        return 0;
 }
 
 /**
@@ -152,17 +157,17 @@ INT32 Task::GetPriority(void)
  */
 bool Task::SetPriority(INT32 priority)
 {
-	m_priority = priority;
-	return HandleError(taskPrioritySet(m_taskID, m_priority));
+    m_priority = priority;
+    return HandleError(taskPrioritySet(m_taskID, m_priority));
 }
 
 /**
  * Returns the name of the task.
  * @returns Pointer to the name of the task or NULL if not allocated
  */
-char* Task::GetName(void)
+char *Task::GetName(void)
 {
-	return m_taskName;
+    return m_taskName;
 }
 
 /**
@@ -171,9 +176,9 @@ char* Task::GetName(void)
  */
 INT32 Task::GetID(void)
 {
-	if (Verify())
-		return m_taskID;
-	return 0;
+    if (Verify())
+        return m_taskID;
+    return 0;
 }
 
 /**
@@ -181,32 +186,32 @@ INT32 Task::GetID(void)
  */
 bool Task::HandleError(STATUS results)
 {
-	if (results != ERROR) return true;
-	switch(ERRNO)
-	{
-	case S_objLib_OBJ_ID_ERROR:
-		wpi_fatal(TaskIDError);
-		break;
-		
-	case S_objLib_OBJ_DELETED:
-		wpi_fatal(TaskDeletedError);
-		break;
-		
-	case S_taskLib_ILLEGAL_OPTIONS:
-		wpi_fatal(TaskOptionsError);
-		break;
-		
-	case S_memLib_NOT_ENOUGH_MEMORY:
-		wpi_fatal(TaskMemoryError);
-		break;
-		
-	case S_taskLib_ILLEGAL_PRIORITY:
-		wpi_fatal(TaskPriorityError);
-		break;
-		
-	default:
-		wpi_fatal(TaskError);
-	}
-	return false;
-}
+    if (results != ERROR)
+        return true;
+    switch (ERRNO)
+    {
+    case S_objLib_OBJ_ID_ERROR:
+        wpi_fatal(TaskIDError);
+        break;
 
+    case S_objLib_OBJ_DELETED:
+        wpi_fatal(TaskDeletedError);
+        break;
+
+    case S_taskLib_ILLEGAL_OPTIONS:
+        wpi_fatal(TaskOptionsError);
+        break;
+
+    case S_memLib_NOT_ENOUGH_MEMORY:
+        wpi_fatal(TaskMemoryError);
+        break;
+
+    case S_taskLib_ILLEGAL_PRIORITY:
+        wpi_fatal(TaskPriorityError);
+        break;
+
+    default:
+        wpi_fatal(TaskError);
+    }
+    return false;
+}

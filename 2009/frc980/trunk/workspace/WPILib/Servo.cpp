@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -14,8 +14,8 @@
  */
 void Servo::InitServo()
 {
-	SetBounds(245, 0, 0, 0, 11);
-	SetPeriodMultiplier(kPeriodMultiplier_4X);
+    SetBounds(245, 0, 0, 0, 11);
+    SetPeriodMultiplier(kPeriodMultiplier_4X);
 }
 
 /**
@@ -23,9 +23,9 @@ void Servo::InitServo()
  *
  * @param channel The PWM channel on the digital module to which the servo is attached.
  */
-Servo::Servo(UINT32 channel) : PWM(channel)
+Servo::Servo(UINT32 channel):PWM(channel)
 {
-	InitServo();
+    InitServo();
 }
 
 /**
@@ -34,9 +34,9 @@ Servo::Servo(UINT32 channel) : PWM(channel)
  * @param slot The slot in the chassis that the digital module is plugged into.
  * @param channel The PWM channel on the digital module to which the servo is attached.
  */
-Servo::Servo(UINT32 slot, UINT32 channel) : PWM(slot, channel)
+Servo::Servo(UINT32 slot, UINT32 channel):PWM(slot, channel)
 {
-	InitServo();
+    InitServo();
 }
 
 Servo::~Servo()
@@ -52,7 +52,7 @@ Servo::~Servo()
  */
 void Servo::Set(float value)
 {
-	SetPosition(value);
+    SetPosition(value);
 }
 
 /**
@@ -64,7 +64,7 @@ void Servo::Set(float value)
  */
 float Servo::Get()
 {
-	return GetPosition();
+    return GetPosition();
 }
 
 /**
@@ -80,16 +80,16 @@ float Servo::Get()
  */
 void Servo::SetAngle(float degrees)
 {
-	if (degrees < kMinServoAngle)
-	{
-		degrees = kMinServoAngle;
-	}
-	else if (degrees > kMaxServoAngle)
-	{
-		degrees = kMaxServoAngle;
-	}
+    if (degrees < kMinServoAngle)
+    {
+        degrees = kMinServoAngle;
+    }
+    else if (degrees > kMaxServoAngle)
+    {
+        degrees = kMaxServoAngle;
+    }
 
-	SetPosition(((float) (degrees - kMinServoAngle)) / GetServoAngleRange());
+    SetPosition(((float)(degrees - kMinServoAngle)) / GetServoAngleRange());
 }
 
 /**
@@ -100,5 +100,5 @@ void Servo::SetAngle(float degrees)
  */
 float Servo::GetAngle()
 {
-	return (float)GetPosition() * GetServoAngleRange() + kMinServoAngle;
+    return (float)GetPosition() * GetServoAngleRange() + kMinServoAngle;
 }

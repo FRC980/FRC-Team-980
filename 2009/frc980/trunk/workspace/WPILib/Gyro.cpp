@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -11,7 +11,6 @@
 #include "Utility.h"
 #include "WPIStatus.h"
 
-
 /**
  * Initialize the gyro.
  * Calibrate the gyro by running for a number of samples and computing the center value for this
@@ -22,39 +21,39 @@
  */
 void Gyro::InitGyro()
 {
-	if (!m_analog->IsAccumulatorChannel())
-	{
-		wpi_fatal(GyroNotAccumulatorChannel);
-		if (m_channelAllocated)
-		{
-			delete m_analog;
-			m_analog = NULL;
-		}
-		return;
-	}
+    if (!m_analog->IsAccumulatorChannel())
+    {
+        wpi_fatal(GyroNotAccumulatorChannel);
+        if (m_channelAllocated)
+        {
+            delete m_analog;
+            m_analog = NULL;
+        }
+        return;
+    }
 
-	m_voltsPerDegreePerSecond = kDefaultVoltsPerDegreePerSecond;
-	m_analog->SetAverageBits(kAverageBits);
-	m_analog->SetOversampleBits(kOversampleBits);
-	float sampleRate = kSamplesPerSecond * 
-		(1 << (kAverageBits + kOversampleBits));
-	m_analog->GetModule()->SetSampleRate(sampleRate);
-	Wait(1.0);
+    m_voltsPerDegreePerSecond = kDefaultVoltsPerDegreePerSecond;
+    m_analog->SetAverageBits(kAverageBits);
+    m_analog->SetOversampleBits(kOversampleBits);
+    float sampleRate = kSamplesPerSecond *
+        (1 << (kAverageBits + kOversampleBits));
+    m_analog->GetModule()->SetSampleRate(sampleRate);
+    Wait(1.0);
 
-	m_analog->InitAccumulator();
-	Wait(kCalibrationSampleTime);
+    m_analog->InitAccumulator();
+    Wait(kCalibrationSampleTime);
 
-	INT64 value;
-	UINT32 count;
-	m_analog->GetAccumulatorOutput(&value, &count);
-	
-	UINT32 center = (UINT32)((float)value / (float)count + .5);
+    INT64 value;
+    UINT32 count;
+    m_analog->GetAccumulatorOutput(&value, &count);
 
-	m_offset = ((float)value / (float)count) - (float)center;
-	
-	m_analog->SetAccumulatorCenter(center);
-	m_analog->SetAccumulatorDeadband(0); ///< TODO: compute / parameterize this
-	m_analog->ResetAccumulator();
+    UINT32 center = (UINT32) ((float)value / (float)count + .5);
+
+    m_offset = ((float)value / (float)count) - (float)center;
+
+    m_analog->SetAccumulatorCenter(center);
+    m_analog->SetAccumulatorDeadband(0);        ///< TODO: compute / parameterize this
+    m_analog->ResetAccumulator();
 }
 
 /**
@@ -65,9 +64,9 @@ void Gyro::InitGyro()
  */
 Gyro::Gyro(UINT32 slot, UINT32 channel)
 {
-	m_analog = new AnalogChannel(slot, channel);
-	m_channelAllocated = true;
-	InitGyro();
+    m_analog = new AnalogChannel(slot, channel);
+    m_channelAllocated = true;
+    InitGyro();
 }
 
 /**
@@ -79,9 +78,9 @@ Gyro::Gyro(UINT32 slot, UINT32 channel)
  */
 Gyro::Gyro(UINT32 channel)
 {
-	m_analog = new AnalogChannel(channel);
-	m_channelAllocated = true;
-	InitGyro();
+    m_analog = new AnalogChannel(channel);
+    m_channelAllocated = true;
+    InitGyro();
 }
 
 /**
@@ -90,25 +89,25 @@ Gyro::Gyro(UINT32 channel)
  * is no reference counting when an AnalogChannel is passed to the gyro.
  * @param channel The AnalogChannel object that the gyro is connected to.
  */
-Gyro::Gyro(AnalogChannel *channel)
+Gyro::Gyro(AnalogChannel * channel)
 {
-	m_analog = channel;
-	m_channelAllocated = false;
-	if (channel == NULL)
-	{
-		wpi_fatal(NullParameter);
-	}
-	else
-	{
-		InitGyro();
-	}
+    m_analog = channel;
+    m_channelAllocated = false;
+    if (channel == NULL)
+    {
+        wpi_fatal(NullParameter);
+    }
+    else
+    {
+        InitGyro();
+    }
 }
 
-Gyro::Gyro(AnalogChannel &channel)
+Gyro::Gyro(AnalogChannel & channel)
 {
-	m_analog = &channel;
-	m_channelAllocated = false;
-	InitGyro();
+    m_analog = &channel;
+    m_channelAllocated = false;
+    InitGyro();
 }
 
 /**
@@ -118,7 +117,7 @@ Gyro::Gyro(AnalogChannel &channel)
  */
 void Gyro::Reset()
 {
-	m_analog->ResetAccumulator();
+    m_analog->ResetAccumulator();
 }
 
 /**
@@ -126,8 +125,8 @@ void Gyro::Reset()
  */
 Gyro::~Gyro()
 {
-	if (m_channelAllocated)
-		delete m_analog;
+    if (m_channelAllocated)
+        delete m_analog;
 }
 
 /**
@@ -141,20 +140,22 @@ Gyro::~Gyro()
  * @return the current heading of the robot in degrees. This heading is based on integration
  * of the returned rate from the gyro.
  */
-float Gyro::GetAngle( void )
+float Gyro::GetAngle(void)
 {
-	INT64 rawValue;
-	UINT32 count;
-	m_analog->GetAccumulatorOutput(&rawValue, &count);
+    INT64 rawValue;
+    UINT32 count;
+    m_analog->GetAccumulatorOutput(&rawValue, &count);
 
-	INT64 value = rawValue - (INT64)((float)count * m_offset);
+    INT64 value = rawValue - (INT64) ((float)count * m_offset);
 
-	double scaledValue = value * 1e-9 * (double)m_analog->GetLSBWeight() * (double)(1 << m_analog->GetAverageBits()) /
-		(m_analog->GetModule()->GetSampleRate() * m_voltsPerDegreePerSecond);
+    double scaledValue =
+        value * 1e-9 * (double)m_analog->GetLSBWeight() *
+        (double)(1 << m_analog->GetAverageBits()) /
+        (m_analog->GetModule()->GetSampleRate() *
+         m_voltsPerDegreePerSecond);
 
-	return (float)scaledValue;
+    return (float)scaledValue;
 }
-
 
 /**
  * Set the gyro type based on the sensitivity.
@@ -163,8 +164,7 @@ float Gyro::GetAngle( void )
  * 
  * @param voltsPerDegreePerSecond The type of gyro specified as the voltage that represents one degree/second.
  */
-void Gyro::SetSensitivity( float voltsPerDegreePerSecond )
+void Gyro::SetSensitivity(float voltsPerDegreePerSecond)
 {
-	m_voltsPerDegreePerSecond = voltsPerDegreePerSecond;
+    m_voltsPerDegreePerSecond = voltsPerDegreePerSecond;
 }
-

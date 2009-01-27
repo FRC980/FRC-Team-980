@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -19,14 +19,14 @@ static Resource *counters = NULL;
  */
 void Counter::InitCounter()
 {
-	Resource::CreateResourceObject(&counters, tCounter::kNumSystems);
-	m_index = counters->Allocate();
-	m_counter = new tCounter(m_index, &status);
-	m_counter->writeConfig_Mode(kTwoPulse, &status);
-	m_upSource = NULL;
-	m_downSource = NULL;
-	m_allocatedUpSource = false;
-	m_allocatedDownSource = false;
+    Resource::CreateResourceObject(&counters, tCounter::kNumSystems);
+    m_index = counters->Allocate();
+    m_counter = new tCounter(m_index, &status);
+    m_counter->writeConfig_Mode(kTwoPulse, &status);
+    m_upSource = NULL;
+    m_downSource = NULL;
+    m_allocatedUpSource = false;
+    m_allocatedDownSource = false;
 }
 
 /**
@@ -36,7 +36,7 @@ void Counter::InitCounter()
  */
 Counter::Counter()
 {
-	InitCounter();
+    InitCounter();
 }
 
 /**
@@ -44,16 +44,16 @@ Counter::Counter()
  * This is used if an existing digital input is to be shared by multiple other objects such
  * as encoders.
  */
-Counter::Counter(DigitalSource *source)
+Counter::Counter(DigitalSource * source)
 {
-	InitCounter();
-	SetUpSource(source);
+    InitCounter();
+    SetUpSource(source);
 }
 
-Counter::Counter(DigitalSource &source)
+Counter::Counter(DigitalSource & source)
 {
-	InitCounter();
-	SetUpSource(&source);
+    InitCounter();
+    SetUpSource(&source);
 }
 
 /**
@@ -62,8 +62,8 @@ Counter::Counter(DigitalSource &source)
  */
 Counter::Counter(UINT32 channel)
 {
-	InitCounter();
-	SetUpSource(channel);
+    InitCounter();
+    SetUpSource(channel);
 }
 
 /**
@@ -74,8 +74,8 @@ Counter::Counter(UINT32 channel)
  */
 Counter::Counter(UINT32 slot, UINT32 channel)
 {
-	InitCounter();
-	SetUpSource(slot, channel);
+    InitCounter();
+    SetUpSource(slot, channel);
 }
 
 /**
@@ -83,17 +83,17 @@ Counter::Counter(UINT32 slot, UINT32 channel)
  * Create an instance of a simple up-Counter given an analog trigger.
  * Use the trigger state output from the analog trigger.
  */
-Counter::Counter(AnalogTrigger *trigger)
+Counter::Counter(AnalogTrigger * trigger)
 {
-	InitCounter();
-	SetUpSource(trigger->CreateOutput(AnalogTriggerOutput::kState));
-	m_allocatedUpSource = true;
+    InitCounter();
+    SetUpSource(trigger->CreateOutput(AnalogTriggerOutput::kState));
+    m_allocatedUpSource = true;
 }
 
-Counter::Counter(AnalogTrigger &trigger)
+Counter::Counter(AnalogTrigger & trigger)
 {
-	InitCounter();
-	SetUpSource(trigger.CreateOutput(AnalogTriggerOutput::kState));
+    InitCounter();
+    SetUpSource(trigger.CreateOutput(AnalogTriggerOutput::kState));
 }
 
 /**
@@ -101,21 +101,21 @@ Counter::Counter(AnalogTrigger &trigger)
  */
 Counter::~Counter()
 {
-	SetUpdateWhenEmpty(true);
-	wpi_assert(m_counter != NULL);
-	if (m_allocatedUpSource)
-	{
-		delete m_upSource;
-		m_upSource = NULL;
-	}
-	if (m_allocatedDownSource)
-	{
-		delete m_downSource;
-		m_downSource = NULL;
-	}
-	delete m_counter;
-	m_counter = NULL;
-	counters->Free(m_index);
+    SetUpdateWhenEmpty(true);
+    wpi_assert(m_counter != NULL);
+    if (m_allocatedUpSource)
+    {
+        delete m_upSource;
+        m_upSource = NULL;
+    }
+    if (m_allocatedDownSource)
+    {
+        delete m_downSource;
+        m_downSource = NULL;
+    }
+    delete m_counter;
+    m_counter = NULL;
+    counters->Free(m_index);
 }
 
 /**
@@ -123,8 +123,8 @@ Counter::~Counter()
  */
 void Counter::SetUpSource(UINT32 slot, UINT32 channel)
 {
-	SetUpSource(new DigitalInput(slot, channel));
-	m_allocatedUpSource = true;
+    SetUpSource(new DigitalInput(slot, channel));
+    m_allocatedUpSource = true;
 }
 
 /**
@@ -133,7 +133,7 @@ void Counter::SetUpSource(UINT32 slot, UINT32 channel)
  */
 void Counter::SetUpSource(UINT32 channel)
 {
-	SetUpSource(GetDefaultDigitalModule(), channel);
+    SetUpSource(GetDefaultDigitalModule(), channel);
 }
 
 /**
@@ -141,31 +141,36 @@ void Counter::SetUpSource(UINT32 channel)
  * @param analogTrigger The analog trigger object that is used for the Up Source
  * @param triggerType The analog trigger output that will trigger the counter.
  */
-void Counter::SetUpSource(AnalogTrigger *analogTrigger, AnalogTriggerOutput::Type triggerType)
+void Counter::SetUpSource(AnalogTrigger * analogTrigger,
+                          AnalogTriggerOutput::Type triggerType)
 {
-	SetUpSource(analogTrigger->CreateOutput(triggerType));
-	m_allocatedUpSource = true;
+    SetUpSource(analogTrigger->CreateOutput(triggerType));
+    m_allocatedUpSource = true;
 }
 
 /**
  * Set the source object that causes the counter to count up.
  * Set the up counting DigitalSource.
  */
-void Counter::SetUpSource(DigitalSource *source)
+void Counter::SetUpSource(DigitalSource * source)
 {
-	wpi_assert(m_upSource == NULL);
-	m_upSource = source;
-	m_counter->writeConfig_UpSource_Module(source->GetModuleForRouting(), &status);
-	m_counter->writeConfig_UpSource_Channel(source->GetChannelForRouting(), &status);
-	m_counter->writeConfig_UpSource_AnalogTrigger(source->GetAnalogTriggerForRouting(), &status);
+    wpi_assert(m_upSource == NULL);
+    m_upSource = source;
+    m_counter->writeConfig_UpSource_Module(source->GetModuleForRouting(),
+                                           &status);
+    m_counter->writeConfig_UpSource_Channel(source->GetChannelForRouting(),
+                                            &status);
+    m_counter->writeConfig_UpSource_AnalogTrigger(source->
+                                                  GetAnalogTriggerForRouting
+                                                  (), &status);
 
-	if(m_counter->readConfig_Mode(&status) == kTwoPulse ||
-			m_counter->readConfig_Mode(&status) == kExternalDirection)
-	{
-		SetUpSourceEdge(true, false);
-	}
-	m_counter->strobeReset(&status);
-	wpi_assertCleanStatus(status);
+    if (m_counter->readConfig_Mode(&status) == kTwoPulse ||
+        m_counter->readConfig_Mode(&status) == kExternalDirection)
+    {
+        SetUpSourceEdge(true, false);
+    }
+    m_counter->strobeReset(&status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -173,31 +178,36 @@ void Counter::SetUpSource(DigitalSource *source)
  * @param analogTrigger The analog trigger object that is used for the Up Source
  * @param triggerType The analog trigger output that will trigger the counter.
  */
-void Counter::SetUpSource(AnalogTrigger &analogTrigger, AnalogTriggerOutput::Type triggerType)
+void Counter::SetUpSource(AnalogTrigger & analogTrigger,
+                          AnalogTriggerOutput::Type triggerType)
 {
-	SetUpSource(analogTrigger.CreateOutput(triggerType));
-	m_allocatedUpSource = true;
+    SetUpSource(analogTrigger.CreateOutput(triggerType));
+    m_allocatedUpSource = true;
 }
 
 /**
  * Set the source object that causes the counter to count up.
  * Set the up counting DigitalSource.
  */
-void Counter::SetUpSource(DigitalSource &source)
+void Counter::SetUpSource(DigitalSource & source)
 {
-	wpi_assert(m_upSource == NULL);
-	m_upSource = &source;
-	m_counter->writeConfig_UpSource_Module(source.GetModuleForRouting(), &status);
-	m_counter->writeConfig_UpSource_Channel(source.GetChannelForRouting(), &status);
-	m_counter->writeConfig_UpSource_AnalogTrigger(source.GetAnalogTriggerForRouting(), &status);
+    wpi_assert(m_upSource == NULL);
+    m_upSource = &source;
+    m_counter->writeConfig_UpSource_Module(source.GetModuleForRouting(),
+                                           &status);
+    m_counter->writeConfig_UpSource_Channel(source.GetChannelForRouting(),
+                                            &status);
+    m_counter->writeConfig_UpSource_AnalogTrigger(source.
+                                                  GetAnalogTriggerForRouting
+                                                  (), &status);
 
-	if(m_counter->readConfig_Mode(&status) == kTwoPulse ||
-			m_counter->readConfig_Mode(&status) == kExternalDirection)
-	{
-		SetUpSourceEdge(true, false);
-	}
-	m_counter->strobeReset(&status);
-	wpi_assertCleanStatus(status);
+    if (m_counter->readConfig_Mode(&status) == kTwoPulse ||
+        m_counter->readConfig_Mode(&status) == kExternalDirection)
+    {
+        SetUpSourceEdge(true, false);
+    }
+    m_counter->strobeReset(&status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -206,9 +216,9 @@ void Counter::SetUpSource(DigitalSource &source)
  */
 void Counter::SetUpSourceEdge(bool risingEdge, bool fallingEdge)
 {
-	wpi_assert(m_upSource != NULL);
-	m_counter->writeConfig_UpRisingEdge(risingEdge, &status);
-	m_counter->writeConfig_UpFallingEdge(fallingEdge, &status);
+    wpi_assert(m_upSource != NULL);
+    m_counter->writeConfig_UpRisingEdge(risingEdge, &status);
+    m_counter->writeConfig_UpFallingEdge(fallingEdge, &status);
 }
 
 /**
@@ -216,22 +226,22 @@ void Counter::SetUpSourceEdge(bool risingEdge, bool fallingEdge)
  */
 void Counter::ClearUpSource()
 {
-	wpi_assert(m_upSource != NULL);
-	if (m_allocatedUpSource)
-	{
-		delete m_upSource;
-		m_upSource = NULL;
-		m_allocatedUpSource = false;
-	}
-	bool state = m_counter->readEnable(&status);
-	m_counter->writeEnable(false, &status);
-	m_counter->writeConfig_UpFallingEdge(false, &status);
-	m_counter->writeConfig_UpRisingEdge(false, &status);
-	// Index 0 of digital is always 0.
-	m_counter->writeConfig_UpSource_Channel(0, &status);
-	m_counter->writeConfig_UpSource_AnalogTrigger(false, &status);
-	m_counter->writeEnable(state, &status);
-	wpi_assertCleanStatus(status);
+    wpi_assert(m_upSource != NULL);
+    if (m_allocatedUpSource)
+    {
+        delete m_upSource;
+        m_upSource = NULL;
+        m_allocatedUpSource = false;
+    }
+    bool state = m_counter->readEnable(&status);
+    m_counter->writeEnable(false, &status);
+    m_counter->writeConfig_UpFallingEdge(false, &status);
+    m_counter->writeConfig_UpRisingEdge(false, &status);
+    // Index 0 of digital is always 0.
+    m_counter->writeConfig_UpSource_Channel(0, &status);
+    m_counter->writeConfig_UpSource_AnalogTrigger(false, &status);
+    m_counter->writeEnable(state, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -240,7 +250,7 @@ void Counter::ClearUpSource()
  */
 void Counter::SetDownSource(UINT32 channel)
 {
-	SetDownSource(new DigitalInput(channel));
+    SetDownSource(new DigitalInput(channel));
 }
 
 /**
@@ -248,7 +258,7 @@ void Counter::SetDownSource(UINT32 channel)
  */
 void Counter::SetDownSource(UINT32 slot, UINT32 channel)
 {
-	SetDownSource(new DigitalInput(slot, channel));
+    SetDownSource(new DigitalInput(slot, channel));
 }
 
 /**
@@ -256,28 +266,34 @@ void Counter::SetDownSource(UINT32 slot, UINT32 channel)
  * @param analogTrigger The analog trigger object that is used for the Down Source
  * @param triggerType The analog trigger output that will trigger the counter.
  */
-void Counter::SetDownSource(AnalogTrigger *analogTrigger, AnalogTriggerOutput::Type triggerType)
+void Counter::SetDownSource(AnalogTrigger * analogTrigger,
+                            AnalogTriggerOutput::Type triggerType)
 {
-	SetDownSource(analogTrigger->CreateOutput(triggerType));
-	m_allocatedDownSource = true;
+    SetDownSource(analogTrigger->CreateOutput(triggerType));
+    m_allocatedDownSource = true;
 }
 
 /**
  * Set the source object that causes the counter to count down.
  * Set the down counting DigitalSource.
  */
-void Counter::SetDownSource(DigitalSource *source)
+void Counter::SetDownSource(DigitalSource * source)
 {
-	wpi_assert(m_downSource == NULL);
-	wpi_assert(m_counter->readConfig_Mode(&status) == kTwoPulse);
-	m_downSource = source;
-	m_counter->writeConfig_DownSource_Module(source->GetModuleForRouting(), &status);
-	m_counter->writeConfig_DownSource_Channel(source->GetChannelForRouting(), &status);
-	m_counter->writeConfig_DownSource_AnalogTrigger(source->GetAnalogTriggerForRouting(), &status);
+    wpi_assert(m_downSource == NULL);
+    wpi_assert(m_counter->readConfig_Mode(&status) == kTwoPulse);
+    m_downSource = source;
+    m_counter->writeConfig_DownSource_Module(source->GetModuleForRouting(),
+                                             &status);
+    m_counter->writeConfig_DownSource_Channel(source->
+                                              GetChannelForRouting(),
+                                              &status);
+    m_counter->writeConfig_DownSource_AnalogTrigger(source->
+                                                    GetAnalogTriggerForRouting
+                                                    (), &status);
 
-	SetDownSourceEdge(true, false);
-	m_counter->strobeReset(&status);
-	wpi_assertCleanStatus(status);
+    SetDownSourceEdge(true, false);
+    m_counter->strobeReset(&status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -285,28 +301,33 @@ void Counter::SetDownSource(DigitalSource *source)
  * @param analogTrigger The analog trigger object that is used for the Down Source
  * @param triggerType The analog trigger output that will trigger the counter.
  */
-void Counter::SetDownSource(AnalogTrigger &analogTrigger, AnalogTriggerOutput::Type triggerType)
+void Counter::SetDownSource(AnalogTrigger & analogTrigger,
+                            AnalogTriggerOutput::Type triggerType)
 {
-	SetDownSource(analogTrigger.CreateOutput(triggerType));
-	m_allocatedDownSource = true;
+    SetDownSource(analogTrigger.CreateOutput(triggerType));
+    m_allocatedDownSource = true;
 }
 
 /**
  * Set the source object that causes the counter to count down.
  * Set the down counting DigitalSource.
  */
-void Counter::SetDownSource(DigitalSource &source)
+void Counter::SetDownSource(DigitalSource & source)
 {
-	wpi_assert(m_downSource == NULL);
-	wpi_assert(m_counter->readConfig_Mode(&status) == kTwoPulse);
-	m_downSource = &source;
-	m_counter->writeConfig_DownSource_Module(source.GetModuleForRouting(), &status);
-	m_counter->writeConfig_DownSource_Channel(source.GetChannelForRouting(), &status);
-	m_counter->writeConfig_DownSource_AnalogTrigger(source.GetAnalogTriggerForRouting(), &status);
+    wpi_assert(m_downSource == NULL);
+    wpi_assert(m_counter->readConfig_Mode(&status) == kTwoPulse);
+    m_downSource = &source;
+    m_counter->writeConfig_DownSource_Module(source.GetModuleForRouting(),
+                                             &status);
+    m_counter->writeConfig_DownSource_Channel(source.GetChannelForRouting(),
+                                              &status);
+    m_counter->writeConfig_DownSource_AnalogTrigger(source.
+                                                    GetAnalogTriggerForRouting
+                                                    (), &status);
 
-	SetDownSourceEdge(true, false);
-	m_counter->strobeReset(&status);
-	wpi_assertCleanStatus(status);
+    SetDownSourceEdge(true, false);
+    m_counter->strobeReset(&status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -315,9 +336,9 @@ void Counter::SetDownSource(DigitalSource &source)
  */
 void Counter::SetDownSourceEdge(bool risingEdge, bool fallingEdge)
 {
-	wpi_assert(m_downSource != NULL);
-	m_counter->writeConfig_DownRisingEdge(risingEdge, &status);
-	m_counter->writeConfig_DownFallingEdge(fallingEdge, &status);
+    wpi_assert(m_downSource != NULL);
+    m_counter->writeConfig_DownRisingEdge(risingEdge, &status);
+    m_counter->writeConfig_DownFallingEdge(fallingEdge, &status);
 }
 
 /**
@@ -325,22 +346,22 @@ void Counter::SetDownSourceEdge(bool risingEdge, bool fallingEdge)
  */
 void Counter::ClearDownSource()
 {
-	wpi_assert(m_downSource != NULL);
-	if (m_allocatedDownSource)
-	{
-		delete m_downSource;
-		m_downSource = NULL;
-		m_allocatedDownSource = false;
-	}
-	bool state = m_counter->readEnable(&status);
-	m_counter->writeEnable(false, &status);
-	m_counter->writeConfig_DownFallingEdge(false, &status);
-	m_counter->writeConfig_DownRisingEdge(false, &status);
-	// Index 0 of digital is always 0.
-	m_counter->writeConfig_DownSource_Channel(0, &status);
-	m_counter->writeConfig_DownSource_AnalogTrigger(false, &status);
-	m_counter->writeEnable(state, &status);
-	wpi_assertCleanStatus(status);
+    wpi_assert(m_downSource != NULL);
+    if (m_allocatedDownSource)
+    {
+        delete m_downSource;
+        m_downSource = NULL;
+        m_allocatedDownSource = false;
+    }
+    bool state = m_counter->readEnable(&status);
+    m_counter->writeEnable(false, &status);
+    m_counter->writeConfig_DownFallingEdge(false, &status);
+    m_counter->writeConfig_DownRisingEdge(false, &status);
+    // Index 0 of digital is always 0.
+    m_counter->writeConfig_DownSource_Channel(0, &status);
+    m_counter->writeConfig_DownSource_AnalogTrigger(false, &status);
+    m_counter->writeEnable(state, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -349,8 +370,8 @@ void Counter::ClearDownSource()
  */
 void Counter::SetUpDownCounterMode()
 {
-	m_counter->writeConfig_Mode(kTwoPulse, &status);
-	wpi_assertCleanStatus(status);
+    m_counter->writeConfig_Mode(kTwoPulse, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -360,8 +381,8 @@ void Counter::SetUpDownCounterMode()
  */
 void Counter::SetExternalDirectionMode()
 {
-	m_counter->writeConfig_Mode(kExternalDirection, &status);
-	wpi_assertCleanStatus(status);
+    m_counter->writeConfig_Mode(kExternalDirection, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -370,10 +391,10 @@ void Counter::SetExternalDirectionMode()
  */
 void Counter::SetSemiPeriodMode(bool highSemiPeriod)
 {
-	m_counter->writeConfig_Mode(kSemiperiod, &status);
-	m_counter->writeConfig_UpRisingEdge(highSemiPeriod, &status);
-	SetUpdateWhenEmpty(false);
-	wpi_assertCleanStatus(status);
+    m_counter->writeConfig_Mode(kSemiperiod, &status);
+    m_counter->writeConfig_UpRisingEdge(highSemiPeriod, &status);
+    SetUpdateWhenEmpty(false);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -383,9 +404,12 @@ void Counter::SetSemiPeriodMode(bool highSemiPeriod)
  */
 void Counter::SetPulseLengthMode(float threshold)
 {
-	m_counter->writeConfig_Mode(kPulseLength, &status);
-	m_counter->writeConfig_PulseLengthThreshold((UINT32)(threshold * 1.0e6) * kSystemClockTicksPerMicrosecond, &status);
-	wpi_assertCleanStatus(status);
+    m_counter->writeConfig_Mode(kPulseLength, &status);
+    m_counter->
+        writeConfig_PulseLengthThreshold((UINT32) (threshold * 1.0e6) *
+                                         kSystemClockTicksPerMicrosecond,
+                                         &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -395,8 +419,8 @@ void Counter::SetPulseLengthMode(float threshold)
  */
 void Counter::Start()
 {
-	m_counter->writeEnable(1, &status);
-	wpi_assertCleanStatus(status);
+    m_counter->writeEnable(1, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -406,9 +430,9 @@ void Counter::Start()
  */
 INT32 Counter::Get()
 {
-	INT32 value = m_counter->readOutput_Value(&status);
-	wpi_assertCleanStatus(status);
-	return value;
+    INT32 value = m_counter->readOutput_Value(&status);
+    wpi_assertCleanStatus(status);
+    return value;
 }
 
 /**
@@ -418,8 +442,8 @@ INT32 Counter::Get()
  */
 void Counter::Reset()
 {
-	m_counter->strobeReset(&status);
-	wpi_assertCleanStatus(status);
+    m_counter->strobeReset(&status);
+    wpi_assertCleanStatus(status);
 }
 
 /**
@@ -428,8 +452,8 @@ void Counter::Reset()
  */
 void Counter::Stop()
 {
-	m_counter->writeEnable(0, &status);
-	wpi_assertCleanStatus(status);
+    m_counter->writeEnable(0, &status);
+    wpi_assertCleanStatus(status);
 }
 
 /*
@@ -440,9 +464,9 @@ void Counter::Stop()
  */
 double Counter::GetPeriod()
 {
-	long period = m_counter->readTimerOutput_Period(&status);
-	wpi_assertCleanStatus(status);
-	return period / 1.0e6;
+    long period = m_counter->readTimerOutput_Period(&status);
+    wpi_assertCleanStatus(status);
+    return period / 1.0e6;
 }
 
 /**
@@ -454,8 +478,9 @@ double Counter::GetPeriod()
  */
 void Counter::SetMaxPeriod(double maxPeriod)
 {
-	tRioStatusCode status = 0;
-	m_counter->writeTimerConfig_StallPeriod((UINT32)(maxPeriod * 1.0e6), &status);
+    tRioStatusCode status = 0;
+    m_counter->writeTimerConfig_StallPeriod((UINT32) (maxPeriod * 1.0e6),
+                                            &status);
 }
 
 /**
@@ -472,8 +497,8 @@ void Counter::SetMaxPeriod(double maxPeriod)
  */
 void Counter::SetUpdateWhenEmpty(bool enabled)
 {
-	tRioStatusCode status = 0;
-	m_counter->writeTimerConfig_UpdateWhenEmpty(enabled, &status);
+    tRioStatusCode status = 0;
+    m_counter->writeTimerConfig_UpdateWhenEmpty(enabled, &status);
 }
 
 /**
@@ -486,8 +511,8 @@ void Counter::SetUpdateWhenEmpty(bool enabled)
  */
 bool Counter::GetStopped()
 {
-	tRioStatusCode status = 0;
-	return m_counter->readTimerOutput_Stalled(&status);
+    tRioStatusCode status = 0;
+    return m_counter->readTimerOutput_Stalled(&status);
 }
 
 /**
@@ -496,8 +521,7 @@ bool Counter::GetStopped()
  */
 bool Counter::GetDirection()
 {
-	bool value = m_counter->readOutput_Direction(&status);
-	wpi_assertCleanStatus(status);
-	return value;
+    bool value = m_counter->readOutput_Direction(&status);
+    wpi_assertCleanStatus(status);
+    return value;
 }
-
