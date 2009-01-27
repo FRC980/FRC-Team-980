@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "RobotBase.h"
 
@@ -27,11 +27,13 @@ RobotBase & RobotBase::getInstance()
 
 /**
  * Constructor for a generic robot program.
- * User code should be placed in the constuctor that runs before the Autonomous or Operator
- * Control period starts. The constructor will run to completion before Autonomous is entered.
- * 
- * This must be used to ensure that the communications code starts. In the future it would be
- * nice to put this code into it's own task that loads on boot so ensure that it runs.
+ * User code should be placed in the constuctor that runs before the
+ * Autonomous or Operator Control period starts. The constructor will run
+ * to completion before Autonomous is entered.
+ *
+ * This must be used to ensure that the communications code starts. In the
+ * future it would be nice to put this code into it's own task that loads
+ * on boot so ensure that it runs.
  */
 RobotBase::RobotBase():m_task(NULL), m_ds(NULL)
 {
@@ -40,8 +42,8 @@ RobotBase::RobotBase():m_task(NULL), m_ds(NULL)
 
 /**
  * Free the resources for a RobotBase class.
- * This includes deleting all classes that might have been allocated as Singletons to they
- * would never be deleted except here.
+ * This includes deleting all classes that might have been allocated as
+ * Singletons to they would never be deleted except here.
  */
 RobotBase::~RobotBase()
 {
@@ -53,7 +55,7 @@ RobotBase::~RobotBase()
 
 /**
  * Check on the overall status of the system.
- * 
+ *
  * @return Is the system active (i.e. PWM motor outputs, etc. enabled)?
  */
 bool RobotBase::IsSystemActive()
@@ -63,8 +65,8 @@ bool RobotBase::IsSystemActive()
 
 /**
  * Return the instance of the Watchdog timer.
- * Get the watchdog timer so the user program can either disable it or feed it when
- * necessary.
+ * Get the watchdog timer so the user program can either disable it or
+ * feed it when necessary.
  */
 Watchdog & RobotBase::GetWatchdog()
 {
@@ -82,7 +84,8 @@ bool RobotBase::IsDisabled()
 
 /**
  * Determine if the robot is currently in Autnomous mode.
- * @return True if the robot is currently operating Autonomously as determined by the field controls.
+ * @return True if the robot is currently operating Autonomously as
+ * determined by the field controls.
  */
 bool RobotBase::IsAutonomous()
 {
@@ -91,7 +94,8 @@ bool RobotBase::IsAutonomous()
 
 /**
  * Determine if the robot is currently in Operator Control mode.
- * @return True if the robot is currently operating in Tele-Op mode as determined by the field controls.
+ * @return True if the robot is currently operating in Tele-Op mode as
+ * determined by the field controls.
  */
 bool RobotBase::IsOperatorControl()
 {
@@ -100,8 +104,10 @@ bool RobotBase::IsOperatorControl()
 
 /**
  * Indicates if new data is available from the driver station.
- * @todo The current implementation is silly.  We already know this explicitly without trying to figure it out.
- * @return Has new data arrived over the network since the last time this function was called?
+ * @todo The current implementation is silly.  We already know this
+ * explicitly without trying to figure it out.
+ * @return Has new data arrived over the network since the last time this
+ * function was called?
  */
 bool RobotBase::IsNewDataAvailable()
 {
@@ -127,12 +133,14 @@ void RobotBase::robotTask(FUNCPTR factory, Task * task)
 }
 
 /**
- * 
+ *
  * Start the robot code.
- * This function starts the robot code running by spawning a task. Currently tasks seemed to be
- * started by LVRT without setting the VX_FP_TASK flag so floating point context is not saved on
- * interrupts. Therefore the program experiences hard to debug and unpredictable results. So the
- * LVRT code starts this function, and it, in turn, starts the actual user program.
+ * This function starts the robot code running by spawning a
+ * task. Currently tasks seemed to be started by LVRT without setting the
+ * VX_FP_TASK flag so floating point context is not saved on
+ * interrupts. Therefore the program experiences hard to debug and
+ * unpredictable results. So the LVRT code starts this function, and it,
+ * in turn, starts the actual user program.
  */
 void RobotBase::startRobotTask(FUNCPTR factory)
 {
@@ -158,19 +166,19 @@ void RobotBase::startRobotTask(FUNCPTR factory)
     }
 
     // Start robot task
-    // This is done to ensure that the C++ robot task is spawned with the floating point
-    // context save parameter.
-    Task *task =
-        new Task("RobotTask", (FUNCPTR) RobotBase::robotTask,
-                 Task::kDefaultPriority, 64000);
+    // This is done to ensure that the C++ robot task is spawned with the
+    // floating point context save parameter.
+    Task *task = new Task("RobotTask", (FUNCPTR) RobotBase::robotTask,
+                          Task::kDefaultPriority, 64000);
     task->Start((INT32) factory, (INT32) task);
 }
 
 /**
- * This class exists for the sole purpose of getting its destructor called when the module unloads.
- * Before the module is done unloading, we need to delete the RobotBase derived singleton.  This should delete
- * the other remaining singletons that were registered.  This should also stop all tasks that are using
- * the Task class.
+ * This class exists for the sole purpose of getting its destructor called
+ * when the module unloads.  Before the module is done unloading, we need
+ * to delete the RobotBase derived singleton.  This should delete the
+ * other remaining singletons that were registered.  This should also stop
+ * all tasks that are using the Task class.
  */
 class RobotDeleter
 {
@@ -178,9 +186,11 @@ class RobotDeleter
     RobotDeleter(void)
     {
     }
+
     ~RobotDeleter()
     {
         delete & RobotBase::getInstance();
     }
 };
+
 static RobotDeleter g_robotDeleter;
