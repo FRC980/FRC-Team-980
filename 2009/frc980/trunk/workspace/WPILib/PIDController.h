@@ -22,7 +22,7 @@ class Notifier;
  */
 class PIDController
 {
-private:
+  private:
     float m_P;                  // factor for "proportional" control
     float m_I;                  // factor for "integral" control
     float m_D;                  // factor for "derivative" control
@@ -47,15 +47,16 @@ private:
     void Calculate();
     DISALLOW_COPY_AND_ASSIGN(PIDController);
 
-public:
+  public:
     PIDController(float p, float i, float d, float period = 0.05);
     ~PIDController();
     float Get();
     void SetContinuous(bool continuous = true);
-    void SetInput(PIDSource *pidInput);
-    void SetInput(PIDSource *pidInput, float minimumInput, float maximumInput);
-    void SetOutput(PIDOutput *pidOutput);
-    void SetOutput(PIDOutput *pidOutput, float mimimumOutput,
+    void SetInput(PIDSource * pidInput);
+    void SetInput(PIDSource * pidInput, float minimumInput,
+                  float maximumInput);
+    void SetOutput(PIDOutput * pidOutput);
+    void SetOutput(PIDOutput * pidOutput, float mimimumOutput,
                    float maximumOutput);
 
     void SetSetpoint(float setpoint);

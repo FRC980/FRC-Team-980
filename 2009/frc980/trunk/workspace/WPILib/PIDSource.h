@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							 */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
 /* Open Source Software - may be modified and shared by FRC teams. The code  */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
 /*---------------------------------------------------------------------------*/
@@ -15,8 +15,8 @@
  */
 class PIDSource
 {
-public:
-	virtual float PIDGet() = 0;
+  public:
+    virtual float PIDGet() = 0;
 };
 
 #endif

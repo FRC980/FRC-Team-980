@@ -1,10 +1,11 @@
-/********************************************************************************
-*  Project   		: FIRST Motor Controller
-*  File Name  		: PCVideoServer.cpp
-*  Contributors   	: SVK, ELF
-*  Creation Date 	: November 30, 2008
-*  Revision History	: Source code & revision history maintained at sourceforge.WPI.edu
-*  File Description	: C++ Axis camera control for the FIRST Vision API
+/*******************************************************************************
+*  Project          : FIRST Motor Controller
+*  File Name        : PCVideoServer.cpp
+*  Contributors     : SVK, ELF
+*  Creation Date    : November 30, 2008
+*  Revision History : Source code & revision history maintained at
+*                     sourceforge.WPI.edu
+*  File Description : C++ Axis camera control for the FIRST Vision API
 */
 /*----------------------------------------------------------------------------*/
 /*        Copyright (c) FIRST 2008.  All Rights Reserved.                     */
@@ -27,39 +28,45 @@
 
 #include "PCVideoServer.h"
 
-bool g_stopImageToPCServer=false;
+bool g_stopImageToPCServer = false;
 
 /**
 @brief Implements an object that automatically does a close on a
 camera socket on destruction.
 */
-class ScopedSocket {
-public:
-    ScopedSocket(int camSock, const ErrorBase* errorBase) :
-        m_camSock(camSock)
+class ScopedSocket
+{
+  public:
+    ScopedSocket(int camSock,
+                 const ErrorBase * errorBase):m_camSock(camSock)
     {
-        if (errorBase->StatusIsFatal()) {
+        if (errorBase->StatusIsFatal())
+        {
             return;
         }
-        if (m_camSock == ERROR) {
+        if   (m_camSock == ERROR)
+        {
             wpi_setError(*errorBase, ERR_CAMERA_SOCKET_CREATE_FAILED);
             return;
         }
     }
 
-    ~ScopedSocket() {
-        if (m_camSock != ERROR) {
+    ~ScopedSocket()
+    {
+        if (m_camSock != ERROR)
+        {
             close(m_camSock);
         }
     }
     //  Cast to int allows you to pass this to any function that
     //  takes the socket as an int.
-    operator int() const {
+    operator  int () const
+    {
         return m_camSock;
     }
 
-private:
-    int m_camSock;
+  private:
+    int  m_camSock;
 };
 
 //============================================================================
@@ -69,28 +76,33 @@ private:
 /**
 @brief Constructor.
 */
-PCVideoServer::PCVideoServer(void)
-	: m_task("PCVideo", (FUNCPTR)ImageToPCServer)
+PCVideoServer::PCVideoServer(void):m_task("PCVideo",
+                                          (FUNCPTR) ImageToPCServer)
 {
-    try {
-    	printf ("START PCVideoServer constructor\n");
+    try
+    {
+        printf("START PCVideoServer constructor\n");
         // Start the image communication task.
         StartPcTask();
-        if (StatusIsFatal()) {
+        if (StatusIsFatal())
+        {
             throw GetError().GetCode();
         }
     }
-    catch(Error::Code error) {
+    catch(Error::Code error)
+    {
         wpi_setError(*this, error);
         return;
     }
 }
+
 /**
 @brief Destructor.
 Stop serving images and destroy this class.
 */
-PCVideoServer::~PCVideoServer() {
-    printf ("START PCVideoServer DESTRUCTOR **********************\n");
+PCVideoServer::~PCVideoServer()
+{
+    printf("START PCVideoServer DESTRUCTOR **********************\n");
     //  Stop the images to PC server.
     Stop();
     //StopImageToPCServer();
@@ -99,21 +111,27 @@ PCVideoServer::~PCVideoServer() {
     //  accept connections from a PC.
     ClearError();
     //  Open a socket.
-    ScopedSocket camSock(socket (AF_INET, SOCK_STREAM, 0), this);
+    ScopedSocket camSock(socket(AF_INET, SOCK_STREAM, 0), this);
     //  If successful
-    if (!StatusIsFatal()) {
+    if (!StatusIsFatal())
+    {
         //  Create a connection to the localhost.
         struct sockaddr_in selfAddr;
-        int sockAddrSize = sizeof(selfAddr);
-        bzero ((char *) &selfAddr, sockAddrSize);
+        int  sockAddrSize = sizeof(selfAddr);
+        bzero((char *)&selfAddr, sockAddrSize);
         selfAddr.sin_family = AF_INET;
         selfAddr.sin_len = (u_char) sockAddrSize;
-        selfAddr.sin_port = htons (VIDEO_TO_PC_PORT);
+        selfAddr.sin_port = htons(VIDEO_TO_PC_PORT);
 
-        if (( (int)(selfAddr.sin_addr.s_addr = inet_addr (const_cast<char*>("localhost")) ) != ERROR) ||
-            ( (int)(selfAddr.sin_addr.s_addr = hostGetByName (const_cast<char*>("localhost")) ) != ERROR))
+        if (((int)
+             (selfAddr.sin_addr.s_addr =
+              inet_addr(const_cast<char*>("localhost"))) != ERROR)
+            ||
+            ((int)
+             (selfAddr.sin_addr.s_addr =
+              hostGetByName(const_cast<char*>("localhost"))) != ERROR))
         {
-            connect (camSock, (struct sockaddr *) &selfAddr, sockAddrSize);
+            connect(camSock, (struct sockaddr *)&selfAddr, sockAddrSize);
         }
     }
 }
@@ -121,47 +139,54 @@ PCVideoServer::~PCVideoServer() {
 /**
  * Start the task that is responsible for sending images to the PC.
  */
-int PCVideoServer::StartPcTask() {
-    if (StatusIsFatal()) {
+int PCVideoServer::StartPcTask()
+{
+    if (StatusIsFatal())
+    {
         return -1;
     }
-	int id = 0;
-	g_stopImageToPCServer = false;
-	// check for prior copy of running task
+    int id = 0;
+    g_stopImageToPCServer = false;
+    // check for prior copy of running task
     // TODO: Report error. You are in a bad state.
     //char taskName[1024];
     //sprintf(taskName, "%s%X", taskName, reinterpret_cast<int>(this));
-	int oldId = taskNameToId(m_task.GetName());
-	if(oldId != ERROR) {
-		taskDelete(oldId);
-	}
+    int oldId = taskNameToId(m_task.GetName());
+    if (oldId != ERROR)
+    {
+        taskDelete(oldId);
+    }
 
-	// spawn video server task
-	// this is done to ensure that the task is spawned with the
-	// floating point context save parameter.
-	bool started = m_task.Start();
+    // spawn video server task
+    // this is done to ensure that the task is spawned with the
+    // floating point context save parameter.
+    bool started = m_task.Start();
 
-	id = m_task.GetID();
+    id = m_task.GetID();
 
-    if (!started) {
+    if (!started)
+    {
         wpi_setError(*this, ERR_CAMERA_TASK_SPAWN_FAILED);
         return id;
     }
-	taskDelay(1);
-	return id;
+    taskDelay(1);
+    return id;
 }
+
 /**
 @brief Start sending images to the PC.
 */
-void PCVideoServer::Start() {
+void PCVideoServer::Start()
+{
     StartPcTask();
 }
 
 /**
 @brief Stop sending images to the PC.
 */
-void PCVideoServer::Stop() {
-	printf("Stop");
+void PCVideoServer::Stop()
+{
+    printf("Stop");
     g_stopImageToPCServer = true;
 }
 
@@ -172,16 +197,18 @@ void PCVideoServer::Stop() {
 /**
 @brief Stop sending images to the PC.
 */
-void StopImageToPCServer() {
-	printf("StopImageToPCServer");
-	g_stopImageToPCServer = true;
+void StopImageToPCServer()
+{
+    printf("StopImageToPCServer");
+    g_stopImageToPCServer = true;
 }
 
 /**
 @brief Check is server is shutting down.
 @return bool true if time to stop
 */
-bool ShouldStopImageToPCServer()  {
+bool ShouldStopImageToPCServer()
+{
     //  Return the current state of g_stopImageToPCServer
     return g_stopImageToPCServer;
 }
@@ -189,71 +216,89 @@ bool ShouldStopImageToPCServer()  {
 /**
 @brief Initialize the socket and serve images to the PC.
 */
-int ImageToPCServer() {
+int ImageToPCServer()
+{
     printf("ImageToPCServer Started\n");
 
     /* Setup to PC sockets */
     struct sockaddr_in serverAddr;
     int sockAddrSize = sizeof(serverAddr);
     int pcSock = ERROR;
-    bzero ((char *) &serverAddr, sockAddrSize);
+    bzero((char *)&serverAddr, sockAddrSize);
     serverAddr.sin_len = (u_char) sockAddrSize;
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons (VIDEO_TO_PC_PORT);
-    serverAddr.sin_addr.s_addr = htonl (INADDR_ANY);
+    serverAddr.sin_port = htons(VIDEO_TO_PC_PORT);
+    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     int success;
-    while (!ShouldStopImageToPCServer()) {
+    while (!ShouldStopImageToPCServer())
+    {
         double lastImageTimestamp = 0;
         //  Create the socket.
-        if ((pcSock = socket (AF_INET, SOCK_STREAM, 0)) == ERROR) {
-            perror ("socket");
+        if ((pcSock = socket(AF_INET, SOCK_STREAM, 0)) == ERROR)
+        {
+            perror("socket");
             continue;
         }
-        //  Set the TCP socket so that it can be reused if it is in the wait state.
+        //  Set the TCP socket so that it can be reused if it is in the
+        //  wait state.
         int reuseAddr = 1;
-        setsockopt(pcSock, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<char*>(&reuseAddr), sizeof(reuseAddr));
+        setsockopt(pcSock, SOL_SOCKET, SO_REUSEADDR,
+                   reinterpret_cast<char*>(&reuseAddr),
+                   sizeof(reuseAddr));
         //  Bind socket to local address.
         // printf ("Binding to socket\n");
-        if (bind (pcSock, (struct sockaddr *) &serverAddr, sockAddrSize) == ERROR)
+        if (bind(pcSock, (struct sockaddr *)&serverAddr, sockAddrSize)
+            == ERROR)
         {
-            perror ("bind");
-            close (pcSock);
+            perror("bind");
+            close(pcSock);
             continue;
         }
         //  Create queue for client connection requests.
-        printf ("Listening on socket (port:%d)\n",VIDEO_TO_PC_PORT);
-        if (listen (pcSock, 1) == ERROR)
+        printf("Listening on socket (port:%d)\n", VIDEO_TO_PC_PORT);
+        if (listen(pcSock, 1) == ERROR)
         {
-            perror ("listen");
-            close (pcSock);
+            perror("listen");
+            close(pcSock);
             continue;
         }
         //  Accept a new connect request
         struct sockaddr_in clientAddr;
         int clientAddrSize;
-        printf ("accept socket\n");
-        int newPCSock = accept (pcSock, reinterpret_cast<sockaddr*>(&clientAddr), &clientAddrSize);
-        if (newPCSock  == ERROR) {
-            perror ("accept");
+        printf("accept socket\n");
+        int newPCSock =
+            accept(pcSock, reinterpret_cast<sockaddr*>(&clientAddr),
+                   &clientAddrSize);
+        if (newPCSock == ERROR)
+        {
+            perror("accept");
             close(pcSock);
             continue;
         }
-        printf ("CONNECTED TO PC socket:%d\n",newPCSock);
+        printf("CONNECTED TO PC socket:%d\n", newPCSock);
         //  Got a connection.
         //TODO: check camera error
         //if (!StatusIsFatal()) {
-        if (1) {
-        	printf ("Everyting is OKAY...starting to get images from camera\n");
-            while(!ShouldStopImageToPCServer()) {
+        if (1)
+        {
+            printf
+                ("Everyting is OKAY...starting to get images from camera\n");
+            while (!ShouldStopImageToPCServer())
+            {
                 double newTimestamp;
                 int numBytes = 0;
-                char* imageData = NULL;
+                char *imageData = NULL;
                 //printf ("Getting image from camera\n");
-                success = GetImageDataBlocking(&imageData, &numBytes, &newTimestamp, lastImageTimestamp);
-                if (!success) {
-                    //  If camera is not initialzed you will get failure and
-                    //  the timestamp is invalid. Reset this value and try again.
+                success = GetImageDataBlocking(&imageData,
+                                               &numBytes,
+                                               &newTimestamp,
+                                               lastImageTimestamp);
+                if (!success)
+                {
+                    //  If camera is not initialzed you will get failure
+                    //  and the timestamp is invalid. Reset this value and
+                    //  try again.
                     lastImageTimestamp = 0;
                     continue;
                 }
@@ -261,14 +306,17 @@ int ImageToPCServer() {
 
                 //printf ("Writing image to PC\n");
                 /* Write header to PC */
-                static const char header[4]={1,0,0,0};
-                int headerSend = write(newPCSock, const_cast<char*>(header), 4);
+                static const char header[4] = { 1, 0, 0, 0 };
+                int headerSend = write(newPCSock,
+                                       const_cast<char*>(header), 4);
 
                 /* Write image length to PC */
-                int presend = write(newPCSock, reinterpret_cast<char*>(&numBytes), 4);
+                int presend = write(newPCSock,
+                                    reinterpret_cast<char*>(&numBytes),
+                                    4);
 
                 /* Write image to PC */
-                int sent = write (newPCSock, imageData, numBytes);
+                int sent = write(newPCSock, imageData, numBytes);
 
                 //  Cleanup memory allocated for the image.
                 delete imageData;
@@ -277,7 +325,9 @@ int ImageToPCServer() {
 
                 //  The PC probably closed connection. Get out of here
                 //  and try listening again.
-                if (headerSend == ERROR || sent == ERROR || presend == ERROR) {
+                if (headerSend == ERROR || sent == ERROR
+                    || presend == ERROR)
+                {
                     break;
                 }
                 //no point in running too fast -
@@ -285,13 +335,12 @@ int ImageToPCServer() {
                 Wait(0.01);
             }
         }
-        printf ("CLEANING UP...\n");
+        printf("CLEANING UP...\n");
         //  Clean up
-        close (newPCSock);
+        close(newPCSock);
         newPCSock = ERROR;
-        close (pcSock);
+        close(pcSock);
         pcSock = ERROR;
     }
     return (OK);
 }
-

@@ -66,7 +66,7 @@ PIDController::~PIDController()
  */
 void PIDController::CallCalculate(void *controller)
 {
-    PIDController *control = (PIDController*) controller;
+    PIDController *control = (PIDController *) controller;
     control->Calculate();
 }
 
@@ -88,19 +88,17 @@ void PIDController::Calculate()
         m_error = m_setpoint - input;
         if (m_continuous)
         {
-            if (fabs(m_error) >
-                m_maximumInput - m_minimumInput)
+            if (fabs(m_error) > m_maximumInput - m_minimumInput)
             {
                 if (m_error > 0)
-                    m_error = m_error  - m_maximumInput + m_minimumInput;
+                    m_error = m_error - m_maximumInput + m_minimumInput;
                 else
-                    m_error = m_error  +
-                    m_maximumInput - m_minimumInput;
+                    m_error = m_error + m_maximumInput - m_minimumInput;
             }
         }
 
         if (((m_totalError + m_error) * m_I < m_maximumOutput) &&
-                ((m_totalError + m_error) * m_I > m_minimumOutput))
+            ((m_totalError + m_error) * m_I > m_minimumOutput))
             m_totalError += m_error;
 
         m_result = m_P * m_error + m_I * m_totalError +
@@ -144,7 +142,7 @@ void PIDController::SetContinuous(bool continuous)
  * feedback.
  * @param pidInput the source of feedback for the PIDController
  */
-void PIDController::SetInput(PIDSource *pidInput)
+void PIDController::SetInput(PIDSource * pidInput)
 {
     m_pidInput = pidInput;
 }
@@ -157,8 +155,8 @@ void PIDController::SetInput(PIDSource *pidInput)
  * @param minimumInput the minimum value expected from the input
  * @param maximumInput the maximum value expected from the output
  */
-void PIDController::SetInput(PIDSource *pidInput, float minimumInput,
-        float maximumInput)
+void PIDController::SetInput(PIDSource * pidInput, float minimumInput,
+                             float maximumInput)
 {
     m_pidInput = pidInput;
     m_minimumInput = minimumInput;
@@ -170,7 +168,7 @@ void PIDController::SetInput(PIDSource *pidInput, float minimumInput,
  * Sets the PIDOutput object which the PIDController writes to.
  * @param pidOutput the source of feedback for the PIDController
  */
-void PIDController::SetOutput(PIDOutput *pidOutput)
+void PIDController::SetOutput(PIDOutput * pidOutput)
 {
     m_pidOutput = pidOutput;
 }
@@ -182,8 +180,8 @@ void PIDController::SetOutput(PIDOutput *pidOutput)
  * @param minimumOutput the minimum value to write to the output
  * @param maximumOutput the maximum value to write to the output
  */
-void PIDController::SetOutput(PIDOutput *pidOutput, float minimumOutput,
-        float maximumOutput)
+void PIDController::SetOutput(PIDOutput * pidOutput, float minimumOutput,
+                              float maximumOutput)
 {
     m_pidOutput = pidOutput;
     m_minimumOutput = minimumOutput;
@@ -196,7 +194,8 @@ void PIDController::SetOutput(PIDOutput *pidOutput, float minimumOutput,
  */
 void PIDController::SetSetpoint(float setpoint)
 {
-    if (m_maximumInput > m_minimumInput) {
+    if (m_maximumInput > m_minimumInput)
+    {
         if (setpoint > m_maximumInput)
             m_setpoint = m_maximumInput;
         else if (setpoint < m_minimumInput)
@@ -243,7 +242,7 @@ void PIDController::SetTolerence(float percent)
  */
 bool PIDController::OnTarget()
 {
-    return (fabs(m_error)<m_tolerence / 100 *
+    return (fabs(m_error) < m_tolerence / 100 *
             (m_maximumInput - m_minimumInput));
 }
 
