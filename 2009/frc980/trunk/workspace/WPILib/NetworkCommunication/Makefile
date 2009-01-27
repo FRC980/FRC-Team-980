@@ -382,7 +382,7 @@ SUB_OBJECTS :=
 SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC603gnu)
-SUBDIRS :=
+SUBDIRS := "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILib/NetworkCommunication/.svn"
 OBJECTS :=
 
 PROJECT_TARGETS := $(OBJECTS)

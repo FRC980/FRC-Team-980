@@ -497,7 +497,7 @@ SUB_OBJECTS :=
 SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC603gnu)
-SUBDIRS :=
+SUBDIRS := "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILib/CInterfaces/.svn"
 OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
 	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
 	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \

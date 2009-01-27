@@ -642,6 +642,7 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC603gnu)
 SUBDIRS := "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILib/.settings" \
+	 "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILib/.svn" \
 	 "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILib/CInterfaces" \
 	 "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILib/ChipObject" \
 	 "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILib/NetworkCommunication" \
