@@ -166,8 +166,23 @@ FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DashboardDataExample.o : C:/Users
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
+FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/Robot980.o : C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/FRC980/Robot980.cpp
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+
+
+FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/SmartDrive.o : C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/FRC980/SmartDrive.cpp
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+
+
+FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/main.o : C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/FRC980/main.cpp
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+
+
 OBJECTS_FRC980_partialImage = FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DashboardData.o \
-	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DashboardDataExample.o
+	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DashboardDataExample.o \
+	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/Robot980.o \
+	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/SmartDrive.o \
+	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/main.o
 
 FRC980_partialImage/$(MODE_DIR)/FRC980_partialImage.o : $(OBJECTS_FRC980_partialImage)
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X  -o "$@" $(OBJECTS_FRC980_partialImage) $(LIBPATH) $(LIBS) $(ADDED_LIBPATH) $(ADDED_LIBS)  && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
@@ -179,7 +194,8 @@ _clean :: FRC980_partialImage/$(MODE_DIR)/FRC980_partialImage_clean
 FRC980_partialImage/$(MODE_DIR)/FRC980_partialImage_clean : 
 	$(TRACE_FLAG)if [ -d "FRC980_partialImage" ]; then cd "FRC980_partialImage"; rm -rf $(MODE_DIR); fi
 
-DEP_FILES := FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DashboardData.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DashboardDataExample.d
+DEP_FILES := FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DashboardData.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DashboardDataExample.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/Robot980.d \
+	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/SmartDrive.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/main.d
 -include $(DEP_FILES)
 
 
