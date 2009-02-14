@@ -51,8 +51,8 @@ void Relay::InitRelay(UINT32 slot)
  * @param direction The direction that the Relay object will control.
  */
 Relay::Relay(UINT32 slot, UINT32 channel, Relay::Direction direction):m_channel(channel),
-m_direction
-(direction)
+    m_direction
+    (direction)
 {
     InitRelay(slot);
 }
@@ -63,8 +63,8 @@ m_direction
  * @param direction The direction that the Relay object will control.
  */
 Relay::Relay(UINT32 channel, Relay::Direction direction):m_channel(channel),
-m_direction
-(direction)
+    m_direction
+    (direction)
 {
     InitRelay(GetDefaultDigitalModule());
 }

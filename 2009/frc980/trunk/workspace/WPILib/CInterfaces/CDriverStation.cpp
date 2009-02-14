@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -19,8 +19,9 @@ static DriverStation *ds = NULL;
  */
 float GetStickAxis(UINT32 stick, UINT32 axis)
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->GetStickAxis(stick, axis);
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->GetStickAxis(stick, axis);
 }
 
 /**
@@ -32,8 +33,9 @@ float GetStickAxis(UINT32 stick, UINT32 axis)
  */
 short GetStickButtons(UINT32 stick)
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->GetStickButtons(stick);
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->GetStickButtons(stick);
 }
 
 /**
@@ -47,8 +49,9 @@ short GetStickButtons(UINT32 stick)
  */
 float GetAnalogIn(UINT32 channel)
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->GetAnalogIn(channel);
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->GetAnalogIn(channel);
 }
 
 /**
@@ -59,8 +62,9 @@ float GetAnalogIn(UINT32 channel)
  */
 bool GetDigitalIn(UINT32 channel)
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->GetDigitalIn(channel);
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->GetDigitalIn(channel);
 }
 
 /**
@@ -74,8 +78,9 @@ bool GetDigitalIn(UINT32 channel)
  */
 void SetDigitalOut(UINT32 channel, bool value)
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	ds->SetDigitalOut(channel, value);
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    ds->SetDigitalOut(channel, value);
 }
 
 /**
@@ -85,8 +90,9 @@ void SetDigitalOut(UINT32 channel, bool value)
  */
 bool GetDigitalOut(UINT32 channel)
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->GetDigitalOut(channel);
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->GetDigitalOut(channel);
 }
 
 /**
@@ -95,8 +101,9 @@ bool GetDigitalOut(UINT32 channel)
  */
 bool IsDisabled()
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->IsDisabled();
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->IsDisabled();
 }
 
 /**
@@ -105,8 +112,9 @@ bool IsDisabled()
  */
 bool IsAutonomous()
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->IsAutonomous();
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->IsAutonomous();
 }
 
 /**
@@ -115,8 +123,9 @@ bool IsAutonomous()
  */
 bool IsOperatorControl()
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->IsOperatorControl();
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->IsOperatorControl();
 }
 
 /**
@@ -126,20 +135,23 @@ bool IsOperatorControl()
  */
 UINT32 GetPacketNumber()
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->GetPacketNumber();
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->GetPacketNumber();
 }
 
 UINT32 GetAlliance()
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->GetAlliance();
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->GetAlliance();
 }
 
 UINT32 GetLocation()
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->GetLocation();
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->GetLocation();
 }
 
 /**
@@ -148,6 +160,7 @@ UINT32 GetLocation()
  */
 float GetBatteryVoltage()
 {
-	if (ds == NULL) ds = DriverStation::GetInstance();
-	return ds->GetBatteryVoltage();
+    if (ds == NULL)
+        ds = DriverStation::GetInstance();
+    return ds->GetBatteryVoltage();
 }

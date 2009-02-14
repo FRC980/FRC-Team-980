@@ -21,7 +21,7 @@ class Module : public SensorBase
     explicit Module(UINT32 slot);
     virtual ~ Module();
 
-    UINT32 m_slot; // Slot number where the module is plugged into the chassis.
+    UINT32 m_slot; // Slot number where the module is plugged into chassis.
 
     // Slots are 1 based, so ignore element 0.
     static Module *m_modules[kChassisSlots + 1];

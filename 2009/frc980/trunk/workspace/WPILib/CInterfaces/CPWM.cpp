@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -25,22 +25,23 @@ static PWM *PWMs[SensorBase::kDigitalModules][SensorBase::kPwmChannels];
  */
 PWM *AllocatePWM(UINT32 module, UINT32 channel, SensorCreator createObject)
 {
-	if (!PWMsInitialized)
-	{
-		for (unsigned i = 0; i < SensorBase::kDigitalModules; i++)
-			for (unsigned j = 0; j < SensorBase::kPwmChannels; j++)
-				PWMs[i][j] = NULL;
-		PWMsInitialized = true;
-	}
-	if (!SensorBase::CheckPWMModule(module) || !SensorBase::CheckPWMChannel(channel))
-		return NULL;
-	PWM *pwm = PWMs[DigitalModule::SlotToIndex(module)][channel - 1];
-	if (pwm == NULL)
-	{
-		pwm = (PWM *) createObject(module, channel);
-		PWMs[DigitalModule::SlotToIndex(module)][channel - 1] = pwm;
-	}
-	return pwm;
+    if (!PWMsInitialized)
+    {
+        for (unsigned i = 0; i < SensorBase::kDigitalModules; i++)
+            for (unsigned j = 0; j < SensorBase::kPwmChannels; j++)
+                PWMs[i][j] = NULL;
+        PWMsInitialized = true;
+    }
+    if (!SensorBase::CheckPWMModule(module)
+        || !SensorBase::CheckPWMChannel(channel))
+        return NULL;
+    PWM *pwm = PWMs[DigitalModule::SlotToIndex(module)][channel - 1];
+    if (pwm == NULL)
+    {
+        pwm = (PWM *) createObject(module, channel);
+        PWMs[DigitalModule::SlotToIndex(module)][channel - 1] = pwm;
+    }
+    return pwm;
 }
 
 /**
@@ -55,7 +56,8 @@ PWM *AllocatePWM(UINT32 module, UINT32 channel, SensorCreator createObject)
  */
 PWM *AllocatePWM(UINT32 channel, SensorCreator createObject)
 {
-	return AllocatePWM(SensorBase::GetDefaultDigitalModule(), channel, createObject);
+    return AllocatePWM(SensorBase::GetDefaultDigitalModule(), channel,
+                       createObject);
 }
 
 /**
@@ -67,10 +69,11 @@ PWM *AllocatePWM(UINT32 channel, SensorCreator createObject)
  */
 void DeletePWM(UINT32 slot, UINT32 channel)
 {
-	if (SensorBase::CheckPWMModule(slot) && SensorBase::CheckPWMChannel(channel))
-	{
-		PWMs[DigitalModule::SlotToIndex(slot)][channel - 1] = NULL;
-	}
+    if (SensorBase::CheckPWMModule(slot)
+        && SensorBase::CheckPWMChannel(channel))
+    {
+        PWMs[DigitalModule::SlotToIndex(slot)][channel - 1] = NULL;
+    }
 }
 
 /**
@@ -81,5 +84,5 @@ void DeletePWM(UINT32 slot, UINT32 channel)
  */
 void DeletePWM(UINT32 channel)
 {
-	DeletePWM(SensorBase::GetDefaultDigitalModule(), channel);
+    DeletePWM(SensorBase::GetDefaultDigitalModule(), channel);
 }

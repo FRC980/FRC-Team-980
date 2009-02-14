@@ -28,21 +28,21 @@
 #define LOG_DEBUG    __FILE__,funcName,__LINE__,DEBUG_TYPE
 
 /* Error Codes */
-#define ERR_VISION_GENERAL_ERROR            166000  //
-#define ERR_COLOR_NOT_FOUND                 166100  // frcvtrack.cpp
-#define ERR_PARTICLE_TOO_SMALL              166101  // frcvtrack.cpp
+#define ERR_VISION_GENERAL_ERROR            166000      //
+#define ERR_COLOR_NOT_FOUND                 166100      // frcvtrack.cpp
+#define ERR_PARTICLE_TOO_SMALL              166101      // frcvtrack.cpp
 
-#define ERR_CAMERA_FAILURE                  166200  // frcAxis.cpp
-#define ERR_CAMERA_SOCKET_CREATE_FAILED     166201  // frcAxis.cpp
-#define ERR_CAMERA_CONNECT_FAILED           166202  // frcAxis.cpp
-#define ERR_CAMERA_STALE_IMAGE              166203  // frcAxis.cpp
-#define ERR_CAMERA_NOT_INITIALIZED          166204  // frcAxis.cpp
-#define ERR_CAMERA_NO_BUFFER_AVAILABLE      166205  // frcAxis.cpp
-#define ERR_CAMERA_HEADER_ERROR             166206  // frcAxis.cpp
-#define ERR_CAMERA_BLOCKING_TIMEOUT         166207  // frcAxis.cpp
-#define ERR_CAMERA_AUTHORIZATION_FAILED     166208  // frcAxis.cpp
-#define ERR_CAMERA_TASK_SPAWN_FAILED        166209  // frcAxis.cpp
-#define ERR_CAMERA_TASK_INPUT_OUT_OF_RANGE  166210  // frcAxis.cpp
+#define ERR_CAMERA_FAILURE                  166200      // frcAxis.cpp
+#define ERR_CAMERA_SOCKET_CREATE_FAILED     166201      // frcAxis.cpp
+#define ERR_CAMERA_CONNECT_FAILED           166202      // frcAxis.cpp
+#define ERR_CAMERA_STALE_IMAGE              166203      // frcAxis.cpp
+#define ERR_CAMERA_NOT_INITIALIZED          166204      // frcAxis.cpp
+#define ERR_CAMERA_NO_BUFFER_AVAILABLE      166205      // frcAxis.cpp
+#define ERR_CAMERA_HEADER_ERROR             166206      // frcAxis.cpp
+#define ERR_CAMERA_BLOCKING_TIMEOUT         166207      // frcAxis.cpp
+#define ERR_CAMERA_AUTHORIZATION_FAILED     166208      // frcAxis.cpp
+#define ERR_CAMERA_TASK_SPAWN_FAILED        166209      // frcAxis.cpp
+#define ERR_CAMERA_TASK_INPUT_OUT_OF_RANGE  166210      // frcAxis.cpp
 
 /*   Enumerated Types */
 

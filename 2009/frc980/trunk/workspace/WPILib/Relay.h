@@ -30,7 +30,7 @@ class Relay : public SensorBase
 
     Relay(UINT32 channel, Direction direction = kBothDirections);
     Relay(UINT32 slot, UINT32 channel, Direction direction = kBothDirections);
-    virtual ~Relay();
+    virtual ~ Relay();
 
     void Set(Value value);
     void SetDirection(Direction direction);

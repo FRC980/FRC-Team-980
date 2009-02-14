@@ -8,7 +8,6 @@
    © Copyright 2004, 2005. National Instruments. All rights reserved.
 */
 
-
 #ifndef  ___NiRioSrv_H___
 #define  ___NiRioSrv_H___
 
@@ -32,7 +31,7 @@
 // tNIRIO_u8      : Unsigned  8-bit integer
 //
 // An example for PAL:
-// 
+//
 // #define kNIRIOSRVExportPre  nNISS100_kImportPre
 // #define kNIRIOSRVExportPost nNISS100_kImportPost
 // #define kNIRIOSRVCCall nNISS100_kCCall
@@ -48,7 +47,7 @@
 #if !defined(kNIRIOSRVNoDefaultTypeDefinitions)
 //
 // An example for atomicPAL:
-// 
+//
 #if defined(___niapal_quarks_platform_h___)
 #if !defined(kNIRIOSRVExportPre)
 #define kNIRIOSRVExportPre  nNIAPALS100_kImportPre
@@ -88,7 +87,7 @@
 //
 #endif
 
-#endif // kNIRIOSRVNoDefaultTypeDefinitions
+#endif  // kNIRIOSRVNoDefaultTypeDefinitions
 
 //  includes...
 
@@ -106,22 +105,14 @@
 
 //  defines...
 
-
 //  type declarations (typedefs)...
-
 
 //  constants...
 
-
 //  declarations for globally-scoped globals...
-
 
 //  prototypes...
 
-
 //  inline methods and function macros...
 
-
-#endif // ___NiRioSrv_H___
-
-
+#endif  // ___NiRioSrv_H___

@@ -19,8 +19,8 @@
  * @param outputType An enum that specifies the output on the trigger to represent.
  */
 AnalogTriggerOutput::AnalogTriggerOutput(AnalogTrigger * trigger, AnalogTriggerOutput::Type outputType):m_trigger(trigger),
-m_outputType
-(outputType)
+    m_outputType
+    (outputType)
 {
 }
 

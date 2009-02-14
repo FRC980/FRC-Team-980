@@ -15,7 +15,7 @@
 class CounterBase
 {
   public:
-    virtual ~CounterBase() {};
+    virtual ~ CounterBase() { };
 
     virtual void Start() = 0;
     virtual INT32 Get() = 0;

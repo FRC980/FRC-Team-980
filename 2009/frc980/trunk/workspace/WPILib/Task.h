@@ -19,9 +19,9 @@ class Task
   public:
     static const UINT32 kDefaultPriority = 100;
 
-    Task(char *name, FUNCPTR function, INT32 priority = kDefaultPriority,
-         UINT32 stackSize = 20000);
-    virtual ~Task();
+    Task(char *name, FUNCPTR function, INT32 priority =
+         kDefaultPriority, UINT32 stackSize = 20000);
+    virtual ~ Task();
 
     bool Start(UINT32 arg0 = 0, UINT32 arg1 = 0, UINT32 arg2 = 0,
                UINT32 arg3 = 0, UINT32 arg4 = 0, UINT32 arg5 = 0,

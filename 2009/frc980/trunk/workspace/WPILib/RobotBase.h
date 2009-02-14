@@ -13,17 +13,17 @@
 
 class DriverStation;
 
-#define START_ROBOT_CLASS(_ClassName_) \
-    RobotBase *FRC_userClassFactory() \
-    { \
-        return new _ClassName_(); \
-    } \
-    extern "C" { \
-        INT32 FRC_UserProgram_StartupLibraryInit() \
-        { \
+#define START_ROBOT_CLASS(_ClassName_)                                \
+    RobotBase *FRC_userClassFactory()                                 \
+    {                                                                 \
+        return new _ClassName_();                                     \
+    }                                                                 \
+    extern "C" {                                                      \
+        INT32 FRC_UserProgram_StartupLibraryInit()                    \
+        {                                                             \
             RobotBase::startRobotTask((FUNCPTR)FRC_userClassFactory); \
-            return 0; \
-        } \
+            return 0;                                                 \
+        }                                                             \
     }
 
 /**
@@ -49,12 +49,12 @@ class RobotBase
     bool IsOperatorControl();
     bool IsSystemActive();
     bool IsNewDataAvailable();
-    Watchdog & GetWatchdog();
+         Watchdog & GetWatchdog();
     static void startRobotTask(FUNCPTR factory);
     static void robotTask(FUNCPTR factory, Task * task);
 
   protected:
-    virtual ~RobotBase();
+    virtual ~ RobotBase();
     virtual void StartCompetition() = 0;
     RobotBase();
 

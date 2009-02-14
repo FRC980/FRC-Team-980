@@ -14,7 +14,7 @@ class InterruptableSensorBase : public SensorBase
 {
   public:
     InterruptableSensorBase();
-    virtual ~InterruptableSensorBase();
+    virtual ~ InterruptableSensorBase();
 
     virtual void RequestInterrupts(tInterruptHandler handler) = 0; ///< Asynchronus handler version.
     virtual void RequestInterrupts() = 0; ///< Synchronus Wait version.

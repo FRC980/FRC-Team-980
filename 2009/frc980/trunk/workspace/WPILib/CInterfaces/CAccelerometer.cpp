@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -9,7 +9,9 @@
 #include "AnalogModule.h"
 #include "CWrappers.h"
 
-static Accelerometer* accelerometers[SensorBase::kAnalogModules][SensorBase::kAnalogChannels];
+static Accelerometer *accelerometers[SensorBase::
+                                     kAnalogModules][SensorBase::
+                                                     kAnalogChannels];
 static bool initialized = false;
 
 /**
@@ -19,21 +21,23 @@ static bool initialized = false;
  */
 static Accelerometer *AllocateAccelerometer(UINT32 slot, UINT32 channel)
 {
-	if (!initialized)
-	{
-		initialized = true;
-		for (unsigned i = 1; i <= SensorBase::kAnalogModules; i++)
-			for (unsigned j = 1; j <= SensorBase::kAnalogChannels; j++)
-				accelerometers[i][j] = NULL;
-	}
-	if (!SensorBase::CheckAnalogModule(slot) || !SensorBase::CheckAnalogChannel(channel))
-		return NULL;
-	unsigned index = AnalogModule::SlotToIndex(slot);
-	if (accelerometers[index][channel - 1] == NULL)
-	{
-		accelerometers[index][channel - 1] = new Accelerometer(slot, channel);
-	}
-	return accelerometers[index][channel - 1];
+    if (!initialized)
+    {
+        initialized = true;
+        for (unsigned i = 1; i <= SensorBase::kAnalogModules; i++)
+            for (unsigned j = 1; j <= SensorBase::kAnalogChannels; j++)
+                accelerometers[i][j] = NULL;
+    }
+    if (!SensorBase::CheckAnalogModule(slot)
+        || !SensorBase::CheckAnalogChannel(channel))
+        return NULL;
+    unsigned index = AnalogModule::SlotToIndex(slot);
+    if (accelerometers[index][channel - 1] == NULL)
+    {
+        accelerometers[index][channel - 1] =
+            new Accelerometer(slot, channel);
+    }
+    return accelerometers[index][channel - 1];
 }
 
 /**
@@ -43,8 +47,10 @@ static Accelerometer *AllocateAccelerometer(UINT32 slot, UINT32 channel)
  */
 float GetAcceleration(UINT32 channel)
 {
-	Accelerometer *accel = AllocateAccelerometer(SensorBase::GetDefaultAnalogModule(), channel);
-	return accel->GetAcceleration();
+    Accelerometer *accel =
+        AllocateAccelerometer(SensorBase::GetDefaultAnalogModule(),
+                              channel);
+    return accel->GetAcceleration();
 }
 
 /**
@@ -55,8 +61,8 @@ float GetAcceleration(UINT32 channel)
  */
 float GetAcceleration(UINT32 slot, UINT32 channel)
 {
-	Accelerometer *accel = AllocateAccelerometer(slot, channel);
-	return accel->GetAcceleration();
+    Accelerometer *accel = AllocateAccelerometer(slot, channel);
+    return accel->GetAcceleration();
 }
 
 /**
@@ -70,8 +76,10 @@ float GetAcceleration(UINT32 slot, UINT32 channel)
  */
 void SetAccelerometerSensitivity(UINT32 channel, float sensitivity)
 {
-	Accelerometer *accel = AllocateAccelerometer(SensorBase::GetDefaultAnalogModule(), channel);
-	accel->SetSensitivity(sensitivity);
+    Accelerometer *accel =
+        AllocateAccelerometer(SensorBase::GetDefaultAnalogModule(),
+                              channel);
+    accel->SetSensitivity(sensitivity);
 }
 
 /**
@@ -84,10 +92,11 @@ void SetAccelerometerSensitivity(UINT32 channel, float sensitivity)
  * @param channel The channel the accelerometer is plugged into
  * @param sensitivity The sensitivity of accelerometer in Volts per G.
  */
-void SetAccelerometerSensitivity(UINT32 slot, UINT32 channel, float sensitivity)
+void SetAccelerometerSensitivity(UINT32 slot, UINT32 channel,
+                                 float sensitivity)
 {
-	Accelerometer *accel = AllocateAccelerometer(slot, channel);
-	accel->SetSensitivity(sensitivity);
+    Accelerometer *accel = AllocateAccelerometer(slot, channel);
+    accel->SetSensitivity(sensitivity);
 }
 
 /**
@@ -100,8 +109,10 @@ void SetAccelerometerSensitivity(UINT32 slot, UINT32 channel, float sensitivity)
  */
 void SetAccelerometerZero(UINT32 channel, float zero)
 {
-	Accelerometer *accel = AllocateAccelerometer(SensorBase::GetDefaultAnalogModule(), channel);
-	accel->SetZero(zero);
+    Accelerometer *accel =
+        AllocateAccelerometer(SensorBase::GetDefaultAnalogModule(),
+                              channel);
+    accel->SetZero(zero);
 }
 
 /**
@@ -115,8 +126,8 @@ void SetAccelerometerZero(UINT32 channel, float zero)
  */
 void SetAccelerometerZero(UINT32 slot, UINT32 channel, float zero)
 {
-	Accelerometer *accel = AllocateAccelerometer(slot, channel);
-	accel->SetZero(zero);
+    Accelerometer *accel = AllocateAccelerometer(slot, channel);
+    accel->SetZero(zero);
 }
 
 /**
@@ -129,12 +140,13 @@ void SetAccelerometerZero(UINT32 slot, UINT32 channel, float zero)
  */
 void DeleteAccelerometer(UINT32 slot, UINT32 channel)
 {
-	if (SensorBase::CheckAnalogModule(slot) && SensorBase::CheckAnalogChannel(channel))
-	{
-		unsigned index = AnalogModule::SlotToIndex(slot);
-		delete accelerometers[index][channel - 1];
-		accelerometers[index][channel - 1] = NULL;
-	}
+    if (SensorBase::CheckAnalogModule(slot)
+        && SensorBase::CheckAnalogChannel(channel))
+    {
+        unsigned index = AnalogModule::SlotToIndex(slot);
+        delete accelerometers[index][channel - 1];
+        accelerometers[index][channel - 1] = NULL;
+    }
 }
 
 /**
@@ -146,6 +158,5 @@ void DeleteAccelerometer(UINT32 slot, UINT32 channel)
  */
 void DeleteAccelerometer(UINT32 channel)
 {
-	DeleteAccelerometer(SensorBase::GetDefaultAnalogModule(), channel);
+    DeleteAccelerometer(SensorBase::GetDefaultAnalogModule(), channel);
 }
-

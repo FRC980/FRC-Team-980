@@ -21,7 +21,7 @@ class AnalogTrigger : public SensorBase
     AnalogTrigger(UINT32 slot, UINT32 channel);
     explicit AnalogTrigger(UINT32 channel);
     explicit AnalogTrigger(AnalogChannel * channel);
-    virtual ~AnalogTrigger();
+    virtual ~ AnalogTrigger();
 
     void SetLimitsVoltage(float lower, float upper);
     void SetLimitsRaw(INT32 lower, INT32 upper);

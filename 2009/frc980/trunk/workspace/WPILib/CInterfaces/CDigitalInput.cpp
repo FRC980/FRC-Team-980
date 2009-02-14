@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -8,7 +8,8 @@
 #include "DigitalInput.h"
 #include "CDigitalInput.h"
 
-static DigitalInput* digitalInputs[SensorBase::kDigitalModules][SensorBase::kDigitalChannels];
+static DigitalInput *digitalInputs[SensorBase::kDigitalModules][SensorBase::
+                                                                kDigitalChannels];
 static bool initialized = false;
 
 /**
@@ -21,23 +22,25 @@ static bool initialized = false;
  */
 static DigitalInput *AllocateDigitalInput(UINT32 slot, UINT32 channel)
 {
-	if (!initialized)
-	{
-		for (unsigned i = 0; i < SensorBase::kDigitalModules; i++)
-			for (unsigned j = 0; j < SensorBase::kDigitalChannels; j++)
-				digitalInputs[i][j] = NULL;
-		initialized = true;
-	}
-	if (SensorBase::CheckDigitalModule(slot) && SensorBase::CheckDigitalChannel(channel))
-	{
-		UINT32 slotOffset = DigitalModule::SlotToIndex(slot);
-		if (digitalInputs[slotOffset][channel - 1] == NULL)
-		{
-			digitalInputs[slotOffset][channel - 1] = new DigitalInput(slot, channel);
-		}
-		return digitalInputs[slotOffset][channel - 1];
-	}
-	return NULL;
+    if (!initialized)
+    {
+        for (unsigned i = 0; i < SensorBase::kDigitalModules; i++)
+            for (unsigned j = 0; j < SensorBase::kDigitalChannels; j++)
+                digitalInputs[i][j] = NULL;
+        initialized = true;
+    }
+    if (SensorBase::CheckDigitalModule(slot)
+        && SensorBase::CheckDigitalChannel(channel))
+    {
+        UINT32 slotOffset = DigitalModule::SlotToIndex(slot);
+        if (digitalInputs[slotOffset][channel - 1] == NULL)
+        {
+            digitalInputs[slotOffset][channel - 1] =
+                new DigitalInput(slot, channel);
+        }
+        return digitalInputs[slotOffset][channel - 1];
+    }
+    return NULL;
 }
 
 /*
@@ -49,11 +52,11 @@ static DigitalInput *AllocateDigitalInput(UINT32 slot, UINT32 channel)
  */
 UINT32 GetDigitalInput(UINT32 slot, UINT32 channel)
 {
-	DigitalInput *digIn = AllocateDigitalInput(slot, channel);
-	if (digIn)
-		return digIn->Get();
-	else
-		return 0;
+    DigitalInput *digIn = AllocateDigitalInput(slot, channel);
+    if (digIn)
+        return digIn->Get();
+    else
+        return 0;
 }
 
 /*
@@ -64,7 +67,7 @@ UINT32 GetDigitalInput(UINT32 slot, UINT32 channel)
  */
 UINT32 GetDigitalInput(UINT32 channel)
 {
-	return GetDigitalInput(SensorBase::GetDefaultDigitalModule(), channel);
+    return GetDigitalInput(SensorBase::GetDefaultDigitalModule(), channel);
 }
 
 /**
@@ -77,12 +80,13 @@ UINT32 GetDigitalInput(UINT32 channel)
  */
 void DeleteDigitalInput(UINT32 slot, UINT32 channel)
 {
-	if (SensorBase::CheckDigitalModule(slot) && SensorBase::CheckDigitalChannel(channel))
-	{
-		UINT32 slotOffset = DigitalModule::SlotToIndex(slot);
-		delete digitalInputs[slotOffset][channel - 1];
-		digitalInputs[slotOffset][channel - 1] = NULL;
-	}
+    if (SensorBase::CheckDigitalModule(slot)
+        && SensorBase::CheckDigitalChannel(channel))
+    {
+        UINT32 slotOffset = DigitalModule::SlotToIndex(slot);
+        delete digitalInputs[slotOffset][channel - 1];
+        digitalInputs[slotOffset][channel - 1] = NULL;
+    }
 }
 
 /**
@@ -94,5 +98,5 @@ void DeleteDigitalInput(UINT32 slot, UINT32 channel)
  */
 void DeleteDigitalInput(UINT32 channel)
 {
-	DeleteDigitalInput(SensorBase::GetDefaultDigitalModule(), channel);
+    DeleteDigitalInput(SensorBase::GetDefaultDigitalModule(), channel);
 }

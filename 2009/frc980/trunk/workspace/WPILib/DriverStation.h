@@ -23,7 +23,7 @@ class DriverStation : public SensorBase
   public:
     enum Alliance { kRed, kBlue, kInvalid };
 
-    virtual ~DriverStation();
+    virtual ~ DriverStation();
     static DriverStation *GetInstance();
 
     static const UINT32 kBatterySlot = 1;

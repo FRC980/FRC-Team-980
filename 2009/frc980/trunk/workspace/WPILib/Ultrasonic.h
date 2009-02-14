@@ -33,7 +33,7 @@ class Ultrasonic : public SensorBase
     Ultrasonic(UINT32 pingChannel, UINT32 echoChannel);
     Ultrasonic(UINT32 pingSlot, UINT32 pingChannel,
                UINT32 echoSlot, UINT32 echoChannel);
-    virtual ~Ultrasonic();
+    virtual ~ Ultrasonic();
 
     void Ping();
     bool IsRangeValid();
@@ -54,15 +54,15 @@ class Ultrasonic : public SensorBase
 
     static void UltrasonicChecker();
 
-    static const double kPingTime = 10 * 1e-6; ///< Time (sec) for the ping trigger pulse.
+    static const double kPingTime = 10 * 1e-6;  ///< Time (sec) for the ping trigger pulse.
     static const UINT32 kPriority = 90; ///< Priority that the ultrasonic round robin task runs.
-    static const double kMaxUltrasonicTime = 0.1; ///< Max time (ms) between readings.
+    static const double kMaxUltrasonicTime = 0.1;       ///< Max time (ms) between readings.
     static const double kSpeedOfSoundInchesPerSec = 1130.0 * 12.0;
 
-    static Task m_task;    // task doing the round-robin automatic sensing
-    static Ultrasonic *m_firstSensor; // head of the ultrasonic sensor list
-    static bool m_automaticEnabled;   // automatic round robin mode
-    static SEM_ID m_semaphore; // synchronize access to the list of sensors
+    static Task m_task;         // task doing the round-robin automatic sensing
+    static Ultrasonic *m_firstSensor;   // head of the ultrasonic sensor list
+    static bool m_automaticEnabled;     // automatic round robin mode
+    static SEM_ID m_semaphore;  // synchronize access to the list of sensors
 
     DigitalInput *m_echoChannel;
     DigitalOutput *m_pingChannel;

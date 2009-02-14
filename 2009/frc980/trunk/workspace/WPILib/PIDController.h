@@ -30,11 +30,11 @@ class PIDController
     float m_minimumOutput;      // |minimum output|
     float m_maximumInput;       // maximum input - limit setpoint to this
     float m_minimumInput;       // minimum input - limit setpoint to this
-    bool m_continuous;   // do the endpoints wrap around? eg. Absolute encoder
-    bool m_enabled;      // is the pid controller enabled
-    float m_prevError;   // the prior sensor input (used to compute velocity)
-    double m_totalError; // the sum of the errors for use in the integral calc
-    float m_tolerence;   // the percetage error that is considered on target
+    bool m_continuous; // do the endpoints wrap around? eg. Absolute encoder
+    bool m_enabled;    // is the pid controller enabled
+    float m_prevError; // the prior sensor input (used to compute velocity)
+    double m_totalError;     // sum of the errors for use in integral calc
+    float m_tolerence; // the percetage error that is considered on target
     float m_setpoint;
     float m_error;
     float m_result;
@@ -45,11 +45,12 @@ class PIDController
 
     static void CallCalculate(void *controller);
     void Calculate();
-    DISALLOW_COPY_AND_ASSIGN(PIDController);
+         DISALLOW_COPY_AND_ASSIGN(PIDController);
 
   public:
     PIDController(float p, float i, float d, float period = 0.05);
     ~PIDController();
+
     float Get();
     void SetContinuous(bool continuous = true);
     void SetInput(PIDSource * pidInput);

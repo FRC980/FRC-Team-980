@@ -26,7 +26,8 @@
 class SerialPort
 {
   public:
-    typedef enum {
+    typedef enum
+    {
         kParity_None = 0,
         kParity_Odd = 1,
         kParity_Even = 2,
@@ -34,20 +35,23 @@ class SerialPort
         kParity_Space = 4
     } Parity;
 
-    typedef enum {
+    typedef enum
+    {
         kStopBits_One = 10,
         kStopBits_OnePointFive = 15,
         kStopBits_Two = 20
     } StopBits;
 
-    typedef enum {
+    typedef enum
+    {
         kFlowControl_None = 0,
         kFlowControl_XonXoff = 1,
         kFlowControl_RtsCts = 2,
         kFlowControl_DtrDsr = 4
     } FlowControl;
 
-    typedef enum {
+    typedef enum
+    {
         kFlushOnAccess = 1,
         kFlushWhenFull = 2
     } WriteBufferMode;

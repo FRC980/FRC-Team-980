@@ -594,10 +594,11 @@ Authorization: Basic %s;\n\n";
         // has been disconnected from the cRIO.  If however the camera is
         // POWERED OFF while connected to the cRIO, this function NEVER RETURNS
         //
-        int  bytesRead =
-            fioRead(camSock,
-                    (char *)globalCamera.data[writeIndex].cameraImage,
-                    globalCamera.data[writeIndex].cameraImageSize);
+        int  bytesRead = fioRead(camSock,
+                                 (char *)globalCamera.data[writeIndex].
+                                 cameraImage,
+                                 globalCamera.data[writeIndex].
+                                 cameraImageSize);
 
 #if MEASURE_TIME
         cameraEndTime = GetTime();

@@ -21,7 +21,8 @@
 class Counter : public SensorBase, public CounterBase
 {
   public:
-    typedef enum {
+    typedef enum
+    {
         kTwoPulse = 0,
         kSemiperiod = 1,
         kPulseLength = 2,
@@ -35,7 +36,7 @@ class Counter : public SensorBase, public CounterBase
     explicit Counter(DigitalSource & source);
     explicit Counter(AnalogTrigger * trigger);
     explicit Counter(AnalogTrigger & trigger);
-    virtual ~Counter();
+    virtual ~ Counter();
 
     void SetUpSource(UINT32 channel);
     void SetUpSource(UINT32 slot, UINT32 channel);
@@ -78,9 +79,9 @@ class Counter : public SensorBase, public CounterBase
   private:
     void InitCounter();
 
-    DigitalSource *m_upSource;   ///< What makes the counter count up.
-    DigitalSource *m_downSource; ///< What makes the counter count down.
-    bool m_allocatedUpSource;    ///< Was the upSource allocated locally?
+    DigitalSource *m_upSource;  ///< What makes the counter count up.
+    DigitalSource *m_downSource;        ///< What makes the counter count down.
+    bool m_allocatedUpSource;   ///< Was the upSource allocated locally?
     bool m_allocatedDownSource; ///< Was the downSource allocated locally?
     tCounter *m_counter;        ///< The FPGA counter object.
     UINT32 m_index;             ///< The index of this counter.

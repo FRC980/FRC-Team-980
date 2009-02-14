@@ -27,7 +27,7 @@ class HiTechnicCompass : public SensorBase
 {
   public:
     explicit HiTechnicCompass(UINT32 slot);
-    virtual ~HiTechnicCompass();
+    virtual ~ HiTechnicCompass();
     float GetAngle();
 
   private:

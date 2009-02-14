@@ -41,8 +41,8 @@ class PWM : public SensorBase
     } PeriodMultiplier;
 
     explicit PWM(UINT32 channel);
-         PWM(UINT32 slot, UINT32 channel);
-         virtual ~ PWM();
+    PWM(UINT32 slot, UINT32 channel);
+    virtual ~ PWM();
     void SetRaw(UINT8 value);
     UINT8 GetRaw();
     void SetPeriodMultiplier(PeriodMultiplier mult);
@@ -121,15 +121,15 @@ class PWM : public SensorBase
     {
         return m_minPwm;
     };
-    INT32 GetPositiveScaleFactor() // The scale for positive speeds.
+    INT32 GetPositiveScaleFactor()      // The scale for positive speeds.
     {
         return GetMaxPositivePwm() - GetMinPositivePwm();
     }
-    INT32 GetNegativeScaleFactor() // The scale for negative speeds.
+    INT32 GetNegativeScaleFactor()      // The scale for negative speeds.
     {
         return GetMaxNegativePwm() - GetMinNegativePwm();
     }
-    INT32 GetFullRangeScaleFactor() // The scale for positions.
+    INT32 GetFullRangeScaleFactor()     // The scale for positions.
     {
         return GetMaxPositivePwm() - GetMinNegativePwm();
     }

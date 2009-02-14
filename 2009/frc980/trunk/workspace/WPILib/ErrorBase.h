@@ -24,9 +24,9 @@
  */
 class ErrorBase
 {
-// TODO: Consider initializing instance variables and cleanup in destructor
+    // TODO: Consider initializing instance variables and cleanup in destructor
   public:
-    virtual ~ErrorBase();
+    virtual ~ ErrorBase();
     virtual Error & GetError();
     virtual const Error & GetError() const;
     virtual void SetError(Error::Code code, const char *filename,

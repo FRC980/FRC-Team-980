@@ -34,7 +34,7 @@ class Gyro : public SensorBase
     explicit Gyro(UINT32 channel);
     explicit Gyro(AnalogChannel * channel);
     explicit Gyro(AnalogChannel & channel);
-    virtual ~Gyro();
+    virtual ~ Gyro();
 
     float GetAngle();
     void SetSensitivity(float voltsPerDegreePerSecond);

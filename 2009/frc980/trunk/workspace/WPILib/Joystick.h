@@ -44,7 +44,7 @@ class Joystick : public GenericHID
 
     explicit Joystick(UINT32 port);
     Joystick(UINT32 port, UINT32 numAxisTypes, UINT32 numButtonTypes);
-    virtual ~Joystick();
+    virtual ~ Joystick();
 
     UINT32 GetAxisChannel(AxisType axis);
     void SetAxisChannel(AxisType axis, UINT32 channel);

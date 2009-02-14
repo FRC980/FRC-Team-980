@@ -20,7 +20,7 @@ class GenericHID
         kRightHand = 1
     } JoystickHand;
 
-    virtual ~GenericHID() {};
+    virtual ~ GenericHID() { };
 
     virtual float GetX(JoystickHand hand = kRightHand) = 0;
     virtual float GetY(JoystickHand hand = kRightHand) = 0;

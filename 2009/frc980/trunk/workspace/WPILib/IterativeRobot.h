@@ -72,7 +72,7 @@ class IterativeRobot : public RobotBase
     double GetLoopsPerSec();
 
   protected:
-    virtual ~IterativeRobot();
+    virtual ~ IterativeRobot();
     IterativeRobot();
 
   private:

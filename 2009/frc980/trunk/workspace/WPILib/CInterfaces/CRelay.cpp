@@ -3,7 +3,8 @@
 #include "Relay.h"
 #include "CRelay.h"
 
-static Relay* relays[SensorBase::kDigitalModules][SensorBase::kRelayChannels];
+static Relay *relays[SensorBase::kDigitalModules][SensorBase::
+                                                  kRelayChannels];
 static bool initialized = false;
 static Relay::Direction s_direction = Relay::kBothDirections;
 
@@ -17,23 +18,25 @@ static Relay::Direction s_direction = Relay::kBothDirections;
  */
 static Relay *AllocateRelay(UINT32 slot, UINT32 channel)
 {
-	if (!initialized)
-	{
-		for (unsigned i = 0; i < SensorBase::kDigitalModules; i++)
-			for (unsigned j = 0; j < SensorBase::kRelayChannels; j++)
-				relays[i][j] = NULL;
-		initialized = true;
-	}
-	if (SensorBase::CheckRelayModule(slot) && SensorBase::CheckRelayChannel(channel))
-	{
-		unsigned slotOffset = DigitalModule::SlotToIndex(slot);
-		if (relays[slotOffset][channel - 1] == NULL)
-		{
-			relays[slotOffset][channel - 1] = new Relay(slot, channel, s_direction);
-		}
-		return relays[slotOffset][channel - 1];
-	}
-	return NULL;
+    if (!initialized)
+    {
+        for (unsigned i = 0; i < SensorBase::kDigitalModules; i++)
+            for (unsigned j = 0; j < SensorBase::kRelayChannels; j++)
+                relays[i][j] = NULL;
+        initialized = true;
+    }
+    if (SensorBase::CheckRelayModule(slot)
+        && SensorBase::CheckRelayChannel(channel))
+    {
+        unsigned slotOffset = DigitalModule::SlotToIndex(slot);
+        if (relays[slotOffset][channel - 1] == NULL)
+        {
+            relays[slotOffset][channel - 1] =
+                new Relay(slot, channel, s_direction);
+        }
+        return relays[slotOffset][channel - 1];
+    }
+    return NULL;
 }
 
 /**
@@ -45,21 +48,21 @@ static Relay *AllocateRelay(UINT32 slot, UINT32 channel)
  */
 void InitRelay(UINT32 slot, UINT32 channel, RelayDirection direction)
 {
-	switch (direction)
-	{
-	case kBothDirections:
-		s_direction = Relay::kBothDirections;
-		break;
-	case kForwardOnly:
-		s_direction = Relay::kForwardOnly;
-		break;
-	case kReverseOnly:
-		s_direction = Relay::kReverseOnly;
-		break;
-	default:
-		s_direction = Relay::kBothDirections;
-	}
-	AllocateRelay(slot, channel);
+    switch (direction)
+    {
+    case kBothDirections:
+        s_direction = Relay::kBothDirections;
+        break;
+    case kForwardOnly:
+        s_direction = Relay::kForwardOnly;
+        break;
+    case kReverseOnly:
+        s_direction = Relay::kReverseOnly;
+        break;
+    default:
+        s_direction = Relay::kBothDirections;
+    }
+    AllocateRelay(slot, channel);
 }
 
 /**
@@ -70,7 +73,7 @@ void InitRelay(UINT32 slot, UINT32 channel, RelayDirection direction)
  */
 void InitRelay(UINT32 channel, RelayDirection direction)
 {
-	InitRelay(SensorBase::GetDefaultDigitalModule(), channel, direction);
+    InitRelay(SensorBase::GetDefaultDigitalModule(), channel, direction);
 }
 
 /**
@@ -82,12 +85,13 @@ void InitRelay(UINT32 channel, RelayDirection direction)
  */
 void DeleteRelay(UINT32 slot, UINT32 channel)
 {
-	if (SensorBase::CheckRelayModule(slot) && SensorBase::CheckRelayChannel(channel))
-	{
-		unsigned slotOffset = DigitalModule::SlotToIndex(slot);
-		delete relays[slotOffset][channel - 1];
-		relays[slotOffset][channel - 1] = NULL;
-	}
+    if (SensorBase::CheckRelayModule(slot)
+        && SensorBase::CheckRelayChannel(channel))
+    {
+        unsigned slotOffset = DigitalModule::SlotToIndex(slot);
+        delete relays[slotOffset][channel - 1];
+        relays[slotOffset][channel - 1] = NULL;
+    }
 }
 
 /**
@@ -98,7 +102,7 @@ void DeleteRelay(UINT32 slot, UINT32 channel)
  */
 void DeleteRelay(UINT32 channel)
 {
-	DeleteRelay(SensorBase::GetDefaultDigitalModule(), channel);
+    DeleteRelay(SensorBase::GetDefaultDigitalModule(), channel);
 }
 
 /**
@@ -119,17 +123,25 @@ void DeleteRelay(UINT32 channel)
  */
 void SetRelay(UINT32 slot, UINT32 channel, RelayValue value)
 {
-	Relay *relay = AllocateRelay(slot, channel);
-	if (relay != NULL)
-	{
-		switch (value)
-		{
-			case kOff: relay->Set(Relay::kOff); break;
-			case kOn: relay->Set(Relay::kOn); break;
-			case kForward: relay->Set(Relay::kForward); break;
-			case kReverse: relay->Set(Relay::kReverse); break;
-		}
-	}
+    Relay *relay = AllocateRelay(slot, channel);
+    if (relay != NULL)
+    {
+        switch (value)
+        {
+        case kOff:
+            relay->Set(Relay::kOff);
+            break;
+        case kOn:
+            relay->Set(Relay::kOn);
+            break;
+        case kForward:
+            relay->Set(Relay::kForward);
+            break;
+        case kReverse:
+            relay->Set(Relay::kReverse);
+            break;
+        }
+    }
 }
 
 /**
@@ -149,5 +161,5 @@ void SetRelay(UINT32 slot, UINT32 channel, RelayValue value)
  */
 void SetRelay(UINT32 channel, RelayValue value)
 {
-	SetRelay(SensorBase::GetDefaultDigitalModule(), channel, value);
+    SetRelay(SensorBase::GetDefaultDigitalModule(), channel, value);
 }

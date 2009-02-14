@@ -3,7 +3,8 @@
 #include "Counter.h"
 #include "DigitalModule.h"
 
-static Counter* counters[SensorBase::kDigitalModules][SensorBase::kDigitalChannels];
+static Counter *counters[SensorBase::kDigitalModules][SensorBase::
+                                                      kDigitalChannels];
 static bool initialized = false;
 
 /**
@@ -16,22 +17,23 @@ static bool initialized = false;
  */
 static Counter *AllocateCounter(UINT32 slot, UINT32 channel)
 {
-	if (!initialized)
-	{
-		for (unsigned i = 0; i < SensorBase::kDigitalModules; i++)
-			for (unsigned j = 0; j < SensorBase::kDigitalChannels; j++)
-				counters[i][j] = NULL;
-		initialized = true;
-	}
-	if (SensorBase::CheckDigitalModule(slot) && SensorBase::CheckDigitalChannel(channel))
-	{
-		UINT32 slotOffset = DigitalModule::SlotToIndex(slot);
-		if (counters[slotOffset][channel - 1] == NULL)
-			counters[slotOffset][channel - 1] = new Counter(slot, channel);
-		return counters[slotOffset][channel - 1];
-	}
-	else
-		return NULL;
+    if (!initialized)
+    {
+        for (unsigned i = 0; i < SensorBase::kDigitalModules; i++)
+            for (unsigned j = 0; j < SensorBase::kDigitalChannels; j++)
+                counters[i][j] = NULL;
+        initialized = true;
+    }
+    if (SensorBase::CheckDigitalModule(slot)
+        && SensorBase::CheckDigitalChannel(channel))
+    {
+        UINT32 slotOffset = DigitalModule::SlotToIndex(slot);
+        if (counters[slotOffset][channel - 1] == NULL)
+            counters[slotOffset][channel - 1] = new Counter(slot, channel);
+        return counters[slotOffset][channel - 1];
+    }
+    else
+        return NULL;
 }
 
 /**
@@ -43,7 +45,8 @@ static Counter *AllocateCounter(UINT32 slot, UINT32 channel)
  */
 static Counter *AllocateCounter(UINT32 channel)
 {
-	return AllocateCounter(DigitalModule::GetDefaultDigitalModule(), channel);
+    return AllocateCounter(DigitalModule::GetDefaultDigitalModule(),
+                           channel);
 }
 
 /**
@@ -56,9 +59,9 @@ static Counter *AllocateCounter(UINT32 channel)
  */
 void StartCounter(UINT32 slot, UINT32 channel)
 {
-	Counter *counter = AllocateCounter(slot, channel);
-	if (counter != NULL)
-		counter->Start();
+    Counter *counter = AllocateCounter(slot, channel);
+    if (counter != NULL)
+        counter->Start();
 }
 
 /**
@@ -70,9 +73,9 @@ void StartCounter(UINT32 slot, UINT32 channel)
  */
 void StartCounter(UINT32 channel)
 {
-	Counter *counter = AllocateCounter(channel);
-	if (counter != NULL)
-		counter->Start();
+    Counter *counter = AllocateCounter(channel);
+    if (counter != NULL)
+        counter->Start();
 }
 
 /**
@@ -84,11 +87,11 @@ void StartCounter(UINT32 channel)
  */
 INT32 GetCounter(UINT32 channel)
 {
-	Counter *counter = AllocateCounter(channel);
-	if (counter != NULL)
-		return counter->Get();
-	else
-		return 0;
+    Counter *counter = AllocateCounter(channel);
+    if (counter != NULL)
+        return counter->Get();
+    else
+        return 0;
 }
 
 /**
@@ -101,11 +104,11 @@ INT32 GetCounter(UINT32 channel)
  */
 INT32 GetCounter(UINT32 slot, UINT32 channel)
 {
-	Counter *counter = AllocateCounter(slot, channel);
-	if (counter != NULL)
-		return counter->Get();
-	else
-		return 0;
+    Counter *counter = AllocateCounter(slot, channel);
+    if (counter != NULL)
+        return counter->Get();
+    else
+        return 0;
 }
 
 /**
@@ -116,9 +119,9 @@ INT32 GetCounter(UINT32 slot, UINT32 channel)
  */
 void ResetCounter(UINT32 channel)
 {
-	Counter *counter = AllocateCounter(channel);
-	if (counter != NULL)
-		counter->Reset();
+    Counter *counter = AllocateCounter(channel);
+    if (counter != NULL)
+        counter->Reset();
 }
 
 /**
@@ -130,9 +133,9 @@ void ResetCounter(UINT32 channel)
  */
 void ResetCounter(UINT32 slot, UINT32 channel)
 {
-	Counter *counter = AllocateCounter(slot, channel);
-	if (counter != NULL)
-		counter->Reset();
+    Counter *counter = AllocateCounter(slot, channel);
+    if (counter != NULL)
+        counter->Reset();
 }
 
 /**
@@ -143,9 +146,9 @@ void ResetCounter(UINT32 slot, UINT32 channel)
  */
 void StopCounter(UINT32 slot, UINT32 channel)
 {
-	Counter *counter = AllocateCounter(slot, channel);
-	if (counter != NULL)
-		counter->Stop();
+    Counter *counter = AllocateCounter(slot, channel);
+    if (counter != NULL)
+        counter->Stop();
 }
 
 /**
@@ -155,9 +158,9 @@ void StopCounter(UINT32 slot, UINT32 channel)
  */
 void StopCounter(UINT32 channel)
 {
-	Counter *counter = AllocateCounter(channel);
-	if (counter != NULL)
-		counter->Stop();
+    Counter *counter = AllocateCounter(channel);
+    if (counter != NULL)
+        counter->Stop();
 }
 
 /*
@@ -170,11 +173,11 @@ void StopCounter(UINT32 channel)
  */
 double GetCounterPeriod(UINT32 slot, UINT32 channel)
 {
-	Counter *counter = AllocateCounter(slot, channel);
-	if (counter != NULL)
-		return counter->GetPeriod();
-	else
-		return 0;
+    Counter *counter = AllocateCounter(slot, channel);
+    if (counter != NULL)
+        return counter->GetPeriod();
+    else
+        return 0;
 }
 
 /*
@@ -186,11 +189,11 @@ double GetCounterPeriod(UINT32 slot, UINT32 channel)
  */
 double GetCounterPeriod(UINT32 channel)
 {
-	Counter *counter = AllocateCounter(channel);
-	if (counter != NULL)
-		return counter->GetPeriod();
-	else
-		return 0;
+    Counter *counter = AllocateCounter(channel);
+    if (counter != NULL)
+        return counter->GetPeriod();
+    else
+        return 0;
 }
 
 /**
@@ -201,12 +204,13 @@ double GetCounterPeriod(UINT32 channel)
  */
 void DeleteCounter(UINT32 slot, UINT32 channel)
 {
-	if (SensorBase::CheckDigitalModule(slot) && SensorBase::CheckDigitalChannel(channel))
-	{
-		UINT32 slotOffset = DigitalModule::SlotToIndex(slot);
-		delete counters[slotOffset][channel - 1];
-		counters[slotOffset][channel - 1] = NULL;
-	}
+    if (SensorBase::CheckDigitalModule(slot)
+        && SensorBase::CheckDigitalChannel(channel))
+    {
+        UINT32 slotOffset = DigitalModule::SlotToIndex(slot);
+        delete counters[slotOffset][channel - 1];
+        counters[slotOffset][channel - 1] = NULL;
+    }
 }
 
 /**
@@ -216,6 +220,5 @@ void DeleteCounter(UINT32 slot, UINT32 channel)
  */
 void DeleteCounter(UINT32 channel)
 {
-	DeleteCounter(SensorBase::GetDefaultDigitalModule(), channel);
+    DeleteCounter(SensorBase::GetDefaultDigitalModule(), channel);
 }
-

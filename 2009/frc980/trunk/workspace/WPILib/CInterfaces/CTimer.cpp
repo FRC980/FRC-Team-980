@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -20,24 +20,24 @@ static bool initialized = false;
  */
 static Timer *AllocateTimer(UINT32 index)
 {
-	if (!initialized)
-	{
-		for (unsigned i = 0; i < kMaxTimers; i++)
-			timers[i] = NULL;
-		initialized = true;
-	}
-	if (index == 0 || index >= kMaxTimers)
-	{
-		printf("Timer index out of range [1, %d]: %d\n", kMaxTimers, index);
-		return NULL;
-	}
-	Timer *timer = timers[index - 1];
-	if (timer == NULL)
-	{
-		timer = new Timer();
-		timers[index - 1] = timer;
-	}
-	return timer;
+    if (!initialized)
+    {
+        for (unsigned i = 0; i < kMaxTimers; i++)
+            timers[i] = NULL;
+        initialized = true;
+    }
+    if (index == 0 || index >= kMaxTimers)
+    {
+        printf("Timer index out of range [1, %d]: %d\n", kMaxTimers, index);
+        return NULL;
+    }
+    Timer *timer = timers[index - 1];
+    if (timer == NULL)
+    {
+        timer = new Timer();
+        timers[index - 1] = timer;
+    }
+    return timer;
 }
 
 /**
@@ -48,11 +48,11 @@ static Timer *AllocateTimer(UINT32 index)
  */
 void ResetTimer(UINT32 index)
 {
-	Timer *timer = AllocateTimer(index);
-	if (timer != NULL)
-	{
-		timer->Reset();
-	}
+    Timer *timer = AllocateTimer(index);
+    if (timer != NULL)
+    {
+        timer->Reset();
+    }
 }
 
 /**
@@ -64,11 +64,11 @@ void ResetTimer(UINT32 index)
  */
 void StartTimer(UINT32 index)
 {
-	Timer *timer = AllocateTimer(index);
-	if (timer != NULL)
-	{
-		timer->Start();
-	}
+    Timer *timer = AllocateTimer(index);
+    if (timer != NULL)
+    {
+        timer->Start();
+    }
 }
 
 /**
@@ -81,11 +81,11 @@ void StartTimer(UINT32 index)
  */
 void StopTimer(UINT32 index)
 {
-	Timer *timer = AllocateTimer(index);
-	if (timer != NULL)
-	{
-		timer->Stop();
-	}
+    Timer *timer = AllocateTimer(index);
+    if (timer != NULL)
+    {
+        timer->Stop();
+    }
 }
 
 /**
@@ -98,13 +98,13 @@ void StopTimer(UINT32 index)
  */
 double GetTimer(UINT32 index)
 {
-	Timer *timer = AllocateTimer(index);
-	if (timer != NULL)
-	{
-		return timer->Get();
-	}
-	else
-		return 0.0;
+    Timer *timer = AllocateTimer(index);
+    if (timer != NULL)
+    {
+        return timer->Get();
+    }
+    else
+        return 0.0;
 }
 
 /**
@@ -114,9 +114,9 @@ double GetTimer(UINT32 index)
  */
 void DeleteTimer(UINT32 index)
 {
-	if (index >= 1 && index <= kMaxTimers)
-	{
-		delete timers[index - 1];
-		timers[index - 1] = NULL;
-	}
+    if (index >= 1 && index <= kMaxTimers)
+    {
+        delete timers[index - 1];
+        timers[index - 1] = NULL;
+    }
 }

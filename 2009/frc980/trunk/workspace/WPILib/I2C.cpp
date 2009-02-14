@@ -18,8 +18,8 @@ static SEM_ID semaphore = semMCreate(SEM_DELETE_SAFE | SEM_INVERSION_SAFE);     
  * @param deviceAddress The address of the device on the I2C bus.
  */
 I2C::I2C(DigitalModule * module, UINT8 deviceAddress):m_module(module),
-m_deviceAddress
-(deviceAddress)
+    m_deviceAddress
+    (deviceAddress)
 {
 }
 

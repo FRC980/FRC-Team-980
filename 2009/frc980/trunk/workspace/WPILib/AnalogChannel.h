@@ -35,7 +35,7 @@ class AnalogChannel : public SensorBase
 
     AnalogChannel(UINT32 slot, UINT32 channel);
     explicit AnalogChannel(UINT32 channel);
-    virtual ~AnalogChannel();
+    virtual ~ AnalogChannel();
 
     AnalogModule *GetModule();
 

@@ -20,8 +20,8 @@
  * @param stopBits The number of stop bits to use as defined by the enum StopBits.
  */
 SerialPort::SerialPort(UINT32 baudRate, UINT8 dataBits, SerialPort::Parity parity, SerialPort::StopBits stopBits):m_resourceManagerHandle(0),
-m_portHandle
-(0)
+    m_portHandle
+    (0)
 {
     ViStatus status = VI_SUCCESS;
     status = viOpenDefaultRM((ViSession *) & m_resourceManagerHandle);
@@ -158,9 +158,8 @@ void SerialPort::Scanf(const char *readFmt, ...)
 UINT32 SerialPort::Read(char *buffer, INT32 count)
 {
     UINT32 retCount = 0;
-    ViStatus status =
-        viBufRead(m_portHandle, (ViPBuf) buffer, count,
-                  (ViPUInt32) & retCount);
+    ViStatus status = viBufRead(m_portHandle, (ViPBuf) buffer, count,
+                                (ViPUInt32) & retCount);
     switch (status)
     {
     case VI_SUCCESS_TERM_CHAR:
@@ -182,9 +181,8 @@ UINT32 SerialPort::Read(char *buffer, INT32 count)
 UINT32 SerialPort::Write(const char *buffer, INT32 count)
 {
     UINT32 retCount = 0;
-    ViStatus status =
-        viBufWrite(m_portHandle, (ViPBuf) buffer, count,
-                   (ViPUInt32) & retCount);
+    ViStatus status = viBufWrite(m_portHandle, (ViPBuf) buffer, count,
+                                 (ViPUInt32) & retCount);
     wpi_assertCleanStatus(status);
     return retCount;
 }
@@ -199,9 +197,8 @@ UINT32 SerialPort::Write(const char *buffer, INT32 count)
  */
 void SerialPort::SetTimeout(float timeout)
 {
-    ViStatus status =
-        viSetAttribute(m_portHandle, VI_ATTR_TMO_VALUE,
-                       (UINT32) (timeout * 1e3));
+    ViStatus status = viSetAttribute(m_portHandle, VI_ATTR_TMO_VALUE,
+                                     (UINT32) (timeout * 1e3));
     wpi_assertCleanStatus(status);
 }
 

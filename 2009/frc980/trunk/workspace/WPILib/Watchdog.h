@@ -29,7 +29,7 @@ class Watchdog : public SensorBase
   public:
     static const UINT32 kDefaultWatchdogExpiration_ms = 500;
     Watchdog();
-    virtual ~Watchdog();
+    virtual ~ Watchdog();
 
     bool Feed();
     void Kill();

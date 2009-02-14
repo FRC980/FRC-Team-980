@@ -53,7 +53,7 @@ class RobotDrive
                SpeedController & rearLeftMotor,
                SpeedController & frontRightMotor,
                SpeedController & rearRightMotor, float sensitivity = 0.5);
-    virtual ~RobotDrive();
+    virtual ~ RobotDrive();
 
     void Drive(float speed, float curve);
     void TankDrive(GenericHID * leftStick, GenericHID * rightStick);

@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -7,7 +7,7 @@
 #include "CGyro.h"
 #include "Gyro.h"
 
-static Gyro* gyros[2] = {NULL, NULL};
+static Gyro *gyros[2] = { NULL, NULL };
 
 /**
  * Allocate resoures for a Gyro.
@@ -21,16 +21,16 @@ static Gyro* gyros[2] = {NULL, NULL};
  */
 static Gyro *AllocateGyro(UINT32 slot, UINT32 channel)
 {
-	Gyro *gyro = NULL;
-	if (slot == 1 && (channel == 1 || channel == 2))
-	{
-		if ((gyro = gyros[channel - 1]) == NULL)
-		{
-			gyro = new Gyro(channel);
-			gyros[channel - 1] = gyro;
-		}
-	}
-	return gyro;
+    Gyro *gyro = NULL;
+    if (slot == 1 && (channel == 1 || channel == 2))
+    {
+        if ((gyro = gyros[channel - 1]) == NULL)
+        {
+            gyro = new Gyro(channel);
+            gyros[channel - 1] = gyro;
+        }
+    }
+    return gyro;
 }
 
 /**
@@ -46,7 +46,7 @@ static Gyro *AllocateGyro(UINT32 slot, UINT32 channel)
  */
 void InitGyro(UINT32 slot, UINT32 channel)
 {
-	AllocateGyro(slot, channel);
+    AllocateGyro(slot, channel);
 }
 
 /**
@@ -61,7 +61,7 @@ void InitGyro(UINT32 slot, UINT32 channel)
  */
 void InitGyro(UINT32 channel)
 {
-	InitGyro(SensorBase::GetDefaultAnalogModule(), channel);
+    InitGyro(SensorBase::GetDefaultAnalogModule(), channel);
 }
 
 /**
@@ -79,9 +79,10 @@ void InitGyro(UINT32 channel)
  */
 float GetGyroAngle(UINT32 slot, UINT32 channel)
 {
-	Gyro *gyro = AllocateGyro(slot, channel);
-	if (gyro) return gyro->GetAngle();
-	return 0.0;
+    Gyro *gyro = AllocateGyro(slot, channel);
+    if (gyro)
+        return gyro->GetAngle();
+    return 0.0;
 }
 
 /**
@@ -98,7 +99,7 @@ float GetGyroAngle(UINT32 slot, UINT32 channel)
  */
 float GetGyroAngle(UINT32 channel)
 {
-	return GetGyroAngle(SensorBase::GetDefaultAnalogModule(), channel);
+    return GetGyroAngle(SensorBase::GetDefaultAnalogModule(), channel);
 }
 
 /**
@@ -111,8 +112,9 @@ float GetGyroAngle(UINT32 channel)
  */
 void ResetGyro(UINT32 slot, UINT32 channel)
 {
-	Gyro *gyro = AllocateGyro(slot, channel);
-	if (gyro) gyro->Reset();
+    Gyro *gyro = AllocateGyro(slot, channel);
+    if (gyro)
+        gyro->Reset();
 }
 
 /**
@@ -124,7 +126,7 @@ void ResetGyro(UINT32 slot, UINT32 channel)
  */
 void ResetGyro(UINT32 channel)
 {
-	ResetGyro(SensorBase::GetDefaultAnalogModule(), channel);
+    ResetGyro(SensorBase::GetDefaultAnalogModule(), channel);
 }
 
 /**
@@ -136,10 +138,12 @@ void ResetGyro(UINT32 channel)
  * @param channel The analog channel the gyro is plugged into
  * @param voltsPerDegreePerSecond The type of gyro specified as the voltage that represents one degree/second.
  */
-void SetGyroSensitivity(UINT32 slot, UINT32 channel, float voltsPerDegreePerSecond)
+void SetGyroSensitivity(UINT32 slot, UINT32 channel,
+                        float voltsPerDegreePerSecond)
 {
-	Gyro *gyro = AllocateGyro(slot, channel);
-	if (gyro) gyro->SetSensitivity(voltsPerDegreePerSecond);
+    Gyro *gyro = AllocateGyro(slot, channel);
+    if (gyro)
+        gyro->SetSensitivity(voltsPerDegreePerSecond);
 }
 
 /**
@@ -152,7 +156,8 @@ void SetGyroSensitivity(UINT32 slot, UINT32 channel, float voltsPerDegreePerSeco
  */
 void SetGyroSensitivity(UINT32 channel, float voltsPerDegreePerSecond)
 {
-	SetGyroSensitivity(SensorBase::GetDefaultAnalogModule(), channel, voltsPerDegreePerSecond);
+    SetGyroSensitivity(SensorBase::GetDefaultAnalogModule(), channel,
+                       voltsPerDegreePerSecond);
 }
 
 /**
@@ -164,15 +169,14 @@ void SetGyroSensitivity(UINT32 channel, float voltsPerDegreePerSecond)
  */
 void DeleteGyro(UINT32 slot, UINT32 channel)
 {
-	if (slot == 1 && (channel == 1 || channel == 2))
-	{
-		delete gyros[channel - 1];
-		gyros[channel - 1] = NULL;
-	}
+    if (slot == 1 && (channel == 1 || channel == 2))
+    {
+        delete gyros[channel - 1];
+        gyros[channel - 1] = NULL;
+    }
 }
 
 void DeleteGyro(UINT32 channel)
 {
-	DeleteGyro(SensorBase::GetDefaultAnalogModule(), channel);
+    DeleteGyro(SensorBase::GetDefaultAnalogModule(), channel);
 }
-

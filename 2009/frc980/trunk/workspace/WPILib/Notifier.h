@@ -16,7 +16,7 @@ class Notifier
 {
   public:
     Notifier(TimerEventHandler handler, void *param);
-    virtual ~Notifier();
+    virtual ~ Notifier();
 
     void StartSingle(double period);
     void StartPeriodic(double period);
@@ -25,8 +25,8 @@ class Notifier
   private:
     static const UINT32 kTimerInterruptNumber = 28;
     static void ProcessQueue(tNIRIO_u32 mask, void *params); // process the timer queue on a timer event
-    static void UpdateAlarm(); // update the FPGA alarm since the queue has changed
-    void InsertInQueue(bool updateAlarm); // insert this Notifier in the timer queue
+    static void UpdateAlarm(); // update FPGA alarm since queue has changed
+    void InsertInQueue(bool updateAlarm); // insert this Notifier in timer queue
     void DeleteFromQueue();   // delete this Notifier from the timer queue
     TimerEventHandler m_handler; // address of the handler
     void *m_param;               // a parameter to pass to the handler
@@ -36,6 +36,7 @@ class Notifier
     bool m_periodic;         // true if this is a periodic event
     static Notifier *m_head; // head of list of current Notifiers
     bool m_queued;           // indicates if this entry is queued
+
     DISALLOW_COPY_AND_ASSIGN(Notifier);
 };
 

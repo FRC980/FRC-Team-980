@@ -18,7 +18,7 @@ class Jaguar : public PWM, public SpeedController
   public:
     explicit Jaguar(UINT32 channel);
     Jaguar(UINT32 slot, UINT32 channel);
-    virtual ~Jaguar();
+    virtual ~ Jaguar();
 
     float Get();
     void Set(float value);

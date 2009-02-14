@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -9,30 +9,34 @@
 
 static bool analogChannelsInitialized = false;
 static AnalogChannel
-		*analogs[SensorBase::kAnalogModules][SensorBase::kAnalogChannels];
+    * analogs[SensorBase::kAnalogModules][SensorBase::kAnalogChannels];
 
 /**
  * Allocate an AnalogChannel object for this set of slot/port
  * @param slot The slot the analog module is plugged into
  * @param channel The channel number on the module for this analog channel object
  */
-AnalogChannel *AllocateAnalogChannel(UINT32 slot, UINT32 channel/*, SensorCreator createObject*/)
+AnalogChannel *AllocateAnalogChannel(UINT32 slot,
+                                     UINT32 channel
+                                     /*, SensorCreator createObject */ )
 {
-	if (!analogChannelsInitialized)
-	{
-		for (unsigned i = 0; i < SensorBase::kAnalogModules; i++)
-			for (unsigned j = 0; j < SensorBase::kAnalogChannels; j++)
-				analogs[i][j] = NULL;
-		analogChannelsInitialized = true;
-	}
-	if (SensorBase::CheckAnalogModule(slot) && SensorBase::CheckAnalogChannel(channel))
-	{
-		if (analogs[AnalogModule::SlotToIndex(slot)][channel - 1] == NULL)
-			analogs[AnalogModule::SlotToIndex(slot)][channel - 1] = new AnalogChannel(slot, channel);
-		return analogs[AnalogModule::SlotToIndex(slot)][channel - 1];
-	}
-	else
-		return NULL;
+    if (!analogChannelsInitialized)
+    {
+        for (unsigned i = 0; i < SensorBase::kAnalogModules; i++)
+            for (unsigned j = 0; j < SensorBase::kAnalogChannels; j++)
+                analogs[i][j] = NULL;
+        analogChannelsInitialized = true;
+    }
+    if (SensorBase::CheckAnalogModule(slot)
+        && SensorBase::CheckAnalogChannel(channel))
+    {
+        if (analogs[AnalogModule::SlotToIndex(slot)][channel - 1] == NULL)
+            analogs[AnalogModule::SlotToIndex(slot)][channel - 1] =
+                new AnalogChannel(slot, channel);
+        return analogs[AnalogModule::SlotToIndex(slot)][channel - 1];
+    }
+    else
+        return NULL;
 }
 
 /**
@@ -46,12 +50,12 @@ AnalogChannel *AllocateAnalogChannel(UINT32 slot, UINT32 channel/*, SensorCreato
  */
 INT16 GetAnalogValue(UINT32 slot, UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
-	if (analog != NULL)
-	{
-		return analog->GetValue();
-	}
-	return 0;
+    AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
+    if (analog != NULL)
+    {
+        return analog->GetValue();
+    }
+    return 0;
 }
 
 /**
@@ -68,12 +72,12 @@ INT16 GetAnalogValue(UINT32 slot, UINT32 channel)
  */
 INT32 GetAnalogAverageValue(UINT32 slot, UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
-	if (analog != NULL)
-	{
-		return analog->GetAverageValue();
-	}
-	return 0;
+    AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
+    if (analog != NULL)
+    {
+        return analog->GetAverageValue();
+    }
+    return 0;
 }
 
 /**
@@ -85,12 +89,12 @@ INT32 GetAnalogAverageValue(UINT32 slot, UINT32 channel)
  */
 float GetAnalogVoltage(UINT32 slot, UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
-	if (analog != NULL)
-	{
-		return analog->GetVoltage();
-	}
-	return 0.0;
+    AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
+    if (analog != NULL)
+    {
+        return analog->GetVoltage();
+    }
+    return 0.0;
 }
 
 /**
@@ -104,12 +108,12 @@ float GetAnalogVoltage(UINT32 slot, UINT32 channel)
  */
 float GetAnalogAverageVoltage(UINT32 slot, UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
-	if (analog != NULL)
-	{
-		return analog->GetAverageVoltage();
-	}
-	return 0.0;
+    AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
+    if (analog != NULL)
+    {
+        return analog->GetAverageVoltage();
+    }
+    return 0.0;
 }
 
 /**
@@ -124,11 +128,11 @@ float GetAnalogAverageVoltage(UINT32 slot, UINT32 channel)
  */
 void SetAnalogAverageBits(UINT32 slot, UINT32 channel, UINT32 bits)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
-	if (analog != NULL)
-	{
-		analog->SetAverageBits(bits);
-	}
+    AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
+    if (analog != NULL)
+    {
+        analog->SetAverageBits(bits);
+    }
 }
 
 /**
@@ -142,12 +146,12 @@ void SetAnalogAverageBits(UINT32 slot, UINT32 channel, UINT32 bits)
  */
 UINT32 GetAnalogAverageBits(UINT32 slot, UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
-	if (analog != NULL)
-	{
-		return analog->GetAverageBits();
-	}
-	return 0;
+    AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
+    if (analog != NULL)
+    {
+        return analog->GetAverageBits();
+    }
+    return 0;
 }
 
 /**
@@ -162,11 +166,11 @@ UINT32 GetAnalogAverageBits(UINT32 slot, UINT32 channel)
  */
 void SetAnalogOversampleBits(UINT32 slot, UINT32 channel, UINT32 bits)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
-	if (analog != NULL)
-	{
-		analog->SetOversampleBits(bits);
-	}
+    AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
+    if (analog != NULL)
+    {
+        analog->SetOversampleBits(bits);
+    }
 }
 
 /**
@@ -180,12 +184,12 @@ void SetAnalogOversampleBits(UINT32 slot, UINT32 channel, UINT32 bits)
  */
 UINT32 GetAnalogOversampleBits(UINT32 slot, UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
-	if (analog != NULL)
-	{
-		return analog->GetOversampleBits();
-	}
-	return 0;
+    AnalogChannel *analog = AllocateAnalogChannel(slot, channel);
+    if (analog != NULL)
+    {
+        return analog->GetOversampleBits();
+    }
+    return 0;
 }
 
 /**
@@ -198,12 +202,14 @@ UINT32 GetAnalogOversampleBits(UINT32 slot, UINT32 channel)
  */
 INT16 GetAnalogValue(UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(), channel);
-	if (analog != NULL)
-	{
-		return analog->GetValue();
-	}
-	return 0;
+    AnalogChannel *analog =
+        AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(),
+                              channel);
+    if (analog != NULL)
+    {
+        return analog->GetValue();
+    }
+    return 0;
 }
 
 /**
@@ -219,12 +225,14 @@ INT16 GetAnalogValue(UINT32 channel)
  */
 INT32 GetAnalogAverageValue(UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(), channel);
-	if (analog != NULL)
-	{
-		return analog->GetAverageValue();
-	}
-	return 0;
+    AnalogChannel *analog =
+        AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(),
+                              channel);
+    if (analog != NULL)
+    {
+        return analog->GetAverageValue();
+    }
+    return 0;
 }
 
 /**
@@ -236,12 +244,14 @@ INT32 GetAnalogAverageValue(UINT32 channel)
  */
 float GetAnalogVoltage(UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(), channel);
-	if (analog != NULL)
-	{
-		return analog->GetVoltage();
-	}
-	return 0.0;
+    AnalogChannel *analog =
+        AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(),
+                              channel);
+    if (analog != NULL)
+    {
+        return analog->GetVoltage();
+    }
+    return 0.0;
 }
 
 /**
@@ -255,12 +265,14 @@ float GetAnalogVoltage(UINT32 channel)
  */
 float GetAnalogAverageVoltage(UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(), channel);
-	if (analog != NULL)
-	{
-		return analog->GetAverageVoltage();
-	}
-	return 0.0;
+    AnalogChannel *analog =
+        AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(),
+                              channel);
+    if (analog != NULL)
+    {
+        return analog->GetAverageVoltage();
+    }
+    return 0.0;
 }
 
 /**
@@ -274,11 +286,13 @@ float GetAnalogAverageVoltage(UINT32 channel)
  */
 void SetAnalogAverageBits(UINT32 channel, UINT32 bits)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(), channel);
-	if (analog != NULL)
-	{
-		analog->SetAverageBits(bits);
-	}
+    AnalogChannel *analog =
+        AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(),
+                              channel);
+    if (analog != NULL)
+    {
+        analog->SetAverageBits(bits);
+    }
 }
 
 /**
@@ -291,12 +305,14 @@ void SetAnalogAverageBits(UINT32 channel, UINT32 bits)
  */
 UINT32 GetAnalogAverageBits(UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(), channel);
-	if (analog != NULL)
-	{
-		return analog->GetAverageBits();
-	}
-	return 0;
+    AnalogChannel *analog =
+        AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(),
+                              channel);
+    if (analog != NULL)
+    {
+        return analog->GetAverageBits();
+    }
+    return 0;
 }
 
 /**
@@ -310,11 +326,13 @@ UINT32 GetAnalogAverageBits(UINT32 channel)
  */
 void SetAnalogOversampleBits(UINT32 channel, UINT32 bits)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(), channel);
-	if (analog != NULL)
-	{
-		analog->GetOversampleBits();
-	}
+    AnalogChannel *analog =
+        AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(),
+                              channel);
+    if (analog != NULL)
+    {
+        analog->GetOversampleBits();
+    }
 }
 
 /**
@@ -327,12 +345,14 @@ void SetAnalogOversampleBits(UINT32 channel, UINT32 bits)
  */
 UINT32 GetAnalogOversampleBits(UINT32 channel)
 {
-	AnalogChannel *analog = AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(), channel);
-	if (analog != NULL)
-	{
-		return analog->GetOversampleBits();
-	}
-	return 0;
+    AnalogChannel *analog =
+        AllocateAnalogChannel(AnalogModule::GetDefaultAnalogModule(),
+                              channel);
+    if (analog != NULL)
+    {
+        return analog->GetOversampleBits();
+    }
+    return 0;
 }
 
 /**
@@ -344,11 +364,12 @@ UINT32 GetAnalogOversampleBits(UINT32 channel)
  */
 void DeleteAnalogChannel(UINT32 slot, UINT32 channel)
 {
-	if (SensorBase::CheckAnalogModule(slot) && SensorBase::CheckAnalogChannel(channel))
-	{
-		delete analogs[AnalogModule::SlotToIndex(slot)][channel - 1];
-		analogs[AnalogModule::SlotToIndex(slot)][channel - 1] = NULL;
-	}
+    if (SensorBase::CheckAnalogModule(slot)
+        && SensorBase::CheckAnalogChannel(channel))
+    {
+        delete analogs[AnalogModule::SlotToIndex(slot)][channel - 1];
+        analogs[AnalogModule::SlotToIndex(slot)][channel - 1] = NULL;
+    }
 }
 
 /**
@@ -359,6 +380,5 @@ void DeleteAnalogChannel(UINT32 slot, UINT32 channel)
  */
 void DeleteAnalogChannel(UINT32 channel)
 {
-	DeleteAnalogChannel(SensorBase::GetDefaultAnalogModule(), channel);
+    DeleteAnalogChannel(SensorBase::GetDefaultAnalogModule(), channel);
 }
-

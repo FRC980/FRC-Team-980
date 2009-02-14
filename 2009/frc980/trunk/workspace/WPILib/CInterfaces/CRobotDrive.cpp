@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -32,12 +32,13 @@ static RobotDrive *drive = NULL;
  * @param sensitivity Effectively sets the turning sensitivity (or turn radius for a given value)
  */
 void CreateRobotDrive(UINT32 frontLeftMotor, UINT32 rearLeftMotor,
-		UINT32 frontRightMotor, UINT32 rearRightMotor, float sensitivity)
+                      UINT32 frontRightMotor, UINT32 rearRightMotor,
+                      float sensitivity)
 {
-	if (drive == NULL)
-		drive = new RobotDrive(frontLeftMotor, rearLeftMotor,
-								frontRightMotor, rearRightMotor,
-								sensitivity);
+    if (drive == NULL)
+        drive = new RobotDrive(frontLeftMotor, rearLeftMotor,
+                               frontRightMotor, rearRightMotor,
+                               sensitivity);
 }
 
 /**
@@ -50,10 +51,11 @@ void CreateRobotDrive(UINT32 frontLeftMotor, UINT32 rearLeftMotor,
  * @param rightMotor Front right motor channel number on the default digital module
  * @param sensitivity Effectively sets the turning sensitivity (or turn radius for a given value)
  */
-void CreateRobotDrive(UINT32 leftMotor, UINT32 rightMotor, float sensitivity)
+void CreateRobotDrive(UINT32 leftMotor, UINT32 rightMotor,
+                      float sensitivity)
 {
-	if (drive == NULL)
-		drive = new RobotDrive(leftMotor, rightMotor, sensitivity);
+    if (drive == NULL)
+        drive = new RobotDrive(leftMotor, rightMotor, sensitivity);
 }
 
 /**
@@ -70,10 +72,10 @@ void CreateRobotDrive(UINT32 leftMotor, UINT32 rightMotor, float sensitivity)
  */
 void Drive(float speed, float curve)
 {
-	if (drive == NULL)
-		wpi_fatal(DriveUninitialized);
-	else
-		drive->Drive(speed, curve);
+    if (drive == NULL)
+        wpi_fatal(DriveUninitialized);
+    else
+        drive->Drive(speed, curve);
 }
 
 /**
@@ -86,16 +88,16 @@ void Drive(float speed, float curve)
  */
 void TankDrive(UINT32 leftStickPort, UINT32 rightStickPort)
 {
-	if (drive == NULL)
-	{
-		wpi_fatal(DriveUninitialized);
-	}
-	else
-	{
-		Joystick *leftStick = Joystick::GetStickForPort(leftStickPort);
-		Joystick *rightStick = Joystick::GetStickForPort(rightStickPort);
-		drive->TankDrive(leftStick, rightStick);
-	}
+    if (drive == NULL)
+    {
+        wpi_fatal(DriveUninitialized);
+    }
+    else
+    {
+        Joystick *leftStick = Joystick::GetStickForPort(leftStickPort);
+        Joystick *rightStick = Joystick::GetStickForPort(rightStickPort);
+        drive->TankDrive(leftStick, rightStick);
+    }
 }
 
 /**
@@ -110,15 +112,15 @@ void TankDrive(UINT32 leftStickPort, UINT32 rightStickPort)
  */
 void ArcadeDrive(UINT32 stickPort, bool squaredInputs)
 {
-	if (drive == NULL)
-	{
-		wpi_fatal(DriveUninitialized);
-	}
-	else
-	{
-		Joystick *stick = Joystick::GetStickForPort(stickPort);
-		drive->ArcadeDrive(stick);
-	}
+    if (drive == NULL)
+    {
+        wpi_fatal(DriveUninitialized);
+    }
+    else
+    {
+        Joystick *stick = Joystick::GetStickForPort(stickPort);
+        drive->ArcadeDrive(stick);
+    }
 }
 
 /**
@@ -129,14 +131,14 @@ void ArcadeDrive(UINT32 stickPort, bool squaredInputs)
  */
 void TankByValue(float leftSpeed, float rightSpeed)
 {
-	if (drive == NULL)
-	{
-		wpi_fatal(DriveUninitialized);
-	}
-	else
-	{
-		drive->Drive(leftSpeed, rightSpeed);
-	}
+    if (drive == NULL)
+    {
+        wpi_fatal(DriveUninitialized);
+    }
+    else
+    {
+        drive->Drive(leftSpeed, rightSpeed);
+    }
 }
 
 /**
@@ -149,8 +151,8 @@ void TankByValue(float leftSpeed, float rightSpeed)
  */
 void ArcadeByValue(float moveValue, float rotateValue, bool squaredInputs)
 {
-	if (drive == NULL)
-		wpi_fatal(DriveUninitialized);
-	else
-		drive->ArcadeDrive(moveValue, rotateValue, squaredInputs);
+    if (drive == NULL)
+        wpi_fatal(DriveUninitialized);
+    else
+        drive->ArcadeDrive(moveValue, rotateValue, squaredInputs);
 }

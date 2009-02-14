@@ -9,23 +9,22 @@
 
 namespace nFPGA
 {
+    class tSystem
+    {
+      public:
+        tSystem(tRioStatusCode * status);
+        ~tSystem();
+        static void getFpgaGuid(unsigned *guid_ptr,
+                                tRioStatusCode * status);
 
-class tSystem
-{
-public:
-   tSystem(tRioStatusCode *status);
-   ~tSystem();
-   static void getFpgaGuid(unsigned *guid_ptr, tRioStatusCode *status);
+      protected:
+        static tRioDeviceHandle _DeviceHandle;
 
-protected:
-   static tRioDeviceHandle _DeviceHandle;
-
-private:
-   void configDMA(tRioStatusCode *status);
-   static int _ReferenceCount;
-   static SEM_ID _ReferenceMutex;
-};
-
+      private:
+        void configDMA(tRioStatusCode * status);
+        static int _ReferenceCount;
+        static SEM_ID _ReferenceMutex;
+    };
 }
 
-#endif // __tSystem_h__
+#endif                          // __tSystem_h__

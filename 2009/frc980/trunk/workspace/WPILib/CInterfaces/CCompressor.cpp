@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -18,12 +18,12 @@ static Compressor *compressor = NULL;
  */
 void CreateCompressor(UINT32 pressureSwitchChannel, UINT32 relayChannel)
 {
-	if (compressor == NULL)
-	{
-		compressor = new Compressor(pressureSwitchChannel, relayChannel);
-		return;
-	}
-	wpi_fatal(CompressorAlreadyDefined);
+    if (compressor == NULL)
+    {
+        compressor = new Compressor(pressureSwitchChannel, relayChannel);
+        return;
+    }
+    wpi_fatal(CompressorAlreadyDefined);
 }
 
 /**
@@ -34,16 +34,18 @@ void CreateCompressor(UINT32 pressureSwitchChannel, UINT32 relayChannel)
  * @param relaySlot The slot of the digital module for the relay controlling the compressor
  * @param relayChannel The channel on the digital module for the relay that controls the compressor
  */
-void CreateCompressor(UINT32 pressureSwitchSlot, UINT32 pressureSwitchChannel,
-						UINT32 relaySlot, UINT32 relayChannel)
+void CreateCompressor(UINT32 pressureSwitchSlot,
+                      UINT32 pressureSwitchChannel, UINT32 relaySlot,
+                      UINT32 relayChannel)
 {
-	if (compressor == NULL)
-	{
-		compressor = new Compressor(pressureSwitchSlot, pressureSwitchChannel,
-									relaySlot, relayChannel);
-		return;
-	}
-	wpi_fatal(CompressorAlreadyDefined);
+    if (compressor == NULL)
+    {
+        compressor =
+            new Compressor(pressureSwitchSlot, pressureSwitchChannel,
+                           relaySlot, relayChannel);
+        return;
+    }
+    wpi_fatal(CompressorAlreadyDefined);
 }
 
 /**
@@ -52,12 +54,12 @@ void CreateCompressor(UINT32 pressureSwitchSlot, UINT32 pressureSwitchChannel,
  */
 void StartCompressor()
 {
-	if (compressor == NULL)
-	{
-		wpi_fatal(CompressorUndefined);
-		return;
-	}
-	compressor->Start();
+    if (compressor == NULL)
+    {
+        wpi_fatal(CompressorUndefined);
+        return;
+    }
+    compressor->Start();
 }
 
 /**
@@ -66,12 +68,12 @@ void StartCompressor()
  */
 void StopCompressor()
 {
-	if (compressor == NULL)
-	{
-		wpi_fatal(CompressorUndefined);
-		return;
-	}
-	compressor->Stop();
+    if (compressor == NULL)
+    {
+        wpi_fatal(CompressorUndefined);
+        return;
+    }
+    compressor->Stop();
 }
 
 /**
@@ -82,12 +84,12 @@ void StopCompressor()
  */
 bool CompressorEnabled()
 {
-	if (compressor == NULL)
-	{
-		wpi_fatal(CompressorUndefined);
-		return false;
-	}
-	return compressor->Enabled();
+    if (compressor == NULL)
+    {
+        wpi_fatal(CompressorUndefined);
+        return false;
+    }
+    return compressor->Enabled();
 }
 
 /**
@@ -96,6 +98,5 @@ bool CompressorEnabled()
  */
 void DeleteCompressor()
 {
-	delete compressor;
+    delete compressor;
 }
-

@@ -24,7 +24,7 @@ class SensorBase : public ErrorBase
     static const UINT32 kSystemClockTicksPerMicrosecond = 40;
 
     SensorBase();
-    virtual ~SensorBase();
+    virtual ~ SensorBase();
 
     static void SetDefaultAnalogModule(UINT32 slot);
     static void SetDefaultDigitalModule(UINT32 slot);
@@ -63,7 +63,7 @@ class SensorBase : public ErrorBase
     static const UINT32 kRelayChannels = 8;
     static const UINT32 kChassisSlots = 8;
 
-protected:
+  protected:
     void AddToSingletonList();
 
   private:

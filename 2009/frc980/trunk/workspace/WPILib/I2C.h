@@ -20,12 +20,12 @@ class DigitalModule;
  * It is constructed by calling DigitalModule::GetI2C() on a DigitalModule
  * object.
  */
-class I2C:SensorBase
+class I2C : SensorBase
 {
     friend class DigitalModule;
 
   public:
-    virtual ~I2C();
+    virtual ~ I2C();
 
     void Write(UINT8 registerAddress, UINT8 data);
     void Read(UINT8 registerAddress, UINT8 count, UINT8 * data);

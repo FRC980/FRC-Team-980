@@ -1,12 +1,12 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
 #include "CSerialPort.h"
 #include <visa/visa.h>
 
-static SerialPort* serial_port = NULL;
+static SerialPort *serial_port = NULL;
 
 /**
  * Open the serial port object.
@@ -17,12 +17,14 @@ static SerialPort* serial_port = NULL;
  * @param parity Select the type of parity checking to use.
  * @param stopBits The number of stop bits to use as defined by the enum StopBits.
  */
-void OpenSerialPort(UINT32 baudRate, UINT8 dataBits, SerialPort::Parity parity, SerialPort::StopBits stopBits)
+void OpenSerialPort(UINT32 baudRate, UINT8 dataBits,
+                    SerialPort::Parity parity,
+                    SerialPort::StopBits stopBits)
 {
-	if (serial_port == NULL)
-	{
-		serial_port = new SerialPort(baudRate, dataBits, parity, stopBits);
-	}
+    if (serial_port == NULL)
+    {
+        serial_port = new SerialPort(baudRate, dataBits, parity, stopBits);
+    }
 }
 
 /**
@@ -32,7 +34,7 @@ void OpenSerialPort(UINT32 baudRate, UINT8 dataBits, SerialPort::Parity parity, 
  */
 void SetSerialFlowControl(SerialPort::FlowControl flowControl)
 {
-	serial_port->SetFlowControl(flowControl);
+    serial_port->SetFlowControl(flowControl);
 }
 
 /**
@@ -46,7 +48,7 @@ void SetSerialFlowControl(SerialPort::FlowControl flowControl)
  */
 void EnableSerialTermination(char terminator)
 {
-	serial_port->EnableTermination(terminator);
+    serial_port->EnableTermination(terminator);
 }
 
 /**
@@ -54,7 +56,7 @@ void EnableSerialTermination(char terminator)
  */
 void DisableSerialTermination(void)
 {
-	serial_port->DisableTermination();
+    serial_port->DisableTermination();
 }
 
 /**
@@ -64,7 +66,7 @@ void DisableSerialTermination(void)
  */
 INT32 GetSerialBytesReceived(void)
 {
-	return serial_port->GetBytesReceived();
+    return serial_port->GetBytesReceived();
 }
 
 /**
@@ -76,11 +78,11 @@ INT32 GetSerialBytesReceived(void)
  */
 void PrintfSerial(const char *writeFmt, ...)
 {
-	va_list args;
+    va_list args;
 
-	va_start (args, writeFmt);
-	serial_port->Printf((ViString)writeFmt, args);
-	va_end (args);
+    va_start(args, writeFmt);
+    serial_port->Printf((ViString) writeFmt, args);
+    va_end(args);
 }
 
 /**
@@ -92,11 +94,11 @@ void PrintfSerial(const char *writeFmt, ...)
  */
 void ScanfSerial(const char *readFmt, ...)
 {
-	va_list args;
+    va_list args;
 
-	va_start (args, readFmt);
-	serial_port->Scanf((ViString)readFmt, args);
-	va_end (args);
+    va_start(args, readFmt);
+    serial_port->Scanf((ViString) readFmt, args);
+    va_end(args);
 }
 
 /**
@@ -108,7 +110,7 @@ void ScanfSerial(const char *readFmt, ...)
  */
 UINT32 ReadSerialPort(char *buffer, INT32 count)
 {
-	return serial_port->Read(buffer, count);
+    return serial_port->Read(buffer, count);
 }
 
 /**
@@ -120,7 +122,7 @@ UINT32 ReadSerialPort(char *buffer, INT32 count)
  */
 UINT32 WriteSerialPort(const char *buffer, INT32 count)
 {
-	return serial_port->Write(buffer, count);
+    return serial_port->Write(buffer, count);
 }
 
 /**
@@ -133,7 +135,7 @@ UINT32 WriteSerialPort(const char *buffer, INT32 count)
  */
 void SetSerialTimeout(INT32 timeout)
 {
-	serial_port->SetTimeout(timeout);
+    serial_port->SetTimeout(timeout);
 }
 
 /**
@@ -149,7 +151,7 @@ void SetSerialTimeout(INT32 timeout)
  */
 void SetSerialWriteBufferMode(SerialPort::WriteBufferMode mode)
 {
-	serial_port->SetWriteBufferMode(mode);
+    serial_port->SetWriteBufferMode(mode);
 }
 
 /**
@@ -160,7 +162,7 @@ void SetSerialWriteBufferMode(SerialPort::WriteBufferMode mode)
  */
 void FlushSerialPort(void)
 {
-	serial_port->Flush();
+    serial_port->Flush();
 }
 
 /**
@@ -170,5 +172,5 @@ void FlushSerialPort(void)
  */
 void ResetSerialPort(void)
 {
-	serial_port->Reset();
+    serial_port->Reset();
 }

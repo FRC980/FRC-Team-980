@@ -25,6 +25,7 @@ class DigitalSource;
  * a B Channel that are out of phase with each other to allow the FPGA to
  * do direction sensing.
  */
+
 class Encoder : public SensorBase, public CounterBase
 {
   public:
@@ -36,7 +37,7 @@ class Encoder : public SensorBase, public CounterBase
             bool reverseDirection = false);
     Encoder::Encoder(DigitalSource & aSource, DigitalSource & bSource,
                      bool reverseDirection);
-    virtual ~Encoder();
+    virtual ~ Encoder();
 
     // CounterBase interface
     void Start();

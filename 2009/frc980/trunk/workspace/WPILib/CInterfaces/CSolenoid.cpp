@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -19,15 +19,15 @@ static bool initialized = false;
  */
 static Solenoid *allocateSolenoid(UINT32 channel)
 {
-	if (!initialized)
-	{
-		initialized = true;
-		for (unsigned i = 0; i < SensorBase::kSolenoidChannels; i++)
-			solenoids[i] = new Solenoid(i + 1);
-	}
-	if (channel < 1 || channel > SensorBase::kSolenoidChannels)
-		return NULL;
-	return solenoids[channel - 1];
+    if (!initialized)
+    {
+        initialized = true;
+        for (unsigned i = 0; i < SensorBase::kSolenoidChannels; i++)
+            solenoids[i] = new Solenoid(i + 1);
+    }
+    if (channel < 1 || channel > SensorBase::kSolenoidChannels)
+        return NULL;
+    return solenoids[channel - 1];
 }
 
 /**
@@ -38,9 +38,9 @@ static Solenoid *allocateSolenoid(UINT32 channel)
  */
 void SetSolenoid(UINT32 channel, bool on)
 {
-	Solenoid *s = allocateSolenoid(channel);
-	if (s != NULL)
-		s->Set(on);
+    Solenoid *s = allocateSolenoid(channel);
+    if (s != NULL)
+        s->Set(on);
 }
 
 /**
@@ -51,10 +51,10 @@ void SetSolenoid(UINT32 channel, bool on)
  */
 bool GetSolenoid(UINT32 channel)
 {
-	Solenoid *s = allocateSolenoid(channel);
-	if (s == NULL)
-		return false;
-	return s->Get();
+    Solenoid *s = allocateSolenoid(channel);
+    if (s == NULL)
+        return false;
+    return s->Get();
 }
 
 /**
@@ -65,10 +65,9 @@ bool GetSolenoid(UINT32 channel)
  */
 void DeleteSolenoid(UINT32 channel)
 {
-	if (channel >= 1 && channel <= SensorBase::kSolenoidChannels)
-	{
-		delete solenoids[channel - 1];
-		solenoids[channel - 1] = NULL;
-	}
+    if (channel >= 1 && channel <= SensorBase::kSolenoidChannels)
+    {
+        delete solenoids[channel - 1];
+        solenoids[channel - 1] = NULL;
+    }
 }
-

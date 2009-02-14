@@ -3,9 +3,9 @@
 #ifndef __NiRio_h__
 #define __NiRio_h__
 
-#define kNIRIOSRVExportPre   
-#define kNIRIOSRVExportPost  
-#define kNIRIOSRVCCall  
+#define kNIRIOSRVExportPre
+#define kNIRIOSRVExportPost
+#define kNIRIOSRVCCall
 #define tNIRIO_i64 long
 #define tNIRIO_i32 int
 #define tNIRIO_i16 short
@@ -15,17 +15,16 @@
 #define tNIRIO_u16 unsigned short
 #define tNIRIO_u8  unsigned char
 #ifndef __cplusplus
-   typedef enum 
-   {
-      kFalse=0,
-      kTrue=1
-   } bool;
+typedef enum
+{
+    kFalse = 0,
+    kTrue = 1
+} bool;
 #else
-   #define kTrue true
-   #define kFalse false
+#define kTrue true
+#define kFalse false
 #endif
 
 #include "NiRioSrv.h"
 
-
-#endif // __NiRio_h__
+#endif  // __NiRio_h__

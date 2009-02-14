@@ -48,14 +48,15 @@ class AnalogTriggerOutput : public DigitalSource
     friend class AnalogTrigger;
 
   public:
-    typedef enum {
+    typedef enum
+    {
         kInWindow = 0,
         kState = 1,
         kRisingPulse = 2,
         kFallingPulse = 3
     } Type;
 
-    virtual ~AnalogTriggerOutput();
+    virtual ~ AnalogTriggerOutput();
     bool Get();
 
     // DigitalSource interface

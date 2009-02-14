@@ -60,7 +60,7 @@ class ScopedSocket
     }
     //  Cast to int allows you to pass this to any function that
     //  takes the socket as an int.
-    operator   int () const
+    operator    int () const
     {
         return m_camSock;
     }

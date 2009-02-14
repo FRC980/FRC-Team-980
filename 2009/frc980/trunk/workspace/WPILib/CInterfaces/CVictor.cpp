@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -16,9 +16,8 @@
  */
 static SensorBase *CreateVictor(UINT32 slot, UINT32 channel)
 {
-	return new Victor(slot, channel);
+    return new Victor(slot, channel);
 }
-
 
 /**
  * Set the PWM value.
@@ -32,8 +31,9 @@ static SensorBase *CreateVictor(UINT32 slot, UINT32 channel)
  */
 void SetVictorSpeed(UINT32 slot, UINT32 channel, float speed)
 {
-	Victor *victor = (Victor *) AllocatePWM(slot, channel, CreateVictor);
-	if (victor)	victor->Set(speed);
+    Victor *victor = (Victor *) AllocatePWM(slot, channel, CreateVictor);
+    if (victor)
+        victor->Set(speed);
 }
 
 /**
@@ -46,8 +46,9 @@ void SetVictorSpeed(UINT32 slot, UINT32 channel, float speed)
  */
 void SetVictorRaw(UINT32 channel, UINT8 value)
 {
-	Victor *victor = (Victor *) AllocatePWM(channel, CreateVictor);
-	if (victor) victor->SetRaw(value);
+    Victor *victor = (Victor *) AllocatePWM(channel, CreateVictor);
+    if (victor)
+        victor->SetRaw(value);
 }
 
 /**
@@ -61,8 +62,9 @@ void SetVictorRaw(UINT32 channel, UINT8 value)
  */
 void SetVictorSpeed(UINT32 channel, float speed)
 {
-	Victor *victor = (Victor *) AllocatePWM(channel, CreateVictor);
-	if (victor) victor->Set(speed);
+    Victor *victor = (Victor *) AllocatePWM(channel, CreateVictor);
+    if (victor)
+        victor->Set(speed);
 }
 
 /**
@@ -75,11 +77,11 @@ void SetVictorSpeed(UINT32 channel, float speed)
  */
 UINT8 GetVictorRaw(UINT32 channel)
 {
-	Victor *victor = (Victor *) AllocatePWM(channel, CreateVictor);
-	if (victor)
-		return victor->GetRaw();
-	else
-		return 0;
+    Victor *victor = (Victor *) AllocatePWM(channel, CreateVictor);
+    if (victor)
+        return victor->GetRaw();
+    else
+        return 0;
 }
 
 /**
@@ -93,10 +95,10 @@ UINT8 GetVictorRaw(UINT32 channel)
  */
 void SetVictorRaw(UINT32 slot, UINT32 channel, UINT8 value)
 {
-	Victor *victor = (Victor *) AllocatePWM(slot, channel, CreateVictor);
-	if (victor) victor->SetRaw(value);
+    Victor *victor = (Victor *) AllocatePWM(slot, channel, CreateVictor);
+    if (victor)
+        victor->SetRaw(value);
 }
-
 
 /**
  * Get the PWM value directly from the hardware.
@@ -109,11 +111,11 @@ void SetVictorRaw(UINT32 slot, UINT32 channel, UINT8 value)
  */
 UINT8 GetVictorRaw(UINT32 slot, UINT32 channel)
 {
-	Victor *victor = (Victor *) AllocatePWM(slot, channel, CreateVictor);
-	if (victor)
-		return victor->GetRaw();
-	else
-		return 0;
+    Victor *victor = (Victor *) AllocatePWM(slot, channel, CreateVictor);
+    if (victor)
+        return victor->GetRaw();
+    else
+        return 0;
 }
 
 /**
@@ -125,9 +127,9 @@ UINT8 GetVictorRaw(UINT32 slot, UINT32 channel)
  */
 void DeleteVictor(UINT32 slot, UINT32 channel)
 {
-	Victor *victor = (Victor *) AllocatePWM(slot, channel, CreateVictor);
-	delete victor;
-	DeletePWM(slot, channel);
+    Victor *victor = (Victor *) AllocatePWM(slot, channel, CreateVictor);
+    delete victor;
+    DeletePWM(slot, channel);
 }
 
 /**
@@ -138,5 +140,5 @@ void DeleteVictor(UINT32 slot, UINT32 channel)
  */
 void DeleteVictor(UINT32 channel)
 {
-	DeleteVictor(SensorBase::GetDefaultDigitalModule(), channel);
+    DeleteVictor(SensorBase::GetDefaultDigitalModule(), channel);
 }

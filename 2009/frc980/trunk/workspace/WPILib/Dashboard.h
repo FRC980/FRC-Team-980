@@ -25,7 +25,8 @@ class Dashboard : public ErrorBase
     friend class DashboardTest;
 
   public:
-    enum Type {
+    enum Type
+    {
         kI8, kI16, kI32,
         kU8, kU16, kU32,
         kFloat, kDouble,
@@ -57,7 +58,7 @@ class Dashboard : public ErrorBase
 
   private:
     Dashboard(char **userStatus);
-    virtual ~Dashboard();
+    virtual ~ Dashboard();
 
     // 13 bytes needed for 3 size parameters and the sequence number
     static const INT32 kMaxDashboardDataSize =

@@ -79,7 +79,7 @@ void SimpleRobot::StartCompetition()
             }
             else
             {
-                OperatorControl(); // run the operator control method
+                OperatorControl();      // run the operator control method
                 while (IsOperatorControl() && !IsDisabled())
                     Wait(.01);
             }

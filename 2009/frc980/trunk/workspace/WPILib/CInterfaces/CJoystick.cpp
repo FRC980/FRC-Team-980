@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -19,18 +19,18 @@ static bool initialized = false;
  */
 static Joystick *getJoystick(UINT32 port)
 {
-	if (!initialized)
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			joysticks[i] = new Joystick(i+1);
-		}
-		initialized = true;
-	}
-	if (port < 1 || port > 4) return NULL;
-	return joysticks[port - 1];
+    if (!initialized)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            joysticks[i] = new Joystick(i + 1);
+        }
+        initialized = true;
+    }
+    if (port < 1 || port > 4)
+        return NULL;
+    return joysticks[port - 1];
 }
-
 
 /**
  * Get the channel currently associated with the specified axis.
@@ -41,9 +41,10 @@ static Joystick *getJoystick(UINT32 port)
  */
 UINT32 GetAxisChannel(UINT32 port, AxisType axis)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetAxisChannel((Joystick::AxisType) axis);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetAxisChannel((Joystick::AxisType) axis);
 }
 
 /**
@@ -55,9 +56,10 @@ UINT32 GetAxisChannel(UINT32 port, AxisType axis)
  */
 void SetAxisChannel(UINT32 port, AxisType axis, UINT32 channel)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return;
-	stick->SetAxisChannel((Joystick::AxisType) axis, channel);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return;
+    stick->SetAxisChannel((Joystick::AxisType) axis, channel);
 }
 
 /**
@@ -68,9 +70,10 @@ void SetAxisChannel(UINT32 port, AxisType axis, UINT32 channel)
  */
 float GetX(UINT32 port, JoystickHand hand)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetX((Joystick::JoystickHand) hand);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetX((Joystick::JoystickHand) hand);
 }
 
 /**
@@ -81,9 +84,10 @@ float GetX(UINT32 port, JoystickHand hand)
  */
 float GetY(UINT32 port, JoystickHand hand)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetY((Joystick::JoystickHand) hand);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetY((Joystick::JoystickHand) hand);
 }
 
 /**
@@ -94,9 +98,10 @@ float GetY(UINT32 port, JoystickHand hand)
  */
 float GetZ(UINT32 port)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetZ();
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetZ();
 }
 
 /**
@@ -107,9 +112,10 @@ float GetZ(UINT32 port)
  */
 float GetTwist(UINT32 port)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetTwist();
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetTwist();
 }
 
 /**
@@ -120,9 +126,10 @@ float GetTwist(UINT32 port)
  */
 float GetThrottle(UINT32 port)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetThrottle();
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetThrottle();
 }
 
 /**
@@ -137,9 +144,10 @@ float GetThrottle(UINT32 port)
  */
 float GetAxis(UINT32 port, AxisType axis)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetAxis((Joystick::AxisType) axis);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetAxis((Joystick::AxisType) axis);
 }
 
 /**
@@ -151,9 +159,10 @@ float GetAxis(UINT32 port, AxisType axis)
  */
 float GetRawAxis(UINT32 port, UINT32 axis)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetRawAxis(axis);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetRawAxis(axis);
 }
 
 /**
@@ -167,9 +176,10 @@ float GetRawAxis(UINT32 port, UINT32 axis)
  */
 bool GetTrigger(UINT32 port, JoystickHand hand)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetTrigger((Joystick::JoystickHand) hand);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetTrigger((Joystick::JoystickHand) hand);
 }
 
 /**
@@ -183,9 +193,10 @@ bool GetTrigger(UINT32 port, JoystickHand hand)
  */
 bool GetTop(UINT32 port, JoystickHand hand)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetTop((Joystick::JoystickHand) hand);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetTop((Joystick::JoystickHand) hand);
 }
 
 /**
@@ -196,9 +207,10 @@ bool GetTop(UINT32 port, JoystickHand hand)
  */
 bool GetBumper(UINT32 port, JoystickHand hand)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetBumper((Joystick::JoystickHand) hand);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetBumper((Joystick::JoystickHand) hand);
 }
 
 /**
@@ -212,9 +224,10 @@ bool GetBumper(UINT32 port, JoystickHand hand)
  */
 bool GetButton(UINT32 port, ButtonType button)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetButton((Joystick::ButtonType) button);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetButton((Joystick::ButtonType) button);
 }
 
 /**
@@ -229,9 +242,8 @@ bool GetButton(UINT32 port, ButtonType button)
  **/
 bool GetRawButton(UINT32 port, UINT32 button)
 {
-	Joystick *stick = getJoystick(port);
-	if (stick == NULL) return 0;
-	return stick->GetRawButton(button);
+    Joystick *stick = getJoystick(port);
+    if (stick == NULL)
+        return 0;
+    return stick->GetRawButton(button);
 }
-
-

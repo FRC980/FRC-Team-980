@@ -24,7 +24,7 @@ class GearTooth : public Counter
     GearTooth(UINT32 slot, UINT32 channel, bool directionSensitive = false);
     GearTooth(DigitalSource * source, bool directionSensitive = false);
     GearTooth(DigitalSource & source, bool directionSensitive = false);
-    virtual ~GearTooth();
+    virtual ~ GearTooth();
 
     void EnableDirectionSensing(bool directionSensitive);
 };

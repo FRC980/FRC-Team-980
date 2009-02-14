@@ -16,13 +16,14 @@
  * sensors have multiple axis and can be treated as multiple devices. Each
  * is calibrated by finding the center value over a period of time.
  */
+
 class Accelerometer : public SensorBase
 {
   public:
     explicit Accelerometer(UINT32 channel);
     Accelerometer(UINT32 slot, UINT32 channel);
     explicit Accelerometer(AnalogChannel * channel);
-    virtual ~Accelerometer();
+    virtual ~ Accelerometer();
 
     float GetAcceleration();
     void SetSensitivity(float sensitivity);

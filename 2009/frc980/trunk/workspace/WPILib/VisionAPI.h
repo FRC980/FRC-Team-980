@@ -59,17 +59,17 @@ typedef struct ParticleAnalysisReport_struct
      * total particle mass, assuming every point in the particle has a
      * constant density */
     int  center_mass_y;         // MeasurementType: IMAQ_MT_CENTER_OF_MASS_Y
-    double center_mass_x_normalized; //Center of mass x value normalized to -1.0 to +1.0 range
-    double center_mass_y_normalized; //Center of mass y value normalized to -1.0 to +1.0 range
+    double center_mass_x_normalized;    //Center of mass x value normalized to -1.0 to +1.0 range
+    double center_mass_y_normalized;    //Center of mass y value normalized to -1.0 to +1.0 range
     /* Area of the particle */
     double particleArea;        // MeasurementType: IMAQ_MT_AREA
     /* Bounding Rectangle */
     Rect boundingRect;          // IMAQ_MT_BOUNDING_RECT_LEFT/TOP/RIGHT/BOTTOM
     /* Percentage of the particle Area covering the Image Area. */
-    double particleToImagePercent; // MeasurementType: IMAQ_MT_AREA_BY_IMAGE_AREA
+    double particleToImagePercent;      // MeasurementType: IMAQ_MT_AREA_BY_IMAGE_AREA
     /* Percentage of the particle Area in relation to its Particle and
      * Holes Area */
-    double particleQuality; // MeasurementType: IMAQ_MT_AREA_BY_PARTICLE_AND_HOLES_AREA
+    double particleQuality;     // MeasurementType: IMAQ_MT_AREA_BY_PARTICLE_AND_HOLES_AREA
 } ParticleAnalysisReport;
 
 /** Tracking functions return this structure */

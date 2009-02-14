@@ -11,18 +11,14 @@
 
 namespace nFPGA
 {
-
-static const tDMAChannelDescriptor g_DMAChannelDescriptors[] = 
-   {
-      // "DMA"
-      {
+    static const tDMAChannelDescriptor g_DMAChannelDescriptors[] = {
+        // "DMA"
+        {
          0,
          0x00007F9C,
          1024,
-         1
-      },
-   };
-
+         1},
+    };
 }
 
-#endif // __DMAChannelDescriptors_h__
+#endif  // __DMAChannelDescriptors_h__

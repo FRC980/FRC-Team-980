@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -10,7 +10,9 @@
 #include "AnalogChannel.h"
 #include "CWrappers.h"
 
-AnalogChannel *AllocateAnalogChannel(UINT32 module, UINT32 channel /*,SensorCreator createObject*/);
+AnalogChannel *AllocateAnalogChannel(UINT32 module,
+                                     UINT32 channel
+                                     /*,SensorCreator createObject */ );
 
 INT16 GetAnalogValue(UINT32 slot, UINT32 channel);
 INT32 GetAnalogAverageValue(UINT32 slot, UINT32 channel);
@@ -20,7 +22,8 @@ float GetAnalogAverageVoltage(UINT32 slot, UINT32 channel);
 
 void SetAnalogAverageBits(UINT32 slot, UINT32 channel, UINT32 bits);
 UINT32 GetAnalogAverageBits(UINT32 slot, UINT32 channel);
-void SetAnalogOversampleBits(UINT32 slot, UINT32 slot, UINT32 channel, UINT32 bits);
+void SetAnalogOversampleBits(UINT32 slot, UINT32 slot, UINT32 channel,
+                             UINT32 bits);
 UINT32 GetAnalogOversampleBits(UINT32 channel);
 
 INT16 GetAnalogValue(UINT32 channel);
@@ -41,4 +44,3 @@ void DeleteAnalogChannel(UINT32 slot, UINT32 channel);
 void DeleteAnalogChannel(UINT32 channel);
 
 #endif
-

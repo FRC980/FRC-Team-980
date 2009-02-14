@@ -6,11 +6,10 @@
 
 struct tDMAChannelDescriptor
 {
-   unsigned int channel;
-   unsigned int baseAddress;
-   unsigned int depth;
-   unsigned int write;
+    unsigned int channel;
+    unsigned int baseAddress;
+    unsigned int depth;
+    unsigned int write;
 };
 
-#endif // __tDMAChannelDescriptor_h__
-
+#endif  // __tDMAChannelDescriptor_h__

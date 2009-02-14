@@ -18,8 +18,8 @@ static bool joySticksInitialized = false;
  *
  * @param port The port on the driver station that the joystick is plugged into.
  */
-Joystick::Joystick(UINT32 port)
- : m_ds(NULL), m_port(port), m_axes(NULL), m_buttons(NULL)
+Joystick::Joystick(UINT32 port):m_ds(NULL), m_port(port), m_axes(NULL),
+m_buttons(NULL)
 {
     InitJoystick(kNumAxisTypes, kNumButtonTypes);
 
@@ -43,8 +43,9 @@ Joystick::Joystick(UINT32 port)
  * @param numAxisTypes The number of axis types in the enum.
  * @param numButtonTypes The number of button types in the enum.
  */
-Joystick::Joystick(UINT32 port, UINT32 numAxisTypes, UINT32 numButtonTypes)
-  : m_ds(NULL), m_port(port), m_axes(NULL), m_buttons(NULL)
+Joystick::Joystick(UINT32 port, UINT32 numAxisTypes, UINT32 numButtonTypes):m_ds(NULL), m_port(port), m_axes(NULL),
+m_buttons
+(NULL)
 {
     InitJoystick(numAxisTypes, numButtonTypes);
 }

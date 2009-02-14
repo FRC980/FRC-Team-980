@@ -1,12 +1,13 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
 #include "CGearTooth.h"
 #include "DigitalModule.h"
 
-static GearTooth* gearToothSensors[SensorBase::kChassisSlots][SensorBase::kDigitalChannels];
+static GearTooth *gearToothSensors[SensorBase::kChassisSlots][SensorBase::
+                                                              kDigitalChannels];
 static bool initialized = false;
 
 /**
@@ -18,25 +19,26 @@ static bool initialized = false;
  */
 static GearTooth *GTptr(UINT32 slot, UINT32 channel)
 {
-	if (!initialized)
-	{
-		initialized = true;
-		for (unsigned i = 0; i < SensorBase::kChassisSlots; i++)
-			for (unsigned j = 0; j < SensorBase::kDigitalChannels; j++)
-				gearToothSensors[i][j] = NULL;
-	}
-	GearTooth *gt = NULL;
-	if (SensorBase::CheckDigitalModule(slot) && SensorBase::CheckDigitalChannel(channel))
-	{
-		UINT32 slotIndex = DigitalModule::SlotToIndex(slot);
-		gt = gearToothSensors[slotIndex][channel - 1];
-		if (gt == NULL)
-		{
-			gt = new GearTooth(slot, channel);
-			gearToothSensors[slotIndex][channel - 1] = gt;
-		}
-	}
-	return gt;
+    if (!initialized)
+    {
+        initialized = true;
+        for (unsigned i = 0; i < SensorBase::kChassisSlots; i++)
+            for (unsigned j = 0; j < SensorBase::kDigitalChannels; j++)
+                gearToothSensors[i][j] = NULL;
+    }
+    GearTooth *gt = NULL;
+    if (SensorBase::CheckDigitalModule(slot)
+        && SensorBase::CheckDigitalChannel(channel))
+    {
+        UINT32 slotIndex = DigitalModule::SlotToIndex(slot);
+        gt = gearToothSensors[slotIndex][channel - 1];
+        if (gt == NULL)
+        {
+            gt = new GearTooth(slot, channel);
+            gearToothSensors[slotIndex][channel - 1] = gt;
+        }
+    }
+    return gt;
 }
 
 /**
@@ -49,8 +51,9 @@ static GearTooth *GTptr(UINT32 slot, UINT32 channel)
  */
 void InitGearTooth(UINT32 slot, UINT32 channel, bool directionSensitive)
 {
-	GearTooth *gt = GTptr(slot, channel);
-	if (gt) gt->EnableDirectionSensing(directionSensitive);
+    GearTooth *gt = GTptr(slot, channel);
+    if (gt)
+        gt->EnableDirectionSensing(directionSensitive);
 }
 
 /**
@@ -62,7 +65,8 @@ void InitGearTooth(UINT32 slot, UINT32 channel, bool directionSensitive)
  */
 void InitGearTooth(UINT32 channel, bool directionSensitive)
 {
-	InitGearTooth(SensorBase::GetDefaultDigitalModule(), channel, directionSensitive);
+    InitGearTooth(SensorBase::GetDefaultDigitalModule(), channel,
+                  directionSensitive);
 }
 
 /**
@@ -75,8 +79,9 @@ void InitGearTooth(UINT32 channel, bool directionSensitive)
  */
 void StartGearTooth(UINT32 slot, UINT32 channel)
 {
-	GearTooth *gt = GTptr(slot, channel);
-	if (gt) gt->Start();
+    GearTooth *gt = GTptr(slot, channel);
+    if (gt)
+        gt->Start();
 }
 
 /**
@@ -88,7 +93,7 @@ void StartGearTooth(UINT32 slot, UINT32 channel)
  */
 void StartGearTooth(UINT32 channel)
 {
-	StartGearTooth(SensorBase::GetDefaultDigitalModule(), channel);
+    StartGearTooth(SensorBase::GetDefaultDigitalModule(), channel);
 }
 
 /**
@@ -100,8 +105,9 @@ void StartGearTooth(UINT32 channel)
  */
 void StopGearTooth(UINT32 slot, UINT32 channel)
 {
-	GearTooth *gt = GTptr(slot, channel);
-	if (gt) gt->Stop();
+    GearTooth *gt = GTptr(slot, channel);
+    if (gt)
+        gt->Stop();
 }
 
 /**
@@ -112,7 +118,7 @@ void StopGearTooth(UINT32 slot, UINT32 channel)
  */
 void StopGearTooth(UINT32 channel)
 {
-	StopGearTooth(SensorBase::GetDefaultDigitalModule(), channel);
+    StopGearTooth(SensorBase::GetDefaultDigitalModule(), channel);
 }
 
 /**
@@ -124,9 +130,10 @@ void StopGearTooth(UINT32 channel)
  */
 INT32 GetGearTooth(UINT32 slot, UINT32 channel)
 {
-	GearTooth *gt = GTptr(slot, channel);
-	if (gt) return gt->Get();
-	return 0;
+    GearTooth *gt = GTptr(slot, channel);
+    if (gt)
+        return gt->Get();
+    return 0;
 }
 
 /**
@@ -137,7 +144,7 @@ INT32 GetGearTooth(UINT32 slot, UINT32 channel)
  */
 INT32 GetGearTooth(UINT32 channel)
 {
-	return GetGearTooth(SensorBase::GetDefaultDigitalModule(), channel);
+    return GetGearTooth(SensorBase::GetDefaultDigitalModule(), channel);
 }
 
 /**
@@ -149,8 +156,9 @@ INT32 GetGearTooth(UINT32 channel)
  */
 void ResetGearTooth(UINT32 slot, UINT32 channel)
 {
-	GearTooth *gt = GTptr(slot, channel);
-	if (gt) gt->Reset();
+    GearTooth *gt = GTptr(slot, channel);
+    if (gt)
+        gt->Reset();
 }
 
 /**
@@ -161,7 +169,7 @@ void ResetGearTooth(UINT32 slot, UINT32 channel)
  */
 void ResetGearTooth(UINT32 channel)
 {
-	ResetGearTooth(SensorBase::GetDefaultDigitalModule(), channel);
+    ResetGearTooth(SensorBase::GetDefaultDigitalModule(), channel);
 }
 
 /**
@@ -174,12 +182,13 @@ void ResetGearTooth(UINT32 channel)
  */
 void DeleteGearTooth(UINT32 slot, UINT32 channel)
 {
-	if (SensorBase::CheckDigitalModule(slot) && SensorBase::CheckDigitalChannel(channel))
-	{
-		UINT32 slotIndex = DigitalModule::SlotToIndex(slot);
-		delete gearToothSensors[slotIndex][channel - 1];
-		gearToothSensors[slotIndex][channel - 1] = NULL;
-	}
+    if (SensorBase::CheckDigitalModule(slot)
+        && SensorBase::CheckDigitalChannel(channel))
+    {
+        UINT32 slotIndex = DigitalModule::SlotToIndex(slot);
+        delete gearToothSensors[slotIndex][channel - 1];
+        gearToothSensors[slotIndex][channel - 1] = NULL;
+    }
 }
 
 /**
@@ -191,5 +200,5 @@ void DeleteGearTooth(UINT32 slot, UINT32 channel)
  */
 void DeleteGearTooth(UINT32 channel)
 {
-	DeleteGearTooth(SensorBase::GetDefaultDigitalModule(), channel);
+    DeleteGearTooth(SensorBase::GetDefaultDigitalModule(), channel);
 }
