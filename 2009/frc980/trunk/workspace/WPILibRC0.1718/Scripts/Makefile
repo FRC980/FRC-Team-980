@@ -22,8 +22,8 @@ BUILD_SPEC = PPC603gnu
 DEBUG_MODE = 1
 SRC_DIR := .
 BUILD_ROOT_DIR := 
-PRJ_ROOT_DIR := C:/WindRiver/workspace/WPILib
-WS_ROOT_DIR := C:/WindRiver/workspace
+PRJ_ROOT_DIR := C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718
+WS_ROOT_DIR := C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace
 
 ALL_BUILD_SPECS := PPC32diab PPC32gnu PPC32sfdiab PPC32sfgnu \
 	 PPC403diab PPC403gnu PPC405diab PPC405gnu \
@@ -382,7 +382,7 @@ SUB_OBJECTS :=
 SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC603gnu)
-SUBDIRS :=
+SUBDIRS := "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718/Scripts/.svn"
 OBJECTS :=
 
 PROJECT_TARGETS := $(OBJECTS)

@@ -22,8 +22,8 @@ BUILD_SPEC = PPC603gnu
 DEBUG_MODE = 1
 SRC_DIR := .
 BUILD_ROOT_DIR := 
-PRJ_ROOT_DIR := C:/WindRiver/workspace/WPILib
-WS_ROOT_DIR := C:/WindRiver/workspace
+PRJ_ROOT_DIR := C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718
+WS_ROOT_DIR := C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace
 
 ALL_BUILD_SPECS := PPC32diab PPC32gnu PPC32sfdiab PPC32sfgnu \
 	 PPC403diab PPC403gnu PPC405diab PPC405gnu \
@@ -246,26 +246,26 @@ OBJ_DIR := SIMSPARCSOLARISgnu
 endif
 endif
 
-DEP_FILES := $(OBJ_DIR)/CAnalogChannel.d $(OBJ_DIR)/CCounter.d $(OBJ_DIR)/SimpleCRobot.d \
-	 $(OBJ_DIR)/CAccelerometer.d $(OBJ_DIR)/CJoystick.d $(OBJ_DIR)/CTimer.d \
-	 $(OBJ_DIR)/CCompressor.d $(OBJ_DIR)/CRobotDrive.d $(OBJ_DIR)/CDigitalInput.d \
-	 $(OBJ_DIR)/CGearTooth.d $(OBJ_DIR)/CGyro.d $(OBJ_DIR)/CDigitalOutput.d \
-	 $(OBJ_DIR)/CSolenoid.d $(OBJ_DIR)/CSerialPort.d $(OBJ_DIR)/CRelay.d \
-	 $(OBJ_DIR)/CDriverStation.d $(OBJ_DIR)/CVictor.d $(OBJ_DIR)/CPWM.d \
-	 $(OBJ_DIR)/CEncoder.d $(OBJ_DIR)/CUltrasonic.d $(OBJ_DIR)/CJaguar.d \
-	 $(OBJ_DIR)/CServo.d
+DEP_FILES := $(OBJ_DIR)/CTimer.d $(OBJ_DIR)/CServo.d $(OBJ_DIR)/CSerialPort.d \
+	 $(OBJ_DIR)/CJoystick.d $(OBJ_DIR)/CDriverStation.d $(OBJ_DIR)/SimpleCRobot.d \
+	 $(OBJ_DIR)/CPWM.d $(OBJ_DIR)/CAccelerometer.d $(OBJ_DIR)/CUltrasonic.d \
+	 $(OBJ_DIR)/CRelay.d $(OBJ_DIR)/CDigitalOutput.d $(OBJ_DIR)/CDigitalInput.d \
+	 $(OBJ_DIR)/CRobotDrive.d $(OBJ_DIR)/CGearTooth.d $(OBJ_DIR)/CSolenoid.d \
+	 $(OBJ_DIR)/CCompressor.d $(OBJ_DIR)/CEncoder.d $(OBJ_DIR)/CCounter.d \
+	 $(OBJ_DIR)/CVictor.d $(OBJ_DIR)/CJaguar.d $(OBJ_DIR)/CGyro.d \
+	 $(OBJ_DIR)/CAnalogChannel.d
 -include $(DEP_FILES)
 
 ifeq ($(BUILD_SPEC),PPC32diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -274,14 +274,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC32gnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -290,14 +290,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC32sfdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -306,14 +306,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC32sfgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -322,14 +322,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC403diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -338,14 +338,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC403gnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -354,14 +354,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC405diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -370,14 +370,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC405gnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -386,14 +386,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC405sfdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -402,14 +402,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC405sfgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -418,14 +418,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC440diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -434,14 +434,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC440gnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -450,14 +450,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC440sfdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -466,14 +466,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC440sfgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -482,14 +482,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC603diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -497,15 +497,15 @@ SUB_OBJECTS :=
 SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC603gnu)
-SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+SUBDIRS := "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718/CInterfaces/.svn"
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -514,14 +514,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC604diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -530,14 +530,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC604gnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -546,14 +546,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC85XXdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -562,14 +562,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC85XXgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -578,14 +578,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC85XXsfdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -594,14 +594,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC85XXsfgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -610,14 +610,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC860sfdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -626,14 +626,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC860sfgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -642,14 +642,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMLINUXdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -658,14 +658,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMLINUXgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -674,14 +674,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMNTdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -690,14 +690,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMNTgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -706,14 +706,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMSPARCSOLARISdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 
@@ -722,14 +722,14 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMSPARCSOLARISgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/CAnalogChannel.o $(OBJ_DIR)/CCounter.o $(OBJ_DIR)/SimpleCRobot.o \
-	 $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CTimer.o \
-	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CDigitalInput.o \
-	 $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CGyro.o $(OBJ_DIR)/CDigitalOutput.o \
-	 $(OBJ_DIR)/CSolenoid.o $(OBJ_DIR)/CSerialPort.o $(OBJ_DIR)/CRelay.o \
-	 $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CPWM.o \
-	 $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CUltrasonic.o $(OBJ_DIR)/CJaguar.o \
-	 $(OBJ_DIR)/CServo.o
+OBJECTS := $(OBJ_DIR)/CTimer.o $(OBJ_DIR)/CServo.o $(OBJ_DIR)/CSerialPort.o \
+	 $(OBJ_DIR)/CJoystick.o $(OBJ_DIR)/CDriverStation.o $(OBJ_DIR)/SimpleCRobot.o \
+	 $(OBJ_DIR)/CPWM.o $(OBJ_DIR)/CAccelerometer.o $(OBJ_DIR)/CUltrasonic.o \
+	 $(OBJ_DIR)/CRelay.o $(OBJ_DIR)/CDigitalOutput.o $(OBJ_DIR)/CDigitalInput.o \
+	 $(OBJ_DIR)/CRobotDrive.o $(OBJ_DIR)/CGearTooth.o $(OBJ_DIR)/CSolenoid.o \
+	 $(OBJ_DIR)/CCompressor.o $(OBJ_DIR)/CEncoder.o $(OBJ_DIR)/CCounter.o \
+	 $(OBJ_DIR)/CVictor.o $(OBJ_DIR)/CJaguar.o $(OBJ_DIR)/CGyro.o \
+	 $(OBJ_DIR)/CAnalogChannel.o
 
 PROJECT_TARGETS := $(OBJECTS)
 

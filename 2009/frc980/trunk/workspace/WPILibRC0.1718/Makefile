@@ -22,8 +22,8 @@ BUILD_SPEC = PPC603gnu
 DEBUG_MODE = 1
 SRC_DIR := .
 BUILD_ROOT_DIR := 
-PRJ_ROOT_DIR := C:/WindRiver/workspace/WPILib
-WS_ROOT_DIR := C:/WindRiver/workspace
+PRJ_ROOT_DIR := C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718
+WS_ROOT_DIR := C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace
 
 ALL_BUILD_SPECS := PPC32diab PPC32gnu PPC32sfdiab PPC32sfgnu \
 	 PPC403diab PPC403gnu PPC405diab PPC405gnu \
@@ -246,44 +246,44 @@ OBJ_DIR := SIMSPARCSOLARISgnu
 endif
 endif
 
-DEP_FILES := $(OBJ_DIR)/PCVideoServer.d $(OBJ_DIR)/Gyro.d $(OBJ_DIR)/Timer.d \
-	 $(OBJ_DIR)/DigitalInput.d $(OBJ_DIR)/Utility.d $(OBJ_DIR)/Jaguar.d \
-	 $(OBJ_DIR)/Relay.d $(OBJ_DIR)/Compressor.d $(OBJ_DIR)/AnalogChannel.d \
-	 $(OBJ_DIR)/Task.d $(OBJ_DIR)/HiTechnicCompass.d $(OBJ_DIR)/AnalogModule.d \
-	 $(OBJ_DIR)/SerialPort.d $(OBJ_DIR)/Error.d $(OBJ_DIR)/FrcError.d \
-	 $(OBJ_DIR)/ErrorBase.d $(OBJ_DIR)/Ultrasonic.d $(OBJ_DIR)/AnalogTriggerOutput.d \
-	 $(OBJ_DIR)/AnalogTrigger.d $(OBJ_DIR)/AxisCamera.d $(OBJ_DIR)/Watchdog.d \
-	 $(OBJ_DIR)/Solenoid.d $(OBJ_DIR)/PIDController.d $(OBJ_DIR)/Dashboard.d \
-	 $(OBJ_DIR)/Counter.d $(OBJ_DIR)/SimpleRobot.d $(OBJ_DIR)/Accelerometer.d \
+DEP_FILES := $(OBJ_DIR)/Accelerometer.d $(OBJ_DIR)/DriverStation.d $(OBJ_DIR)/RobotBase.d \
+	 $(OBJ_DIR)/Resource.d $(OBJ_DIR)/InterruptableSensorBase.d $(OBJ_DIR)/Dashboard.d \
+	 $(OBJ_DIR)/AxisCamera.d $(OBJ_DIR)/ErrorBase.d $(OBJ_DIR)/SimpleRobot.d \
+	 $(OBJ_DIR)/PCVideoServer.d $(OBJ_DIR)/Jaguar.d $(OBJ_DIR)/SerialPort.d \
+	 $(OBJ_DIR)/Timer.d $(OBJ_DIR)/DigitalSource.d $(OBJ_DIR)/DigitalInput.d \
+	 $(OBJ_DIR)/PIDController.d $(OBJ_DIR)/Joystick.d $(OBJ_DIR)/AnalogChannel.d \
+	 $(OBJ_DIR)/IterativeRobot.d $(OBJ_DIR)/DigitalModule.d $(OBJ_DIR)/SensorBase.d \
+	 $(OBJ_DIR)/Synchronized.d $(OBJ_DIR)/Watchdog.d $(OBJ_DIR)/Relay.d \
+	 $(OBJ_DIR)/Victor.d $(OBJ_DIR)/Compressor.d $(OBJ_DIR)/Counter.d \
+	 $(OBJ_DIR)/Utility.d $(OBJ_DIR)/GearTooth.d $(OBJ_DIR)/I2C.d \
+	 $(OBJ_DIR)/Module.d $(OBJ_DIR)/AnalogTrigger.d $(OBJ_DIR)/VisionAPI.d \
 	 $(OBJ_DIR)/DigitalOutput.d $(OBJ_DIR)/BaeUtilities.d $(OBJ_DIR)/PWM.d \
-	 $(OBJ_DIR)/Encoder.d $(OBJ_DIR)/VisionAPI.d $(OBJ_DIR)/DriverStation.d \
-	 $(OBJ_DIR)/Module.d $(OBJ_DIR)/RobotDrive.d $(OBJ_DIR)/TrackAPI.d \
-	 $(OBJ_DIR)/IterativeRobot.d $(OBJ_DIR)/I2C.d $(OBJ_DIR)/DigitalModule.d \
-	 $(OBJ_DIR)/Notifier.d $(OBJ_DIR)/InterruptableSensorBase.d $(OBJ_DIR)/Resource.d \
-	 $(OBJ_DIR)/Synchronized.d $(OBJ_DIR)/Joystick.d $(OBJ_DIR)/Victor.d \
-	 $(OBJ_DIR)/RobotBase.d $(OBJ_DIR)/GearTooth.d $(OBJ_DIR)/DigitalSource.d \
-	 $(OBJ_DIR)/Servo.d $(OBJ_DIR)/SensorBase.d
+	 $(OBJ_DIR)/HiTechnicCompass.d $(OBJ_DIR)/Encoder.d $(OBJ_DIR)/Ultrasonic.d \
+	 $(OBJ_DIR)/Error.d $(OBJ_DIR)/Notifier.d $(OBJ_DIR)/Task.d \
+	 $(OBJ_DIR)/Solenoid.d $(OBJ_DIR)/TrackAPI.d $(OBJ_DIR)/Gyro.d \
+	 $(OBJ_DIR)/AnalogModule.d $(OBJ_DIR)/AnalogTriggerOutput.d $(OBJ_DIR)/Servo.d \
+	 $(OBJ_DIR)/RobotDrive.d $(OBJ_DIR)/FrcError.d
 -include $(DEP_FILES)
 
 ifeq ($(BUILD_SPEC),PPC32diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -292,23 +292,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC32gnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -317,23 +317,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC32sfdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -342,23 +342,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC32sfgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -367,23 +367,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC403diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -392,23 +392,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC403gnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -417,23 +417,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC405diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -442,23 +442,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC405gnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -467,23 +467,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC405sfdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -492,23 +492,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC405sfgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -517,23 +517,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC440diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -542,23 +542,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC440gnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -567,23 +567,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC440sfdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -592,23 +592,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC440sfgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -617,23 +617,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC603diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -641,75 +641,76 @@ SUB_OBJECTS :=
 SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC603gnu)
-SUBDIRS := "C:/WindRiver/workspace/WPILib/.settings" \
-	 "C:/WindRiver/workspace/WPILib/CInterfaces" \
-	 "C:/WindRiver/workspace/WPILib/ChipObject" \
-	 "C:/WindRiver/workspace/WPILib/NetworkCommunication" \
-	 "C:/WindRiver/workspace/WPILib/Scripts" \
-	 "C:/WindRiver/workspace/WPILib/visa"
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+SUBDIRS := "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718/.settings" \
+	 "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718/.svn" \
+	 "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718/CInterfaces" \
+	 "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718/ChipObject" \
+	 "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718/NetworkCommunication" \
+	 "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718/Scripts" \
+	 "C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/WPILibRC0.1718/visa"
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
-SUB_OBJECTS := CInterfaces/$(OBJ_DIR)/CAnalogChannel.o \
-	 CInterfaces/$(OBJ_DIR)/CCounter.o \
-	 CInterfaces/$(OBJ_DIR)/SimpleCRobot.o \
-	 CInterfaces/$(OBJ_DIR)/CAccelerometer.o \
-	 CInterfaces/$(OBJ_DIR)/CJoystick.o \
-	 CInterfaces/$(OBJ_DIR)/CTimer.o \
-	 CInterfaces/$(OBJ_DIR)/CCompressor.o \
-	 CInterfaces/$(OBJ_DIR)/CRobotDrive.o \
-	 CInterfaces/$(OBJ_DIR)/CDigitalInput.o \
-	 CInterfaces/$(OBJ_DIR)/CGearTooth.o \
-	 CInterfaces/$(OBJ_DIR)/CGyro.o \
-	 CInterfaces/$(OBJ_DIR)/CDigitalOutput.o \
-	 CInterfaces/$(OBJ_DIR)/CSolenoid.o \
+SUB_OBJECTS := CInterfaces/$(OBJ_DIR)/CTimer.o \
+	 CInterfaces/$(OBJ_DIR)/CServo.o \
 	 CInterfaces/$(OBJ_DIR)/CSerialPort.o \
-	 CInterfaces/$(OBJ_DIR)/CRelay.o \
+	 CInterfaces/$(OBJ_DIR)/CJoystick.o \
 	 CInterfaces/$(OBJ_DIR)/CDriverStation.o \
-	 CInterfaces/$(OBJ_DIR)/CVictor.o \
+	 CInterfaces/$(OBJ_DIR)/SimpleCRobot.o \
 	 CInterfaces/$(OBJ_DIR)/CPWM.o \
-	 CInterfaces/$(OBJ_DIR)/CEncoder.o \
+	 CInterfaces/$(OBJ_DIR)/CAccelerometer.o \
 	 CInterfaces/$(OBJ_DIR)/CUltrasonic.o \
+	 CInterfaces/$(OBJ_DIR)/CRelay.o \
+	 CInterfaces/$(OBJ_DIR)/CDigitalOutput.o \
+	 CInterfaces/$(OBJ_DIR)/CDigitalInput.o \
+	 CInterfaces/$(OBJ_DIR)/CRobotDrive.o \
+	 CInterfaces/$(OBJ_DIR)/CGearTooth.o \
+	 CInterfaces/$(OBJ_DIR)/CSolenoid.o \
+	 CInterfaces/$(OBJ_DIR)/CCompressor.o \
+	 CInterfaces/$(OBJ_DIR)/CEncoder.o \
+	 CInterfaces/$(OBJ_DIR)/CCounter.o \
+	 CInterfaces/$(OBJ_DIR)/CVictor.o \
 	 CInterfaces/$(OBJ_DIR)/CJaguar.o \
-	 CInterfaces/$(OBJ_DIR)/CServo.o
+	 CInterfaces/$(OBJ_DIR)/CGyro.o \
+	 CInterfaces/$(OBJ_DIR)/CAnalogChannel.o
 SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC604diab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -718,23 +719,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC604gnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -743,23 +744,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC85XXdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -768,23 +769,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC85XXgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -793,23 +794,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC85XXsfdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -818,23 +819,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC85XXsfgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -843,23 +844,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC860sfdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -868,23 +869,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),PPC860sfgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -893,23 +894,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMLINUXdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -918,23 +919,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMLINUXgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -943,23 +944,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMNTdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -968,23 +969,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMNTgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -993,23 +994,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMSPARCSOLARISdiab)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 
@@ -1018,23 +1019,23 @@ SUB_TARGETS :=
 endif
 ifeq ($(BUILD_SPEC),SIMSPARCSOLARISgnu)
 SUBDIRS :=
-OBJECTS := $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Gyro.o $(OBJ_DIR)/Timer.o \
-	 $(OBJ_DIR)/DigitalInput.o $(OBJ_DIR)/Utility.o $(OBJ_DIR)/Jaguar.o \
-	 $(OBJ_DIR)/Relay.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/AnalogChannel.o \
-	 $(OBJ_DIR)/Task.o $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/AnalogModule.o \
-	 $(OBJ_DIR)/SerialPort.o $(OBJ_DIR)/Error.o $(OBJ_DIR)/FrcError.o \
-	 $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/Ultrasonic.o $(OBJ_DIR)/AnalogTriggerOutput.o \
-	 $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/Watchdog.o \
-	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Dashboard.o \
-	 $(OBJ_DIR)/Counter.o $(OBJ_DIR)/SimpleRobot.o $(OBJ_DIR)/Accelerometer.o \
+OBJECTS := $(OBJ_DIR)/Accelerometer.o $(OBJ_DIR)/DriverStation.o $(OBJ_DIR)/RobotBase.o \
+	 $(OBJ_DIR)/Resource.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Dashboard.o \
+	 $(OBJ_DIR)/AxisCamera.o $(OBJ_DIR)/ErrorBase.o $(OBJ_DIR)/SimpleRobot.o \
+	 $(OBJ_DIR)/PCVideoServer.o $(OBJ_DIR)/Jaguar.o $(OBJ_DIR)/SerialPort.o \
+	 $(OBJ_DIR)/Timer.o $(OBJ_DIR)/DigitalSource.o $(OBJ_DIR)/DigitalInput.o \
+	 $(OBJ_DIR)/PIDController.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/AnalogChannel.o \
+	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/DigitalModule.o $(OBJ_DIR)/SensorBase.o \
+	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Watchdog.o $(OBJ_DIR)/Relay.o \
+	 $(OBJ_DIR)/Victor.o $(OBJ_DIR)/Compressor.o $(OBJ_DIR)/Counter.o \
+	 $(OBJ_DIR)/Utility.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/I2C.o \
+	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/AnalogTrigger.o $(OBJ_DIR)/VisionAPI.o \
 	 $(OBJ_DIR)/DigitalOutput.o $(OBJ_DIR)/BaeUtilities.o $(OBJ_DIR)/PWM.o \
-	 $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/VisionAPI.o $(OBJ_DIR)/DriverStation.o \
-	 $(OBJ_DIR)/Module.o $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/TrackAPI.o \
-	 $(OBJ_DIR)/IterativeRobot.o $(OBJ_DIR)/I2C.o $(OBJ_DIR)/DigitalModule.o \
-	 $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/InterruptableSensorBase.o $(OBJ_DIR)/Resource.o \
-	 $(OBJ_DIR)/Synchronized.o $(OBJ_DIR)/Joystick.o $(OBJ_DIR)/Victor.o \
-	 $(OBJ_DIR)/RobotBase.o $(OBJ_DIR)/GearTooth.o $(OBJ_DIR)/DigitalSource.o \
-	 $(OBJ_DIR)/Servo.o $(OBJ_DIR)/SensorBase.o
+	 $(OBJ_DIR)/HiTechnicCompass.o $(OBJ_DIR)/Encoder.o $(OBJ_DIR)/Ultrasonic.o \
+	 $(OBJ_DIR)/Error.o $(OBJ_DIR)/Notifier.o $(OBJ_DIR)/Task.o \
+	 $(OBJ_DIR)/Solenoid.o $(OBJ_DIR)/TrackAPI.o $(OBJ_DIR)/Gyro.o \
+	 $(OBJ_DIR)/AnalogModule.o $(OBJ_DIR)/AnalogTriggerOutput.o $(OBJ_DIR)/Servo.o \
+	 $(OBJ_DIR)/RobotDrive.o $(OBJ_DIR)/FrcError.o
 
 PROJECT_TARGETS := $(OBJ_DIR)/WPILib.a
 

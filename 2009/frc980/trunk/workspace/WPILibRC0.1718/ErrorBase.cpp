@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "ErrorBase.h"
 #include "Synchronized.h"
@@ -31,7 +31,7 @@ Error & ErrorBase::GetError()
     return error;
 }
 
-const Error & ErrorBase::GetError() const const
+const Error & ErrorBase::GetError() const
 {
     return error;
 }
@@ -46,13 +46,13 @@ void ErrorBase::ClearError()
 
 /**
  * @brief Set the current error information associated with this sensor.
- * 
+ *
  * @param code The error code
  * @param filename Filename of the error source
  * @param lineNumber Line number of the error source
  */
 void ErrorBase::SetError(Error::Code code, const char *filename,
-                         UINT32 lineNumber) const const
+                         UINT32 lineNumber) const
 {
     //  If there was an error
     if (code != 0)
@@ -65,24 +65,26 @@ void ErrorBase::SetError(Error::Code code, const char *filename,
         {
             globalError = error;
         }
-    END_REGION}
+        END_REGION;
+    }
 }
 
 /**
-@brief Check if the current error code represents a fatal error.
-  
-@return true if the current error is fatal.
-*/
-bool ErrorBase::StatusIsFatal() const const
+ * @brief Check if the current error code represents a fatal error.
+ *
+ * @return true if the current error is fatal.
+ */
+bool ErrorBase::StatusIsFatal() const
 {
     return error.GetCode() < 0;
 }
 
 /**
-  * Retrieve the current global error.    
-*/
+  * Retrieve the current global error.
+  */
 Error & ErrorBase::GetGlobalError()
 {
     CRITICAL_REGION(globalErrorMutex);
     return globalError;
-END_REGION}
+    END_REGION;
+}
