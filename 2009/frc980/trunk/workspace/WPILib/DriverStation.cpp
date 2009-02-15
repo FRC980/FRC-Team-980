@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "DriverStation.h"
 #include "AnalogChannel.h"
@@ -16,14 +16,17 @@ DriverStation *DriverStation::m_instance = NULL;
 
 /**
  * DriverStation contructor.
- * 
+ *
  * This is only called once the first time GetInstance() is called
  */
-DriverStation::DriverStation():m_controlData(NULL), m_userControl(NULL), m_userStatus(NULL),
-m_digitalOut(0), m_batteryChannel(NULL), m_task("DriverStation",
-                                                (FUNCPTR) DriverStation::
-                                                InitTask),
-m_dashboard(&m_userStatus)
+DriverStation::DriverStation()
+    : m_controlData(NULL)
+    , m_userControl(NULL)
+    , m_userStatus(NULL)
+    , m_digitalOut(0)
+    , m_batteryChannel(NULL)
+    , m_task("DriverStation",(FUNCPTR)DriverStation::InitTask)
+    , m_dashboard(&m_userStatus)
 {
     m_controlData = new FRCControlData;
     m_userControl = new char[USER_CONTROL_DATA_SIZE];
@@ -130,10 +133,10 @@ void DriverStation::SetData()
 
 /**
  * Read the battery voltage from the specified AnalogChannel.
- * 
+ *
  * This accessor assumes that the battery voltage is being measured
  * through the voltage divider on an analog breakout.
- * 
+ *
  * @return The battery voltage.
  */
 float DriverStation::GetBatteryVoltage()
@@ -149,7 +152,7 @@ float DriverStation::GetBatteryVoltage()
 /**
  * Get the value of the axis on a joystick.
  * This depends on the mapping of the joystick connected to the specified port.
- * 
+ *
  * @param stick The joystick to read.
  * @param axis The analog axis value to read from the joystick.
  * @return The value of the axis on the joystick.
@@ -199,7 +202,7 @@ float DriverStation::GetStickAxis(UINT32 stick, UINT32 axis)
 /**
  * The state of the buttons on the joystick.
  * 12 buttons (4 msb are unused) from the joystick.
- * 
+ *
  * @param stick The joystick to read.
  * @return The state of the buttons on the joystick.
  */
@@ -223,11 +226,13 @@ short DriverStation::GetStickButtons(UINT32 stick)
 
 /**
  * Get an analog voltage from the Driver Station.
- * The analog values are returned as UINT32 values for the Driver Station analog inputs.
- * These inputs are typically used for advanced operator interfaces consisting of potentiometers
- * or resistor networks representing values on a rotary switch.
- * 
- * @param channel The analog input channel on the driver station to read from. Valid range is 1 - 4.
+ * The analog values are returned as UINT32 values for the Driver Station
+ * analog inputs.  These inputs are typically used for advanced operator
+ * interfaces consisting of potentiometers or resistor networks
+ * representing values on a rotary switch.
+ *
+ * @param channel The analog input channel on the driver station to read
+ * from. Valid range is 1 - 4.
  * @return The analog voltage on the input.
  */
 float DriverStation::GetAnalogIn(UINT32 channel)
@@ -250,8 +255,9 @@ float DriverStation::GetAnalogIn(UINT32 channel)
 
 /**
  * Get values from the digital inputs on the Driver Station.
- * Return digital values from the Drivers Station. These values are typically used for buttons
- * and switches on advanced operator interfaces.
+ * Return digital values from the Drivers Station. These values are
+ * typically used for buttons and switches on advanced operator
+ * interfaces.
  * @param channel The digital input to get. Valid range is 1 - 8.
  */
 bool DriverStation::GetDigitalIn(UINT32 channel)
@@ -264,10 +270,11 @@ bool DriverStation::GetDigitalIn(UINT32 channel)
 
 /**
  * Set a value for the digital outputs on the Driver Station.
- * 
- * Control digital outputs on the Drivers Station. These values are typically used for
- * giving feedback on a custom operator station such as LEDs.
- * 
+ *
+ * Control digital outputs on the Drivers Station. These values are
+ * typically used for giving feedback on a custom operator station such as
+ * LEDs.
+ *
  * @param channel The digital output to set. Valid range is 1 - 8.
  * @param value The state to set the digital output.
  */
