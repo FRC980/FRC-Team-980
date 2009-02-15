@@ -1,6 +1,12 @@
 #ifndef ROBOT980_H
 #define ROBOT980_H
 
+// Camera
+#define CAMERA_FPS                  20
+#define CAMERA_COMPRESSION          0
+#define CAMERA_RESOLUTION           k320x240
+#define CAMERA_ROTATION             ROT_180
+
 // PWM outputs
 #define SLOT_PWM_LEFT               4
 #define CHAN_PWM_LEFT               1
@@ -40,13 +46,14 @@
 
 
 #ifndef NULL
-#define NULL	(0)
+#define NULL    (0)
 #endif // NULL
 
 #include "SmartDrive.h"
 #include <DriverStation.h>
 #include <TrackAPI.h>
 
+class DriverStationLCD;
 class Encoder;
 class Gyro;
 class PCVideoServer;
@@ -57,17 +64,24 @@ class Robot980
   public:
     static Robot980 *GetInstance();
 
-    bool FindTrailer(DriverStation::Alliance);
-    void Drive(float left, float right); // 1 = forward, -1 = backwards
+    bool FindTrailer(DriverStation::Alliance); // will have more params
+    void EnableTractionControl(bool);
+
+    // 1 = forward, -1 = backwards
+    void Drive(float left, float right, DriverStationLCD* pLCD = NULL);
+
     void RunBelts(float lower, float upper); // 1 = in @ base, up and out
     void Flap(bool open);
+    bool GetTractionControl() { return m_bTraction; };
 
     float getAngle();           // get angle from gyro
-
+    void SetTrackColor(DriverStation::Alliance);
 
   private:
     Robot980();
     virtual ~Robot980();
+
+    bool m_bTraction;
 
     // left and right drive systems
     SmartDrive* m_psdLeft;
@@ -95,13 +109,14 @@ class Robot980
     Encoder* m_pEncFollowLeft;
     Encoder* m_pEncFollowRight;
 
-    // encoders on the rotation of the follow wheels (casters)
-    Encoder* m_pEncRotateLeft;
-    Encoder* m_pEncRotateRight;
 
     PCVideoServer* m_pVideoServer;
-
     TrackingThreshold m_tdPink, m_tdGreen; // color thresholds
+    Notifier* m_pCamControlLoop;
+    static void CallCamUpdate(void *pvr);
+    void CamUpdate();
+    double m_dSavedImageTimestamp;
+    DriverStation::Alliance m_trackColor;
 
 };
 

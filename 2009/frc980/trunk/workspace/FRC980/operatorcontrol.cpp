@@ -28,19 +28,20 @@ void Main::OperatorControl()
 
     while (IsOperatorControl() && !IsDisabled())
     {
+        if (jsDrive.GetRawButton(6))
+            pRobot->EnableTractionControl(true);
+        if (jsDrive.GetRawButton(7))
+            pRobot->EnableTractionControl(false);
+
         float x = jsDrive.GetX();
         x = (x > 0) ? x * x : x * x * -1;
 
         float y = jsDrive.GetY();
         y = (y > 0) ? y * y : y * y * -1;
 
-        pRobot->Drive(limit(y + x), limit(y - x));
-
+        pRobot->Drive(limit(y - x), limit(y + x), pLCD);
         pRobot->RunBelts(fabs(jsBelts.GetY()), jsBelts.GetY());
 
-
-
-        pLCD->Printf(DriverStationLCD::kMain_Line6, 1, "OperatorControl");
 
         DashboardData::UpdateAndSend();
         pLCD->UpdateLCD();

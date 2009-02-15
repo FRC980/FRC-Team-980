@@ -182,6 +182,10 @@ FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/Target.o : C:/Users/shadow/projec
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
+FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/VelocityEncoder.o : C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/FRC980/VelocityEncoder.cpp
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+
+
 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/autonomous.o : C:/Users/shadow/projects/FIRST/2009/frc980/trunk/workspace/FRC980/autonomous.cpp
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
@@ -204,6 +208,7 @@ OBJECTS_FRC980_partialImage = FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/Das
 	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/Robot980.o \
 	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/SmartDrive.o \
 	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/Target.o \
+	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/VelocityEncoder.o \
 	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/autonomous.o \
 	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/disabled.o \
 	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/main.o \
@@ -221,8 +226,8 @@ FRC980_partialImage/$(MODE_DIR)/FRC980_partialImage_clean :
 
 DEP_FILES := FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DashboardData.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DashboardDataExample.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/DriverStationLCD.d \
 	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/Robot980.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/SmartDrive.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/Target.d \
-	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/autonomous.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/disabled.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/main.d \
-	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/operatorcontrol.d
+	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/VelocityEncoder.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/autonomous.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/disabled.d \
+	 FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/main.d FRC980_partialImage/$(MODE_DIR)/Objects/FRC980/operatorcontrol.d
 -include $(DEP_FILES)
 
 
