@@ -1,14 +1,15 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "PIDController.h"
 #include "Notifier.h"
 #include "PIDSource.h"
 #include "PIDOutput.h"
 #include <math.h>
+
 /**
  * Allocate a PID object with the given constants for P, I, D
  * @param Kp the proportional coefficient
@@ -16,8 +17,9 @@
  * @param Kd the derivative coefficient
  * @param source The PIDSource object that is used to get values
  * @param output The PIDOutput object that is set to the output value
- * @param period the loop time for doing calculations. This particularly effects calculations of the
- * integral and differental terms. The default is 50ms.
+ * @param period the loop time for doing calculations. This particularly
+ * effects calculations of the integral and differental terms. The default
+ * is 50ms.
  */
 PIDController::PIDController(float Kp, float Ki, float Kd,
                              PIDSource * source, PIDOutput * output,
@@ -59,11 +61,12 @@ PIDController::~PIDController()
 }
 
 /**
- * Call the Calculate method as a non-static method. This avoids having to prepend
- * all local variables in that method with the class pointer. This way the "this"
- * pointer will be set up and class variables can be called more easily.
- * This method is static and called by the Notifier class.
- * @param controller the address of the PID controller object to use in the background loop
+ * Call the Calculate method as a non-static method. This avoids having to
+ * prepend all local variables in that method with the class pointer. This
+ * way the "this" pointer will be set up and class variables can be called
+ * more easily.  This method is static and called by the Notifier class.
+ * @param controller the address of the PID controller object to use in
+ * the background loop
  */
 void PIDController::CallCalculate(void *controller)
 {
@@ -72,9 +75,9 @@ void PIDController::CallCalculate(void *controller)
 }
 
  /**
-  * Read the input, calculate the output accordingly, and write to the output.
-  * This should only be called by the Notifier indirectly through CallCalculate
-  * and is created during initialization.
+  * Read the input, calculate the output accordingly, and write to the
+  * output.  This should only be called by the Notifier indirectly through
+  * CallCalculate and is created during initialization.
   */
 void PIDController::Calculate()
 {
@@ -118,7 +121,8 @@ void PIDController::Calculate()
 
 /**
  * Return the current PID result
- * This is always centered on zero and constrained the the max and min outs
+ * This is always centered on zero and constrained the the max and min
+ * outs
  * @return the latest calculated output
  */
 float PIDController::Get()
@@ -127,11 +131,12 @@ float PIDController::Get()
 }
 
 /**
- *  Set the PID controller to consider the input to be continuous,
- *  Rather then using the max and min in as constraints, it considers them to
- *  be the same point and automatically calculates the shortest route to
- *  the setpoint.
- * @param continuous Set to true turns on continuous, false turns off continuous
+ *  Set the PID controller to consider the input to be continuous, Rather
+ *  then using the max and min in as constraints, it considers them to be
+ *  the same point and automatically calculates the shortest route to the
+ *  setpoint.
+ * @param continuous Set to true turns on continuous, false turns off
+ * continuous
  */
 void PIDController::SetContinuous(bool continuous)
 {
@@ -140,7 +145,7 @@ void PIDController::SetContinuous(bool continuous)
 
 /**
  * Sets the maximum and minimum values expected from the input.
- * 
+ *
  * @param minimumInput the minimum value expected from the input
  * @param maximumInput the maximum value expected from the output
  */
@@ -153,7 +158,7 @@ void PIDController::SetInputRange(float minimumInput, float maximumInput)
 
 /**
  * Sets the minimum and maximum values to write.
- * 
+ *
  * @param minimumOutput the minimum value to write to the output
  * @param maximumOutput the maximum value to write to the output
  */
@@ -211,9 +216,9 @@ void PIDController::SetTolerance(float percent)
 }
 
 /*
- * Return true if the error is within the percentage of the total input range,
- * determined by SetTolerance. This asssumes that the maximum and minimum input
- * were set using SetInput.
+ * Return true if the error is within the percentage of the total input
+ * range, determined by SetTolerance. This asssumes that the maximum and
+ * minimum input were set using SetInput.
  */
 bool PIDController::OnTarget()
 {
@@ -230,7 +235,8 @@ void PIDController::Enable()
 }
 
 /**
- * Stop running the PIDController, this sets the output to zero before stopping.
+ * Stop running the PIDController, this sets the output to zero before
+ * stopping.
  */
 void PIDController::Disable()
 {
@@ -239,7 +245,8 @@ void PIDController::Disable()
 }
 
 /**
- * Reset the previous error,, the integral term, and disable the controller.
+ * Reset the previous error,, the integral term, and disable the
+ * controller.
  */
 void PIDController::Reset()
 {

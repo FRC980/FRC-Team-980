@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #ifndef PIDCONTROLLER_H_
 #define PIDCONTROLLER_H_
@@ -15,7 +15,7 @@ class Notifier;
 
 /**
  * Class implements a PID Control Loop.
- * 
+ *
  * Creates a separate thread which reads the given PIDSource and takes
  * care of the integral calculations, as well as writing the given
  * PIDOutput
@@ -45,12 +45,14 @@ class PIDController
 
     static void CallCalculate(void *controller);
     void Calculate();
-         DISALLOW_COPY_AND_ASSIGN(PIDController);
+    DISALLOW_COPY_AND_ASSIGN(PIDController);
+
   public:
-         PIDController(float p, float i, float d,
-                       PIDSource * source, PIDOutput * output,
-                       float period = 0.05);
-        ~PIDController();
+    PIDController(float p, float i, float d,
+                  PIDSource * source, PIDOutput * output,
+                  float period = 0.05);
+    ~PIDController();
+
     float Get();
     void SetContinuous(bool continuous = true);
     void SetInputRange(float minimumInput, float maximumInput);

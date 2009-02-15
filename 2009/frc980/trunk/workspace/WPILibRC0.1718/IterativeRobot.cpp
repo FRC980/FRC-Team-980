@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "IterativeRobot.h"
 #include "NetworkCommunication/FRCComm.h"
@@ -10,11 +10,12 @@
 
 /**
  * Constructor for RobotIterativeBase
- * 
- * The constructor initializes the instance variables for the robot to indicate
- * the status of initialization for disabled, autonomous, and teleop code.
+ *
+ * The constructor initializes the instance variables for the robot to
+ * indicate the status of initialization for disabled, autonomous, and
+ * teleop code.
  */
-IterativeRobot::IterativeRobot():m_packetDataAvailableSem(0)
+IterativeRobot::IterativeRobot() : m_packetDataAvailableSem(0)
 {
     printf("RobotIterativeBase Constructor Start\n");
     // set status for initialization of disabled, autonomous, and teleop code.
@@ -31,7 +32,7 @@ IterativeRobot::IterativeRobot():m_packetDataAvailableSem(0)
     m_packetDataAvailableSem = semBCreate(SEM_Q_PRIORITY, SEM_EMPTY);
 
     // Register that semaphore with the network communications task.
-    // It will signal when new packet data is available. 
+    // It will signal when new packet data is available.
     setNewDataSem(m_packetDataAvailableSem);
 
     m_period = kDefaultPeriod;
@@ -52,8 +53,9 @@ IterativeRobot::~IterativeRobot()
 
 /**
  * Set the period for the periodic functions.
- * 
- * @deprecated The periodic functions are now synchronized with the receipt of packets from the Driver Station.
+ *
+ * @deprecated The periodic functions are now synchronized with the
+ * receipt of packets from the Driver Station.
  */
 void IterativeRobot::SetPeriod(double period)
 {
@@ -62,9 +64,10 @@ void IterativeRobot::SetPeriod(double period)
 
 /**
  * Get the number of loops per second for the IterativeRobot
- * 
- * Get the number of loops per second for the IterativeRobot.  The default period of
- * 0.005 seconds results in 200 loops per second.  (200Hz iteration loop).
+ *
+ * Get the number of loops per second for the IterativeRobot.  The default
+ * period of 0.005 seconds results in 200 loops per second.  (200Hz
+ * iteration loop).
  */
 double IterativeRobot::GetLoopsPerSec()
 {
@@ -73,11 +76,12 @@ double IterativeRobot::GetLoopsPerSec()
 
 /**
  * Provide an alternate "main loop" via StartCompetition().
- * 
- * This specific StartCompetition() implements "main loop" behavior like that of the FRC
- * control system in 2008 and earlier, with a primary (slow) loop that is
- * called periodically, and a "fast loop" (a.k.a. "spin loop") that is 
- * called as fast as possible with no delay between calls. 
+ *
+ * This specific StartCompetition() implements "main loop" behavior like
+ * that of the FRC control system in 2008 and earlier, with a primary
+ * (slow) loop that is called periodically, and a "fast loop"
+ * (a.k.a. "spin loop") that is called as fast as possible with no delay
+ * between calls.
  */
 void IterativeRobot::StartCompetition()
 {
@@ -89,11 +93,12 @@ void IterativeRobot::StartCompetition()
     // loop forever, calling the appropriate mode-dependent function
     while (TRUE)
     {
-        // Call the appropriate function depending upon the current robot mode
+        // Call the appropriate function depending upon the current robot
+        // mode
         if (IsDisabled())
         {
-            // call DisabledInit() if we are now just entering disabled mode from
-            // either a different mode or from power-on
+            // call DisabledInit() if we are now just entering disabled
+            // mode from either a different mode or from power-on
             if (!m_disabledInitialized)
             {
                 DisabledInit();
@@ -111,13 +116,14 @@ void IterativeRobot::StartCompetition()
         }
         else if (IsAutonomous())
         {
-            // call AutonomousInit() if we are now just entering autonomous mode from
-            // either a different mode or from power-on
+            // call AutonomousInit() if we are now just entering
+            // autonomous mode from either a different mode or from
+            // power-on
             if (!m_autonomousInitialized)
             {
-                // KBS NOTE:  old code reset all PWMs and relays to "safe values"
-                // whenever entering autonomous mode, before calling
-                // "Autonomous_Init()"
+                // KBS NOTE: old code reset all PWMs and relays to "safe
+                // values" whenever entering autonomous mode, before
+                // calling "Autonomous_Init()"
                 AutonomousInit();
                 m_autonomousInitialized = true;
                 // reset the initialization flags for the other modes
@@ -133,8 +139,8 @@ void IterativeRobot::StartCompetition()
         }
         else
         {
-            // call TeleopInit() if we are now just entering teleop mode from
-            // either a different mode or from power-on
+            // call TeleopInit() if we are now just entering teleop mode
+            // from either a different mode or from power-on
             if (!m_teleopInitialized)
             {
                 TeleopInit();
@@ -156,9 +162,9 @@ void IterativeRobot::StartCompetition()
 
 /**
  * Determine if the appropriate next periodic function should be called.
- * 
- * This function makes adjust for lateness in the cycle by keeping track of how late
- * it was and crediting the next period with that amount.
+ *
+ * This function makes adjust for lateness in the cycle by keeping track
+ * of how late it was and crediting the next period with that amount.
  */
 //TODO: decide what this should do if it slips more than one cycle.
 
@@ -175,9 +181,10 @@ bool IterativeRobot::NextPeriodReady()
 
 /**
  * Robot-wide initialization code should go here.
- * 
- * Users should override this method for default Robot-wide initialization which will
- * be called when the robot is first powered on.  It will be called exactly 1 time.
+ *
+ * Users should override this method for default Robot-wide initialization
+ * which will be called when the robot is first powered on.  It will be
+ * called exactly 1 time.
  */
 void IterativeRobot::RobotInit()
 {
@@ -186,9 +193,9 @@ void IterativeRobot::RobotInit()
 
 /**
  * Initialization code for disabled mode should go here.
- * 
- * Users should override this method for initialization code which will be called each time
- * the robot enters disabled mode.
+ *
+ * Users should override this method for initialization code which will be
+ * called each time the robot enters disabled mode.
  */
 void IterativeRobot::DisabledInit()
 {
@@ -197,9 +204,9 @@ void IterativeRobot::DisabledInit()
 
 /**
  * Initialization code for autonomous mode should go here.
- * 
- * Users should override this method for initialization code which will be called each time
- * the robot enters autonomous mode.
+ *
+ * Users should override this method for initialization code which will be
+ * called each time the robot enters autonomous mode.
  */
 void IterativeRobot::AutonomousInit()
 {
@@ -208,9 +215,9 @@ void IterativeRobot::AutonomousInit()
 
 /**
  * Initialization code for teleop mode should go here.
- * 
- * Users should override this method for initialization code which will be called each time
- * the robot enters teleop mode.
+ *
+ * Users should override this method for initialization code which will be
+ * called each time the robot enters teleop mode.
  */
 void IterativeRobot::TeleopInit()
 {
@@ -219,9 +226,9 @@ void IterativeRobot::TeleopInit()
 
 /**
  * Periodic code for disabled mode should go here.
- * 
- * Users should override this method for code which will be called periodically at a regular
- * rate while the robot is in disabled mode.
+ *
+ * Users should override this method for code which will be called
+ * periodically at a regular rate while the robot is in disabled mode.
  */
 void IterativeRobot::DisabledPeriodic()
 {
@@ -232,8 +239,8 @@ void IterativeRobot::DisabledPeriodic()
 /**
  * Periodic code for autonomous mode should go here.
  *
- * Users should override this method for code which will be called periodically at a regular
- * rate while the robot is in autonomous mode.
+ * Users should override this method for code which will be called
+ * periodically at a regular rate while the robot is in autonomous mode.
  */
 void IterativeRobot::AutonomousPeriodic()
 {
@@ -244,8 +251,8 @@ void IterativeRobot::AutonomousPeriodic()
 /**
  * Periodic code for teleop mode should go here.
  *
- * Users should override this method for code which will be called periodically at a regular
- * rate while the robot is in teleop mode.
+ * Users should override this method for code which will be called
+ * periodically at a regular rate while the robot is in teleop mode.
  */
 void IterativeRobot::TeleopPeriodic()
 {
@@ -256,8 +263,9 @@ void IterativeRobot::TeleopPeriodic()
 /**
  * Continuous code for disabled mode should go here.
  *
- * Users should override this method for code which will be called repeatedly as frequently
- * as possible while the robot is in disabled mode.
+ * Users should override this method for code which will be called
+ * repeatedly as frequently as possible while the robot is in disabled
+ * mode.
  */
 void IterativeRobot::DisabledContinuous()
 {
@@ -267,8 +275,9 @@ void IterativeRobot::DisabledContinuous()
 /**
  * Continuous code for autonomous mode should go here.
  *
- * Users should override this method for code which will be called repeatedly as frequently
- * as possible while the robot is in autonomous mode.
+ * Users should override this method for code which will be called
+ * repeatedly as frequently as possible while the robot is in autonomous
+ * mode.
  */
 void IterativeRobot::AutonomousContinuous()
 {
@@ -278,8 +287,8 @@ void IterativeRobot::AutonomousContinuous()
 /**
  * Continuous code for teleop mode should go here.
  *
- * Users should override this method for code which will be called repeatedly as frequently
- * as possible while the robot is in teleop mode.
+ * Users should override this method for code which will be called
+ * repeatedly as frequently as possible while the robot is in teleop mode.
  */
 void IterativeRobot::TeleopContinuous()
 {

@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #ifndef JOYSTICK_H_
 #define JOYSTICK_H_
@@ -14,9 +14,11 @@ class DriverStation;
 
 /**
  * Handle input from standard Joysticks connected to the Driver Station.
- * This class handles standard input that comes from the Driver Station. Each time a value is requested
- * the most recent value is returned. There is a single class instance for each joystick and the mapping
- * of ports to hardware buttons depends on the code in the driver station.
+ * This class handles standard input that comes from the Driver
+ * Station. Each time a value is requested the most recent value is
+ * returned. There is a single class instance for each joystick and the
+ * mapping of ports to hardware buttons depends on the code in the driver
+ * station.
  */
 class Joystick:public GenericHID
 {
@@ -38,8 +40,8 @@ class Joystick:public GenericHID
     } ButtonType;
 
     explicit Joystick(UINT32 port);
-         Joystick(UINT32 port, UINT32 numAxisTypes, UINT32 numButtonTypes);
-         virtual ~ Joystick();
+    Joystick(UINT32 port, UINT32 numAxisTypes, UINT32 numButtonTypes);
+    virtual ~ Joystick();
 
     UINT32 GetAxisChannel(AxisType axis);
     void SetAxisChannel(AxisType axis, UINT32 channel);
@@ -64,7 +66,7 @@ class Joystick:public GenericHID
     virtual float GetDirectionDegrees();
 
   private:
-         DISALLOW_COPY_AND_ASSIGN(Joystick);
+    DISALLOW_COPY_AND_ASSIGN(Joystick);
     void InitJoystick(UINT32 numAxisTypes, UINT32 numButtonTypes);
 
     DriverStation *m_ds;
