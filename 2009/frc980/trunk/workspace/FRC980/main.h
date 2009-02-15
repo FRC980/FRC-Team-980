@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include <RobotBase.h>
+#include <Timer.h>
 
 class Main : public RobotBase
 {
@@ -14,6 +15,10 @@ class Main : public RobotBase
     virtual void Autonomous();
     virtual void OperatorControl();
     virtual void StartCompetition();
+    bool NextPeriodReady();
+
+  private:
+    SEM_ID m_packetDataAvailableSem;
 };
 
 #endif // MAIN_H

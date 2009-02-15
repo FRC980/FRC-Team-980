@@ -2,18 +2,7 @@
 
 #include "DashboardData.h"
 
-DashboardData::DashboardData(void)
-    : m_ds(DriverStation::GetInstance())
-{
-
-}
-
-DashboardData::~DashboardData()
-{
-
-}
-
-void DashboardData::PackAnalog(Dashboard *pDashPack, uint32_t u32Slot)
+void PackAnalog(Dashboard *pDashPack, uint32_t u32Slot)
 {
     AnalogModule *pAM = AnalogModule::GetInstance(u32Slot); // cRIO slot #
 
@@ -25,7 +14,7 @@ void DashboardData::PackAnalog(Dashboard *pDashPack, uint32_t u32Slot)
     pDashPack->FinalizeCluster();
 }
 
-void DashboardData::PackDigital(Dashboard *pDashPack, uint32_t u32Slot)
+void PackDigital(Dashboard *pDashPack, uint32_t u32Slot)
 {
     DigitalModule *pDM = DigitalModule::GetInstance(u32Slot);
 
@@ -59,7 +48,8 @@ void DashboardData::PackDigital(Dashboard *pDashPack, uint32_t u32Slot)
  */
 void DashboardData::UpdateAndSend(void)
 {
-    Dashboard & dashboardPacker = m_ds->GetDashboardPacker();
+    Dashboard & dashboardPacker =
+        DriverStation::GetInstance()->GetDashboardPacker();
 
     // Pack the analog modules
     PackAnalog(&dashboardPacker, 1);

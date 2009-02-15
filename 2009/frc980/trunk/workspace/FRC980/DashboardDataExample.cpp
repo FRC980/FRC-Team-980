@@ -5,6 +5,7 @@
 
 #include "DashboardData.h"
 
+#if 0
 
 /**
  * This is a demo program showing the use of the Dashboard data packing
@@ -80,4 +81,6 @@ class DashboardDataExample : public SimpleRobot
     }
 };
 
-START_ROBOT_CLASS(DashboardDataExample);
+//START_ROBOT_CLASS(DashboardDataExample);
+
+#endif // 0

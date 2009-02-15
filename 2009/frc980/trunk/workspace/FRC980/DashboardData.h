@@ -19,16 +19,10 @@
 class DashboardData : public SensorBase
 {
   public:
-    DashboardData(void);
-    virtual ~DashboardData();
-    void UpdateAndSend(void);
+    static void UpdateAndSend(void);
 
   private:
     DISALLOW_COPY_AND_ASSIGN(DashboardData);
-    DriverStation *m_ds;
-
-    void PackAnalog(Dashboard *pDashPack, uint32_t slot);
-    void PackDigital(Dashboard *pDashPack, uint32_t slot);
 };
 
 #endif  // DASHBOARDDATA_H

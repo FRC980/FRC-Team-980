@@ -44,9 +44,12 @@
 #endif // NULL
 
 #include "SmartDrive.h"
+#include <DriverStation.h>
+#include <TrackAPI.h>
 
 class Encoder;
 class Gyro;
+class PCVideoServer;
 class SpeedController;
 
 class Robot980
@@ -54,6 +57,7 @@ class Robot980
   public:
     static Robot980 *GetInstance();
 
+    bool FindTrailer(DriverStation::Alliance);
     void Drive(float left, float right); // 1 = forward, -1 = backwards
     void RunBelts(float lower, float upper); // 1 = in @ base, up and out
     void Flap(bool open);
@@ -94,6 +98,11 @@ class Robot980
     // encoders on the rotation of the follow wheels (casters)
     Encoder* m_pEncRotateLeft;
     Encoder* m_pEncRotateRight;
+
+    PCVideoServer* m_pVideoServer;
+
+    TrackingThreshold m_tdPink, m_tdGreen; // color thresholds
+
 };
 
 #endif // ROBOT980_H
