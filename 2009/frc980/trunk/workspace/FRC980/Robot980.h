@@ -8,37 +8,37 @@
 #define CAMERA_ROTATION             ROT_180
 
 // PWM outputs
-#define SLOT_PWM_LEFT               4
+#define SLOT_PWM_LEFT               6
 #define CHAN_PWM_LEFT               1
 
 #define SLOT_PWM_RIGHT              4
-#define CHAN_PWM_RIGHT              2
+#define CHAN_PWM_RIGHT              1
 
 #define SLOT_PWM_LOWER              4
-#define CHAN_PWM_LOWER              3
+#define CHAN_PWM_LOWER              2
 
-#define SLOT_PWM_UPPER              4
-#define CHAN_PWM_UPPER              4
+#define SLOT_PWM_UPPER              6
+#define CHAN_PWM_UPPER              2
 
-#define SLOT_PWM_FLAP               4
-#define CHAN_PWM_FLAP               5
+#define SLOT_PWM_FLAP               6
+#define CHAN_PWM_FLAP               3
 
 // Digital Inputs
-#define SLOT_ENC_DRV_LEFT           4
+#define SLOT_ENC_DRV_LEFT           6
 #define CHAN_ENC_DRV_LEFT_A         1
 #define CHAN_ENC_DRV_LEFT_B         2
 
-#define SLOT_ENC_FOLLOW_LEFT        4
+#define SLOT_ENC_FOLLOW_LEFT        6
 #define CHAN_ENC_FOLLOW_LEFT_A      3
 #define CHAN_ENC_FOLLOW_LEFT_B      4
 
 #define SLOT_ENC_DRV_RIGHT          4
-#define CHAN_ENC_DRV_RIGHT_A        5
-#define CHAN_ENC_DRV_RIGHT_B        6
+#define CHAN_ENC_DRV_RIGHT_A        1
+#define CHAN_ENC_DRV_RIGHT_B        2
 
 #define SLOT_ENC_FOLLOW_RIGHT       4
-#define CHAN_ENC_FOLLOW_RIGHT_A     7
-#define CHAN_ENC_FOLLOW_RIGHT_B     8
+#define CHAN_ENC_FOLLOW_RIGHT_A     3
+#define CHAN_ENC_FOLLOW_RIGHT_B     4
 
 // Analog Inputs
 #define SLOT_GYRO                   1
