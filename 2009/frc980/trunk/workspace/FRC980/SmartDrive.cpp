@@ -86,6 +86,14 @@ void SmartDrive::Calculate()
     if (!m_bEnabled)
         return;
 
+    // This code implements 3 linked PID loops (technically PI, as there
+    // is no D term).  The VELOCITY loop tries to make the motor run at
+    // the commanded speed.  The ACCELERATION loop tries to maximize
+    // acceleration.  The SLIPPAGE loop (aka "correction" loop) tries to
+    // minimize slippage, (as measured by the difference between the motor
+    // speed and follow wheel speed).
+
+
     // velocities should be in range of -1 to 1
     double dMotorVel = m_pEncDrive->GetRate(); // to do: scale
     double dRobotVel = m_pEncFollow->GetRate(); // to do: scale
