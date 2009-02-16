@@ -29,12 +29,18 @@ SmartDrive::SmartDrive(double kvp, double kvi, double kvd,
     , m_kAclP(kap)
     , m_kAclI(kai)
     , m_kAclD(kad)
+    , m_kfPeriod(period)
     , m_dCmdSpeed(0)
     , m_bEnabled(false)
     , m_psc(psc)
     , m_pEncDrive(pEncDrive)
     , m_pEncFollow(pEncFollow)
     , m_controlLoop(new Notifier(SmartDrive::CallCalculate, this))
+    , m_dPrevMotorVel(0)
+    , m_dPrevRobotVel(0)
+    , m_dVelInt(0)
+    , m_dCorInt(0)
+    , m_dAclInt(0)
 {
     m_controlLoop->StartPeriodic(period);
 }
@@ -80,6 +86,38 @@ void SmartDrive::Calculate()
     if (!m_bEnabled)
         return;
 
-    double dMotorVel = m_pEncDrive->GetRate();
-    double dRobotVel = m_pEncFollow->GetRate();
+    // velocities should be in range of -1 to 1
+    double dMotorVel = m_pEncDrive->GetRate(); // to do: scale
+    double dRobotVel = m_pEncFollow->GetRate(); // to do: scale
+
+    double dMotorAcl = (dMotorVel - m_dPrevMotorVel) / m_kfPeriod;
+//    double dRobotAcl = (dRobotVel - m_dPrevRobotVel) / m_kfPeriod;
+
+    double dVelDelta = m_dCmdSpeed - dMotorVel;
+
+    m_dVelInt += dVelDelta * m_kVelI;
+    m_dVelInt = limit(m_dVelInt, -1.0, 1.0);
+
+    double dVelError = m_kVelP * dVelDelta + m_dVelInt;
+    dVelError = limit(dVelError, -1.0, 1.0);
+
+    double dSlippage = dMotorVel - dRobotVel;
+
+    m_dCorInt += dSlippage * m_kCorI;
+    m_dCorInt = limit(m_dCorInt, -1.25, 1.25);
+
+    double dCor_out = dSlippage * m_kCorP + m_dCorInt;
+    double dAclCmd = dVelError - dCor_out;
+
+    double dAclError = dAclCmd - dMotorAcl;
+
+    m_dAclInt += dAclError * m_kAclI;
+    m_dAclInt = limit(m_dAclInt, -1.0, 1.0);
+
+    double dMotorCmd = dAclError * m_kAclP + m_dAclInt;
+    m_psc->Set(dMotorCmd);
+
+
+    m_dPrevMotorVel = dMotorVel;
+    m_dPrevRobotVel = dRobotVel;
 }
