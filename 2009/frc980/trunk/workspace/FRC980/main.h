@@ -1,3 +1,4 @@
+
 #ifndef MAIN_H
 #define MAIN_H
 
@@ -16,6 +17,11 @@ class Main : public RobotBase
     virtual void OperatorControl();
     virtual void StartCompetition();
     bool NextPeriodReady();
+
+    void Auton1();
+    void Auton2();
+    void Auton3();
+    void Auton4();
 
   private:
     SEM_ID m_packetDataAvailableSem;
