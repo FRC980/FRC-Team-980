@@ -58,13 +58,13 @@ Robot980::Robot980()
     , m_trackColor(DriverStation::kInvalid)
 {
     // "Smart Drive" handles PID, slipping, etc
-    m_psdLeft  = new SmartDrive(1, 1, 0, // velocity PID constants
-                                1, 1, 0, // correction PID constants
-                                1, 1, 0, // acceleration PID constants
+    m_psdLeft  = new SmartDrive(0.6, 0.1, 0, // velocity PID constants
+                                0.1, 0.1, 0, // correction PID constants
+                                0.2, 0.1, 0, // acceleration PID constants
                                 m_pscLeft, m_pEncDrvLeft, m_pEncFollowLeft);
-    m_psdRight = new SmartDrive(1, 1, 0, // velocity PID constants
-                                1, 1, 0, // correction PID constants
-                                1, 1, 0, // acceleration PID constants
+    m_psdRight = new SmartDrive(0.6, 0.1, 0, // velocity PID constants
+                                0.1, 0.1, 0, // correction PID constants
+                                0.2, 0.1, 0, // acceleration PID constants
                                 m_pscRight, m_pEncDrvRight, m_pEncFollowRight);
 
 
