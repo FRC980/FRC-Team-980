@@ -1,11 +1,13 @@
 #include <WPILib.h>
-#include <stdbool.h>
 #include <AxisCamera.h>
 #include <PCVideoServer.h>
+#include <math.h>
+#include <stdbool.h>
 
-#include "Robot980.h"
 #include "DriverStationLCD.h"
+#include "Robot980.h"
 #include "Target.h"
+#include "numbers.h"
 
 static Robot980* g_pInstance = NULL;
 
@@ -57,6 +59,13 @@ Robot980::Robot980()
     , m_dSavedImageTimestamp(0.0)
     , m_trackColor(DriverStation::kInvalid)
 {
+    m_pEncDrvLeft->SetDistancePerPulse(M_PI * 6 / 250);
+    m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 / 250);
+
+    m_pEncFollowLeft->SetDistancePerPulse(M_PI * 60/25.4 / 250);
+    m_pEncFollowRight->SetDistancePerPulse(M_PI * 60/25.4 / 250);
+
+
     // "Smart Drive" handles PID, slipping, etc
     m_psdLeft  = new SmartDrive(0.6, 0.1, 0, // velocity PID constants
                                 0.1, 0.1, 0, // correction PID constants
