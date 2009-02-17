@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #ifndef __DRIVER_STATION_H__
 #define __DRIVER_STATION_H__
@@ -15,15 +15,15 @@ struct FRCControlData;
 class AnalogChannel;
 
 /**
- * Provide access to the network communication data to / from the Driver Station.
+ * Provide access to the network communication data to / from the Driver
+ * Station.
  */
-class DriverStation:public SensorBase
+class DriverStation : public SensorBase
 {
   public:
-    enum Alliance
-    { kRed, kBlue, kInvalid };
+    enum Alliance { kRed, kBlue, kInvalid };
 
-         virtual ~ DriverStation();
+    virtual ~ DriverStation();
     static DriverStation *GetInstance();
 
     static const UINT32 kBatterySlot = 1;
@@ -49,13 +49,13 @@ class DriverStation:public SensorBase
 
     float GetBatteryVoltage();
 
-         Dashboard & GetDashboardPacker(void)
+    Dashboard & GetDashboardPacker(void)
     {
         return m_dashboard;
     }
 
   protected:
-         DriverStation();
+    DriverStation();
 
     void GetData();
     void SetData();

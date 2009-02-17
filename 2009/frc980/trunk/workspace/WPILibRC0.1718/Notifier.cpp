@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "Notifier.h"
 #include "Synchronized.h"
@@ -18,8 +18,8 @@ static tInterruptManager *manager = NULL;
 
 /**
  * Create a Notifier for timer event notification.
- * @param handler The handler is called at the notification time which is set
- * using StartSingle or StartPeriodic.
+ * @param handler The handler is called at the notification time which is
+ * set using StartSingle or StartPeriodic.
  */
 Notifier::Notifier(TimerEventHandler handler, void *param)
 {
@@ -51,8 +51,8 @@ Notifier::Notifier(TimerEventHandler handler, void *param)
 
 /**
  * Free the resources for a timer event.
- * All resources will be freed and the timer event will be removed from the
- * queue if necessary.
+ * All resources will be freed and the timer event will be removed from
+ * the queue if necessary.
  */
 Notifier::~Notifier()
 {
@@ -65,11 +65,12 @@ Notifier::~Notifier()
 }
 
 /**
- * Update the alarm hardware to reflect the current first element in the queue.
- * Compute the time the next alarm should occur based on the current time and the
- * period for the first element in the timer queue.
- * WARNING: this method does not do synchronization! It must be called from somewhere
- * that is taking care of synchronizing access to the queue.
+ * Update the alarm hardware to reflect the current first element in the
+ * queue.  Compute the time the next alarm should occur based on the
+ * current time and the period for the first element in the timer queue.
+ * WARNING: this method does not do synchronization! It must be called
+ * from somewhere that is taking care of synchronizing access to the
+ * queue.
  */
 void Notifier::UpdateAlarm()
 {
@@ -95,9 +96,9 @@ void Notifier::UpdateAlarm()
 
 /**
  * ProcessQueue is called whenever there is a timer interrupt.
- * We need to wake up and process the current top item in the timer queue as long
- * as its scheduled time is after the current time. Then the item is removed or 
- * rescheduled (repetitive events) in the queue.
+ * We need to wake up and process the current top item in the timer queue
+ * as long as its scheduled time is after the current time. Then the item
+ * is removed or rescheduled (repetitive events) in the queue.
  */
 void Notifier::ProcessQueue(tNIRIO_u32 mask, void *params)
 {
@@ -135,11 +136,13 @@ void Notifier::ProcessQueue(tNIRIO_u32 mask, void *params)
 
 /**
  * Insert this Notifier into the timer queue in right place.
- * WARNING: this method does not do synchronization! It must be called from somewhere
- * that is taking care of synchronizing access to the queue.
- * @param updateAlarm If true, the UpdateAlarm method is called which will enable the
- * alarm if necessary. Only updated when called from the interrupt routine. This ensures
- * that the public methods only update the queue after finishing inserting.
+ * WARNING: this method does not do synchronization! It must be called
+ * from somewhere that is taking care of synchronizing access to the
+ * queue.
+ * @param updateAlarm If true, the UpdateAlarm method is called which will
+ * enable the alarm if necessary. Only updated when called from the
+ * interrupt routine. This ensures that the public methods only update the
+ * queue after finishing inserting.
  */
 void Notifier::InsertInQueue(bool updateAlarm)
 {
@@ -175,10 +178,11 @@ void Notifier::InsertInQueue(bool updateAlarm)
 
 /**
  * Delete this Notifier from the timer queue.
- * WARNING: this method does not do synchronization! It must be called from somewhere
- * that is taking care of synchronizing access to the queue.
- * Remove this Notifier from the timer queue and adjust the next interrupt time to reflect
- * the current top of the queue.
+ * WARNING: this method does not do synchronization! It must be called
+ * from somewhere that is taking care of synchronizing access to the
+ * queue.
+ * Remove this Notifier from the timer queue and adjust the next interrupt
+ * time to reflect the current top of the queue.
  */
 void Notifier::DeleteFromQueue()
 {
@@ -210,8 +214,8 @@ void Notifier::DeleteFromQueue()
 
 /**
  * Register for single event notification.
- * A timer event is queued for a single event after the time has run out. The
- * event handler will be called at that time.
+ * A timer event is queued for a single event after the time has run
+ * out. The event handler will be called at that time.
  */
 void Notifier::StartSingle(double period)
 {
@@ -227,8 +231,9 @@ void Notifier::StartSingle(double period)
 
 /**
  * Register for periodic event notification.
- * A timer event is queued for periodic event notification. Each time the intterupt
- * occurs, the event will be immedeatly requeued for the same time interval.
+ * A timer event is queued for periodic event notification. Each time the
+ * intterupt occurs, the event will be immedeatly requeued for the same
+ * time interval.
  */
 void Notifier::StartPeriodic(double period)
 {
@@ -244,8 +249,8 @@ void Notifier::StartPeriodic(double period)
 
 /**
  * Stop timer events from occuring.
- * Stop any repeating timer events from occuring. This will also remove any single
- * notification events from the queue.
+ * Stop any repeating timer events from occuring. This will also remove
+ * any single notification events from the queue.
  */
 void Notifier::Stop()
 {

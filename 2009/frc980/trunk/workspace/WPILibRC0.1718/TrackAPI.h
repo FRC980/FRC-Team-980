@@ -1,16 +1,17 @@
-/********************************************************************************
-*  Project   		: FIRST Motor Controller
-*  File Name  		: TrackAPI.h          
-*  Contributors   	: ELF
-*  Creation Date 	: August 12, 2008
-*  Revision History	: Source code & revision history maintained at sourceforge.WPI.edu    
-*  File Description	: Globally defined values for the FIRST Vision API
+/******************************************************************************
+*  Project          : FIRST Motor Controller
+*  File Name        : TrackAPI.h
+*  Contributors     : ELF
+*  Creation Date    : August 12, 2008
+*  Revision History : Source code & revision history maintained at
+*                     sourceforge.WPI.edu
+*  File Description : Globally defined values for the FIRST Vision API
 */
-/*----------------------------------------------------------------------------*/
-/*        Copyright (c) FIRST 2008.  All Rights Reserved.                     */
-/*  Open Source Software - may be modified and shared by FRC teams. The code  */
-/*  must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*        Copyright (c) FIRST 2008.  All Rights Reserved.                    */
+/*  Open Source Software - may be modified and shared by FRC teams. The code */
+/*  must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.*/
+/*---------------------------------------------------------------------------*/
 
 #ifndef __TRACKAPI_H__
 #define __TRACKAPI_H__
@@ -19,8 +20,8 @@
 #include "BaeUtilities.h"
 
 /*  Constants */
-/** image quality requirement: particle must be this % of pixels 
- * For instance, a 320x240 image has 76800 pixels. With this 
+/** image quality requirement: particle must be this % of pixels
+ * For instance, a 320x240 image has 76800 pixels. With this
  * tolerance at .01, the image must be 768 pixels.
  * Use a percentage instead of a fixed # of pixels so different
  * image sizes will work the same way */

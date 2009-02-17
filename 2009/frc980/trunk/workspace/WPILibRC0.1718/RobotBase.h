@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #ifndef ROBOT_H_
 #define ROBOT_H_
@@ -28,15 +28,18 @@ class DriverStation;
 
 /**
  * Implement a Robot Program framework.
- * The RobotBase class is intended to be subclassed by a user creating a robot program.
- * Overridden Autonomous() and OperatorControl() methods are called at the appropriate time
- * as the match proceeds. In the current implementation, the Autonomous code will run to
- * completion before the OperatorControl code could start. In the future the Autonomous code
- * might be spawned as a task, then killed at the end of the Autonomous period.
+ * The RobotBase class is intended to be subclassed by a user creating a
+ * robot program.  Overridden Autonomous() and OperatorControl() methods
+ * are called at the appropriate time as the match proceeds. In the
+ * current implementation, the Autonomous code will run to completion
+ * before the OperatorControl code could start. In the future the
+ * Autonomous code might be spawned as a task, then killed at the end of
+ * the Autonomous period.
  */
 class RobotBase
 {
     friend class RobotDeleter;
+
   public:
     static RobotBase & getInstance();
     static void setInstance(RobotBase * robot);
@@ -46,14 +49,14 @@ class RobotBase
     bool IsOperatorControl();
     bool IsSystemActive();
     bool IsNewDataAvailable();
-         Watchdog & GetWatchdog();
+    Watchdog & GetWatchdog();
     static void startRobotTask(FUNCPTR factory);
     static void robotTask(FUNCPTR factory, Task * task);
 
   protected:
-         virtual ~ RobotBase();
+    virtual ~ RobotBase();
     virtual void StartCompetition() = 0;
-         RobotBase();
+    RobotBase();
 
     Task *m_task;
     Watchdog m_watchdog;
@@ -61,7 +64,8 @@ class RobotBase
 
   private:
     static RobotBase *m_instance;
-         DISALLOW_COPY_AND_ASSIGN(RobotBase);
+
+    DISALLOW_COPY_AND_ASSIGN(RobotBase);
 };
 
 #endif

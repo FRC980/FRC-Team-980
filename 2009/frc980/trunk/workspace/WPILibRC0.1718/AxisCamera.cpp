@@ -1,18 +1,18 @@
-
-/********************************************************************************
-*  Project   		: FIRST Motor Controller
-*  File Name  		: AxisCamera.cpp        
-*  Contributors 	: TD, ELF, JDG, SVK
-*  Creation Date 	: July 29, 2008
-*  Revision History	: Source code & revision history maintained at sourceforge.WPI.edu    
-*  File Description	: Axis camera access for the FIRST Vision API
-*      The camera task runs as an independent thread 
-*/
-/*----------------------------------------------------------------------------*/
-/*        Copyright (c) FIRST 2008.  All Rights Reserved.                     */
-/*  Open Source Software - may be modified and shared by FRC teams. The code  */
-/*  must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
-/*----------------------------------------------------------------------------*/
+/******************************************************************************
+ *  Project          : FIRST Motor Controller
+ *  File Name        : AxisCamera.cpp
+ *  Contributors     : TD, ELF, JDG, SVK
+ *  Creation Date    : July 29, 2008
+ *  Revision History : Source code & revision history maintained at
+ *                     sourceforge.WPI.edu
+ *  File Description : Axis camera access for the FIRST Vision API
+ *      The camera task runs as an independent thread
+ */
+/*---------------------------------------------------------------------------*/
+/*        Copyright (c) FIRST 2008.  All Rights Reserved.                    */
+/*  Open Source Software - may be modified and shared by FRC teams. The code */
+/*  must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.*/
+/*---------------------------------------------------------------------------*/
 
 #include "sockLib.h"
 #include "vxWorks.h"
@@ -35,7 +35,8 @@
 #include "Utility.h"
 #include "VisionAPI.h"
 
-// To locally enable debug printing: set AxisCamera_debugFlag to a 1, to disable set to 0
+// To locally enable debug printing: set AxisCamera_debugFlag to a 1, to
+// disable set to 0
 int  AxisCamera_debugFlag = 0;
 #define DPRINTF if(AxisCamera_debugFlag)dprintf
 
@@ -45,8 +46,8 @@ struct
     int  readerPID;             // Set to taskID for signaling
     int  index;                 /* -1,0,1 */
     int  acquire;               /* 0:STOP CAMERA; 1:START CAMERA */
-    int  cameraReady;           /* 0: CAMERA NOT INITIALIZED; 1: CAMERA INITIALIZED */
-    int  decode;                /* 0:disable decoding; 1:enable decoding to HSL Image */
+    int  cameraReady; /* 0: CAMERA NOT INITIALIZED; 1: CAMERA INITIALIZED */
+    int  decode;  /* 0:disable decoding; 1:enable decoding to HSL Image */
     struct
     {
         //
@@ -68,7 +69,7 @@ static short cont = 0;
 /**
  * @brief Get the most recent camera image.
  * Supports IMAQ_IMAGE_RGB and IMAQ_IMAGE_HSL.
- * @param image Image to return to; image must have been first created using frcCreateImage. 
+ * @param image Image to return to; image must have been first created using frcCreateImage.
  * When you are done, use frcDispose.
  * @param timestamp Timestamp to return; will record the time at which the image was stored.
  * @param lastImageTimestamp Input - timestamp of last image; prevents serving of stale images
@@ -134,7 +135,7 @@ int CameraInitialized()
 /**
  * @brief Gets the most recent camera image, as long as it is not stale.
  * Supported image types: IMAQ_IMAGE_RGB, IMAQ_IMAGE_HSL
- * @param image Image to return, must have first been created with frcCreateImage or imaqCreate. 
+ * @param image Image to return, must have first been created with frcCreateImage or imaqCreate.
  * When you finish with the image, call frcDispose() to dispose of it.
  * @param timestamp Returned timestamp of when the image was taken from the camera
  * @return failure = 0, success = 1
@@ -180,7 +181,7 @@ int GetImage(Image * image, double *timestamp)
     {
         success = 1;
         if (timestamp != NULL)
-            *timestamp = currentImageTimestamp; // Return image timestamp   
+            *timestamp = currentImageTimestamp; // Return image timestamp
     }
     else
     {
@@ -259,7 +260,7 @@ int GetImageData(char **imageData, int *numBytes,
 
 /**
  * @brief Blocking call to get images for PC.
- * This should be called from a separate task to maintain camera read performance. 
+ * This should be called from a separate task to maintain camera read performance.
  * It is intended to be used for sending raw (undecoded) image data to the PC.
  * @param imageData image data to return
  * @param numBytes number of bytes in buffer
@@ -324,7 +325,7 @@ int CameraCloseSocket(char *errstring, int socket)
 /**
  * @brief Reads one line from the TCP stream.
  * @param camSock         The socket.
- * @param buffer          A buffer with bufSize allocated for it. 
+ * @param buffer          A buffer with bufSize allocated for it.
  *                        On return, bufSize-1 amount of data or data upto first line ending
  *                        whichever is smaller, null terminated.
  * @param bufSize         The size of buffer.
@@ -352,15 +353,15 @@ static int CameraReadLine(int camSock, char *buffer, int bufSize,
             imaqSetError(ERR_CAMERA_FAILURE, funcName);
             return 0;
         }
-        //  Line endings can be "\r\n" or just "\n". So always 
-        //  look for a "\n". If you got just a "\n" and 
+        //  Line endings can be "\r\n" or just "\n". So always
+        //  look for a "\n". If you got just a "\n" and
         //  stripLineEnding is false, then convert it into a \r\n
         //  because callers expect a \r\n.
         //  If the combination of the previous character and the current character
         //  is "\r\n", the line ending
         if (*buffer == '\n')
         {
-            //  If asked to strip the line ending, then set the buffer to the previous 
+            //  If asked to strip the line ending, then set the buffer to the previous
             //  character.
             if (stripLineEnding)
             {
@@ -371,7 +372,7 @@ static int CameraReadLine(int camSock, char *buffer, int bufSize,
             }
             else
             {
-                //  If the previous character was not a '\r', 
+                //  If the previous character was not a '\r',
                 if (i == 0 || *(buffer - 1) != '\r')
                 {
                     //  Make the current character a '\r'.
@@ -418,17 +419,17 @@ static int CameraSkipUntilEmptyLine(int camSock)
 /**
 @brief Opens a socket.
 
-Issues the given http request with the required added information 
-and authentication. It  cycles through an array of predetermined 
-encrypted username, password combinations that we expect the users 
-to have at any point in time. If none of the username, password 
+Issues the given http request with the required added information
+and authentication. It  cycles through an array of predetermined
+encrypted username, password combinations that we expect the users
+to have at any point in time. If none of the username, password
 combinations work, it outputs a "Unknown user or password" error.
 If the request succeeds, it returns the socket number.
 
 @param serverName The information about the host from which this request originates
-@param request   The request to send to the camera not including boilerplate or 
+@param request   The request to send to the camera not including boilerplate or
                  authentication. This is usually in the form of "GET <string>"
-@return int - failure = ERROR; success = socket number;     
+@return int - failure = ERROR; success = socket number;
 */
 static int CameraOpenSocketAndIssueAuthorizedRequest(const char *serverName,
                                                      const char *request)
@@ -464,7 +465,7 @@ static int CameraOpenSocketAndIssueAuthorizedRequest(const char *serverName,
         sprintf(buffer, requestTemplate, request, authenticationStrings[i]);
 
         /* create camera socket */
-        //DPRINTF (LOG_DEBUG, "creating camSock" ); 
+        //DPRINTF (LOG_DEBUG, "creating camSock" );
         if ((camSock = socket(AF_INET, SOCK_STREAM, 0)) == ERROR)
         {
             imaqSetError(ERR_CAMERA_SOCKET_CREATE_FAILED, funcName);
@@ -492,7 +493,7 @@ static int CameraOpenSocketAndIssueAuthorizedRequest(const char *serverName,
                                   camSock);
         }
 
-        //DPRINTF (LOG_INFO, "connecting camSock" ); 
+        //DPRINTF (LOG_INFO, "connecting camSock" );
         if (connect(camSock, (struct sockaddr *)&cameraAddr, sockAddrSize)
             == ERROR)
         {
@@ -502,7 +503,7 @@ static int CameraOpenSocketAndIssueAuthorizedRequest(const char *serverName,
                 ("Failed to connect to camera - check networ", camSock);
         }
 
-        //DPRINTF (LOG_DEBUG, "writing GET request to camSock" ); 
+        //DPRINTF (LOG_DEBUG, "writing GET request to camSock" );
         if (write(camSock, buffer, strlen(buffer)) == ERROR)
         {
             imaqSetError(ERR_CAMERA_CONNECT_FAILED, funcName);
@@ -661,10 +662,10 @@ int GetImageSetting(char *configString, char *cameraResponse)
 
 /**
  * @brief Manage access to the camera. Sets up sockets and reads images
- * @param frames Frames per second 
- * @param compression Camera image compression 
- * @param resolution Camera image size 
- * @param rotation Camera image rotation 
+ * @param frames Frames per second
+ * @param compression Camera image compression
+ * @param resolution Camera image size
+ * @param rotation Camera image rotation
  * @return error
  */
 int cameraJPEGServer(int frames, int compression, ImageSize resolution,
@@ -818,7 +819,7 @@ Authorization: Basic %s;\n\n";
         return CameraCloseSocket("Failed to send GET request", camSock);
     }
 
-    //DPRINTF (LOG_DEBUG, "reading header" ); 
+    //DPRINTF (LOG_DEBUG, "reading header" );
     /* Find content-length, then read that many bytes */
     int  counter = 2;
     char *contentString = "Content-Length: ";
@@ -1053,10 +1054,10 @@ void StopImageAcquisition()
  * @brief This is the routine that is run when the task is spawned
  * It initializes the camera with the image settings passed in, and
  * starts image acquisition.
- * @param frames Frames per second 
- * @param compression Camera image compression 
- * @param resolution Camera image size 
- * @param rotation Camera image rotation 
+ * @param frames Frames per second
+ * @param compression Camera image compression
+ * @param resolution Camera image size
+ * @param rotation Camera image rotation
  */
 static int initCamera(int frames, int compression, ImageSize resolution,
                       ImageRotation rotation)
@@ -1067,8 +1068,8 @@ static int initCamera(int frames, int compression, ImageSize resolution,
             (int)rotation);
     int  errorCode;
 
-    /* Initialize globalCamera area 
-     * Set decode to 1 - always want to decode images for processing 
+    /* Initialize globalCamera area
+     * Set decode to 1 - always want to decode images for processing
      * If ONLY sending images to the dashboard, you could set it to 0 */
     bzero((char *)&globalCamera, sizeof(globalCamera));
     globalCamera.index = -1;
@@ -1091,16 +1092,17 @@ Task g_axisCameraTask("Camera", (FUNCPTR) initCamera);
 
 /**
  * @brief Start the camera task
- * @param frames Frames per second 
- * @param compression Camera image compression 
- * @param resolution Camera image size 
- * @param rotation Camera image rotation 
+ * @param frames Frames per second
+ * @param compression Camera image compression
+ * @param resolution Camera image size
+ * @param rotation Camera image rotation
  * @return TaskID of camera task, or -1 if error.
  */
 int StartCameraTask()
 {
     return StartCameraTask(10, 0, k160x120, ROT_0);
 }
+
 int StartCameraTask(int frames, int compression, ImageSize resolution,
                     ImageRotation rotation)
 {
@@ -1154,8 +1156,8 @@ int StopCameraTask()
 }
 
 #if 0
-/* if you want to run this task by itself to debug  
- * enable this code and make RunProgram the entry point 
+/* if you want to run this task by itself to debug
+ * enable this code and make RunProgram the entry point
  */
 extern "C"
 {

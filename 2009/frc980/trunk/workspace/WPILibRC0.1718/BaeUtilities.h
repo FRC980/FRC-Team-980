@@ -1,16 +1,17 @@
-/********************************************************************************
-*  Project   		: FIRST Motor Controller
-*  File Name  		: BaeUtilities.h          
-*  Contributors   	: JDG, ELF
-*  Creation Date 	: August 12, 2008
-*  Revision History	: Source code & revision history maintained at sourceforge.WPI.edu      
-*  File Description	: Globally defined values for utilities
+/******************************************************************************
+*  Project          : FIRST Motor Controller
+*  File Name        : BaeUtilities.h
+*  Contributors     : JDG, ELF
+*  Creation Date    : August 12, 2008
+*  Revision History : Source code & revision history maintained at
+*                     sourceforge.WPI.edu
+*  File Description : Globally defined values for utilities
 */
-/*----------------------------------------------------------------------------*/
-/*        Copyright (c) FIRST 2008.  All Rights Reserved.                     */
-/*     Open Source Software - may be modified and shared by FRC teams.        */
-/*   Must be accompanied by the BSD license file in $(WIND_BASE)/WPILib.      */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*        Copyright (c) FIRST 2008.  All Rights Reserved.                    */
+/*     Open Source Software - may be modified and shared by FRC teams.       */
+/*   Must be accompanied by the BSD license file in $(WIND_BASE)/WPILib.     */
+/*---------------------------------------------------------------------------*/
 
 #ifndef __BAEUTILITIES_H__
 #define __BAEUTILITIES_H__
@@ -29,13 +30,15 @@
 
 /** debug levels */
 enum dprint_type
-{ DEBUG_TYPE, INFO_TYPE, ERROR_TYPE, CRITICAL_TYPE, FATAL_TYPE };
+{
+    DEBUG_TYPE, INFO_TYPE, ERROR_TYPE, CRITICAL_TYPE, FATAL_TYPE
+};
 
 /** debug output setting */
 typedef enum DebugOutputType_enum
 {
     DEBUG_OFF, DEBUG_MOSTLY_OFF, DEBUG_SCREEN_ONLY, DEBUG_FILE_ONLY,
-        DEBUG_SCREEN_AND_FILE
+    DEBUG_SCREEN_AND_FILE
 } DebugOutputType;
 
 /*  Enumerated Types */

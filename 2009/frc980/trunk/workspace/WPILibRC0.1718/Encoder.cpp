@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "Encoder.h"
 #include "DigitalInput.h"
@@ -14,13 +14,16 @@ static Resource *quadEncoders = NULL;
 
 /**
  * Common initialization code for Encoders.
- * This code allocates resources for Encoders and is common to all constructors.
- * @param reverseDirection If true, counts down instead of up (this is all relative)
- * @param encodingType either k1X, k2X, or k4X to indicate 1X, 2X or 4X decoding. If 4X is
- * selected, then an encoder FPGA object is used and the returned counts will be 4x the encoder
- * spec'd value since all rising and falling edges are counted. If 1X or 2X are selected then
- * a counter object will be used and the returned value will either exactly match the spec'd count
- * or be double (2x) the spec'd count.
+ * This code allocates resources for Encoders and is common to all
+ * constructors.
+ * @param reverseDirection If true, counts down instead of up (this is all
+ * relative)
+ * @param encodingType either k1X, k2X, or k4X to indicate 1X, 2X or 4X
+ * decoding. If 4X is selected, then an encoder FPGA object is used and
+ * the returned counts will be 4x the encoder spec'd value since all
+ * rising and falling edges are counted. If 1X or 2X are selected then a
+ * counter object will be used and the returned value will either exactly
+ * match the spec'd count or be double (2x) the spec'd count.
  */
 void Encoder::InitEncoder(bool reverseDirection, EncodingType encodingType)
 {
@@ -74,13 +77,15 @@ void Encoder::InitEncoder(bool reverseDirection, EncodingType encodingType)
  * @param aChannel The a channel digital input channel.
  * @param bSlot The b channel digital input module.
  * @param bChannel The b channel digital input channel.
- * @param reverseDirection represents the orientation of the encoder and inverts the output values
- * if necessary so forward represents positive values.
- * @param encodingType either k1X, k2X, or k4X to indicate 1X, 2X or 4X decoding. If 4X is
- * selected, then an encoder FPGA object is used and the returned counts will be 4x the encoder
- * spec'd value since all rising and falling edges are counted. If 1X or 2X are selected then
- * a counter object will be used and the returned value will either exactly match the spec'd count
- * or be double (2x) the spec'd count.
+ * @param reverseDirection represents the orientation of the encoder and
+ * inverts the output values if necessary so forward represents positive
+ * values.
+ * @param encodingType either k1X, k2X, or k4X to indicate 1X, 2X or 4X
+ * decoding. If 4X is selected, then an encoder FPGA object is used and
+ * the returned counts will be 4x the encoder spec'd value since all
+ * rising and falling edges are counted. If 1X or 2X are selected then a
+ * counter object will be used and the returned value will either exactly
+ * match the spec'd count or be double (2x) the spec'd count.
  */
 Encoder::Encoder(UINT32 aSlot, UINT32 aChannel,
                  UINT32 bSlot, UINT32 bChannel,
@@ -98,13 +103,15 @@ Encoder::Encoder(UINT32 aSlot, UINT32 aChannel,
  * Construct a Encoder given a and b channels assuming the default module.
  * @param aChannel The a channel digital input channel.
  * @param bChannel The b channel digital input channel.
- * @param reverseDirection represents the orientation of the encoder and inverts the output values
- * if necessary so forward represents positive values.
- * @param encodingType either k1X, k2X, or k4X to indicate 1X, 2X or 4X decoding. If 4X is
- * selected, then an encoder FPGA object is used and the returned counts will be 4x the encoder
- * spec'd value since all rising and falling edges are counted. If 1X or 2X are selected then
- * a counter object will be used and the returned value will either exactly match the spec'd count
- * or be double (2x) the spec'd count.
+ * @param reverseDirection represents the orientation of the encoder and
+ * inverts the output values if necessary so forward represents positive
+ * values.
+ * @param encodingType either k1X, k2X, or k4X to indicate 1X, 2X or 4X
+ * decoding. If 4X is selected, then an encoder FPGA object is used and
+ * the returned counts will be 4x the encoder spec'd value since all
+ * rising and falling edges are counted. If 1X or 2X are selected then a
+ * counter object will be used and the returned value will either exactly
+ * match the spec'd count or be double (2x) the spec'd count.
  */
 Encoder::Encoder(UINT32 aChannel, UINT32 bChannel, bool reverseDirection,
                  EncodingType encodingType)
@@ -118,18 +125,21 @@ Encoder::Encoder(UINT32 aChannel, UINT32 bChannel, bool reverseDirection,
 
 /**
  * Encoder constructor.
- * Construct a Encoder given a and b channels as digital inputs. This is used in the case
- * where the digital inputs are shared. The Encoder class will not allocate the digital inputs
- * and assume that they already are counted.
+ * Construct a Encoder given a and b channels as digital inputs. This is
+ * used in the case where the digital inputs are shared. The Encoder class
+ * will not allocate the digital inputs and assume that they already are
+ * counted.
  * @param aSource The source that should be used for the a channel.
  * @param bSource the source that should be used for the b channel.
- * @param reverseDirection represents the orientation of the encoder and inverts the output values
- * if necessary so forward represents positive values.
- * @param encodingType either k1X, k2X, or k4X to indicate 1X, 2X or 4X decoding. If 4X is
- * selected, then an encoder FPGA object is used and the returned counts will be 4x the encoder
- * spec'd value since all rising and falling edges are counted. If 1X or 2X are selected then
- * a counter object will be used and the returned value will either exactly match the spec'd count
- * or be double (2x) the spec'd count.
+ * @param reverseDirection represents the orientation of the encoder and
+ * inverts the output values if necessary so forward represents positive
+ * values.
+ * @param encodingType either k1X, k2X, or k4X to indicate 1X, 2X or 4X
+ * decoding. If 4X is selected, then an encoder FPGA object is used and
+ * the returned counts will be 4x the encoder spec'd value since all
+ * rising and falling edges are counted. If 1X or 2X are selected then a
+ * counter object will be used and the returned value will either exactly
+ * match the spec'd count or be double (2x) the spec'd count.
  */
 Encoder::Encoder(DigitalSource * aSource, DigitalSource * bSource,
                  bool reverseDirection, EncodingType encodingType)
@@ -146,18 +156,21 @@ Encoder::Encoder(DigitalSource * aSource, DigitalSource * bSource,
 
 /**
  * Encoder constructor.
- * Construct a Encoder given a and b channels as digital inputs. This is used in the case
- * where the digital inputs are shared. The Encoder class will not allocate the digital inputs
- * and assume that they already are counted.
+ * Construct a Encoder given a and b channels as digital inputs. This is
+ * used in the case where the digital inputs are shared. The Encoder class
+ * will not allocate the digital inputs and assume that they already are
+ * counted.
  * @param aSource The source that should be used for the a channel.
  * @param bSource the source that should be used for the b channel.
- * @param reverseDirection represents the orientation of the encoder and inverts the output values
- * if necessary so forward represents positive values.
- * @param encodingType either k1X, k2X, or k4X to indicate 1X, 2X or 4X decoding. If 4X is
- * selected, then an encoder FPGA object is used and the returned counts will be 4x the encoder
- * spec'd value since all rising and falling edges are counted. If 1X or 2X are selected then
- * a counter object will be used and the returned value will either exactly match the spec'd count
- * or be double (2x) the spec'd count.
+ * @param reverseDirection represents the orientation of the encoder and
+ * inverts the output values if necessary so forward represents positive
+ * values.
+ * @param encodingType either k1X, k2X, or k4X to indicate 1X, 2X or 4X
+ * decoding. If 4X is selected, then an encoder FPGA object is used and
+ * the returned counts will be 4x the encoder spec'd value since all
+ * rising and falling edges are counted. If 1X or 2X are selected then a
+ * counter object will be used and the returned value will either exactly
+ * match the spec'd count or be double (2x) the spec'd count.
  */
 Encoder::Encoder(DigitalSource & aSource, DigitalSource & bSource,
                  bool reverseDirection, EncodingType encodingType)
@@ -242,8 +255,9 @@ INT32 Encoder::GetRaw()
  * Gets the current count.
  * Returns the current count on the Encoder.
  * This method compensates for the decoding type.
- * 
- * @return Current count from the Encoder adjusted for the 1x, 2x, or 4x scale factor.
+ *
+ * @return Current count from the Encoder adjusted for the 1x, 2x, or 4x
+ * scale factor.
  */
 INT32 Encoder::Get()
 {
@@ -269,8 +283,10 @@ void Encoder::Reset()
  * Returns the period of the most recent pulse.
  * Returns the period of the most recent Encoder pulse in seconds.
  * This method compenstates for the decoding type.
- * 
- * @deprecated Use GetRate() in favor of this method.  This returns unscaled periods and GetRate() scales using value from SetDistancePerPulse().
+ *
+ * @deprecated Use GetRate() in favor of this method.  This returns
+ * unscaled periods and GetRate() scales using value from
+ * SetDistancePerPulse().
  *
  * @return Period in seconds of the most recent pulse.
  */
@@ -286,23 +302,26 @@ double Encoder::GetPeriod()
             m_encoder->readTimerOutput_Period(&status) /
             m_encoder->readTimerOutput_Count(&status);
         wpi_assertCleanStatus(status);
-        // Workaround artf4249: treat the 4x decoder as a 2x decoder for for the timer only.
-        // Should be multiplied by 0.25 for 4x decoding... using 0.5 as 2x
+        // Workaround artf4249: treat the 4x decoder as a 2x decoder for
+        // for the timer only.  Should be multiplied by 0.25 for 4x
+        // decoding... using 0.5 as 2x
         return value * 1.0e-6 / (DecodingScaleFactor() * 2.0);
     }
 }
 
 /**
  * Sets the maximum period for stopped detection.
- * Sets the value that represents the maximum period of the Encoder before it will assume
- * that the attached device is stopped. This timeout allows users to determine if the wheels or
- * other shaft has stopped rotating.
+ * Sets the value that represents the maximum period of the Encoder before
+ * it will assume that the attached device is stopped. This timeout allows
+ * users to determine if the wheels or other shaft has stopped rotating.
  * This method compensates for the decoding type.
- * 
- * @deprecated Use SetMinRate() in favor of this method.  This takes unscaled periods and SetMinRate() scales using value from SetDistancePerPulse().
- * 
- * @param maxPeriod The maximum time between rising and falling edges before the FPGA will
- * report the device stopped. This is expressed in seconds.
+ *
+ * @deprecated Use SetMinRate() in favor of this method.  This takes
+ * unscaled periods and SetMinRate() scales using value from
+ * SetDistancePerPulse().
+ * @param maxPeriod The maximum time between rising and falling edges
+ * before the FPGA will report the device stopped. This is expressed in
+ * seconds.
  */
 void Encoder::SetMaxPeriod(double maxPeriod)
 {
@@ -312,8 +331,9 @@ void Encoder::SetMaxPeriod(double maxPeriod)
     }
     else
     {
-        // Workaround artf4249: treat the 4x decoder as a 2x decoder for for the timer only.
-        // Should be multiplied by 0.25 for 4x decoding... using 0.5 as 2x
+        // Workaround artf4249: treat the 4x decoder as a 2x decoder for
+        // for the timer only.  Should be multiplied by 0.25 for 4x
+        // decoding... using 0.5 as 2x
         m_encoder->
             writeTimerConfig_StallPeriod((UINT32)
                                          (maxPeriod * 1.0e6 *
@@ -325,9 +345,10 @@ void Encoder::SetMaxPeriod(double maxPeriod)
 
 /**
  * Determine if the encoder is stopped.
- * Using the MaxPeriod value, a boolean is returned that is true if the encoder is considered
- * stopped and false if it is still moving. A stopped encoder is one where the most recent pulse
- * width exceeds the MaxPeriod.
+ * Using the MaxPeriod value, a boolean is returned that is true if the
+ * encoder is considered stopped and false if it is still moving. A
+ * stopped encoder is one where the most recent pulse width exceeds the
+ * MaxPeriod.
  * @return True if the encoder is considered stopped.
  */
 bool Encoder::GetStopped()
@@ -363,7 +384,8 @@ bool Encoder::GetDirection()
 }
 
 /**
- * The scale needed to convert a raw counter value into a number of encoder pulses.
+ * The scale needed to convert a raw counter value into a number of
+ * encoder pulses.
  */
 double Encoder::DecodingScaleFactor()
 {
@@ -383,8 +405,9 @@ double Encoder::DecodingScaleFactor()
 
 /**
  * Get the distance the robot has driven since the last reset.
- * 
- * @return The distance driven since the last reset as scaled by the value from SetDistancePerPulse().
+ *
+ * @return The distance driven since the last reset as scaled by the value
+ * from SetDistancePerPulse().
  */
 double Encoder::GetDistance()
 {
@@ -393,19 +416,21 @@ double Encoder::GetDistance()
 
 /**
  * Get the current rate of the encoder.
- * Units are distance per second as scaled by the value from SetDistancePerPulse().
- * 
+ * Units are distance per second as scaled by the value from
+ * SetDistancePerPulse().
+ *
  * @return The current rate of the encoder.
  */
 double Encoder::GetRate()
 {
-    return m_distancePerPulse / GetPeriod() * (GetDirection()? 1.0 : -1.0);
+    return m_distancePerPulse / GetPeriod() * (GetDirection() ? 1.0 : -1.0);
 }
 
 /**
  * Set the minimum rate of the device before the hardware reports it stopped.
- * 
- * @param minRate The minimum rate.  The units are in distance per second as scaled by the value from SetDistancePerPulse().
+ *
+ * @param minRate The minimum rate.  The units are in distance per second
+ * as scaled by the value from SetDistancePerPulse().
  */
 void Encoder::SetMinRate(double minRate)
 {
@@ -414,14 +439,15 @@ void Encoder::SetMinRate(double minRate)
 
 /**
  * Set the distance per pulse for this encoder.
- * This sets the multiplier used to determine the distance driven based on the count value
- * from the encoder.
- * Do not include the decoding type in this scale.  The library already compensates for the decoding type.
+ * This sets the multiplier used to determine the distance driven based on
+ * the count value from the encoder.  Do not include the decoding type in
+ * this scale.  The library already compensates for the decoding type.
  * Set this value based on the encoder's rated Pulses per Revolution and
- * factor in gearing reductions following the encoder shaft.
- * This distance can be in any units you like, linear or angular.
- * 
- * @param distancePerPulse The scale factor that will be used to convert pulses to useful units.
+ * factor in gearing reductions following the encoder shaft.  This
+ * distance can be in any units you like, linear or angular.
+ *
+ * @param distancePerPulse The scale factor that will be used to convert
+ * pulses to useful units.
  */
 void Encoder::SetDistancePerPulse(double distancePerPulse)
 {
@@ -430,8 +456,8 @@ void Encoder::SetDistancePerPulse(double distancePerPulse)
 
 /**
  * Set the direction sensing for this encoder.
- * This sets the direction sensing on the encoder so that it could count in the correct
- * software direction regardless of the mounting.
+ * This sets the direction sensing on the encoder so that it could count
+ * in the correct software direction regardless of the mounting.
  * @param reverseDirection true if the encoder direction should be reversed
  */
 void Encoder::SetReverseDirection(bool reverseDirection)

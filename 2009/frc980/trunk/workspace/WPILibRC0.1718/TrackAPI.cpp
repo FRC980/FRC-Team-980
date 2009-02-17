@@ -1,16 +1,17 @@
-/********************************************************************************
-*  Project   		: FIRST Motor Controller
-*  File Name  		: TrackAPI.cpp        
-*  Contributors   	: ELF, DWD
-*  Creation Date 	: August 10, 2008
-*  Revision History	: Source code & revision history maintained at sourceforge.WPI.edu   
-*  File Description	: Tracking Routines for FIRST Vision API
+/******************************************************************************
+*  Project          : FIRST Motor Controller
+*  File Name        : TrackAPI.cpp
+*  Contributors     : ELF, DWD
+*  Creation Date    : August 10, 2008
+*  Revision History : Source code & revision history maintained at
+*                     sourceforge.WPI.edu
+*  File Description : Tracking Routines for FIRST Vision API
 */
-/*----------------------------------------------------------------------------*/
-/*        Copyright (c) FIRST 2008.  All Rights Reserved.                     */
-/*  Open Source Software - may be modified and shared by FRC teams. The code  */
-/*  must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*        Copyright (c) FIRST 2008.  All Rights Reserved.                    */
+/*  Open Source Software - may be modified and shared by FRC teams. The code */
+/*  must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.*/
+/*---------------------------------------------------------------------------*/
 
 #include "string.h"
 #include "vxWorks.h"
@@ -25,11 +26,11 @@ int  TrackAPI_debugFlag = 0;
 #define DPRINTF if(TrackAPI_debugFlag)dprintf
 
 /**
-* @brief Find the largest particle that meets a criteria 
-* @param binaryImage Image to inspect
-* @param rect area to search
-* @return 0 = error
-*/
+ * @brief Find the largest particle that meets a criteria
+ * @param binaryImage Image to inspect
+ * @param rect area to search
+ * @return 0 = error
+ */
 bool InArea(Image * binaryImage, int particleIndex, Rect rect)
 {
     double position;
@@ -52,7 +53,7 @@ bool InArea(Image * binaryImage, int particleIndex, Rect rect)
     imaqMeasureParticle(binaryImage, particleIndex, 0,
                         IMAQ_MT_BOUNDING_RECT_BOTTOM, &position);
     if (position > (rect.top + rect.height))
-        return false;           // outside bottom of rectangle ?        
+        return false;           // outside bottom of rectangle ?
 
     DPRINTF(LOG_INFO, "particle %i is in (%i %i) height %i width %i\n",
             particleIndex, rect.left, rect.top, rect.height, rect.width);
@@ -60,11 +61,11 @@ bool InArea(Image * binaryImage, int particleIndex, Rect rect)
 }
 
 /**
-* @brief Find the largest particle that meets a criteria 
-* @param binaryImage Image to inspect
-* @param largestParticleIndex Index of the largest particle 
-* @param rect area to search
-* @return 0 = error
+ * @brief Find the largest particle that meets a criteria
+ * @param binaryImage Image to inspect
+ * @param largestParticleIndex Index of the largest particle
+ * @param rect area to search
+ * @return 0 = error
 */
 int GetLargestParticle(Image * binaryImage, int *largestParticleIndex)
 {
@@ -118,11 +119,12 @@ int GetLargestParticle(Image * binaryImage, int *largestParticleIndex,
 }
 
 /**
-* @brief Search for a color. Supports IMAQ_IMAGE_HSL. 
-* @param color Definition for the hue range 
-* @param trackReport Values for tracking: center of particle, particle size, color
-* @return 0 = error
-*/
+ * @brief Search for a color. Supports IMAQ_IMAGE_HSL.
+ * @param color Definition for the hue range
+ * @param trackReport Values for tracking: center of particle, particle
+ * size, color
+ * @return 0 = error
+ */
 int FindColor(FrcHue color, ParticleAnalysisReport * trackReport)
 {
     int  success = 0;           // return: 0 = error
@@ -153,23 +155,25 @@ int FindColor(FrcHue color, ParticleAnalysisReport * trackReport)
 }
 
 /**
-* @brief Search for a color. Supports IMAQ_IMAGE_HSL. 
-* @param hueRange The range for the first plane
-* @param trackReport Values for tracking: center of particle, particle size, color
-* @return 0 = error
-*/
+ * @brief Search for a color. Supports IMAQ_IMAGE_HSL.
+ * @param hueRange The range for the first plane
+ * @param trackReport Values for tracking: center of particle, particle
+ * size, color
+ * @return 0 = error
+ */
 int FindColor(const Range * hueRange, ParticleAnalysisReport * trackReport)
 {
     return FindColor(hueRange, DEFAULT_SATURATION_THRESHOLD, trackReport);
 }
 
 /**
-* @brief Search for a color. Supports IMAQ_IMAGE_HSL. 
-* @param hueRange The range for the first plane
-* @param minSaturation The lower range saturation
-* @param trackReport Values for tracking: center of particle, particle size, color
-* @return 0 = error
-*/
+ * @brief Search for a color. Supports IMAQ_IMAGE_HSL.
+ * @param hueRange The range for the first plane
+ * @param minSaturation The lower range saturation
+ * @param trackReport Values for tracking: center of particle, particle
+ * size, color
+ * @return 0 = error
+ */
 int FindColor(const Range * hueRange, int minSaturation,
               ParticleAnalysisReport * trackReport)
 {
@@ -184,14 +188,15 @@ int FindColor(const Range * hueRange, int minSaturation,
 }
 
 /**
-* @brief Search for a color. Supports IMAQ_IMAGE_HSL and IMAQ_IMAGE_RGB. 
-* @param mode Color mode, either IMAQ_HSL or IMAQ_RGB
-* @param plane1Range The range for the first plane (hue or red)
-* @param plane2Range The range for the second plane (saturation or green)
-* @param plane3Range The range for the third plane (luminance or blue)
-* @param trackReport Values for tracking: center of particle, particle size, etc
-* @return 0 = error
-*/
+ * @brief Search for a color. Supports IMAQ_IMAGE_HSL and IMAQ_IMAGE_RGB.
+ * @param mode Color mode, either IMAQ_HSL or IMAQ_RGB
+ * @param plane1Range The range for the first plane (hue or red)
+ * @param plane2Range The range for the second plane (saturation or green)
+ * @param plane3Range The range for the third plane (luminance or blue)
+ * @param trackReport Values for tracking: center of particle, particle
+ * size, etc
+ * @return 0 = error
+ */
 int FindColor(ColorMode mode, const Range * plane1Range,
               const Range * plane2Range, const Range * plane3Range,
               ParticleAnalysisReport * trackReport)
@@ -201,14 +206,15 @@ int FindColor(ColorMode mode, const Range * plane1Range,
 }
 
 /**
-* @brief Search for a color. Supports IMAQ_IMAGE_HSL and IMAQ_IMAGE_RGB. 
-* @param mode Color mode, either IMAQ_HSL or IMAQ_RGB
-* @param plane1Range The range for the first plane (hue or red)
-* @param plane2Range The range for the second plane (saturation or green)
-* @param plane3Range The range for the third plane (luminance or blue)
-* @param trackReport Values for tracking: center of particle, particle size, etc
-* @param colorReport Color charactaristics of the particle
-* @return 0 = error
+ * @brief Search for a color. Supports IMAQ_IMAGE_HSL and IMAQ_IMAGE_RGB.
+ * @param mode Color mode, either IMAQ_HSL or IMAQ_RGB
+ * @param plane1Range The range for the first plane (hue or red)
+ * @param plane2Range The range for the second plane (saturation or green)
+ * @param plane3Range The range for the third plane (luminance or blue)
+ * @param trackReport Values for tracking: center of particle, particle
+ * size, etc
+ * @param colorReport Color charactaristics of the particle
+ * @return 0 = error
 */
 int FindColor(ColorMode mode, const Range * plane1Range,
               const Range * plane2Range, const Range * plane3Range,
@@ -220,16 +226,17 @@ int FindColor(ColorMode mode, const Range * plane1Range,
 }
 
 /**
-* @brief Search for a color. Supports IMAQ_IMAGE_HSL and IMAQ_IMAGE_RGB. 
-* @param mode Color mode, either IMAQ_HSL or IMAQ_RGB
-* @param plane1Range The range for the first plane (hue or red)
-* @param plane2Range The range for the second plane (saturation or green)
-* @param plane3Range The range for the third plane (luminance or blue)
-* @param trackReport Values for tracking: center of particle, particle size, etc
-* @param colorReport Color charactaristics of the particle
-* @param rect Rectangle to confine search to
-* @return 0 = error
-*/
+ * @brief Search for a color. Supports IMAQ_IMAGE_HSL and IMAQ_IMAGE_RGB.
+ * @param mode Color mode, either IMAQ_HSL or IMAQ_RGB
+ * @param plane1Range The range for the first plane (hue or red)
+ * @param plane2Range The range for the second plane (saturation or green)
+ * @param plane3Range The range for the third plane (luminance or blue)
+ * @param trackReport Values for tracking: center of particle, particle
+ * size, etc
+ * @param colorReport Color charactaristics of the particle
+ * @param rect Rectangle to confine search to
+ * @return 0 = error
+ */
 int FindColor(ColorMode mode, const Range * plane1Range,
               const Range * plane2Range, const Range * plane3Range,
               ParticleAnalysisReport * trackReport,
@@ -246,7 +253,7 @@ int FindColor(ColorMode mode, const Range * plane1Range,
     }
 
     /* get image from camera - if the camera has not finished initializing,
-     * this will fail 
+     * this will fail
      */
     success = GetImage(cameraImage, NULL);
     if (!success)
@@ -254,11 +261,12 @@ int FindColor(ColorMode mode, const Range * plane1Range,
         DPRINTF(LOG_INFO, "No camera Image available Error = %i %s",
                 errorCode, GetVisionErrorText(errorCode));
         frcDispose(cameraImage);
-        imaqSetError(errorCode, __FUNCTION__);  //reset error code for the caller       
+        imaqSetError(errorCode, __FUNCTION__); //reset error code for caller
         return success;
     }
 
-    /* save a copy of the image to another image for color thresholding later */
+    /* save a copy of the image to another image for color thresholding
+     * later */
     Image *histImage = frcCreateImage(IMAQ_IMAGE_HSL);
     if (!histImage)
     {
@@ -300,7 +308,7 @@ int FindColor(ColorMode mode, const Range * plane1Range,
     DPRINTF(LOG_INFO, "largestParticleIndex = %i\n", largestParticleIndex);
 
     /* Particles were found  */
-    /* 
+    /*
      * Fill in report information for largest particle found
      */
     success =
@@ -332,7 +340,8 @@ int FindColor(ColorMode mode, const Range * plane1Range,
                     GetLastVisionError());
         }
 
-        /* histogram the original image using the thresholded image as a mask */
+        /* histogram the original image using the thresholded image as a
+         * mask */
         int  numClasses = 10;   //how many classes?
         ColorHistogramReport *chrep =
             imaqColorHistogram2(histImage, numClasses, IMAQ_HSL,
@@ -379,7 +388,7 @@ TrackingThreshold GetTrackingData(FrcHue hue, FrcLight light)
 {
     TrackingThreshold trackingData;
 
-    //set saturation & luminance    
+    //set saturation & luminance
     switch (light)
     {
     default:

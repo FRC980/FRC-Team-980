@@ -1,19 +1,20 @@
-/********************************************************************************
-*  Project   		: FIRST Motor Controller
-*  File Name  		: VisionAPI.h          
-*  Contributors   	: ELF, JDG, ARK, EMF
-*  Creation Date 	: June 22, 2008
-*  Revision History	: Source code & revision history maintained at sourceforge.WPI.edu    
-*  File Description	: Globally defined values for the FIRST Vision API
-* 
+/******************************************************************************
+*  Project          : FIRST Motor Controller
+*  File Name        : VisionAPI.h
+*  Contributors     : ELF, JDG, ARK, EMF
+*  Creation Date    : June 22, 2008
+*  Revision History : Source code & revision history maintained at
+*                     sourceforge.WPI.edu
+*  File Description : Globally defined values for the FIRST Vision API
+*
 *  API: Because nivision.h uses C++ style comments, any file including this
 *  must be a .cpp (not .c).
 */
-/*----------------------------------------------------------------------------*/
-/*        Copyright (c) FIRST 2008.  All Rights Reserved.                     */
-/*  Open Source Software - may be modified and shared by FRC teams. The code  */
-/*  must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*        Copyright (c) FIRST 2008.  All Rights Reserved.                    */
+/*  Open Source Software - may be modified and shared by FRC teams. The code */
+/*  must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.*/
+/*---------------------------------------------------------------------------*/
 
 #ifndef __VISIONAPI_H__
 #define __VISIONAPI_H__
@@ -22,8 +23,8 @@
 
 /*   Constants */
 
-#define DEFAULT_BORDER_SIZE				3       //VisionAPI.frcCreateImage
-#define DEFAULT_SATURATION_THRESHOLD	40      //TrackAPI.FindColor
+#define DEFAULT_BORDER_SIZE             3       //VisionAPI.frcCreateImage
+#define DEFAULT_SATURATION_THRESHOLD    40      //TrackAPI.FindColor
 
 /*        External Prototypes */
 
@@ -48,12 +49,14 @@ typedef struct ParticleAnalysisReport_struct
     int  imageWidth;
     double imageTimestamp;
     int  particleIndex;         // the particle index analyzed
-    /* X-coordinate of the point representing the average position of the 
-     * total particle mass, assuming every point in the particle has a constant density */
-    int  center_mass_x;         // MeasurementType: IMAQ_MT_CENTER_OF_MASS_X 
-    /* Y-coordinate of the point representing the average position of the 
-     * total particle mass, assuming every point in the particle has a constant density */
-    int  center_mass_y;         // MeasurementType: IMAQ_MT_CENTER_OF_MASS_Y 
+    /* X-coordinate of the point representing the average position of the
+     * total particle mass, assuming every point in the particle has a
+     * constant density */
+    int  center_mass_x;         // MeasurementType: IMAQ_MT_CENTER_OF_MASS_X
+    /* Y-coordinate of the point representing the average position of the
+     * total particle mass, assuming every point in the particle has a
+     * constant density */
+    int  center_mass_y;         // MeasurementType: IMAQ_MT_CENTER_OF_MASS_Y
     double center_mass_x_normalized;    //Center of mass x value normalized to -1.0 to +1.0 range
     double center_mass_y_normalized;    //Center of mass y value normalized to -1.0 to +1.0 range
     /* Area of the particle */
@@ -62,7 +65,8 @@ typedef struct ParticleAnalysisReport_struct
     Rect boundingRect;          // IMAQ_MT_BOUNDING_RECT_LEFT/TOP/RIGHT/BOTTOM
     /* Percentage of the particle Area covering the Image Area. */
     double particleToImagePercent;      // MeasurementType: IMAQ_MT_AREA_BY_IMAGE_AREA
-    /* Percentage of the particle Area in relation to its Particle and Holes Area */
+    /* Percentage of the particle Area in relation to its Particle and
+     * Holes Area */
     double particleQuality;     // MeasurementType: IMAQ_MT_AREA_BY_PARTICLE_AND_HOLES_AREA
 } ParticleAnalysisReport;
 
