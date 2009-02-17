@@ -5,9 +5,8 @@
 /**
  * This example shows how you can write text to the LCD on the driver station.
  */
-class DriverStationLCDTextExample:public SimpleRobot
+class DriverStationLCDTextExample : public SimpleRobot
 {
-
   public:
     DriverStationLCDTextExample(void) { };
 

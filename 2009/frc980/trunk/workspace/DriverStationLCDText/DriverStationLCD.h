@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                           */
+/* Open Source Software - may be modified and shared by FRC teams. The code */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.*/
+/*--------------------------------------------------------------------------*/
 
 #ifndef __DRIVER_STATION_LCD_H__
 #define __DRIVER_STATION_LCD_H__
@@ -15,7 +15,7 @@
  * Buffer the printed data locally and then send it
  * when UpdateLCD is called.
  */
-class DriverStationLCD:public SensorBase
+class DriverStationLCD : public SensorBase
 {
   public:
     static const UINT32 kSyncTimeout_ms = 20;

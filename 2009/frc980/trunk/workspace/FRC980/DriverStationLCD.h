@@ -34,8 +34,8 @@ class DriverStationLCD : public SensorBase
     virtual ~ DriverStationLCD();
     static DriverStationLCD *GetInstance();
 
-    void Clear(void);
-    void UpdateLCD(void);
+    void Clear();
+    void UpdateLCD();
     void Printf(Line line, UINT32 startingColumn,
                 const char *writeFmt, ...);
 

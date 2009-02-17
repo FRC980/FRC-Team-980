@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                           */
+/* Open Source Software - may be modified and shared by FRC teams. The code */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.*/
+/*--------------------------------------------------------------------------*/
 
 #include "DriverStationLCD.h"
 #include "NetworkCommunication/FRCComm.h"
@@ -16,8 +16,9 @@ DriverStationLCD *DriverStationLCD::m_instance = NULL;
  *
  * This is only called once the first time GetInstance() is called
  */
-DriverStationLCD::DriverStationLCD():m_textBuffer(NULL),
-m_textBufferSemaphore(NULL)
+DriverStationLCD::DriverStationLCD()
+    : m_textBuffer(NULL)
+    , m_textBufferSemaphore(NULL)
 {
     m_textBuffer = new char[USER_DS_LCD_DATA_SIZE];
     memset(m_textBuffer, ' ', USER_DS_LCD_DATA_SIZE);
