@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "Counter.h"
 #include "AnalogTrigger.h"
@@ -15,7 +15,8 @@ static Resource *counters = NULL;
 
 /**
  * Create an instance of a counter object.
- * This creates a ChipObject counter and initializes status variables appropriately
+ * This creates a ChipObject counter and initializes status variables
+ * appropriately
  */
 void Counter::InitCounter(Mode mode)
 {
@@ -32,8 +33,8 @@ void Counter::InitCounter(Mode mode)
 
 /**
  * Create an instance of a counter where no sources are selected.
- * Then they all must be selected by calling functions to specify the upsource and the downsource
- * independently.
+ * Then they all must be selected by calling functions to specify the
+ * upsource and the downsource independently.
  */
 Counter::Counter()
 {
@@ -42,8 +43,8 @@ Counter::Counter()
 
 /**
  * Create an instance of a counter from a Digital Input.
- * This is used if an existing digital input is to be shared by multiple other objects such
- * as encoders.
+ * This is used if an existing digital input is to be shared by multiple
+ * other objects such as encoders.
  */
 Counter::Counter(DigitalSource * source)
 {
@@ -59,7 +60,8 @@ Counter::Counter(DigitalSource & source)
 
 /**
  * Create an instance of a Counter object.
- * Create an up-Counter instance given a channel. The default digital module is assumed.
+ * Create an up-Counter instance given a channel. The default digital
+ * module is assumed.
  */
 Counter::Counter(UINT32 channel)
 {
@@ -69,7 +71,8 @@ Counter::Counter(UINT32 channel)
 
 /**
  * Create an instance of a Counter object.
- * Create an instance of an up-Counter given a digital module and a channel.
+ * Create an instance of an up-Counter given a digital module and a
+ * channel.
  * @param slot The cRIO chassis slot for the digital module used
  * @param channel The channel in the digital module
  */
@@ -155,8 +158,10 @@ void Counter::SetUpSource(UINT32 channel)
 
 /**
  * Set the up counting source to be an analog trigger.
- * @param analogTrigger The analog trigger object that is used for the Up Source
- * @param triggerType The analog trigger output that will trigger the counter.
+ * @param analogTrigger The analog trigger object that is used for the Up
+ * Source
+ * @param triggerType The analog trigger output that will trigger the
+ * counter.
  */
 void Counter::SetUpSource(AnalogTrigger * analogTrigger,
                           AnalogTriggerOutput::Type triggerType)
@@ -192,8 +197,10 @@ void Counter::SetUpSource(DigitalSource * source)
 
 /**
  * Set the up counting source to be an analog trigger.
- * @param analogTrigger The analog trigger object that is used for the Up Source
- * @param triggerType The analog trigger output that will trigger the counter.
+ * @param analogTrigger The analog trigger object that is used for the Up
+ * Source
+ * @param triggerType The analog trigger output that will trigger the
+ * counter.
  */
 void Counter::SetUpSource(AnalogTrigger & analogTrigger,
                           AnalogTriggerOutput::Type triggerType)
@@ -264,7 +271,8 @@ void Counter::SetDownSource(UINT32 slot, UINT32 channel)
 
 /**
  * Set the down counting source to be an analog trigger.
- * @param analogTrigger The analog trigger object that is used for the Down Source
+ * @param analogTrigger The analog trigger object that is used for the
+ * Down Source
  * @param triggerType The analog trigger output that will trigger the counter.
  */
 void Counter::SetDownSource(AnalogTrigger * analogTrigger,
@@ -300,7 +308,8 @@ void Counter::SetDownSource(DigitalSource * source)
 
 /**
  * Set the down counting source to be an analog trigger.
- * @param analogTrigger The analog trigger object that is used for the Down Source
+ * @param analogTrigger The analog trigger object that is used for the
+ * Down Source
  * @param triggerType The analog trigger output that will trigger the counter.
  */
 void Counter::SetDownSource(AnalogTrigger & analogTrigger,
@@ -376,7 +385,7 @@ void Counter::SetExternalDirectionMode()
 
 /**
  * Set Semi-period mode on this counter.
- * Counts up on both rising and falling edges. 
+ * Counts up on both rising and falling edges.
  */
 void Counter::SetSemiPeriodMode(bool highSemiPeriod)
 {
@@ -387,9 +396,11 @@ void Counter::SetSemiPeriodMode(bool highSemiPeriod)
 }
 
 /**
- * Configure the counter to count in up or down based on the length of the input pulse.
- * This mode is most useful for direction sensitive gear tooth sensors.
- * @param threshold The pulse length beyond which the counter counts the opposite direction.  Units are seconds.
+ * Configure the counter to count in up or down based on the length of the
+ * input pulse.  This mode is most useful for direction sensitive gear
+ * tooth sensors.
+ * @param threshold The pulse length beyond which the counter counts the
+ * opposite direction.  Units are seconds.
  */
 void Counter::SetPulseLengthMode(float threshold)
 {
@@ -403,8 +414,9 @@ void Counter::SetPulseLengthMode(float threshold)
 
 /**
  * Start the Counter counting.
- * This enables the counter and it starts accumulating counts from the associated
- * input channel. The counter value is not reset on starting, and still has the previous value.
+ * This enables the counter and it starts accumulating counts from the
+ * associated input channel. The counter value is not reset on starting,
+ * and still has the previous value.
  */
 void Counter::Start()
 {
@@ -414,8 +426,9 @@ void Counter::Start()
 
 /**
  * Read the current counter value.
- * Read the value at this instant. It may still be running, so it reflects the current value. Next
- * time it is read, it might have a different value.
+ * Read the value at this instant. It may still be running, so it reflects
+ * the current value. Next time it is read, it might have a different
+ * value.
  */
 INT32 Counter::Get()
 {
@@ -426,8 +439,8 @@ INT32 Counter::Get()
 
 /**
  * Reset the Counter to zero.
- * Set the counter value to zero. This doesn't effect the running state of the counter, just sets
- * the current value to zero.
+ * Set the counter value to zero. This doesn't effect the running state of
+ * the counter, just sets the current value to zero.
  */
 void Counter::Reset()
 {
@@ -447,8 +460,8 @@ void Counter::Stop()
 
 /*
  * Get the Period of the most recent count.
- * Returns the time interval of the most recent count. This can be used for velocity calculations
- * to determine shaft speed.
+ * Returns the time interval of the most recent count. This can be used
+ * for velocity calculations to determine shaft speed.
  * @returns The period of the last two pulses in units of seconds.
  */
 double Counter::GetPeriod()
@@ -462,10 +475,11 @@ double Counter::GetPeriod()
 
 /**
  * Set the maximum period where the device is still considered "moving".
- * Sets the maximum period where the device is considered moving. This value is used to determine
- * the "stopped" state of the counter using the GetStopped method.
- * @param maxPeriod The maximum period where the counted device is considered moving in
- * seconds.
+ * Sets the maximum period where the device is considered moving. This
+ * value is used to determine the "stopped" state of the counter using the
+ * GetStopped method.
+ * @param maxPeriod The maximum period where the counted device is
+ * considered moving in seconds.
  */
 void Counter::SetMaxPeriod(double maxPeriod)
 {
@@ -475,16 +489,18 @@ void Counter::SetMaxPeriod(double maxPeriod)
 }
 
 /**
- * Select whether you want to continue updating the event timer output when there are no samples captured.
- * The output of the event timer has a buffer of periods that are averaged and posted to
- * a register on the FPGA.  When the timer detects that the event source has stopped
- * (based on the MaxPeriod) the buffer of samples to be averaged is emptied.  If you
- * enable the update when empty, you will be notified of the stopped source and the event
- * time will report 0 samples.  If you disable update when empty, the most recent average
- * will remain on the output until a new sample is acquired.  You will never see 0 samples
- * output (except when there have been no events since an FPGA reset) and you will likely not
- * see the stopped bit become true (since it is updated at the end of an average and there are
- * no samples to average).
+ * Select whether you want to continue updating the event timer output
+ * when there are no samples captured.  The output of the event timer has
+ * a buffer of periods that are averaged and posted to a register on the
+ * FPGA.  When the timer detects that the event source has stopped (based
+ * on the MaxPeriod) the buffer of samples to be averaged is emptied.  If
+ * you enable the update when empty, you will be notified of the stopped
+ * source and the event time will report 0 samples.  If you disable update
+ * when empty, the most recent average will remain on the output until a
+ * new sample is acquired.  You will never see 0 samples output (except
+ * when there have been no events since an FPGA reset) and you will likely
+ * not see the stopped bit become true (since it is updated at the end of
+ * an average and there are no samples to average).
  */
 void Counter::SetUpdateWhenEmpty(bool enabled)
 {
@@ -494,11 +510,12 @@ void Counter::SetUpdateWhenEmpty(bool enabled)
 
 /**
  * Determine if the clock is stopped.
- * Determine if the clocked input is stopped based on the MaxPeriod value set using the
- * SetMaxPeriod method. If the clock exceeds the MaxPeriod, then the device (and counter) are
- * assumed to be stopped and it returns true.
- * @return Returns true if the most recent counter period exceeds the MaxPeriod value set by
- * SetMaxPeriod.
+ * Determine if the clocked input is stopped based on the MaxPeriod value
+ * set using the SetMaxPeriod method. If the clock exceeds the MaxPeriod,
+ * then the device (and counter) are assumed to be stopped and it returns
+ * true.
+ * @return Returns true if the most recent counter period exceeds the
+ * MaxPeriod value set by SetMaxPeriod.
  */
 bool Counter::GetStopped()
 {
@@ -518,9 +535,10 @@ bool Counter::GetDirection()
 }
 
 /**
- * Set the Counter to return reversed sensing on the direction.
- * This allows counters to change the direction they are counting in the case of 1X and 2X
- * quadrature encoding only. Any other counter mode isn't supported.
+ * Set the Counter to return reversed sensing on the direction.  This
+ * allows counters to change the direction they are counting in the case
+ * of 1X and 2X quadrature encoding only. Any other counter mode isn't
+ * supported.
  * @param reverseDirection true if the value counted should be negated.
  */
 void Counter::SetReverseDirection(bool reverseDirection)

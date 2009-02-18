@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #ifndef SENSORBASE_H_
 #define SENSORBASE_H_
@@ -14,16 +14,16 @@
 
 /**
  * Base class for all sensors.
- * Stores most recent status information as well as containing utility functions for checking
- * channels and error processing.
+ * Stores most recent status information as well as containing utility
+ * functions for checking channels and error processing.
  */
-class SensorBase:public ErrorBase
+class SensorBase : public ErrorBase
 {
   public:
     static const UINT32 kSystemClockTicksPerMicrosecond = 40;
 
-         SensorBase();
-         virtual ~ SensorBase();
+    SensorBase();
+    virtual ~ SensorBase();
     static void SetDefaultAnalogModule(UINT32 slot);
     static void SetDefaultDigitalModule(UINT32 slot);
     static void SetDefaultSolenoidModule(UINT32 slot);
@@ -59,6 +59,7 @@ class SensorBase:public ErrorBase
     static const UINT32 kPwmChannels = 10;
     static const UINT32 kRelayChannels = 8;
     static const UINT32 kChassisSlots = 8;
+
   protected:
     void AddToSingletonList();
 
