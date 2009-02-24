@@ -28,4 +28,5 @@ class Jaguar : public PWM, public SpeedController, public PIDOutput
   private:
     void InitJaguar();
 };
+
 #endif

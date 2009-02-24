@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                           */
+/* Open Source Software - may be modified and shared by FRC teams. The code */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.*/
+/*--------------------------------------------------------------------------*/
 
 #ifndef __DASHBOARD_H__
 #define __DASHBOARD_H__
@@ -15,20 +15,22 @@
 #include <vector>
 
 /**
- * Pack data into the "user data" field that gets sent to the dashboard laptop
- * via the driver station.
+ * Pack data into the "user data" field that gets sent to the dashboard
+ * laptop via the driver station.
  */
 class Dashboard:public ErrorBase
 {
     // Can only be constructed by the DriverStation class.
     friend class DriverStation;
     friend class DashboardTest;
+
   public:
     enum Type
-    { kI8, kI16, kI32, kU8, kU16, kU32, kFloat, kDouble, kBoolean, kString,
-            kOther };
-    enum ComplexType
-    { kArray, kCluster };
+    {
+        kI8, kI16, kI32, kU8, kU16, kU32, kFloat,
+        kDouble, kBoolean, kString, kOther
+    };
+    enum ComplexType { kArray, kCluster };
 
     void AddI8(INT8 value);
     void AddI16(INT16 value);
@@ -50,14 +52,15 @@ class Dashboard:public ErrorBase
     void Printf(const char *writeFmt, ...);
 
     INT32 Finalize(void);
+
   private:
-         Dashboard(char **userStatus);
-         virtual ~ Dashboard();
+    Dashboard(char **userStatus);
+    virtual ~ Dashboard();
 
     static const INT32 kMaxDashboardDataSize = USER_STATUS_DATA_SIZE - sizeof(UINT32) * 3 - sizeof(UINT8);      // 13 bytes needed for 3 size parameters and the sequence number
 
     // Usage Guidelines...
-         DISALLOW_COPY_AND_ASSIGN(Dashboard);
+    DISALLOW_COPY_AND_ASSIGN(Dashboard);
 
     bool ValidateAdd(INT32 size);
     void AddedElement(Type type);
@@ -67,10 +70,10 @@ class Dashboard:public ErrorBase
     char *m_localBuffer;
     char *m_localPrintBuffer;
     char *m_packPtr;
-         std::vector < Type > m_expectedArrayElementType;
-         std::vector < INT32 > m_arrayElementCount;
-         std::vector < INT32 * >m_arraySizePtr;
-         std::stack < ComplexType > m_complexTypeStack;
+    std::vector < Type > m_expectedArrayElementType;
+    std::vector < INT32 > m_arrayElementCount;
+    std::vector < INT32 * >m_arraySizePtr;
+    std::stack < ComplexType > m_complexTypeStack;
     SEM_ID m_printSemaphore;
     UINT8 m_sequence;
 };

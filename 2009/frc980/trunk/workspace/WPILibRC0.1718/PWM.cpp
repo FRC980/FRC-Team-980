@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                           */
+/* Open Source Software - may be modified and shared by FRC teams. The code */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.*/
+/*--------------------------------------------------------------------------*/
 
 #include "PWM.h"
 
@@ -14,10 +14,11 @@ static Resource *allocated = NULL;
 
 /**
  * Initialize PWMs given an module and channel.
- * 
- * This method is private and is the common path for all the constructors for creating PWM
- * instances. Checks module and channel value ranges and allocates the appropriate channel.
- * The allocation is only done to help users ensure that they don't double assign channels.
+ *
+ * This method is private and is the common path for all the constructors
+ * for creating PWM instances. Checks module and channel value ranges and
+ * allocates the appropriate channel.  The allocation is only done to help
+ * users ensure that they don't double assign channels.
  */
 void PWM::InitPWM(UINT32 slot, UINT32 channel)
 {
@@ -36,7 +37,7 @@ void PWM::InitPWM(UINT32 slot, UINT32 channel)
 /**
  * Allocate a PWM given a module and channel.
  * Allocate a PWM using a module and channel number.
- * 
+ *
  * @param slot The slot the digital module is plugged into.
  * @param channel The PWM channel on the digital module.
  */
@@ -47,10 +48,10 @@ PWM::PWM(UINT32 slot, UINT32 channel)
 
 /**
  * Allocate a PWM in the default module given a channel.
- * 
- * Using a default module allocate a PWM given the channel number.  The default module is the first
- * slot numerically in the cRIO chassis.
- * 
+ *
+ * Using a default module allocate a PWM given the channel number.  The
+ * default module is the first slot numerically in the cRIO chassis.
+ *
  * @param channel The PWM channel on the digital module.
  */
 PWM::PWM(UINT32 channel)
@@ -60,8 +61,9 @@ PWM::PWM(UINT32 channel)
 
 /**
  * Free the PWM channel.
- * 
- * Free the resource associated with the PWM channel and set the value to 0.
+ *
+ * Free the resource associated with the PWM channel and set the value to
+ * 0.
  */
 PWM::~PWM()
 {
@@ -72,9 +74,9 @@ PWM::~PWM()
 
 /**
  * Optionally eliminate the deadband from a speed controller.
- * @param eliminateDeadband If true, set the motor curve on the Jaguar to eliminate
- * the deadband in the middle of the range. Otherwise, keep the full range without
- * modifying any values.
+ * @param eliminateDeadband If true, set the motor curve on the Jaguar to
+ * eliminate the deadband in the middle of the range. Otherwise, keep the
+ * full range without modifying any values.
  */
 void PWM::EnableDeadbandElimination(bool eliminateDeadband)
 {
@@ -83,8 +85,9 @@ void PWM::EnableDeadbandElimination(bool eliminateDeadband)
 
 /**
  * Set the bounds on the PWM values.
- * This sets the bounds on the PWM values for a particular each type of controller. The values
- * determine the upper and lower speeds as well as the deadband bracket.
+ * This sets the bounds on the PWM values for a particular each type of
+ * controller. The values determine the upper and lower speeds as well as
+ * the deadband bracket.
  * @param max The Minimum pwm value
  * @param deadbandMax The high end of the deadband range
  * @param center The center speed (off)
@@ -103,12 +106,12 @@ void PWM::SetBounds(INT32 max, INT32 deadbandMax, INT32 center,
 
 /**
  * Set the PWM value based on a position.
- * 
+ *
  * This is intended to be used by servos.
- * 
+ *
  * @pre SetMaxPositivePwm() called.
  * @pre SetMinNegativePwm() called.
- * 
+ *
  * @param pos The position to set the servo between 0.0 and 1.0.
  */
 void PWM::SetPosition(float pos)
@@ -123,7 +126,8 @@ void PWM::SetPosition(float pos)
     }
 
     INT32 rawValue;
-    // note, need to perform the multiplication below as floating point before converting to int
+    // note, need to perform the multiplication below as floating point
+    // before converting to int
     rawValue =
         (INT32) ((pos * (float)GetFullRangeScaleFactor()) +
                  GetMinNegativePwm());
@@ -138,12 +142,12 @@ void PWM::SetPosition(float pos)
 
 /**
  * Get the PWM value in terms of a position.
- * 
+ *
  * This is intended to be used by servos.
- * 
+ *
  * @pre SetMaxPositivePwm() called.
  * @pre SetMinNegativePwm() called.
- * 
+ *
  * @return The position the servo is set to between 0.0 and 1.0.
  */
 float PWM::GetPosition()
@@ -167,15 +171,15 @@ float PWM::GetPosition()
 
 /**
  * Set the PWM value based on a speed.
- * 
+ *
  * This is intended to be used by speed controllers.
- * 
+ *
  * @pre SetMaxPositivePwm() called.
  * @pre SetMinPositivePwm() called.
  * @pre SetCenterPwm() called.
  * @pre SetMaxNegativePwm() called.
  * @pre SetMinNegativePwm() called.
- * 
+ *
  * @param speed The speed to set the speed controller between -1.0 and 1.0.
  */
 void PWM::SetSpeed(float speed)
@@ -190,7 +194,8 @@ void PWM::SetSpeed(float speed)
         speed = 1.0;
     }
 
-    // calculate the desired output pwm value by scaling the speed appropriately
+    // calculate the desired output pwm value by scaling the speed
+    // appropriately
     INT32 rawValue;
     if (speed == 0.0)
     {
@@ -218,14 +223,14 @@ void PWM::SetSpeed(float speed)
 
 /**
  * Get the PWM value in terms of speed.
- * 
+ *
  * This is intended to be used by speed controllers.
- * 
+ *
  * @pre SetMaxPositivePwm() called.
  * @pre SetMinPositivePwm() called.
  * @pre SetMaxNegativePwm() called.
  * @pre SetMinNegativePwm() called.
- * 
+ *
  * @return The most recently set speed between -1.0 and 1.0.
  */
 float PWM::GetSpeed()
@@ -259,9 +264,9 @@ float PWM::GetSpeed()
 
 /**
  * Set the PWM value directly to the hardware.
- * 
+ *
  * Write a raw value to a PWM channel.
- * 
+ *
  * @param value Raw PWM value.  Range 0 - 255.
  */
 void PWM::SetRaw(UINT8 value)
@@ -271,9 +276,9 @@ void PWM::SetRaw(UINT8 value)
 
 /**
  * Get the PWM value directly from the hardware.
- * 
+ *
  * Read a raw value from a PWM channel.
- * 
+ *
  * @return Raw PWM control value.  Range: 0 - 255.
  */
 UINT8 PWM::GetRaw()
@@ -283,7 +288,7 @@ UINT8 PWM::GetRaw()
 
 /**
  * Slow down the PWM signal for old devices.
- * 
+ *
  * @param mult The period multiplier to apply to this channel
  */
 void PWM::SetPeriodMultiplier(PeriodMultiplier mult)
@@ -291,13 +296,13 @@ void PWM::SetPeriodMultiplier(PeriodMultiplier mult)
     switch (mult)
     {
     case kPeriodMultiplier_4X:
-        m_module->SetPWMPeriodScale(m_channel, 3);      // Squelch 3 out of 4 outputs
+        m_module->SetPWMPeriodScale(m_channel, 3); // Squelch 3 of 4 outputs
         break;
     case kPeriodMultiplier_2X:
-        m_module->SetPWMPeriodScale(m_channel, 1);      // Squelch 1 out of 2 outputs
+        m_module->SetPWMPeriodScale(m_channel, 1); // Squelch 1 of 2 outputs
         break;
     case kPeriodMultiplier_1X:
-        m_module->SetPWMPeriodScale(m_channel, 0);      // Don't squelch any outputs
+        m_module->SetPWMPeriodScale(m_channel, 0); // Don't squelch any outputs
         break;
     default:
         wpi_assert(false);
