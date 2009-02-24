@@ -1,42 +1,54 @@
 #ifndef ROBOT980_H
 #define ROBOT980_H
 
+// The slots for the Digital Side Car installed on the left & right side
+// of the robot
+#define DSC_LEFT                    6
+#define DSC_RIGHT                   4
+
 // Camera
 #define CAMERA_FPS                  20
 #define CAMERA_COMPRESSION          0
+//#define CAMERA_RESOLUTION           k160x120
 #define CAMERA_RESOLUTION           k320x240
 #define CAMERA_ROTATION             ROT_180
 
+#define CAMERA_SLOT_PAN             DSC_RIGHT
+#define CAMERA_CHAN_PAN             4
+#define CAMERA_SLOT_TILT            DSC_RIGHT
+#define CAMERA_CHAN_TILT            5
+
+
 // PWM outputs
-#define SLOT_PWM_LEFT               6
+#define SLOT_PWM_LEFT               DSC_LEFT
 #define CHAN_PWM_LEFT               1
 
-#define SLOT_PWM_RIGHT              4
+#define SLOT_PWM_RIGHT              DSC_RIGHT
 #define CHAN_PWM_RIGHT              1
 
-#define SLOT_PWM_LOWER              4
+#define SLOT_PWM_LOWER              DSC_RIGHT
 #define CHAN_PWM_LOWER              2
 
-#define SLOT_PWM_UPPER              6
+#define SLOT_PWM_UPPER              DSC_LEFT
 #define CHAN_PWM_UPPER              2
 
-#define SLOT_PWM_FLAP               6
+#define SLOT_PWM_FLAP               DSC_LEFT
 #define CHAN_PWM_FLAP               3
 
 // Digital Inputs
-#define SLOT_ENC_DRV_LEFT           6
+#define SLOT_ENC_DRV_LEFT           DSC_LEFT
 #define CHAN_ENC_DRV_LEFT_A         1
 #define CHAN_ENC_DRV_LEFT_B         2
 
-#define SLOT_ENC_FOLLOW_LEFT        6
+#define SLOT_ENC_FOLLOW_LEFT        DSC_LEFT
 #define CHAN_ENC_FOLLOW_LEFT_A      3
 #define CHAN_ENC_FOLLOW_LEFT_B      4
 
-#define SLOT_ENC_DRV_RIGHT          4
+#define SLOT_ENC_DRV_RIGHT          DSC_RIGHT
 #define CHAN_ENC_DRV_RIGHT_A        1
 #define CHAN_ENC_DRV_RIGHT_B        2
 
-#define SLOT_ENC_FOLLOW_RIGHT       4
+#define SLOT_ENC_FOLLOW_RIGHT       DSC_RIGHT
 #define CHAN_ENC_FOLLOW_RIGHT_A     3
 #define CHAN_ENC_FOLLOW_RIGHT_B     4
 
@@ -109,6 +121,9 @@ class Robot980 : public SensorBase
     Encoder* m_pEncFollowLeft;
     Encoder* m_pEncFollowRight;
 
+    // camera pan/tilt servos
+    Servo* m_pSrvPan;
+    Servo* m_pSrvTilt;
 
     PCVideoServer* m_pVideoServer;
     TrackingThreshold m_tdPink, m_tdGreen; // color thresholds

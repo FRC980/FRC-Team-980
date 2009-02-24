@@ -55,6 +55,9 @@ Robot980::Robot980()
                                     CHAN_ENC_FOLLOW_RIGHT_B,
                                     false))
 
+    , m_pSrvPan(new Servo(CAMERA_SLOT_PAN, CAMERA_CHAN_PAN))
+    , m_pSrvTilt(new Servo(CAMERA_SLOT_TILT, CAMERA_CHAN_TILT))
+
     , m_pCamControlLoop(new Notifier(Robot980::CallCamUpdate, this))
     , m_dSavedImageTimestamp(0.0)
     , m_trackColor(DriverStation::kInvalid)
@@ -116,18 +119,30 @@ Robot980::Robot980()
 
 Robot980::~Robot980()
 {
+    // drive systems (SmartDrive)
     delete m_psdLeft;
     delete m_psdRight;
+
+    // encoders
     delete m_pEncDrvLeft;
     delete m_pEncDrvRight;
     delete m_pEncFollowLeft;
     delete m_pEncFollowRight;
+
+    // speed controllers
     delete m_pscLeft;
     delete m_pscRight;
     delete m_pscLowerBelt;
     delete m_pscUpperBelt;
     delete m_pscFlap;
+
+    // sensors
     delete m_pGyro;
+
+    // camera system
+    delete m_pSrvPan;
+    delete m_pSrvTilt;
+
     delete m_pVideoServer;
     delete m_pCamControlLoop;
 }
