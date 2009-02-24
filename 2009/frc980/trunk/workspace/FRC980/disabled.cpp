@@ -10,11 +10,14 @@ void Main::Disabled()
 {
     DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
 
+    printf("in Main::Disabled()\n");
+
     while (IsDisabled())
     {
+        GetWatchdog().Feed();
         pLCD->Printf(DriverStationLCD::kMain_Line6, 1, "Disabled");
 
-        DashboardData::UpdateAndSend();
+//        DashboardData::UpdateAndSend();
         pLCD->UpdateLCD();
         Wait(0.01);
     }
