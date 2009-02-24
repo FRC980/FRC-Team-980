@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "Task.h"
 
@@ -47,10 +47,10 @@ bool Task::Start(UINT32 arg0, UINT32 arg1, UINT32 arg2, UINT32 arg3,
                  UINT32 arg4, UINT32 arg5, UINT32 arg6, UINT32 arg7,
                  UINT32 arg8, UINT32 arg9)
 {
-    m_taskID = taskSpawn(m_taskName, m_priority, VX_FP_TASK,    // options
-                         m_stackSize,   // stack size
-                         m_function,    // function to start
-                         arg0, arg1, arg2, arg3, arg4,  // parameter 1 - pointer to this class
+    m_taskID = taskSpawn(m_taskName, m_priority, VX_FP_TASK, // options
+                         m_stackSize,                        // stack size
+                         m_function, // function to start
+                         arg0, arg1, arg2, arg3, arg4, // parameter 1 - pointer to this class
                          arg5, arg6, arg7, arg8, arg9); // additional unused parameters
     bool ok = HandleError(m_taskID);
     if (!ok)
@@ -61,7 +61,8 @@ bool Task::Start(UINT32 arg0, UINT32 arg1, UINT32 arg2, UINT32 arg3,
 /**
  * Restarts a running task.
  * If the task isn't started, it starts it.
- * @return false if the task is running and we are unable to kill the previous instance
+ * @return false if the task is running and we are unable to kill the
+ * previous instance
  */
 bool Task::Restart(void)
 {
@@ -70,7 +71,8 @@ bool Task::Restart(void)
 
 /**
  * Kills the running task.
- * @returns true on success false if the task doesn't exist or we are unable to kill it.
+ * @returns true on success false if the task doesn't exist or we are
+ * unable to kill it.
  */
 bool Task::Stop(void)
 {
@@ -84,7 +86,8 @@ bool Task::Stop(void)
 }
 
 /**
- * Returns true if the task is ready to execute (i.e. not suspended, delayed, or blocked).
+ * Returns true if the task is ready to execute (i.e. not suspended,
+ * delayed, or blocked).
  * @return true if ready, false if not ready.
  */
 bool Task::IsReady(void)
@@ -103,7 +106,8 @@ bool Task::IsSuspended(void)
 
 /**
  * Pauses a running task.
- * Returns true on success, false if unable to pause or the task isn't running.
+ * Returns true on success, false if unable to pause or the task isn't
+ * running.
  */
 bool Task::Suspend(void)
 {
@@ -112,7 +116,8 @@ bool Task::Suspend(void)
 
 /**
  * Resumes a paused task.
- * Returns true on success, false if unable to resume or if the task isn't running/paused.
+ * Returns true on success, false if unable to resume or if the task isn't
+ * running/paused.
  */
 bool Task::Resume(void)
 {
@@ -142,8 +147,8 @@ INT32 Task::GetPriority(void)
 
 /**
  * This routine changes a task's priority to a specified priority.
- * Priorities range from 0, the highest priority, to 255, the lowest priority.
- * Default task priority is 100.
+ * Priorities range from 0, the highest priority, to 255, the lowest
+ * priority.  Default task priority is 100.
  * @param priority The priority the task should run at.
  * @returns true on success.
  */
@@ -164,7 +169,8 @@ char *Task::GetName(void)
 
 /**
  * Get the ID of a task
- * @returns Task ID of this task.  Task::kInvalidTaskID (-1) if the task has not been started or has already exited.
+ * @returns Task ID of this task.  Task::kInvalidTaskID (-1) if the task
+ * has not been started or has already exited.
  */
 INT32 Task::GetID(void)
 {
