@@ -1,8 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "SensorBase.h"
 
@@ -36,11 +36,12 @@ SensorBase::~SensorBase()
 /**
  * Add sensor to the singleton list.
  * Add this sensor to the list of singletons that need to be deleted when
- * the robot program exits. Each of the sensors on this list are singletons,
- * that is they aren't allocated directly with new, but instead are allocated
- * by the static GetInstance method. As a result, they are never deleted when
- * the program exits. Consequently these sensors may still be holding onto
- * resources and need to have their destructors called at the end of the program.
+ * the robot program exits. Each of the sensors on this list are
+ * singletons, that is they aren't allocated directly with new, but
+ * instead are allocated by the static GetInstance method. As a result,
+ * they are never deleted when the program exits. Consequently these
+ * sensors may still be holding onto resources and need to have their
+ * destructors called at the end of the program.
  */
 void SensorBase::AddToSingletonList()
 {
@@ -65,9 +66,9 @@ void SensorBase::DeleteSingletons()
 
 /**
  * Sets the default Digital Module.
- * This sets the default digital module to use for objects that are created without
- * specifying the digital module in the constructor. The default module is initialized
- * to the first module in the chassis.
+ * This sets the default digital module to use for objects that are
+ * created without specifying the digital module in the constructor. The
+ * default module is initialized to the first module in the chassis.
  */
 void SensorBase::SetDefaultDigitalModule(UINT32 slot)
 {
@@ -77,9 +78,9 @@ void SensorBase::SetDefaultDigitalModule(UINT32 slot)
 
 /**
  * Sets the default Analog module.
- * This sets the default analog module to use for objects that are created without
- * specifying the analog module in the constructor. The default module is initialized
- * to the first module in the chassis.
+ * This sets the default analog module to use for objects that are created
+ * without specifying the analog module in the constructor. The default
+ * module is initialized to the first module in the chassis.
  */
 void SensorBase::SetDefaultAnalogModule(UINT32 slot)
 {
@@ -89,7 +90,8 @@ void SensorBase::SetDefaultAnalogModule(UINT32 slot)
 
 /**
  * Set the default location for the Solenoid (9472) module.
- * Currently the module must be in slot 8, but it might change in the future.
+ * Currently the module must be in slot 8, but it might change in the
+ * future.
  */
 void SensorBase::SetDefaultSolenoidModule(UINT32 slot)
 {
@@ -153,8 +155,8 @@ bool SensorBase::CheckSolenoidModule(UINT32 slot)
 
 /**
  * Check that the digital channel number is valid.
- * Verify that the channel number is one of the legal channel numbers. Channel numbers are
- * 0-based.
+ * Verify that the channel number is one of the legal channel
+ * numbers. Channel numbers are 0-based.
  */
 bool SensorBase::CheckDigitalChannel(UINT32 channel)
 {
@@ -166,8 +168,8 @@ bool SensorBase::CheckDigitalChannel(UINT32 channel)
 
 /**
  * Check that the digital channel number is valid.
- * Verify that the channel number is one of the legal channel numbers. Channel numbers are
- * 0-based.
+ * Verify that the channel number is one of the legal channel
+ * numbers. Channel numbers are 0-based.
  */
 bool SensorBase::CheckRelayChannel(UINT32 channel)
 {
@@ -179,8 +181,8 @@ bool SensorBase::CheckRelayChannel(UINT32 channel)
 
 /**
  * Check that the digital channel number is valid.
- * Verify that the channel number is one of the legal channel numbers. Channel numbers are
- * 0-based.
+ * Verify that the channel number is one of the legal channel
+ * numbers. Channel numbers are 0-based.
  */
 bool SensorBase::CheckPWMChannel(UINT32 channel)
 {
@@ -192,8 +194,8 @@ bool SensorBase::CheckPWMChannel(UINT32 channel)
 
 /**
  * Check that the analog channel number is value.
- * Verify that the analog channel number is one of the legal channel numbers. Channel numbers
- * are 1-based.
+ * Verify that the analog channel number is one of the legal channel
+ * numbers. Channel numbers are 1-based.
  */
 bool SensorBase::CheckAnalogChannel(UINT32 channel)
 {
