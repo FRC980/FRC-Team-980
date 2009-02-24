@@ -74,9 +74,37 @@ class SpeedController;
 class Robot980 : public SensorBase
 {
   public:
+    typedef struct
+    {
+        DriverStation::Alliance color; // kInvalid indicates none found
+        double dDistance;
+
+        double dHorizLocation;
+
+        // target's center of mass within camera view, normalized -1 to +1
+        double dCenterMassX;
+        double dCenterMassY;
+
+        /* Area of the particle */
+        double particleArea;
+        double particleToImagePercent;
+
+        double particleQuality;
+
+
+
+
+        // Where is the camera pointing?  Adjusted such that -1 = left &
+        // down; 1 = right & up
+        float fPan;
+        float fTilt;
+    } trailerInfo_t;
+
+  public:
     static Robot980 *GetInstance();
 
-    bool FindTrailer(DriverStation::Alliance); // will have more params
+    bool FindTrailer(DriverStation::Alliance trackColor,
+                     trailerInfo_t *pTrailer);
     void EnableTractionControl(bool);
 
     // 1 = forward, -1 = backwards
@@ -133,6 +161,7 @@ class Robot980 : public SensorBase
     double m_dSavedImageTimestamp;
     DriverStation::Alliance m_trackColor;
 
+    trailerInfo_t m_trailerInfo;
 };
 
 #endif // ROBOT980_H

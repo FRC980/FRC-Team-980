@@ -106,6 +106,7 @@ Robot980::Robot980()
     m_tdGreen.luminance.minValue = 92;
     m_tdGreen.luminance.maxValue = 255;
 
+    m_trailerInfo.color = DriverStation::kInvalid;
 
     /* start the CameraTask  */
     StartCameraTask(CAMERA_FPS, CAMERA_COMPRESSION, CAMERA_RESOLUTION,
@@ -245,22 +246,22 @@ void Robot980::CamUpdate()
             return;
         }
 
-        {
-            // The target was recognized - save the timestamp
-            m_dSavedImageTimestamp = par1.imageTimestamp;
+        // The target was recognized - save the timestamp
+        m_dSavedImageTimestamp = par1.imageTimestamp;
 
-            // Here is where your game-specific code goes when you
-            // recognize the target
+        m_trailerInfo.color = m_trackColor;
 
-            // get center of target; Average the color two particles to
-            // get center x & y of combined target
-            double horizontalDestination =
-                (par1.center_mass_x_normalized +
-                 par2.center_mass_x_normalized) / 2;
-            double verticalDestination =
-                (par1.center_mass_y_normalized +
-                 par2.center_mass_y_normalized) / 2;
-        }
+        // get center of target; Average the color two particles to
+        // get center x & y of combined target
+        m_trailerInfo.dCenterMassX = (par1.center_mass_x_normalized +
+                                      par2.center_mass_x_normalized) / 2;
+        m_trailerInfo.dCenterMassY = (par1.center_mass_y_normalized +
+                                      par2.center_mass_y_normalized) / 2;
+
+        m_trailerInfo.particleQuality = (par1.particleQuality +
+                                         par2.particleQuality) / 2;
+
+
     }
     else
     {                   // need to pan
@@ -284,7 +285,15 @@ void Robot980::CamUpdate()
     } // end if found color
 }
 
-bool FindTrailer(DriverStation::Alliance alliance)
+bool Robot980::FindTrailer(DriverStation::Alliance alliance,
+                           trailerInfo_t *pTrailer)
 {
+    // Are we switching which color we're looking for?
+    if (alliance != m_trackColor)
+    {
+        m_trackColor = alliance;
+        return false;
+    }
+
     return false;
 }
