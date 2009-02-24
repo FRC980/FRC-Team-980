@@ -525,7 +525,8 @@ void PrintReport(ColorReport * myReport)
             "numberParticlesFound = ", myReport->numberParticlesFound);
     ;
     dprintf(LOG_INFO,
-            "\n    %s%f  %s%f  %s%f\n    %s%f %s%f  %s%f\n    %s%f  %s%f  %s%f\n -------",
+            "\n    %s%f  %s%f  %s%f\n    %s%f %s%f  %s%f\n"
+            "    %s%f  %s%f  %s%f\n -------",
             "particleHueMax = ", myReport->particleHueMax,
             "particleHueMin = ", myReport->particleHueMin,
             "particleHueMean = ", myReport->particleHueMean,
