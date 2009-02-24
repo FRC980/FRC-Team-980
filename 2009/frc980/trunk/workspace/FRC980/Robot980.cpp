@@ -109,6 +109,9 @@ Robot980::Robot980()
                     CAMERA_ROTATION);
     m_pVideoServer = new PCVideoServer;
     m_pCamControlLoop->StartPeriodic((double)1.0 / (double)CAMERA_FPS);
+
+    // tell SensorBase about us
+    AddToSingletonList();
 }
 
 Robot980::~Robot980()

@@ -59,7 +59,7 @@ class Gyro;
 class PCVideoServer;
 class SpeedController;
 
-class Robot980
+class Robot980 : public SensorBase
 {
   public:
     static Robot980 *GetInstance();
