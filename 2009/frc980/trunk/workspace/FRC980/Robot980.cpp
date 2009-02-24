@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "DriverStationLCD.h"
+#include "ReversableJaguar.h"
 #include "Robot980.h"
 #include "Target.h"
 #include "numbers.h"
@@ -24,7 +25,7 @@ Robot980::Robot980()
     : m_bTraction(true)
 
     // left and right drive motors
-    , m_pscLeft(new Jaguar(SLOT_PWM_LEFT, CHAN_PWM_LEFT))
+    , m_pscLeft(new ReversableJaguar(SLOT_PWM_LEFT, CHAN_PWM_LEFT, true))
     , m_pscRight(new Jaguar(SLOT_PWM_RIGHT,CHAN_PWM_RIGHT))
     // lower and upper drive belts
     , m_pscLowerBelt(new Jaguar(SLOT_PWM_LOWER, CHAN_PWM_LOWER))
@@ -62,12 +63,17 @@ Robot980::Robot980()
     , m_dSavedImageTimestamp(0.0)
     , m_trackColor(DriverStation::kInvalid)
 {
-    m_pEncDrvLeft->SetDistancePerPulse(M_PI * 6 / 250);
-    m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 / 250);
+    // 48:32 = 1.5 on drive wheels
+    m_pEncDrvLeft->SetDistancePerPulse(M_PI * 6 * 1.5 / 250 / 12);
+    m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 * 1.5 / 250 / 12);
 
-    m_pEncFollowLeft->SetDistancePerPulse(M_PI * 60/25.4 / 250);
-    m_pEncFollowRight->SetDistancePerPulse(M_PI * 60/25.4 / 250);
+    m_pEncFollowLeft->SetDistancePerPulse(M_PI * 60/25.4 / 250 / 12);
+    m_pEncFollowRight->SetDistancePerPulse(M_PI * 60/25.4 / 250 / 12);
 
+    m_pEncDrvLeft->Start();
+    m_pEncDrvRight->Start();
+    m_pEncFollowLeft->Start();
+    m_pEncFollowRight->Start();
 
     // "Smart Drive" handles PID, slipping, etc
     m_psdLeft  = new SmartDrive(0.6, 0.1, 0, // velocity PID constants
@@ -105,6 +111,8 @@ Robot980::Robot980()
     m_tdGreen.saturation.maxValue = 255;
     m_tdGreen.luminance.minValue = 92;
     m_tdGreen.luminance.maxValue = 255;
+
+    printf("Robot980 constructor\n");
 
     m_trailerInfo.color = DriverStation::kInvalid;
 
@@ -184,31 +192,54 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
         m_pscRight->Set(right);
     }
 
+    Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
     if (pLCD)
     {
         pLCD->Printf(DriverStationLCD::kMain_Line6, 1,
                      m_bTraction ? "TC: ON " : "TC: OFF");
-
         pLCD->Printf(DriverStationLCD::kUser_Line2, 1,
                      m_bTraction ? "TC: ON " : "TC: OFF");
 
+        d.Printf(m_bTraction ? "TC: ON \n" : "TC: OFF\n");
+
+
         pLCD->Printf(DriverStationLCD::kUser_Line3, 1,
                      "Cmd %1.6f %1.6f", left, right);
+
+        d.Printf("Cmd %1.6f %1.6f\n", left, right);
 
         pLCD->Printf(DriverStationLCD::kUser_Line4, 1,
                      "Mtr %1.6f %1.6f",
                      m_pscLeft->Get(),
                      m_pscRight->Get());
 
+        d.Printf("Mtr %1.6f %1.6f\n",
+               m_pscLeft->Get(),
+               m_pscRight->Get());
+
         pLCD->Printf(DriverStationLCD::kUser_Line5, 1,
                      "Drv %1.6f %1.6f",
                      m_pEncDrvLeft->GetRate(),
                      m_pEncDrvRight->GetRate());
 
+        d.Printf("Drv %1.6f %1.6f\n",
+               m_pEncDrvLeft->GetRate(),
+               m_pEncDrvRight->GetRate());
+
         pLCD->Printf(DriverStationLCD::kUser_Line6, 1,
                      "Fol %1.6f %1.6f",
                      m_pEncFollowLeft->GetRate(),
                      m_pEncFollowRight->GetRate());
+
+        d.Printf("Fol %1.6f %1.6f\n",
+               m_pEncFollowLeft->GetRate(),
+               m_pEncFollowRight->GetRate());
+
+        pLCD->UpdateLCD();
+    }
+    else
+    {
+        d.Printf("No pLCD\n");
     }
 }
 
