@@ -25,7 +25,7 @@ void Main::Init()
 
     Robot980::GetInstance();
 
-//    GetWatchdog().SetEnabled(true);
+    GetWatchdog().SetExpiration(100);
     m_ds->GetDashboardPacker();
 }
 
@@ -49,17 +49,23 @@ bool Main::NextPeriodReady()
 void Main::StartCompetition()
 {
     Init();
+    GetWatchdog().SetEnabled(true);
+    GetWatchdog().Feed();
 
     while (1)
     {
         DriverStationLCD::GetInstance()->Clear();
+        DriverStationLCD::GetInstance()->UpdateLCD();
 
         while (IsDisabled())
         {
             DriverStationLCD::GetInstance()->Clear();
             Disabled();
             while (IsDisabled())
+            {
+                GetWatchdog().Feed();
                 Wait(0.01);
+            }
         }
 
         while (IsAutonomous() && !IsDisabled())
@@ -67,7 +73,10 @@ void Main::StartCompetition()
             DriverStationLCD::GetInstance()->Clear();
             Autonomous();
             while (IsAutonomous() && !IsDisabled())
+            {
+                GetWatchdog().Feed();
                 Wait(0.01);
+            }
         }
 
         while (IsOperatorControl() && !IsDisabled())
@@ -75,7 +84,10 @@ void Main::StartCompetition()
             DriverStationLCD::GetInstance()->Clear();
             OperatorControl();
             while (IsOperatorControl() && !IsDisabled())
+            {
+                GetWatchdog().Feed();
                 Wait(0.01);
+            }
         }
     }
 }
