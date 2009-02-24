@@ -32,7 +32,7 @@ struct FRCControlData
             UINT8 notEStop:1;
             UINT8 enabled:1;
             UINT8 autonomous:1;
-                 UINT8:1;
+            UINT8:1;
             UINT8 resync:1;
             UINT8 cRIOChkSum:1;
             UINT8 fpgaChkSum:1;
