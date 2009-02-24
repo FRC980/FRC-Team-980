@@ -84,10 +84,10 @@ void DriverStationLCD::Printf(Line line, UINT32 startingColumn,
     INT32 maxLength = kLineLength - start;
     char lineBuffer[kLineLength + 1];
 
-    if (startingColumn < 1 || startingColumn > startingColumn)
+    if ((startingColumn < 1) || (1 > maxLength))
         return;
 
-    if (line < kMain_Line6 || line > kUser_Line6)
+    if ((line < kMain_Line6) || (line > kUser_Line6))
         return;
 
     va_start(args, writeFmt);
