@@ -15,7 +15,8 @@ void Main::Auton1()
 
     while (IsAutonomous() && !IsDisabled())
     {
-
+        GetWatchdog().Feed();
+        pRobot->Drive(0.1, 0.1);
 
         DashboardData::UpdateAndSend();
         pLCD->UpdateLCD();
@@ -43,7 +44,9 @@ void Main::Auton2()
 
 void Main::Autonomous()
 {
-  int prog = 2;
+  int prog = 1;
+
+  printf("in Main::Autonomous()\n");
 
   switch(prog)
   {
