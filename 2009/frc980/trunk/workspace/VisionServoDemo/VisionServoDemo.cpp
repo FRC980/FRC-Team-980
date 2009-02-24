@@ -16,14 +16,16 @@
 /*---------------------------------------------------------------------------*/
 
 #include <iostream.h>
-#include "math.h"
+#include <math.h>
 
-#include "AxisCamera.h"
-#include "BaeUtilities.h"
-#include "FrcError.h"
-#include "PCVideoServer.h"
-#include "TrackAPI.h"
-#include "WPILib.h"
+#include <AxisCamera.h>
+#include <BaeUtilities.h>
+#include <FrcError.h>
+#include <PCVideoServer.h>
+#include <TrackAPI.h>
+#include <WPILib.h>
+
+#include "DashboardData.h"
 
 // To locally enable debug printing: set VisionDemo_debugFlag to a 1, to
 // disable set to 0
@@ -31,6 +33,9 @@ int  VisionServoDemo_debugFlag = 0;
 #define DPRINTF if(VisionServoDemo_debugFlag)dprintf
 
 #define PI 3.14159265358979
+
+#define ShowActivity	m_pDashboard->Printf
+
 
 /**
  * This is a demo program showing the use of the color tracking API.
@@ -43,7 +48,7 @@ int  VisionServoDemo_debugFlag = 0;
 class VisionServoDemo : public SimpleRobot
 {
     RobotDrive *myRobot;        // robot drive system
-    Joystick *rightStick;       // joystick 1 (arcade stick or right tank stick)
+    Joystick *rightStick; // joystick 1 (arcade stick or right tank stick)
     Joystick *leftStick;        // joystick 2 (tank left stick)
     DriverStation *ds;          // driver station object
     Servo *horizontalServo;     // first servo object
@@ -53,16 +58,17 @@ class VisionServoDemo : public SimpleRobot
     float horizontalPosition, verticalPosition;
     float horizontalServoPosition, verticalServoPosition;
     float servoDeadband;        // percentage servo delta to trigger move
-    int  framesPerSecond;       // number of camera frames to get per second
     float panControl;           // to slow down pan
     float panPosition;
     double sinStart;
     static double panStartTime;
 
     PCVideoServer *m_pVideoServer;
+    DashboardData dashboardData;
+    Dashboard *m_pDashboard;
 
-    ParticleAnalysisReport par, par2;   // particle analysis report
-    ColorReport cReport, cReport2;      // color report
+    ParticleAnalysisReport par, par2; // particle analysis report
+    ColorReport cReport, cReport2; // color report
 
     enum            // Driver Station jumpers to control program operation
     {
@@ -86,8 +92,9 @@ class VisionServoDemo : public SimpleRobot
         horizontalServo = new Servo(3); // create horizontal servo
         verticalServo = new Servo(4);   // create vertical servo
         servoDeadband = 0.01;   // move if > this amount
-        framesPerSecond = 20;   // number of camera frames to get per second
         sinStart = 0.0;         // control whether to start panning up or down
+
+        m_pDashboard = &(m_ds->GetDashboardPacker());
 
         /* set up debug output:
          * DEBUG_OFF, DEBUG_MOSTLY_OFF, DEBUG_SCREEN_ONLY,
@@ -96,7 +103,7 @@ class VisionServoDemo : public SimpleRobot
         SetDebugFlag(DEBUG_FILE_ONLY);
 
         /* start the CameraTask  */
-        if (StartCameraTask(framesPerSecond, 0, k320x240, ROT_180) == -1)
+        if (StartCameraTask(20, 0, k160x120, ROT_180) == -1)
         {
             DPRINTF(LOG_ERROR,
                     "Failed to spawn camera task; exiting. Error code %s",
@@ -144,6 +151,7 @@ class VisionServoDemo : public SimpleRobot
             // save new normalized vertical position
             verticalPosition = RangeToNormalized(servoV, 1);
         }
+        ShowActivity("Servo set to: x: %f   y: %f", servoH, servoV);
     }
 
     /**
@@ -196,6 +204,7 @@ class VisionServoDemo : public SimpleRobot
             // save new normalized vertical position
             verticalPosition = RangeToNormalized(servoV, 1);
         }
+        ShowActivity("Servo set to: x: %f   y: %f", servoH, servoV);
     }
 
     void Autonomous(void)
@@ -286,7 +295,7 @@ class VisionServoDemo : public SimpleRobot
                  */
                 incrementH = horizontalDestination - horizontalPosition;
                 incrementV = verticalPosition - verticalDestination;
-                adjustServoPositions(incrementH, incrementV);
+                adjustServoPositions(incrementH, -incrementV);
 
                 ShowActivity
                     ("** %s found: Servo: x: %f  y: %f  increment: %f  y: %f  ",
@@ -328,6 +337,7 @@ class VisionServoDemo : public SimpleRobot
                 panIncrement++;
             } // end if found color
 
+            dashboardData.UpdateAndSend();
             // sleep to keep loop at constant rate
             // elapsed time can vary significantly due to debug printout
             currentTime = GetTime();
@@ -336,7 +346,6 @@ class VisionServoDemo : public SimpleRobot
             {
                 Wait(loopTime - ElapsedTime(lastTime));
             }
-
         } // end while
 
         myRobot->Drive(0.0, 0.0); // stop robot
@@ -358,15 +367,85 @@ class VisionServoDemo : public SimpleRobot
      * robot or operating an arm based on color input from gimbal-mounted
      * camera is currently left as an exercise for the teams.
      */
-  void OperatorControl(void)
-  {
+    void OperatorControl(void)
+    {
         char funcName[] = "OperatorControl";
         DPRINTF(LOG_DEBUG, "OperatorControl");
         //GetWatchdog().Feed();
+        TrackingThreshold td = GetTrackingData(GREEN, FLUORESCENT);
+
+        /* for controlling loop execution time */
+        float loopTime = 0.05;
+        double currentTime = GetTime();
+        double lastTime = currentTime;
+
+        double savedImageTimestamp = 0.0;
+        bool foundColor = false;
+        bool staleImage = false;
 
         while (IsOperatorControl())
         {
             setServoPositions(rightStick->GetX(), rightStick->GetY());
+
+            /* calculate gimbal position based on color found */
+            if (FindColor
+                (IMAQ_HSL, &td.hue, &td.saturation, &td.luminance, &par,
+                 &cReport))
+            {
+                foundColor = true;
+                if (par.imageTimestamp == savedImageTimestamp)
+                {
+                    // This image has been processed already,
+                    // so don't do anything for this loop
+                    staleImage = true;
+                }
+                else
+                {
+                    staleImage = false;
+                    savedImageTimestamp = par.imageTimestamp;
+                    // compute final H & V destination
+                    horizontalDestination = par.center_mass_x_normalized;
+                    verticalDestination = par.center_mass_y_normalized;
+                }
+            }
+            else
+            {
+                foundColor = false;
+            }
+
+            PrintReport(&cReport);
+
+            if (!staleImage)
+            {
+                if (foundColor)
+                {
+                    /* Move the servo a bit each loop toward the
+                     * destination.  Alternative ways to task servos are
+                     * to move immediately vs.  incrementally toward the
+                     * final destination. Incremental method reduces the
+                     * need for calibration of the servo movement while
+                     * moving toward the target.
+                     */
+                    ShowActivity
+                        ("** %s found: Servo: x: %f  y: %f",
+                         td.name, horizontalDestination, verticalDestination);
+                }
+                else
+                {
+                    ShowActivity("** %s not found", td.name);
+                }
+            }
+
+            dashboardData.UpdateAndSend();
+
+            // sleep to keep loop at constant rate
+            // elapsed time can vary significantly due to debug printout
+            currentTime = GetTime();
+            lastTime = currentTime;
+            if (loopTime > ElapsedTime(lastTime))
+            {
+                Wait(loopTime - ElapsedTime(lastTime));
+            }
         }
 
         while (IsOperatorControl())
