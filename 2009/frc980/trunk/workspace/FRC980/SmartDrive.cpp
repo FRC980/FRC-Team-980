@@ -41,6 +41,8 @@ SmartDrive::SmartDrive(double kvp, double kvi, double kvd,
     , m_dVelInt(0)
     , m_dCorInt(0)
     , m_dAclInt(0)
+    , m_dPrevMotorCount(0)
+    , m_dPrevRobotCount(0)
 {
     m_controlLoop->StartPeriodic(period);
 }
@@ -74,6 +76,10 @@ void SmartDrive::Disable()
 {
     m_bEnabled = false;
     m_psc->Set(0);
+
+    m_dVelInt = 0;
+    m_dCorInt = 0;
+    m_dAclInt = 0;
 }
 
 void SmartDrive::Reset()
@@ -83,9 +89,6 @@ void SmartDrive::Reset()
 
 void SmartDrive::Calculate()
 {
-    if (!m_bEnabled)
-        return;
-
     // This code implements 3 linked PID loops (technically PI, as there
     // is no D term).  The VELOCITY loop tries to make the motor run at
     // the commanded speed.  The ACCELERATION loop tries to maximize
@@ -93,38 +96,47 @@ void SmartDrive::Calculate()
     // minimize slippage, (as measured by the difference between the motor
     // speed and follow wheel speed).
 
+    double dMotorCount = m_pEncDrive->GetDistance();
+    double dRobotCount = m_pEncFollow->GetDistance();
 
     // velocities should be in range of -1 to 1
-    double dMotorVel = m_pEncDrive->GetRate(); // to do: scale
-    double dRobotVel = m_pEncFollow->GetRate(); // to do: scale
+//    double dMotorVel = m_pEncDrive->GetRate(); // to do: scale
+//    double dRobotVel = m_pEncFollow->GetRate(); // to do: scale
+    double dMotorVel = (dMotorCount - m_dPrevMotorCount) / 0.78;
+    double dRobotVel = (dRobotCount - m_dPrevRobotCount) / 0.78;
 
-    double dMotorAcl = (dMotorVel - m_dPrevMotorVel) / m_kfPeriod;
-//    double dRobotAcl = (dRobotVel - m_dPrevRobotVel) / m_kfPeriod;
+    if (m_bEnabled)
+    {
+        double dMotorAcl = (dMotorVel - m_dPrevMotorVel) / m_kfPeriod;
+//        double dRobotAcl = (dRobotVel - m_dPrevRobotVel) / m_kfPeriod;
 
-    double dVelDelta = m_dCmdSpeed - dMotorVel;
+        double dVelDelta = m_dCmdSpeed - dMotorVel;
 
-    m_dVelInt += dVelDelta * m_kVelI;
-    m_dVelInt = limit(m_dVelInt, -1.0, 1.0);
+        m_dVelInt += dVelDelta * m_kVelI;
+        m_dVelInt = limit(m_dVelInt, -1.0, 1.0);
 
-    double dVelError = m_kVelP * dVelDelta + m_dVelInt;
-    dVelError = limit(dVelError, -1.0, 1.0);
+        double dVelError = m_kVelP * dVelDelta + m_dVelInt;
+        dVelError = limit(dVelError, -1.0, 1.0);
 
-    double dSlippage = dMotorVel - dRobotVel;
+        double dSlippage = dMotorVel - dRobotVel;
 
-    m_dCorInt += dSlippage * m_kCorI;
-    m_dCorInt = limit(m_dCorInt, -1.25, 1.25);
+        m_dCorInt += dSlippage * m_kCorI;
+        m_dCorInt = limit(m_dCorInt, -1.25, 1.25);
 
-    double dCor_out = dSlippage * m_kCorP + m_dCorInt;
-    double dAclCmd = dVelError - dCor_out;
+        double dCor_out = dSlippage * m_kCorP + m_dCorInt;
+        double dAclCmd = dVelError - dCor_out;
 
-    double dAclError = dAclCmd - dMotorAcl;
+        double dAclError = dAclCmd - dMotorAcl;
 
-    m_dAclInt += dAclError * m_kAclI;
-    m_dAclInt = limit(m_dAclInt, -1.0, 1.0);
+        m_dAclInt += dAclError * m_kAclI;
+        m_dAclInt = limit(m_dAclInt, -1.0, 1.0);
 
-    double dMotorCmd = dAclError * m_kAclP + m_dAclInt;
-    m_psc->Set(dMotorCmd);
+        double dMotorCmd = dAclError * m_kAclP + m_dAclInt;
+        m_psc->Set(dMotorCmd);
+    }
 
+    m_dPrevMotorCount = dMotorCount;
+    m_dPrevRobotCount = dRobotCount;
 
     m_dPrevMotorVel = dMotorVel;
     m_dPrevRobotVel = dRobotVel;

@@ -45,6 +45,8 @@ class SmartDrive : public SpeedController
     double m_dCorInt;           // integral term in correction PID loop
     double m_dAclInt;           // integral term in acceleration PID loop
 
+    double m_dPrevMotorCount;
+    double m_dPrevRobotCount;
 
     DISALLOW_COPY_AND_ASSIGN(SmartDrive);
 };
