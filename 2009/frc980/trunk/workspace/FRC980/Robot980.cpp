@@ -21,6 +21,8 @@ Robot980* Robot980::GetInstance()
     return g_pInstance;
 }
 
+#define ENC_SCALE	CounterBase::k1X
+
 Robot980::Robot980()
     : m_bTraction(true)
 
@@ -39,22 +41,22 @@ Robot980::Robot980()
     // encoders on the drive wheels
     , m_pEncDrvLeft(new Encoder(SLOT_ENC_DRV_LEFT,CHAN_ENC_DRV_LEFT_A,
                                 SLOT_ENC_DRV_LEFT,CHAN_ENC_DRV_LEFT_B,
-                                false))
+                                false, ENC_SCALE))
     , m_pEncDrvRight(new Encoder(SLOT_ENC_DRV_RIGHT,CHAN_ENC_DRV_RIGHT_A,
                                  SLOT_ENC_DRV_RIGHT,CHAN_ENC_DRV_RIGHT_B,
-                                 false))
+                                 false, ENC_SCALE))
 
     // encoders on the follow wheels
     , m_pEncFollowLeft(new Encoder(SLOT_ENC_FOLLOW_LEFT,
                                    CHAN_ENC_FOLLOW_LEFT_A,
                                    SLOT_ENC_FOLLOW_LEFT,
                                    CHAN_ENC_FOLLOW_LEFT_B,
-                                   false))
+                                   false, ENC_SCALE))
     , m_pEncFollowRight(new Encoder(SLOT_ENC_FOLLOW_RIGHT,
                                     CHAN_ENC_FOLLOW_RIGHT_A,
                                     SLOT_ENC_FOLLOW_RIGHT,
                                     CHAN_ENC_FOLLOW_RIGHT_B,
-                                    false))
+                                    false, ENC_SCALE))
 
     , m_pSrvPan(new Servo(CAMERA_SLOT_PAN, CAMERA_CHAN_PAN))
     , m_pSrvTilt(new Servo(CAMERA_SLOT_TILT, CAMERA_CHAN_TILT))
@@ -195,6 +197,31 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
     Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
     if (pLCD)
     {
+        static double dPrevEncDrvCntLf = 0;
+        static double dPrevEncFlwCntLf = 0;
+        static double dPrevEncDrvCntRt = 0;
+        static double dPrevEncFlwCntRt = 0;
+
+        double dEncDrvCntLf = m_pEncDrvLeft->GetDistance();
+        double dEncFlwCntLf = m_pEncFollowLeft->GetDistance();
+        double dEncDrvCntRt = m_pEncDrvRight->GetDistance();
+        double dEncFlwCntRt = m_pEncFollowRight->GetDistance();
+
+        double dEncDrvRateLf = dEncDrvCntLf - dPrevEncDrvCntLf;
+        double dEncFlwRateLf = dEncFlwCntLf - dPrevEncFlwCntLf;
+        double dEncDrvRateRt = dEncDrvCntRt - dPrevEncDrvCntRt;
+        double dEncFlwRateRt = dEncFlwCntRt - dPrevEncFlwCntRt;
+
+        dPrevEncDrvCntLf = dEncDrvCntLf;
+        dPrevEncFlwCntLf = dEncFlwCntLf;
+        dPrevEncDrvCntRt = dEncDrvCntRt;
+        dPrevEncFlwCntRt = dEncFlwCntRt;
+
+        dEncDrvRateLf = dEncDrvRateLf / 0.78;
+        dEncFlwRateLf = dEncFlwRateLf / 0.78;
+        dEncDrvRateRt = dEncDrvRateRt / 0.78;
+        dEncFlwRateRt = dEncFlwRateRt / 0.78;
+
         pLCD->Printf(DriverStationLCD::kMain_Line6, 1,
                      m_bTraction ? "TC: ON " : "TC: OFF");
         pLCD->Printf(DriverStationLCD::kUser_Line2, 1,
@@ -223,8 +250,9 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
                      m_pEncDrvRight->GetRate());
 
         d.Printf("Drv %1.6f %1.6f\n",
-               m_pEncDrvLeft->GetRate(),
-               m_pEncDrvRight->GetRate());
+                 dEncDrvRateLf, dEncDrvRateRt);
+//               m_pEncDrvLeft->GetRate(),
+//               m_pEncDrvRight->GetRate());
 
         pLCD->Printf(DriverStationLCD::kUser_Line6, 1,
                      "Fol %1.6f %1.6f",
@@ -232,8 +260,9 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
                      m_pEncFollowRight->GetRate());
 
         d.Printf("Fol %1.6f %1.6f\n",
-               m_pEncFollowLeft->GetRate(),
-               m_pEncFollowRight->GetRate());
+                 dEncFlwRateLf, dEncFlwRateRt);
+//               m_pEncFollowLeft->GetRate(),
+//               m_pEncFollowRight->GetRate());
 
         pLCD->UpdateLCD();
     }
