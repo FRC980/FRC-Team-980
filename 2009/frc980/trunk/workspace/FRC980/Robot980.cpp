@@ -39,11 +39,15 @@ Robot980::Robot980()
     , m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
 
     // encoders on the drive wheels
-    , m_pEncDrvLeft(new Encoder(SLOT_ENC_DRV_LEFT,CHAN_ENC_DRV_LEFT_A,
-                                SLOT_ENC_DRV_LEFT,CHAN_ENC_DRV_LEFT_B,
+    , m_pEncDrvLeft(new Encoder(SLOT_ENC_DRV_LEFT,
+                                CHAN_ENC_DRV_LEFT_A,
+                                SLOT_ENC_DRV_LEFT,
+                                CHAN_ENC_DRV_LEFT_B,
                                 false, ENC_SCALE))
-    , m_pEncDrvRight(new Encoder(SLOT_ENC_DRV_RIGHT,CHAN_ENC_DRV_RIGHT_A,
-                                 SLOT_ENC_DRV_RIGHT,CHAN_ENC_DRV_RIGHT_B,
+    , m_pEncDrvRight(new Encoder(SLOT_ENC_DRV_RIGHT,
+                                 CHAN_ENC_DRV_RIGHT_A,
+                                 SLOT_ENC_DRV_RIGHT,
+                                 CHAN_ENC_DRV_RIGHT_B,
                                  false, ENC_SCALE))
 
     // encoders on the follow wheels
@@ -162,6 +166,19 @@ void Robot980::CallCamUpdate(void *pvr)
 {
     Robot980* pRobot = static_cast<Robot980*>(pvr);
     pRobot->CamUpdate();
+}
+
+int Robot980::GetAutonMode()
+{
+    AnalogModule *pAM = AnalogModule::GetInstance(SLOT_AUTO_MODE);
+    int i = pAM->GetValue(CHAN_AUTO_MODE);
+
+    if (i > 900) return 6;
+    if (i > 700) return 5;
+    if (i > 500) return 4;
+    if (i > 300) return 3;
+    if (i > 100) return 2;
+    return 1;
 }
 
 void Robot980::EnableTractionControl(bool b)

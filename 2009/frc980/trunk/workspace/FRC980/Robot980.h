@@ -3,7 +3,8 @@
 
 // The slots for the Digital Side Car installed on the left & right side
 // of the robot
-#define DSC_LEFT                    6
+#define DSC_SLOT                    4
+#define DSC_LEFT                    4
 #define DSC_RIGHT                   4
 
 // Camera
@@ -24,16 +25,16 @@
 #define CHAN_PWM_LEFT               1
 
 #define SLOT_PWM_RIGHT              DSC_RIGHT
-#define CHAN_PWM_RIGHT              1
+#define CHAN_PWM_RIGHT              2
 
 #define SLOT_PWM_LOWER              DSC_RIGHT
-#define CHAN_PWM_LOWER              2
+#define CHAN_PWM_LOWER              3
 
 #define SLOT_PWM_UPPER              DSC_LEFT
-#define CHAN_PWM_UPPER              2
+#define CHAN_PWM_UPPER              4
 
 #define SLOT_PWM_FLAP               DSC_LEFT
-#define CHAN_PWM_FLAP               3
+#define CHAN_PWM_FLAP               5
 
 // Digital Inputs
 #define SLOT_ENC_DRV_LEFT           DSC_LEFT
@@ -45,16 +46,20 @@
 #define CHAN_ENC_FOLLOW_LEFT_B      4
 
 #define SLOT_ENC_DRV_RIGHT          DSC_RIGHT
-#define CHAN_ENC_DRV_RIGHT_A        1
-#define CHAN_ENC_DRV_RIGHT_B        2
+#define CHAN_ENC_DRV_RIGHT_A        5
+#define CHAN_ENC_DRV_RIGHT_B        6
 
 #define SLOT_ENC_FOLLOW_RIGHT       DSC_RIGHT
-#define CHAN_ENC_FOLLOW_RIGHT_A     3
-#define CHAN_ENC_FOLLOW_RIGHT_B     4
+#define CHAN_ENC_FOLLOW_RIGHT_A     7
+#define CHAN_ENC_FOLLOW_RIGHT_B     8
 
 // Analog Inputs
 #define SLOT_GYRO                   1
 #define CHAN_GYRO                   1 /* FPGA requires gyro to be on chan 1 */
+
+#define SLOT_AUTO_MODE              1
+#define CHAN_AUTO_MODE              7
+
 
 
 #ifndef NULL
@@ -102,6 +107,8 @@ class Robot980 : public SensorBase
 
   public:
     static Robot980 *GetInstance();
+
+    int GetAutonMode();
 
     bool FindTrailer(DriverStation::Alliance trackColor,
                      trailerInfo_t *pTrailer);
