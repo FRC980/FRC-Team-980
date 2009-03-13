@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -15,14 +15,17 @@ class AnalogModule;
 /**
  * Analog channel class.
  * 
- * Each analog channel is read from hardware as a 12-bit number representing -10V to 10V.
+ * Each analog channel is read from hardware as a 12-bit number
+ * representing -10V to 10V.
  * 
- * Connected to each analog channel is an averaging and oversampling engine.  This engine accumulates
- * the specified ( by SetAverageBits() and SetOversampleBits() ) number of samples before returning a new
- * value.  This is not a sliding window average.  The only difference between the oversampled samples and
- * the averaged samples is that the oversampled samples are simply accumulated effectively increasing the
- * resolution, while the averaged samples are divided by the number of samples to retain the resolution,
- * but get more stable values.
+ * Connected to each analog channel is an averaging and oversampling
+ * engine.  This engine accumulates the specified ( by SetAverageBits()
+ * and SetOversampleBits() ) number of samples before returning a new
+ * value.  This is not a sliding window average.  The only difference
+ * between the oversampled samples and the averaged samples is that the
+ * oversampled samples are simply accumulated effectively increasing the
+ * resolution, while the averaged samples are divided by the number of
+ * samples to retain the resolution, but get more stable values.
  */
 class AnalogChannel:public SensorBase, public PIDSource
 {
@@ -31,9 +34,9 @@ class AnalogChannel:public SensorBase, public PIDSource
     static const UINT32 kAccumulatorNumChannels = 2;
     static const UINT32 kAccumulatorChannels[kAccumulatorNumChannels];
 
-         AnalogChannel(UINT32 slot, UINT32 channel);
+    AnalogChannel(UINT32 slot, UINT32 channel);
     explicit AnalogChannel(UINT32 channel);
-         virtual ~ AnalogChannel();
+    virtual ~ AnalogChannel();
 
     AnalogModule *GetModule();
 

@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                                                         */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -13,9 +13,10 @@
 /**
  * Analog Module class.
  * Each module can independently sample its channels at a configurable rate.
- * There is a 64-bit hardware accumulator associated with channel 1 on each module.
- * The accumulator is attached to the output of the oversample and average engine so that the center
- * value can be specified in higher resolution resulting in less error.
+ * There is a 64-bit hardware accumulator associated with channel 1 on
+ * each module.  The accumulator is attached to the output of the
+ * oversample and average engine so that the center value can be specified
+ * in higher resolution resulting in less error.
  */
 class AnalogModule:public Module
 {
@@ -43,11 +44,11 @@ class AnalogModule:public Module
     static AnalogModule *GetInstance(UINT32 slot);
 
   protected:
-         explicit AnalogModule(UINT32 slot);
-         virtual ~ AnalogModule();
+    explicit AnalogModule(UINT32 slot);
+    virtual ~ AnalogModule();
 
   private:
-         UINT32 GetNumActiveChannels();
+    UINT32 GetNumActiveChannels();
     UINT32 GetNumChannelsToActivate();
     void SetNumChannelsToActivate(UINT32 channels);
 
