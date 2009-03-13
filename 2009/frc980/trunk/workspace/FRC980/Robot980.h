@@ -38,20 +38,20 @@
 
 // Digital Inputs
 #define SLOT_ENC_DRV_LEFT           DSC_LEFT
-#define CHAN_ENC_DRV_LEFT_A         1
-#define CHAN_ENC_DRV_LEFT_B         2
+#define CHAN_ENC_DRV_LEFT_A         2
+#define CHAN_ENC_DRV_LEFT_B         1
 
 #define SLOT_ENC_FOLLOW_LEFT        DSC_LEFT
-#define CHAN_ENC_FOLLOW_LEFT_A      3
-#define CHAN_ENC_FOLLOW_LEFT_B      4
+#define CHAN_ENC_FOLLOW_LEFT_A      4
+#define CHAN_ENC_FOLLOW_LEFT_B      3
 
 #define SLOT_ENC_DRV_RIGHT          DSC_RIGHT
-#define CHAN_ENC_DRV_RIGHT_A        5
-#define CHAN_ENC_DRV_RIGHT_B        6
+#define CHAN_ENC_DRV_RIGHT_A        6
+#define CHAN_ENC_DRV_RIGHT_B        5
 
 #define SLOT_ENC_FOLLOW_RIGHT       DSC_RIGHT
-#define CHAN_ENC_FOLLOW_RIGHT_A     7
-#define CHAN_ENC_FOLLOW_RIGHT_B     8
+#define CHAN_ENC_FOLLOW_RIGHT_A     8
+#define CHAN_ENC_FOLLOW_RIGHT_B     7
 
 // Analog Inputs
 #define SLOT_GYRO                   1
