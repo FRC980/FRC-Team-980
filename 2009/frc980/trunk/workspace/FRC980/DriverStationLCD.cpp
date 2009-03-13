@@ -1,8 +1,8 @@
-/*--------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                           */
-/* Open Source Software - may be modified and shared by FRC teams. The code */
-/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.*/
-/*--------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/* Copyright (c) FIRST 2008. All Rights Reserved.                            */
+/* Open Source Software - may be modified and shared by FRC teams. The code  */
+/* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib. */
+/*---------------------------------------------------------------------------*/
 
 #include "DriverStationLCD.h"
 #include "NetworkCommunication/FRCComm.h"
@@ -84,7 +84,8 @@ void DriverStationLCD::Printf(Line line, UINT32 startingColumn,
     INT32 maxLength = kLineLength - start;
     char lineBuffer[kLineLength + 1];
 
-    if ((startingColumn < 1) || (1 > maxLength))
+    if ((startingColumn < 1) || (startingColumn > startingColumn))
+//    if ((startingColumn < 1) || (1 > maxLength))
         return;
 
     if ((line < kMain_Line6) || (line > kUser_Line6))
