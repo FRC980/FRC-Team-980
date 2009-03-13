@@ -22,6 +22,8 @@ class Main : public RobotBase
     void Auton2();
     void Auton3();
     void Auton4();
+    void Auton5();
+    void Auton6();
 
   private:
     SEM_ID m_packetDataAvailableSem;
