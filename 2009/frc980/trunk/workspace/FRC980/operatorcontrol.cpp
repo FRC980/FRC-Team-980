@@ -20,8 +20,8 @@ float limit(float val, float min = -1, float max = 1)
 
 void Main::OperatorControl()
 {
-    Joystick jsDrive(1);
-    Joystick jsBelts(2);
+    Joystick jsDrive(2);
+    Joystick jsBelts(1);
 
     DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
     Robot980* pRobot = Robot980::GetInstance();
@@ -34,9 +34,11 @@ void Main::OperatorControl()
     {
         GetWatchdog().Feed();
 
-        if (jsDrive.GetRawButton(6) || jsDrive.GetRawButton(11))
+        if (jsDrive.GetRawButton(6) || jsDrive.GetRawButton(11) ||
+            jsDrive.GetRawButton(4) || jsDrive.GetRawButton(5))
             pRobot->EnableTractionControl(true);
-        if (jsDrive.GetRawButton(7) || jsDrive.GetRawButton(10))
+        if (jsDrive.GetRawButton(7) || jsDrive.GetRawButton(10) ||
+            jsDrive.GetRawButton(1) || jsDrive.GetRawButton(2))
             pRobot->EnableTractionControl(false);
 
         float x = jsDrive.GetX();
@@ -66,7 +68,7 @@ void Main::OperatorControl()
             d.Printf("Z   %f", z);
             pRobot->RunBelts(fabs(jsBelts.GetY()), jsBelts.GetY());
         }
-
+        d.Printf("\nAuton: %d", pRobot->GetAutonMode());
 
         pLCD->UpdateLCD();
         DashboardData::UpdateAndSend();
