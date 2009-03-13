@@ -1,17 +1,7 @@
 #include <WPILib.h>
 
 #include "SmartDrive.h"
-
-double limit(double val, double min = -1, double max = 1)
-{
-    if (val > max)
-        return max;
-
-    if (val < min)
-        return min;
-
-    return val;
-}
+#include "utils.h"
 
 SmartDrive::SmartDrive(double kvp, double kvi, double kvd,
                        double kcp, double kci, double kcd,
