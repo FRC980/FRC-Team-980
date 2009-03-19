@@ -1,6 +1,14 @@
 #ifndef ROBOT980_H
 #define ROBOT980_H
 
+// practice bot
+#define GEAR_RATIO                  54/32
+#define TOP_SPEED                   18
+
+// competition bot
+//#define GEAR_RATIO                  48/36
+//#define TOP_SPEED                   12 /* VERIFY */
+
 // The slots for the Digital Side Car installed on the left & right side
 // of the robot
 #define DSC_SLOT                    4
@@ -75,6 +83,7 @@ class Encoder;
 class Gyro;
 class PCVideoServer;
 class SpeedController;
+class Timer;
 
 class Robot980 : public SensorBase
 {
@@ -155,6 +164,9 @@ class Robot980 : public SensorBase
     // encoders on the follow wheels
     Encoder* m_pEncFollowLeft;
     Encoder* m_pEncFollowRight;
+
+    // timer used for debugging (calculating & printing speeds)
+    Timer* m_pTimer;
 
     // camera pan/tilt servos
     Servo* m_pSrvPan;
