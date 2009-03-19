@@ -82,14 +82,27 @@ Robot980::Robot980()
     m_pEncFollowRight->Start();
 
     // "Smart Drive" handles PID, slipping, etc
-    m_psdLeft  = new SmartDrive(0.6, 0.1, 0, // velocity PID constants
-                                0.1, 0.1, 0, // correction PID constants
-                                0.2, 0.1, 0, // acceleration PID constants
-                                m_pscLeft, m_pEncDrvLeft, m_pEncFollowLeft);
-    m_psdRight = new SmartDrive(0.6, 0.1, 0, // velocity PID constants
-                                0.1, 0.1, 0, // correction PID constants
-                                0.2, 0.1, 0, // acceleration PID constants
-                                m_pscRight, m_pEncDrvRight, m_pEncFollowRight);
+//    m_psdLeft  = new SmartDrive(0.6, 0.1, 0, // velocity PID constants
+//                                0.1, 0.1, 0, // correction PID constants
+//                                0.2, 0.1, 0, // acceleration PID constants
+//                                m_pscLeft, m_pEncDrvLeft, m_pEncFollowLeft);
+//    m_psdRight = new SmartDrive(0.6, 0.1, 0, // velocity PID constants
+//                                0.1, 0.1, 0, // correction PID constants
+//                                0.2, 0.1, 0, // acceleration PID constants
+//                               m_pscRight, m_pEncDrvRight, m_pEncFollowRight);
+
+    // "Smart Drive" handles PID, slipping, etc
+    m_psdLeft  = new SmartDrive(0.40, 0.1, 0, // velocity PID constants
+                                0.0, 0.0, 0, // correction PID constants
+                                1.0, 0.0, 0, // acceleration PID constants
+                                m_pscLeft, m_pEncDrvLeft, m_pEncFollowLeft,
+                                0.020);
+    Wait(0.010);
+    m_psdRight = new SmartDrive(0.40, 0.1, 0, // velocity PID constants
+                                0.0, 0.0, 0, // correction PID constants
+                                1.0, 0.0, 0, // acceleration PID constants
+                                m_pscRight, m_pEncDrvRight, m_pEncFollowRight,
+                                0.020);
 
 
     ParticleAnalysisReport par1, par2; // particle analysis reports
@@ -121,6 +134,10 @@ Robot980::Robot980()
     printf("Robot980 constructor\n");
 
     m_trailerInfo.color = DriverStation::kInvalid;
+
+    EnableTractionControl(true);
+    Wait(0.010);
+    EnableTractionControl(false);
 
     /* start the CameraTask  */
     StartCameraTask(CAMERA_FPS, CAMERA_COMPRESSION, CAMERA_RESOLUTION,
@@ -268,8 +285,6 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
 
         d.Printf("Drv %1.6f %1.6f\n",
                  dEncDrvRateLf, dEncDrvRateRt);
-//               m_pEncDrvLeft->GetRate(),
-//               m_pEncDrvRight->GetRate());
 
         pLCD->Printf(DriverStationLCD::kUser_Line6, 1,
                      "Fol %1.6f %1.6f",
@@ -278,8 +293,6 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
 
         d.Printf("Fol %1.6f %1.6f\n",
                  dEncFlwRateLf, dEncFlwRateRt);
-//               m_pEncFollowLeft->GetRate(),
-//               m_pEncFollowRight->GetRate());
 
         pLCD->UpdateLCD();
     }

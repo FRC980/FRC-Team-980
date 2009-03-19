@@ -116,7 +116,7 @@ void SmartDrive::Calculate()
         double dCor_out = dSlippage * m_kCorP + m_dCorInt;
         double dAclCmd = dVelError - dCor_out;
 
-        double dAclError = dAclCmd - dMotorAcl;
+        double dAclError = dAclCmd ;// - dMotorAcl;
 
         m_dAclInt += dAclError * m_kAclI;
         m_dAclInt = limit(m_dAclInt, -1.0, 1.0);
