@@ -38,8 +38,8 @@
 
 // Digital Inputs
 #define SLOT_ENC_DRV_LEFT           DSC_LEFT
-#define CHAN_ENC_DRV_LEFT_A         2
-#define CHAN_ENC_DRV_LEFT_B         1
+#define CHAN_ENC_DRV_LEFT_A         1
+#define CHAN_ENC_DRV_LEFT_B         2
 
 #define SLOT_ENC_FOLLOW_LEFT        DSC_LEFT
 #define CHAN_ENC_FOLLOW_LEFT_A      4
