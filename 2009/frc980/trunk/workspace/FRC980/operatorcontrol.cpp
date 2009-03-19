@@ -47,7 +47,15 @@ void Main::OperatorControl()
         float y = jsDrive.GetY();
         y = (y > 0) ? y * y : y * y * -1;
 
-        pRobot->Drive(limit(y - x), limit(y + x), pLCD);
+        static float fLeft = 0;
+        static float fRight = 0;
+        float fRateLimit = 0.05;
+//        float fRateLimit = 1;
+
+        fLeft  = limit( limit(y - x), fLeft  - fRateLimit, fLeft  + fRateLimit);
+        fRight = limit( limit(y + x), fRight - fRateLimit, fRight + fRateLimit);
+
+        pRobot->Drive(fLeft, fRight, pLCD);
 
         float z = (1 - jsDrive.GetZ()) / 2;
         if (jsDrive.GetRawButton(8) || jsDrive.GetRawButton(9))
@@ -65,8 +73,17 @@ void Main::OperatorControl()
         }
         else
         {
-            d.Printf("Z   %f", z);
-            pRobot->RunBelts(fabs(jsBelts.GetY()), jsBelts.GetY());
+            float f = jsBelts.GetY();
+
+            // on ball exit, limit belt speed to prevent overshooting
+            if (!jsBelts.GetRawButton(1))
+            {
+                if (f > 0)
+                    f *= 0.65;
+            }
+
+            d.Printf("belts  %f", f);
+            pRobot->RunBelts(fabs(f), f);
         }
         d.Printf("\nAuton: %d", pRobot->GetAutonMode());
 
