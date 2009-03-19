@@ -19,6 +19,7 @@ void Main::Disabled()
 
 //        DashboardData::UpdateAndSend();
         pLCD->UpdateLCD();
-        Wait(0.01);
+        while (!NextPeriodReady())
+            Wait(0.01);
     }
 }
