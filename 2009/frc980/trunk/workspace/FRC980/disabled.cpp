@@ -9,15 +9,19 @@
 void Main::Disabled()
 {
     DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
+    Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
 
     printf("in Main::Disabled()\n");
+
+    int i = 0;
 
     while (IsDisabled())
     {
         GetWatchdog().Feed();
         pLCD->Printf(DriverStationLCD::kMain_Line6, 1, "Disabled");
+        d.Printf("Disabled %d\n", i++);
 
-//        DashboardData::UpdateAndSend();
+        DashboardData::UpdateAndSend();
         pLCD->UpdateLCD();
         while (!NextPeriodReady())
             Wait(0.01);
