@@ -18,8 +18,8 @@ void Main::Auton1()
     while (IsAutonomous() && !IsDisabled())
     {
         GetWatchdog().Feed();
-        fSpeed = limit(fSpeed + 0.05);
-        pRobot->Drive(fSpeed, fSpeed, pLCD);
+        fSpeed = limit(fSpeed + 0.05, -0.6, 0.6);
+        pRobot->Drive(- fSpeed, - fSpeed, pLCD); // negative is forward
 
         DashboardData::UpdateAndSend();
         pLCD->UpdateLCD();
@@ -63,7 +63,7 @@ void Main::Auton3()
         fSpeed = limit(fSpeed + 0.05);
 
         if (fSpeed < 0.9)
-            pRobot->Drive(fSpeed, fSpeed, pLCD);
+            pRobot->Drive(- fSpeed, - fSpeed, pLCD); // negative is forward
         else
             pRobot->Drive(fSpeed, -fSpeed, pLCD);
 
@@ -138,6 +138,8 @@ void Main::Autonomous()
     int iMode = pRobot->GetAutonMode();
 
     printf("in Main::Autonomous()\n");
+
+    pRobot->EnableTractionControl(false);
 
     switch(iMode)
     {
