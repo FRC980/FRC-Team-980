@@ -14,12 +14,12 @@ void Main::Auton1()
     DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
     Robot980* pRobot = Robot980::GetInstance();
 
-    float fSpeed = 0.1;
+    pRobot->EnableTractionControl(Robot980::TC_LOWPASS);
+
     while (IsAutonomous() && !IsDisabled())
     {
         GetWatchdog().Feed();
-        fSpeed = limit(fSpeed + 0.05, -0.6, 0.6);
-        pRobot->Drive(- fSpeed, - fSpeed, pLCD); // negative is forward
+        pRobot->Drive(-0.6, -0.6, pLCD); // negative is forward
 
         DashboardData::UpdateAndSend();
         pLCD->UpdateLCD();
@@ -139,7 +139,7 @@ void Main::Autonomous()
 
     printf("in Main::Autonomous()\n");
 
-    pRobot->EnableTractionControl(false);
+    pRobot->EnableTractionControl(Robot980::TC_LOWPASS);
 
     switch(iMode)
     {

@@ -28,18 +28,37 @@ void Main::OperatorControl()
     Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
 
     printf("in Main::OperatorControl()\n");
-    pRobot->EnableTractionControl(false);
+    pRobot->EnableTractionControl(Robot980::TC_LOWPASS);
+
+    Robot980::tractionMode_t tcOld = pRobot->GetTractionControl();
+    bool bOldButton = false;
 
     while (IsOperatorControl() && !IsDisabled())
     {
         GetWatchdog().Feed();
 
-        if (jsDrive.GetRawButton(6) || jsDrive.GetRawButton(11) ||
-            jsDrive.GetRawButton(4) || jsDrive.GetRawButton(5))
-            pRobot->EnableTractionControl(true);
-        if (jsDrive.GetRawButton(7) || jsDrive.GetRawButton(10) ||
-            jsDrive.GetRawButton(1) || jsDrive.GetRawButton(2))
-            pRobot->EnableTractionControl(false);
+        // left & right top buttons (4 & 5) enable "smart" traction control
+        if (jsDrive.GetRawButton(4) || jsDrive.GetRawButton(5))
+            pRobot->EnableTractionControl((tcOld = Robot980::TC_SMART));
+
+        // trigger button enables "low pass filter" traction control
+        if (jsDrive.GetRawButton(1))
+            pRobot->EnableTractionControl((tcOld = Robot980::TC_LOWPASS));
+
+        // lower thumb button (2) temporarily disables all traction control
+        if (jsDrive.GetRawButton(2))
+        {
+            bOldButton = true;
+            pRobot->EnableTractionControl(Robot980::TC_OFF);
+        }
+        else
+        {
+            if (bOldButton)
+            {
+                bOldButton = false;
+                pRobot->EnableTractionControl(tcOld);
+            }
+        }
 
         float x = jsDrive.GetX();
         x = (x > 0) ? x * x : x * x * -1;
@@ -47,45 +66,29 @@ void Main::OperatorControl()
         float y = jsDrive.GetY();
         y = (y > 0) ? y * y : y * y * -1;
 
-        static float fLeft = 0;
-        static float fRight = 0;
-        float fRateLimit = 0.05;
-//        float fRateLimit = 1;
+        float fLeft  = limit(y - x);
+        float fRight = limit(y + x);
 
-        fLeft  = limit( limit(y - x), fLeft  - fRateLimit, fLeft  + fRateLimit);
-        fRight = limit( limit(y + x), fRight - fRateLimit, fRight + fRateLimit);
+        // for debugging, use the "Z" axis and buttons 10/11 for drive
+        const float z = (1 - jsDrive.GetZ()) / 2;
+        if (jsDrive.GetRawButton(10))
+            fLeft = fRight = z;
+        if (jsDrive.GetRawButton(11))
+            fLeft = fRight = -z;
 
         pRobot->Drive(fLeft, fRight, pLCD);
 
-        float z = (1 - jsDrive.GetZ()) / 2;
-        if (jsDrive.GetRawButton(8) || jsDrive.GetRawButton(9))
+        float f = jsBelts.GetY();
+        // on ball exit, limit belt speed to prevent overshooting
+        if (!jsBelts.GetRawButton(1))
         {
-            if (jsDrive.GetRawButton(8))
-            {
-                pRobot->RunBelts(z, -z);
-                d.Printf("In  %f", z);
-            }
-            if (jsDrive.GetRawButton(9))
-            {
-                pRobot->RunBelts(z, z);
-                d.Printf("Out %f", z);
-            }
+            if (f > 0)
+                f *= 0.65;
         }
-        else
-        {
-            float f = jsBelts.GetY();
+        d.Printf("belts  %f\n", f);
+        pRobot->RunBelts(fabs(f), f);
 
-            // on ball exit, limit belt speed to prevent overshooting
-            if (!jsBelts.GetRawButton(1))
-            {
-                if (f > 0)
-                    f *= 0.65;
-            }
-
-            d.Printf("belts  %f", f);
-            pRobot->RunBelts(fabs(f), f);
-        }
-        d.Printf("\nAuton: %d", pRobot->GetAutonMode());
+        d.Printf("Auton: %d", pRobot->GetAutonMode());
 
         pLCD->UpdateLCD();
         DashboardData::UpdateAndSend();

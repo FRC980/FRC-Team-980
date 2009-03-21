@@ -1,16 +1,24 @@
 #include <WPILib.h>
+#include <Timer.h>
 
 #include "SmartDrive.h"
+#include "Robot980.h"
+#include "main.h"
 #include "utils.h"
 
-SmartDrive::SmartDrive(double kvp, double kvi, double kvd,
+extern bool DEBUG_bOK0;
+extern bool DEBUG_bOK1;
+
+SmartDrive::SmartDrive(uint8_t ID,
+                       double kvp, double kvi, double kvd,
                        double kcp, double kci, double kcd,
                        double kap, double kai, double kad,
                        SpeedController* psc,
                        Encoder* pEncDrive,
                        Encoder* pEncFollow,
                        float period)
-    : m_kVelP(kvp)
+    : m_ku8ID(ID)
+    , m_kVelP(kvp)
     , m_kVelI(kvi)
     , m_kVelD(kvd)
     , m_kCorP(kcp)
@@ -25,6 +33,7 @@ SmartDrive::SmartDrive(double kvp, double kvi, double kvd,
     , m_psc(psc)
     , m_pEncDrive(pEncDrive)
     , m_pEncFollow(pEncFollow)
+    , m_pTimer(NULL)
     , m_controlLoop(new Notifier(SmartDrive::CallCalculate, this))
     , m_dPrevMotorVel(0)
     , m_dPrevRobotVel(0)
@@ -34,6 +43,10 @@ SmartDrive::SmartDrive(double kvp, double kvi, double kvd,
     , m_dPrevMotorCount(0)
     , m_dPrevRobotCount(0)
 {
+    m_pTimer = new Timer;
+    if (m_pTimer)
+        m_pTimer->Start();
+
     m_controlLoop->StartPeriodic(period);
 }
 
@@ -65,7 +78,7 @@ void SmartDrive::Enable()
 void SmartDrive::Disable()
 {
     m_bEnabled = false;
-    m_psc->Set(0);
+//    m_psc->Set(0);
 
     m_dVelInt = 0;
     m_dCorInt = 0;
@@ -92,8 +105,27 @@ void SmartDrive::Calculate()
     // velocities should be in range of -1 to 1
 //    double dMotorVel = m_pEncDrive->GetRate(); // to do: scale
 //    double dRobotVel = m_pEncFollow->GetRate(); // to do: scale
-    double dMotorVel = (dMotorCount - m_dPrevMotorCount) / 0.78;
-    double dRobotVel = (dRobotCount - m_dPrevRobotCount) / 0.78;
+    double dMotorVel = (dMotorCount - m_dPrevMotorCount) / m_kfPeriod / TOP_SPEED;
+    double dRobotVel = (dRobotCount - m_dPrevRobotCount) / m_kfPeriod / TOP_SPEED;
+
+    if (!Main::getInstance().IsDisabled())
+    {
+        Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
+        double t = m_pTimer ? m_pTimer->Get() : -1;
+        if (m_pTimer)
+            m_pTimer->Reset();
+
+        if (!m_ku8ID ? DEBUG_bOK0 : (!DEBUG_bOK0 && DEBUG_bOK1))
+        {
+            d.Printf("%d: T: %1.6f  Vel: %2.6f", m_ku8ID, t, dMotorVel);
+            d.Printf(m_ku8ID ? "\n" : "   ");
+
+            if (!m_ku8ID)
+                DEBUG_bOK0 = false;
+            else
+                DEBUG_bOK1 = false;
+        }
+    }
 
     if (m_bEnabled)
     {
@@ -117,6 +149,7 @@ void SmartDrive::Calculate()
         double dAclCmd = dVelError - dCor_out;
 
         double dAclError = dAclCmd ;// - dMotorAcl;
+//        double dAclError = dAclCmd - dMotorAcl;
 
         m_dAclInt += dAclError * m_kAclI;
         m_dAclInt = limit(m_dAclInt, -1.0, 1.0);

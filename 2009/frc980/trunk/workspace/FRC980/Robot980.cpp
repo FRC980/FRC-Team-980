@@ -1,6 +1,7 @@
 #include <WPILib.h>
 #include <AxisCamera.h>
 #include <PCVideoServer.h>
+#include <Timer.h>
 #include <math.h>
 #include <stdbool.h>
 
@@ -9,8 +10,25 @@
 #include "Robot980.h"
 #include "Target.h"
 #include "numbers.h"
+#include "utils.h"
 
 static Robot980* g_pInstance = NULL;
+bool DEBUG_bOK0 = false;
+bool DEBUG_bOK1 = false;
+
+static const char* const tcString(Robot980::tractionMode_t tc)
+{
+    switch (tc)
+    {
+    case Robot980::TC_OFF:
+        return "TC_OFF";
+    case Robot980::TC_LOWPASS:
+        return "TC_LOWPASS";
+    case Robot980::TC_SMART:
+        return "TC_SMART";
+    }
+    return "TC_UNKNOWN";
+}
 
 Robot980* Robot980::GetInstance()
 {
@@ -24,7 +42,10 @@ Robot980* Robot980::GetInstance()
 #define ENC_SCALE	CounterBase::k1X
 
 Robot980::Robot980()
-    : m_bTraction(true)
+    : m_tcTraction(TC_OFF)
+
+    , m_psdLeft(NULL)
+    , m_psdRight(NULL)
 
     // left and right drive motors
     , m_pscLeft(new ReversableJaguar(SLOT_PWM_LEFT, CHAN_PWM_LEFT, true))
@@ -62,16 +83,22 @@ Robot980::Robot980()
                                     CHAN_ENC_FOLLOW_RIGHT_B,
                                     false, ENC_SCALE))
 
+    // Timer used for debugging
+    , m_pTimer(new Timer)
+
     , m_pSrvPan(new Servo(CAMERA_SLOT_PAN, CAMERA_CHAN_PAN))
     , m_pSrvTilt(new Servo(CAMERA_SLOT_TILT, CAMERA_CHAN_TILT))
+    , m_pVideoServer(NULL)
 
-    , m_pCamControlLoop(new Notifier(Robot980::CallCamUpdate, this))
+//    , m_pCamControlLoop(new Notifier(Robot980::CallCamUpdate, this))
+    , m_pCamControlLoop(NULL)
     , m_dSavedImageTimestamp(0.0)
     , m_trackColor(DriverStation::kInvalid)
 {
+    // pi * diameter * gear ratio / encoder ticks / in/ft
     // 48:32 = 1.5 on drive wheels
-    m_pEncDrvLeft->SetDistancePerPulse(M_PI * 6 * 1.5 / 250 / 12);
-    m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 * 1.5 / 250 / 12);
+    m_pEncDrvLeft->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
+    m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
 
     m_pEncFollowLeft->SetDistancePerPulse(M_PI * 60/25.4 / 250 / 12);
     m_pEncFollowRight->SetDistancePerPulse(M_PI * 60/25.4 / 250 / 12);
@@ -81,24 +108,32 @@ Robot980::Robot980()
     m_pEncFollowLeft->Start();
     m_pEncFollowRight->Start();
 
+    m_pTimer->Reset();
+    m_pTimer->Start();
+
+
     // "Smart Drive" handles PID, slipping, etc
-//    m_psdLeft  = new SmartDrive(0.6, 0.1, 0, // velocity PID constants
+//    m_psdLeft  = new SmartDrive(SD_ID_LEFT,
+//                                0.6, 0.1, 0, // velocity PID constants
 //                                0.1, 0.1, 0, // correction PID constants
 //                                0.2, 0.1, 0, // acceleration PID constants
 //                                m_pscLeft, m_pEncDrvLeft, m_pEncFollowLeft);
-//    m_psdRight = new SmartDrive(0.6, 0.1, 0, // velocity PID constants
+//    m_psdRight = new SmartDrive(SD_ID_RIGHT,
+//                                0.6, 0.1, 0, // velocity PID constants
 //                                0.1, 0.1, 0, // correction PID constants
 //                                0.2, 0.1, 0, // acceleration PID constants
 //                               m_pscRight, m_pEncDrvRight, m_pEncFollowRight);
 
     // "Smart Drive" handles PID, slipping, etc
-    m_psdLeft  = new SmartDrive(0.40, 0.1, 0, // velocity PID constants
+    m_psdLeft  = new SmartDrive(SD_ID_LEFT,
+                                0.6, 0.1, 0, // velocity PID constants
                                 0.0, 0.0, 0, // correction PID constants
                                 1.0, 0.0, 0, // acceleration PID constants
                                 m_pscLeft, m_pEncDrvLeft, m_pEncFollowLeft,
                                 0.020);
     Wait(0.010);
-    m_psdRight = new SmartDrive(0.40, 0.1, 0, // velocity PID constants
+    m_psdRight = new SmartDrive(SD_ID_RIGHT,
+                                0.6, 0.1, 0, // velocity PID constants
                                 0.0, 0.0, 0, // correction PID constants
                                 1.0, 0.0, 0, // acceleration PID constants
                                 m_pscRight, m_pEncDrvRight, m_pEncFollowRight,
@@ -135,14 +170,14 @@ Robot980::Robot980()
 
     m_trailerInfo.color = DriverStation::kInvalid;
 
-    EnableTractionControl(true);
+    EnableTractionControl(TC_SMART);
     Wait(0.010);
-    EnableTractionControl(false);
+    EnableTractionControl(TC_LOWPASS);
 
     /* start the CameraTask  */
     StartCameraTask(CAMERA_FPS, CAMERA_COMPRESSION, CAMERA_RESOLUTION,
                     CAMERA_ROTATION);
-    m_pVideoServer = new PCVideoServer;
+//    m_pVideoServer = new PCVideoServer;
     m_pCamControlLoop->StartPeriodic((double)1.0 / (double)CAMERA_FPS);
 
     // tell SensorBase about us
@@ -198,34 +233,56 @@ int Robot980::GetAutonMode()
     return 1;
 }
 
-void Robot980::EnableTractionControl(bool b)
+void Robot980::EnableTractionControl(tractionMode_t tc)
 {
-    m_bTraction = b;
+    if (tc == m_tcTraction)
+        return;
 
-    if (m_bTraction)
+    m_tcTraction = tc;
+
+    if (TC_SMART == m_tcTraction)
     {
-        m_psdLeft->Enable();
-        m_psdRight->Enable();
+        if (m_psdLeft)
+            m_psdLeft->Enable();
+        if (m_psdRight)
+            m_psdRight->Enable();
     }
     else
     {
-        m_psdLeft->Disable();
-        m_psdRight->Disable();
+        if (m_psdLeft)
+            m_psdLeft->Disable();
+        if (m_psdRight)
+            m_psdRight->Disable();
     }
 }
 
 // 1 = forward, -1 = backwards
 void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
 {
-    if (m_bTraction)
+    double dTime = m_pTimer->Get();
+    m_pTimer->Reset();
+    float l,r;
+
+    switch (m_tcTraction)
     {
-        m_psdLeft->Set(left);
-        m_psdRight->Set(right);
-    }
-    else
-    {
+    case TC_OFF:
         m_pscLeft->Set(left);
         m_pscRight->Set(right);
+        break;
+
+    case TC_LOWPASS:
+        l = m_pscLeft->Get();
+        r = m_pscRight->Get();
+        m_pscLeft->Set (limit(left,  l - dTime, l + dTime));
+        m_pscRight->Set(limit(right, r - dTime, r + dTime));
+        break;
+
+    case TC_SMART:
+        if (m_psdLeft)
+            m_psdLeft->Set(left);
+        if (m_psdRight)
+            m_psdRight->Set(right);
+        break;
     }
 
     Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
@@ -251,47 +308,45 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
         dPrevEncDrvCntRt = dEncDrvCntRt;
         dPrevEncFlwCntRt = dEncFlwCntRt;
 
-        dEncDrvRateLf = dEncDrvRateLf / 0.78;
-        dEncFlwRateLf = dEncFlwRateLf / 0.78;
-        dEncDrvRateRt = dEncDrvRateRt / 0.78;
-        dEncFlwRateRt = dEncFlwRateRt / 0.78;
+        dEncDrvRateLf = dEncDrvRateLf / dTime / TOP_SPEED;
+        dEncFlwRateLf = dEncFlwRateLf / dTime / TOP_SPEED;
+        dEncDrvRateRt = dEncDrvRateRt / dTime / TOP_SPEED;
+        dEncFlwRateRt = dEncFlwRateRt / dTime / TOP_SPEED;
 
-        pLCD->Printf(DriverStationLCD::kMain_Line6, 1,
-                     m_bTraction ? "TC: ON " : "TC: OFF");
-        pLCD->Printf(DriverStationLCD::kUser_Line2, 1,
-                     m_bTraction ? "TC: ON " : "TC: OFF");
+        d.Printf("time: %1.6f\n",dTime);
 
-        d.Printf(m_bTraction ? "TC: ON \n" : "TC: OFF\n");
+        pLCD->Printf(DriverStationLCD::kMain_Line6, 1, tcString(m_tcTraction));
+        pLCD->Printf(DriverStationLCD::kUser_Line2, 1, tcString(m_tcTraction));
+
+        d.Printf("%s\n", tcString(m_tcTraction));
 
 
         pLCD->Printf(DriverStationLCD::kUser_Line3, 1,
-                     "Cmd %1.6f %1.6f", left, right);
+                     "Cmd %1.4f %1.4f", left, right);
 
-        d.Printf("Cmd %1.6f %1.6f\n", left, right);
+        d.Printf("Cmd %1.4f %1.4f\n", left, right);
 
         pLCD->Printf(DriverStationLCD::kUser_Line4, 1,
-                     "Mtr %1.6f %1.6f",
+                     "Mtr %1.4f %1.4f",
                      m_pscLeft->Get(),
                      m_pscRight->Get());
 
-        d.Printf("Mtr %1.6f %1.6f\n",
+        d.Printf("Mtr %1.4f %1.4f\n",
                m_pscLeft->Get(),
                m_pscRight->Get());
 
         pLCD->Printf(DriverStationLCD::kUser_Line5, 1,
-                     "Drv %1.6f %1.6f",
-                     m_pEncDrvLeft->GetRate(),
-                     m_pEncDrvRight->GetRate());
+                     "Drv %1.4f %1.4f",
+                     dEncDrvRateLf, dEncDrvRateRt);
 
-        d.Printf("Drv %1.6f %1.6f\n",
+        d.Printf("Drv %1.4f %1.4f\n",
                  dEncDrvRateLf, dEncDrvRateRt);
 
         pLCD->Printf(DriverStationLCD::kUser_Line6, 1,
-                     "Fol %1.6f %1.6f",
-                     m_pEncFollowLeft->GetRate(),
-                     m_pEncFollowRight->GetRate());
+                     "Fol %1.4f %1.4f",
+                     dEncFlwRateLf, dEncFlwRateRt);
 
-        d.Printf("Fol %1.6f %1.6f\n",
+        d.Printf("Fol %1.4f %1.4f\n",
                  dEncFlwRateLf, dEncFlwRateRt);
 
         pLCD->UpdateLCD();
@@ -300,6 +355,8 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
     {
         d.Printf("No pLCD\n");
     }
+    DEBUG_bOK0 = true;
+    DEBUG_bOK1 = true;
 }
 
 // 1 = in @ base, up and out

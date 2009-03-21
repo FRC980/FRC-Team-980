@@ -88,6 +88,13 @@ class Timer;
 class Robot980 : public SensorBase
 {
   public:
+    typedef enum
+    {
+        TC_OFF,
+        TC_LOWPASS,
+        TC_SMART,
+    } tractionMode_t;
+
     typedef struct
     {
         DriverStation::Alliance color; // kInvalid indicates none found
@@ -121,14 +128,14 @@ class Robot980 : public SensorBase
 
     bool FindTrailer(DriverStation::Alliance trackColor,
                      trailerInfo_t *pTrailer);
-    void EnableTractionControl(bool);
+    void EnableTractionControl(tractionMode_t);
 
     // 1 = forward, -1 = backwards
     void Drive(float left, float right, DriverStationLCD* pLCD = NULL);
 
     void RunBelts(float lower, float upper); // 1 = in @ base, up and out
     void Flap(bool open);
-    bool GetTractionControl() { return m_bTraction; };
+    tractionMode_t GetTractionControl() { return m_tcTraction; };
 
     float getAngle();           // get angle from gyro
     void SetTrackColor(DriverStation::Alliance);
@@ -137,7 +144,7 @@ class Robot980 : public SensorBase
     Robot980();
     virtual ~Robot980();
 
-    bool m_bTraction;
+    tractionMode_t m_tcTraction;
 
     // left and right drive systems
     SmartDrive* m_psdLeft;
