@@ -45,12 +45,12 @@ void Main::OperatorControl()
         if (jsDrive.GetRawButton(5))
             pRobot->EnableTractionControl((tcOld = Robot980::TC_SMART_2));
 
-        // trigger button enables "low pass filter" traction control
-        if (jsDrive.GetRawButton(1))
+        // lower thumb button enables "low pass filter" traction control
+        if (jsDrive.GetRawButton(2))
             pRobot->EnableTractionControl((tcOld = Robot980::TC_LOWPASS));
 
-        // lower thumb button (2) temporarily disables all traction control
-        if (jsDrive.GetRawButton(2))
+        // trigger button (1) temporarily disables all traction control
+        if (jsDrive.GetRawButton(1))
         {
             bOldButton = true;
             pRobot->EnableTractionControl(Robot980::TC_OFF);
