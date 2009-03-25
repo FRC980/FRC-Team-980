@@ -148,6 +148,9 @@ void SmartDrive::Calculate()
 
         double dSlippage = m_bUseSlip ? (dMotorVel - dRobotVel) : 0;
 
+        if (ABS(dSlippage) <= .01)
+            dSlippage = 0;
+
         m_dCorInt += dSlippage * m_kCorI;
         m_dCorInt = limit(m_dCorInt, -1.25, 1.25);
 
