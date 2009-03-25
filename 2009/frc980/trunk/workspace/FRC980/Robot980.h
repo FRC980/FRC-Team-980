@@ -1,13 +1,20 @@
 #ifndef ROBOT980_H
 #define ROBOT980_H
 
+#include "numbers.h"
+
 // practice bot
 #define GEAR_RATIO                  54/32
-#define TOP_SPEED                   18
+//#define TOP_SPEED                   18
 
 // competition bot
 //#define GEAR_RATIO                  48/36
 //#define TOP_SPEED                   12 /* VERIFY */
+
+// Theoretical speed of CIM is 5500 RPM
+// free-running top speed = <speed of cim in rpm> / 60sec/min / <ratio of
+// toughbox> * <sprocket ratio> * pi * <wheel diameter in feet>
+#define TOP_SPEED   (5000/60 / 12.75 * (GEAR_RATIO) * M_PI * 0.5)
 
 // The slots for the Digital Side Car installed on the left & right side
 // of the robot
@@ -92,7 +99,8 @@ class Robot980 : public SensorBase
     {
         TC_OFF,
         TC_LOWPASS,
-        TC_SMART,
+        TC_SMART_1,
+        TC_SMART_2,
     } tractionMode_t;
 
     typedef struct

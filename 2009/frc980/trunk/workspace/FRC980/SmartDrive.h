@@ -15,9 +15,9 @@ class SmartDrive : public SpeedController
 {
   public:
     SmartDrive(uint8_t id,
-               double kvp, double kvi, double kvd, // velocity PID constants
-               double kcp, double kci, double kcd, // correction PID constants
-               double kap, double kai, double kad, // accel PID constants
+               double kvp, double kvi, // velocity PID constants
+               double kcp, double kci, // correction PID constants
+               double kap, double kai, bool kbacl, // accel PID constants
                SpeedController* psc, Encoder* pEncDrive, Encoder* pEncFollow,
                float period = 0.010);
     virtual ~SmartDrive();
@@ -25,15 +25,17 @@ class SmartDrive : public SpeedController
     virtual void Set(float speed) { m_dCmdSpeed = speed; };
     virtual float Get() { return m_dCmdSpeed; };
 
-    void Enable();
+    void Enable(bool bUseSlip = true);
     void Disable();
     void Reset();
 
   private:
     const uint8_t m_ku8ID;
-    const double m_kVelP, m_kVelI, m_kVelD;
-    const double m_kCorP, m_kCorI, m_kCorD;
-    const double m_kAclP, m_kAclI, m_kAclD;
+    const double m_kVelP, m_kVelI;
+    const double m_kCorP, m_kCorI;
+    const double m_kAclP, m_kAclI;
+    bool m_bUseAcl;
+    bool m_bUseSlip;
     const float  m_kfPeriod;
 
     double m_dCmdSpeed;

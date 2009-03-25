@@ -20,6 +20,7 @@ float limit(float val, float min = -1, float max = 1)
 
 void Main::OperatorControl()
 {
+    Joystick jsDebug(3);
     Joystick jsDrive(2);
     Joystick jsBelts(1);
 
@@ -38,8 +39,11 @@ void Main::OperatorControl()
         GetWatchdog().Feed();
 
         // left & right top buttons (4 & 5) enable "smart" traction control
-        if (jsDrive.GetRawButton(4) || jsDrive.GetRawButton(5))
-            pRobot->EnableTractionControl((tcOld = Robot980::TC_SMART));
+        if (jsDrive.GetRawButton(4))
+            pRobot->EnableTractionControl((tcOld = Robot980::TC_SMART_1));
+
+        if (jsDrive.GetRawButton(5))
+            pRobot->EnableTractionControl((tcOld = Robot980::TC_SMART_2));
 
         // trigger button enables "low pass filter" traction control
         if (jsDrive.GetRawButton(1))
@@ -70,10 +74,10 @@ void Main::OperatorControl()
         float fRight = limit(y + x);
 
         // for debugging, use the "Z" axis and buttons 10/11 for drive
-        const float z = (1 - jsDrive.GetZ()) / 2;
-        if (jsDrive.GetRawButton(10))
+        const float z = (1 - jsDebug.GetZ()) / 2;
+        if (jsDebug.GetRawButton(10))
             fLeft = fRight = z;
-        if (jsDrive.GetRawButton(11))
+        if (jsDebug.GetRawButton(11))
             fLeft = fRight = -z;
 
         pRobot->Drive(fLeft, fRight, pLCD);

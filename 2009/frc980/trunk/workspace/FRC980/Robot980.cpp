@@ -24,8 +24,10 @@ static const char* const tcString(Robot980::tractionMode_t tc)
         return "TC_OFF";
     case Robot980::TC_LOWPASS:
         return "TC_LOWPASS";
-    case Robot980::TC_SMART:
-        return "TC_SMART";
+    case Robot980::TC_SMART_1:
+        return "TC_SMART_1";
+    case Robot980::TC_SMART_2:
+        return "TC_SMART_2";
     }
     return "TC_UNKNOWN";
 }
@@ -39,7 +41,7 @@ Robot980* Robot980::GetInstance()
     return g_pInstance;
 }
 
-#define ENC_SCALE	CounterBase::k1X
+#define ENC_SCALE   CounterBase::k1X
 
 Robot980::Robot980()
     : m_tcTraction(TC_OFF)
@@ -111,34 +113,38 @@ Robot980::Robot980()
     m_pTimer->Reset();
     m_pTimer->Start();
 
-
-    // "Smart Drive" handles PID, slipping, etc
+#define SD_TIME     0.020
+//    // "Smart Drive" handles PID, slipping, etc
 //    m_psdLeft  = new SmartDrive(SD_ID_LEFT,
-//                                0.6, 0.1, 0, // velocity PID constants
-//                                0.1, 0.1, 0, // correction PID constants
-//                                0.2, 0.1, 0, // acceleration PID constants
-//                                m_pscLeft, m_pEncDrvLeft, m_pEncFollowLeft);
+//                                0.6, 0.1, // velocity PID constants
+//                                0.1, 0.1, // correction PID constants
+//                                0.2, 0.1, // acceleration PID constants
+//                                true,
+//                                m_pscLeft, m_pEncDrvLeft, m_pEncFollowLeft,
+//                                SD_TIME);
+//    Wait(SD_TIME / 2);
 //    m_psdRight = new SmartDrive(SD_ID_RIGHT,
-//                                0.6, 0.1, 0, // velocity PID constants
-//                                0.1, 0.1, 0, // correction PID constants
-//                                0.2, 0.1, 0, // acceleration PID constants
-//                               m_pscRight, m_pEncDrvRight, m_pEncFollowRight);
+//                                0.6, 0.1, // velocity PID constants
+//                                0.1, 0.1, // correction PID constants
+//                                0.2, 0.1, // acceleration PID constants
+//                                true,
+//                                m_pscRight, m_pEncDrvRight, m_pEncFollowRight,
+//                                SD_TIME);
 
     // "Smart Drive" handles PID, slipping, etc
     m_psdLeft  = new SmartDrive(SD_ID_LEFT,
-                                0.6, 0.1, 0, // velocity PID constants
-                                0.0, 0.0, 0, // correction PID constants
-                                1.0, 0.0, 0, // acceleration PID constants
+                                0.6, 0.1, // velocity PID constants
+                                1.0, 0.1, // correction PID constants
+                                1.0, 0.0, false, // acceleration PID constants
                                 m_pscLeft, m_pEncDrvLeft, m_pEncFollowLeft,
-                                0.020);
-    Wait(0.010);
+                                SD_TIME);
+    Wait(SD_TIME / 2);
     m_psdRight = new SmartDrive(SD_ID_RIGHT,
-                                0.6, 0.1, 0, // velocity PID constants
-                                0.0, 0.0, 0, // correction PID constants
-                                1.0, 0.0, 0, // acceleration PID constants
+                                0.6, 0.1, // velocity PID constants
+                                1.0, 0.1, // correction PID constants
+                                1.0, 0.0, false, // acceleration PID constants
                                 m_pscRight, m_pEncDrvRight, m_pEncFollowRight,
-                                0.020);
-
+                                SD_TIME);
 
     ParticleAnalysisReport par1, par2; // particle analysis reports
     memset(&par1, 0, sizeof(ParticleAnalysisReport));
@@ -170,7 +176,7 @@ Robot980::Robot980()
 
     m_trailerInfo.color = DriverStation::kInvalid;
 
-    EnableTractionControl(TC_SMART);
+    EnableTractionControl(TC_SMART_2);
     Wait(0.010);
     EnableTractionControl(TC_LOWPASS);
 
@@ -240,19 +246,29 @@ void Robot980::EnableTractionControl(tractionMode_t tc)
 
     m_tcTraction = tc;
 
-    if (TC_SMART == m_tcTraction)
+    switch (m_tcTraction)
     {
-        if (m_psdLeft)
-            m_psdLeft->Enable();
-        if (m_psdRight)
-            m_psdRight->Enable();
-    }
-    else
-    {
+    case TC_OFF:
+    case TC_LOWPASS:
         if (m_psdLeft)
             m_psdLeft->Disable();
         if (m_psdRight)
             m_psdRight->Disable();
+        break;
+
+    case TC_SMART_1:
+        if (m_psdLeft)
+            m_psdLeft->Enable(false);
+        if (m_psdRight)
+            m_psdRight->Enable(false);
+        break;
+
+    case TC_SMART_2:
+        if (m_psdLeft)
+            m_psdLeft->Enable(true);
+        if (m_psdRight)
+            m_psdRight->Enable(true);
+        break;
     }
 }
 
@@ -262,6 +278,8 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
     double dTime = m_pTimer->Get();
     m_pTimer->Reset();
     float l,r;
+
+    const double scale = (48/36)/(GEAR_RATIO);
 
     switch (m_tcTraction)
     {
@@ -273,11 +291,12 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
     case TC_LOWPASS:
         l = m_pscLeft->Get();
         r = m_pscRight->Get();
-        m_pscLeft->Set (limit(left,  l - dTime, l + dTime));
-        m_pscRight->Set(limit(right, r - dTime, r + dTime));
+        m_pscLeft->Set (limit(left,  l - dTime * scale, l + dTime * scale));
+        m_pscRight->Set(limit(right, r - dTime * scale, r + dTime * scale));
         break;
 
-    case TC_SMART:
+    case TC_SMART_1:
+    case TC_SMART_2:
         if (m_psdLeft)
             m_psdLeft->Set(left);
         if (m_psdRight)
@@ -322,34 +341,34 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
 
 
         pLCD->Printf(DriverStationLCD::kUser_Line3, 1,
-                     "Cmd %1.4f %1.4f", left, right);
+                     "Cmd %7.4f %7.4f", left, right);
 
-        d.Printf("Cmd %1.4f %1.4f\n", left, right);
+        d.Printf("Cmd %7.4f %7.4f\n", left, right);
 
         pLCD->Printf(DriverStationLCD::kUser_Line4, 1,
-                     "Mtr %1.4f %1.4f",
+                     "Mtr %7.4f %7.4f",
                      m_pscLeft->Get(),
                      m_pscRight->Get());
 
-        d.Printf("Mtr %1.4f %1.4f\n",
+        d.Printf("Mtr %7.4f %7.4f\n",
                m_pscLeft->Get(),
                m_pscRight->Get());
 
         pLCD->Printf(DriverStationLCD::kUser_Line5, 1,
-                     "Drv %1.4f %1.4f",
+                     "Drv %7.4f %7.4f",
                      dEncDrvRateLf, dEncDrvRateRt);
 
-        d.Printf("Drv %1.4f %1.4f\n",
+        d.Printf("Drv %7.4f %7.4f\n",
                  dEncDrvRateLf, dEncDrvRateRt);
 
         pLCD->Printf(DriverStationLCD::kUser_Line6, 1,
-                     "Fol %1.4f %1.4f",
+                     "Fol %7.4f %7.4f",
                      dEncFlwRateLf, dEncFlwRateRt);
 
-        d.Printf("Fol %1.4f %1.4f\n",
+        d.Printf("Fol %7.4f %7.4f\n",
                  dEncFlwRateLf, dEncFlwRateRt);
 
-        pLCD->UpdateLCD();
+//        pLCD->UpdateLCD();
     }
     else
     {

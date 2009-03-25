@@ -10,9 +10,10 @@ extern bool DEBUG_bOK0;
 extern bool DEBUG_bOK1;
 
 SmartDrive::SmartDrive(uint8_t ID,
-                       double kvp, double kvi, double kvd,
-                       double kcp, double kci, double kcd,
-                       double kap, double kai, double kad,
+                       double kvp, double kvi,
+                       double kcp, double kci,
+                       double kap, double kai,
+                       bool bUseAcl,
                        SpeedController* psc,
                        Encoder* pEncDrive,
                        Encoder* pEncFollow,
@@ -20,13 +21,12 @@ SmartDrive::SmartDrive(uint8_t ID,
     : m_ku8ID(ID)
     , m_kVelP(kvp)
     , m_kVelI(kvi)
-    , m_kVelD(kvd)
     , m_kCorP(kcp)
     , m_kCorI(kci)
-    , m_kCorD(kvd)
-    , m_kAclP(kap)
-    , m_kAclI(kai)
-    , m_kAclD(kad)
+    , m_kAclP(bUseAcl ? kap : 1.0)
+    , m_kAclI(bUseAcl ? kai : 0.0)
+    , m_bUseAcl(bUseAcl)
+    , m_bUseSlip(true)
     , m_kfPeriod(period)
     , m_dCmdSpeed(0)
     , m_bEnabled(false)
@@ -70,9 +70,12 @@ void SmartDrive::CallCalculate(void *pvsd)
 }
 
 
-void SmartDrive::Enable()
+void SmartDrive::Enable(bool bUseSlip)
 {
     m_bEnabled = true;
+    m_bUseSlip = bUseSlip;
+    if (!m_bUseSlip)
+        m_dCorInt = 0;
 }
 
 void SmartDrive::Disable()
@@ -105,20 +108,22 @@ void SmartDrive::Calculate()
     // velocities should be in range of -1 to 1
 //    double dMotorVel = m_pEncDrive->GetRate(); // to do: scale
 //    double dRobotVel = m_pEncFollow->GetRate(); // to do: scale
-    double dMotorVel = (dMotorCount - m_dPrevMotorCount) / m_kfPeriod / TOP_SPEED;
-    double dRobotVel = (dRobotCount - m_dPrevRobotCount) / m_kfPeriod / TOP_SPEED;
+    double dMotorVel=(dMotorCount-m_dPrevMotorCount) / m_kfPeriod / TOP_SPEED;
+    double dRobotVel=(dRobotCount-m_dPrevRobotCount) / m_kfPeriod / TOP_SPEED;
+
+    double dTime = m_pTimer ? m_pTimer->Get() : 1;
+    if (m_pTimer)
+        m_pTimer->Reset();
 
     if (!Main::getInstance().IsDisabled())
     {
         Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
-        double t = m_pTimer ? m_pTimer->Get() : -1;
-        if (m_pTimer)
-            m_pTimer->Reset();
 
-        if (!m_ku8ID ? DEBUG_bOK0 : (!DEBUG_bOK0 && DEBUG_bOK1))
+        if (!m_ku8ID ? (DEBUG_bOK0 && DEBUG_bOK1) : (DEBUG_bOK1 && !DEBUG_bOK0))
         {
-            d.Printf("%d: T: %1.6f  Vel: %2.6f", m_ku8ID, t, dMotorVel);
-            d.Printf(m_ku8ID ? "\n" : "   ");
+            d.Printf("%d: T: %6.4f  Vel: %7.4f  Acl: %7.4f  Slp: %7.4f\n",
+                     m_ku8ID, dTime, dMotorVel, dMotorVel - m_dPrevMotorVel,
+                     dMotorVel - dRobotVel);
 
             if (!m_ku8ID)
                 DEBUG_bOK0 = false;
@@ -129,7 +134,8 @@ void SmartDrive::Calculate()
 
     if (m_bEnabled)
     {
-        double dMotorAcl = (dMotorVel - m_dPrevMotorVel) / m_kfPeriod;
+        double dMotorAcl =
+            m_bUseAcl ? (dMotorVel - m_dPrevMotorVel) / m_kfPeriod : 0;
 //        double dRobotAcl = (dRobotVel - m_dPrevRobotVel) / m_kfPeriod;
 
         double dVelDelta = m_dCmdSpeed - dMotorVel;
@@ -140,7 +146,7 @@ void SmartDrive::Calculate()
         double dVelError = m_kVelP * dVelDelta + m_dVelInt;
         dVelError = limit(dVelError, -1.0, 1.0);
 
-        double dSlippage = dMotorVel - dRobotVel;
+        double dSlippage = m_bUseSlip ? (dMotorVel - dRobotVel) : 0;
 
         m_dCorInt += dSlippage * m_kCorI;
         m_dCorInt = limit(m_dCorInt, -1.25, 1.25);
@@ -148,14 +154,20 @@ void SmartDrive::Calculate()
         double dCor_out = dSlippage * m_kCorP + m_dCorInt;
         double dAclCmd = dVelError - dCor_out;
 
-        double dAclError = dAclCmd ;// - dMotorAcl;
-//        double dAclError = dAclCmd - dMotorAcl;
+        double dAclError = dAclCmd - dMotorAcl;
 
         m_dAclInt += dAclError * m_kAclI;
         m_dAclInt = limit(m_dAclInt, -1.0, 1.0);
 
         double dMotorCmd = dAclError * m_kAclP + m_dAclInt;
-        m_psc->Set(dMotorCmd);
+
+        if (m_bUseSlip)
+            m_psc->Set(dMotorCmd);
+        else
+        {
+            double d = m_psc->Get();
+            m_psc->Set(limit(dMotorCmd, d - dTime, d + dTime));
+        }
     }
 
     m_dPrevMotorCount = dMotorCount;
