@@ -134,14 +134,14 @@ Robot980::Robot980()
     // "Smart Drive" handles PID, slipping, etc
     m_psdLeft  = new SmartDrive(SD_ID_LEFT,
                                 0.6, 0.1, // velocity PID constants
-                                1.0, 0.1, // correction PID constants
+                                1.0, 0.04, // correction PID constants
                                 1.0, 0.0, false, // acceleration PID constants
                                 m_pscLeft, m_pEncDrvLeft, m_pEncFollowLeft,
                                 SD_TIME);
     Wait(SD_TIME / 2);
     m_psdRight = new SmartDrive(SD_ID_RIGHT,
                                 0.6, 0.1, // velocity PID constants
-                                1.0, 0.1, // correction PID constants
+                                1.0, 0.04, // correction PID constants
                                 1.0, 0.0, false, // acceleration PID constants
                                 m_pscRight, m_pEncDrvRight, m_pEncFollowRight,
                                 SD_TIME);
