@@ -96,10 +96,10 @@ void Main::OperatorControl()
 
         pLCD->UpdateLCD();
         DashboardData::UpdateAndSend();
-        Wait(0.05);
+        Wait(0.020);
 
         while (!NextPeriodReady())
-            Wait(0.01);
+            Wait(0.001);
     }
 
     printf("leaving Main::OperatorControl()\n");
