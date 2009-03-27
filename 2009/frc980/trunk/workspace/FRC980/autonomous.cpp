@@ -13,20 +13,7 @@ void Main::Auton1()
 {
     DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
     Robot980* pRobot = Robot980::GetInstance();
-
-    pRobot->EnableTractionControl(Robot980::TC_LOWPASS);
-
-    while (IsAutonomous() && !IsDisabled())
-    {
-        GetWatchdog().Feed();
-        pRobot->Drive(-0.6, -0.6, pLCD); // negative is forward
-
-        DashboardData::UpdateAndSend();
-        pLCD->UpdateLCD();
-
-        while (!NextPeriodReady())
-            Wait(0.01);
-    }
+    pRobot->Drive(-0.6, -0.6, pLCD); // negative is forward
 }
 
 // MODE 2: Drive pseudo-randomly
@@ -35,19 +22,9 @@ void Main::Auton2()
     DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
     Robot980* pRobot = Robot980::GetInstance();
 
-    double x = 0;
-    while (IsAutonomous() && !IsDisabled())
-    {
-        x += 0.01;
-
-        pRobot->Drive(sin(0.6*x), sin(0.5*x), pLCD);
-
-        DashboardData::UpdateAndSend();
-        pLCD->UpdateLCD();
-
-        while (!NextPeriodReady())
-            Wait(0.01);
-    }
+    static double x = 0;
+    x += 0.01;
+    pRobot->Drive(sin(0.6*x), sin(0.5*x), pLCD);
 }
 
 // MODE 3: Spin in circles
@@ -56,90 +33,49 @@ void Main::Auton3()
     DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
     Robot980* pRobot = Robot980::GetInstance();
 
-    float fSpeed = 0.1;
-    while (IsAutonomous() && !IsDisabled())
-    {
-        GetWatchdog().Feed();
-        fSpeed = limit(fSpeed + 0.05);
+    static float fSpeed = 0.1;
 
-        if (fSpeed < 0.9)
-            pRobot->Drive(- fSpeed, - fSpeed, pLCD); // negative is forward
-        else
-            pRobot->Drive(fSpeed, -fSpeed, pLCD);
+    fSpeed = limit(fSpeed + 0.05);
 
-        DashboardData::UpdateAndSend();
-        pLCD->UpdateLCD();
-
-        while (!NextPeriodReady())
-            Wait(0.01);
-    }
+    if (fSpeed < 0.9)
+        pRobot->Drive(- fSpeed, - fSpeed, pLCD); // negative is forward
+    else
+        pRobot->Drive(fSpeed, -fSpeed, pLCD);
 }
 
 void Main::Auton4()
 {
-    DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
-    Robot980* pRobot = Robot980::GetInstance();
-
-    while (IsAutonomous() && !IsDisabled())
-    {
-        GetWatchdog().Feed();
-
-        // DO STUFF HERE
-
-        DashboardData::UpdateAndSend();
-        pLCD->UpdateLCD();
-
-        while (!NextPeriodReady())
-            Wait(0.01);
-    }
+    // DO STUFF HERE
 }
 
 void Main::Auton5()
 {
-    DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
-    Robot980* pRobot = Robot980::GetInstance();
-
-    while (IsAutonomous() && !IsDisabled())
-    {
-        GetWatchdog().Feed();
-
-        // DO STUFF HERE
-
-        DashboardData::UpdateAndSend();
-        pLCD->UpdateLCD();
-
-        while (!NextPeriodReady())
-            Wait(0.01);
-    }
+    // DO STUFF HERE
 }
 
 void Main::Auton6()
 {
-    DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
-    Robot980* pRobot = Robot980::GetInstance();
-
-    while (IsAutonomous() && !IsDisabled())
-    {
-        GetWatchdog().Feed();
-
-        // DO STUFF HERE
-
-        DashboardData::UpdateAndSend();
-        pLCD->UpdateLCD();
-
-        while (!NextPeriodReady())
-            Wait(0.01);
-    }
+    // DO STUFF HERE
 }
 
-void Main::Autonomous()
+static int iMode = 0;
+
+void Main::AutonomousInit()
 {
     Robot980* pRobot = Robot980::GetInstance();
-    int iMode = pRobot->GetAutonMode();
+    iMode = pRobot->GetAutonMode();
 
     printf("in Main::Autonomous()\n");
 
     pRobot->EnableTractionControl(Robot980::TC_LOWPASS);
+}
+
+void Main::AutonomousPeriodic()
+{
+    DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
+    Robot980* pRobot = Robot980::GetInstance();
+
+    GetWatchdog().Feed();
 
     switch(iMode)
     {
@@ -168,4 +104,10 @@ void Main::Autonomous()
         Auton6();
         break;
     }
+
+    DashboardData::UpdateAndSend();
+    pLCD->UpdateLCD();
 }
+
+void Main::AutonomousContinuous()
+{}

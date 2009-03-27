@@ -1,22 +1,37 @@
-
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <RobotBase.h>
+#include <IterativeRobot.h>
 #include <Timer.h>
 
-class Main : public RobotBase
+class Main : public IterativeRobot
 {
   public:
     Main();
     virtual ~Main();
 
-    virtual void Init();
-    virtual void Disabled();
-    virtual void Autonomous();
-    virtual void OperatorControl();
-    virtual void StartCompetition();
-    bool NextPeriodReady();
+    virtual void RobotInit();
+
+    virtual void DisabledInit();
+    virtual void DisabledPeriodic();
+    virtual void DisabledContinuous();
+
+    virtual void AutonomousInit();
+    virtual void AutonomousPeriodic();
+    virtual void AutonomousContinuous();
+
+    virtual void TeleopInit();
+    virtual void TeleopPeriodic();
+    virtual void TeleopContinuous();
+    
+//    virtual void Init();
+//    virtual void Disabled();
+//    virtual void Autonomous();
+//    virtual void OperatorControl();
+
+//    virtual void StartCompetition();
+
+//    bool NextPeriodReady();
 
     void Auton1();
     void Auton2();
@@ -24,9 +39,6 @@ class Main : public RobotBase
     void Auton4();
     void Auton5();
     void Auton6();
-
-  private:
-    SEM_ID m_packetDataAvailableSem;
 };
 
 #endif // MAIN_H

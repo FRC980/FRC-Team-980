@@ -4,15 +4,15 @@
 #include "numbers.h"
 
 // practice bot
-#define GEAR_RATIO                  54/32
+//#define GEAR_RATIO                  54/32
 
 // competition bot
-//#define GEAR_RATIO                  48/36
+#define GEAR_RATIO                  48/36
 
 // Theoretical speed of CIM is 5500 RPM
 // free-running top speed = <speed of cim in rpm> / 60sec/min / <ratio of
 // toughbox> * <sprocket ratio> * pi * <wheel diameter in feet>
-#define TOP_SPEED   (5400/60 / 12.75 * (GEAR_RATIO) * M_PI * 0.5)
+#define TOP_SPEED   (5500/60 / 12.75 * (GEAR_RATIO) * M_PI * 0.5)
 
 // The slots for the Digital Side Car installed on the left & right side
 // of the robot

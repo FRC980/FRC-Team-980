@@ -6,24 +6,24 @@
 #include "DriverStationLCD.h"
 #include "Robot980.h"
 
-void Main::Disabled()
+
+void Main::DisabledInit()
+{}
+
+void Main::DisabledPeriodic()
 {
     DriverStationLCD* pLCD = DriverStationLCD::GetInstance();
     Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
 
-    printf("in Main::Disabled()\n");
+    static int i = 0;
 
-    int i = 0;
+    GetWatchdog().Feed();
+    pLCD->Printf(DriverStationLCD::kMain_Line6, 1, "Disabled");
+    d.Printf("Disabled %d\n", i++);
 
-    while (IsDisabled())
-    {
-        GetWatchdog().Feed();
-        pLCD->Printf(DriverStationLCD::kMain_Line6, 1, "Disabled");
-        d.Printf("Disabled %d\n", i++);
-
-        DashboardData::UpdateAndSend();
-        pLCD->UpdateLCD();
-        while (!NextPeriodReady())
-            Wait(0.01);
-    }
+    DashboardData::UpdateAndSend();
+    pLCD->UpdateLCD();
 }
+
+void Main::DisabledContinuous()
+{}

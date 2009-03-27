@@ -115,6 +115,7 @@ void SmartDrive::Calculate()
     if (m_pTimer)
         m_pTimer->Reset();
 
+#if 0
     if (!Main::getInstance().IsDisabled())
     {
         Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
@@ -131,6 +132,7 @@ void SmartDrive::Calculate()
                 DEBUG_bOK1 = false;
         }
     }
+#endif // 0
 
     if (m_bEnabled)
     {
