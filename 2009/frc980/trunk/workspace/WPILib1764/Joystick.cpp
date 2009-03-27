@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.							  */
+/* Copyright (c) FIRST 2008. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
@@ -20,21 +20,21 @@ static bool joySticksInitialized = false;
  * @param port The port on the driver station that the joystick is plugged into.
  */
 Joystick::Joystick(UINT32 port)
-	: m_ds (NULL)
-	, m_port (port)
-	, m_axes (NULL)
-	, m_buttons (NULL)
+    : m_ds (NULL)
+    , m_port (port)
+    , m_axes (NULL)
+    , m_buttons (NULL)
 {
-	InitJoystick(kNumAxisTypes, kNumButtonTypes);
+    InitJoystick(kNumAxisTypes, kNumButtonTypes);
 
-	m_axes[kXAxis] = kDefaultXAxis;
-	m_axes[kYAxis] = kDefaultYAxis;
-	m_axes[kZAxis] = kDefaultZAxis;
-	m_axes[kTwistAxis] = kDefaultTwistAxis;
-	m_axes[kThrottleAxis] = kDefaultThrottleAxis;
-	
-	m_buttons[kTriggerButton] = kDefaultTriggerButton;
-	m_buttons[kTopButton] = kDefaultTopButton;
+    m_axes[kXAxis] = kDefaultXAxis;
+    m_axes[kYAxis] = kDefaultYAxis;
+    m_axes[kZAxis] = kDefaultZAxis;
+    m_axes[kTwistAxis] = kDefaultTwistAxis;
+    m_axes[kThrottleAxis] = kDefaultThrottleAxis;
+    
+    m_buttons[kTriggerButton] = kDefaultTriggerButton;
+    m_buttons[kTopButton] = kDefaultTopButton;
 }
 
 /**
@@ -48,44 +48,44 @@ Joystick::Joystick(UINT32 port)
  * @param numButtonTypes The number of button types in the enum.
  */
 Joystick::Joystick(UINT32 port, UINT32 numAxisTypes, UINT32 numButtonTypes)
-	: m_ds (NULL)
-	, m_port (port)
-	, m_axes (NULL)
-	, m_buttons (NULL)
+    : m_ds (NULL)
+    , m_port (port)
+    , m_axes (NULL)
+    , m_buttons (NULL)
 {
-	InitJoystick(numAxisTypes, numButtonTypes);
+    InitJoystick(numAxisTypes, numButtonTypes);
 }
 
 void Joystick::InitJoystick(UINT32 numAxisTypes, UINT32 numButtonTypes)
 {
-	if ( !joySticksInitialized )
-	{
-		for (unsigned i = 0; i < DriverStation::kJoystickPorts; i++)
-			joysticks[i] = NULL;
-		joySticksInitialized = true;
-	}
-	joysticks[m_port - 1] = this;
-	
-	m_ds = DriverStation::GetInstance();
-	m_axes = new UINT32[numAxisTypes];
-	m_buttons = new UINT32[numButtonTypes];
+    if ( !joySticksInitialized )
+    {
+        for (unsigned i = 0; i < DriverStation::kJoystickPorts; i++)
+            joysticks[i] = NULL;
+        joySticksInitialized = true;
+    }
+    joysticks[m_port - 1] = this;
+    
+    m_ds = DriverStation::GetInstance();
+    m_axes = new UINT32[numAxisTypes];
+    m_buttons = new UINT32[numButtonTypes];
 }
 
 Joystick * Joystick::GetStickForPort(UINT32 port)
 {
-	Joystick *stick = joysticks[port - 1];
-	if (stick == NULL)
-	{
-		stick = new Joystick(port);
-		joysticks[port - 1] = stick;
-	}
-	return stick;
+    Joystick *stick = joysticks[port - 1];
+    if (stick == NULL)
+    {
+        stick = new Joystick(port);
+        joysticks[port - 1] = stick;
+    }
+    return stick;
 }
 
 Joystick::~Joystick()
 {
-	delete [] m_buttons;
-	delete [] m_axes;
+    delete [] m_buttons;
+    delete [] m_axes;
 }
 
 /**
@@ -94,7 +94,7 @@ Joystick::~Joystick()
  */
 float Joystick::GetX(JoystickHand hand)
 {
-	return GetRawAxis(m_axes[kXAxis]);
+    return GetRawAxis(m_axes[kXAxis]);
 }
 
 /**
@@ -103,7 +103,7 @@ float Joystick::GetX(JoystickHand hand)
  */
 float Joystick::GetY(JoystickHand hand)
 {
-	return GetRawAxis(m_axes[kYAxis]);
+    return GetRawAxis(m_axes[kYAxis]);
 }
 
 /**
@@ -112,7 +112,7 @@ float Joystick::GetY(JoystickHand hand)
  */
 float Joystick::GetZ()
 {
-	return GetRawAxis(m_axes[kZAxis]);
+    return GetRawAxis(m_axes[kZAxis]);
 }
 
 /**
@@ -121,7 +121,7 @@ float Joystick::GetZ()
  */
 float Joystick::GetTwist()
 {
-	return GetRawAxis(m_axes[kTwistAxis]);
+    return GetRawAxis(m_axes[kTwistAxis]);
 }
 
 /**
@@ -130,7 +130,7 @@ float Joystick::GetTwist()
  */
 float Joystick::GetThrottle()
 {
-	return GetRawAxis(m_axes[kThrottleAxis]);
+    return GetRawAxis(m_axes[kThrottleAxis]);
 }
 
 /**
@@ -141,7 +141,7 @@ float Joystick::GetThrottle()
  */
 float Joystick::GetRawAxis(UINT32 axis)
 {
-	return m_ds->GetStickAxis(m_port, axis);
+    return m_ds->GetStickAxis(m_port, axis);
 }
 
 /**
@@ -155,17 +155,17 @@ float Joystick::GetRawAxis(UINT32 axis)
  */
 float Joystick::GetAxis(AxisType axis)
 {
-	switch(axis)
-	{
-		case kXAxis: return this->GetX();
-		case kYAxis: return this->GetY();
-		case kZAxis: return this->GetZ();
-		case kTwistAxis: return this->GetTwist();
-		case kThrottleAxis: return this->GetThrottle();
-		default:
-			wpi_fatal(BadJoystickAxis);
-			return 0.0;
-	}
+    switch(axis)
+    {
+        case kXAxis: return this->GetX();
+        case kYAxis: return this->GetY();
+        case kZAxis: return this->GetZ();
+        case kTwistAxis: return this->GetTwist();
+        case kThrottleAxis: return this->GetThrottle();
+        default:
+            wpi_fatal(BadJoystickAxis);
+            return 0.0;
+    }
 }
 
 /**
@@ -178,7 +178,7 @@ float Joystick::GetAxis(AxisType axis)
  */
 bool Joystick::GetTrigger(JoystickHand hand)
 {
-	return GetRawButton(m_buttons[kTriggerButton]);
+    return GetRawButton(m_buttons[kTriggerButton]);
 }
 
 /**
@@ -191,7 +191,7 @@ bool Joystick::GetTrigger(JoystickHand hand)
  */
 bool Joystick::GetTop(JoystickHand hand)
 {
-	return GetRawButton(m_buttons[kTopButton]);
+    return GetRawButton(m_buttons[kTopButton]);
 }
 
 /**
@@ -200,9 +200,9 @@ bool Joystick::GetTop(JoystickHand hand)
  */
 bool Joystick::GetBumper(JoystickHand hand)
 {
-	// Joysticks don't have bumpers.
-	wpi_assert(false);
-	return false;
+    // Joysticks don't have bumpers.
+    wpi_assert(false);
+    return false;
 }
 
 /**
@@ -216,7 +216,7 @@ bool Joystick::GetBumper(JoystickHand hand)
  **/
 bool Joystick::GetRawButton(UINT32 button)
 {
-	return ((0x1 << (button-1)) & m_ds->GetStickButtons(m_port)) != 0;
+    return ((0x1 << (button-1)) & m_ds->GetStickButtons(m_port)) != 0;
 }
 
 /**
@@ -229,14 +229,14 @@ bool Joystick::GetRawButton(UINT32 button)
  */
 bool Joystick::GetButton(ButtonType button)
 {
-	switch (button)
-	{
-	case kTriggerButton: return GetTrigger();
-	case kTopButton: return GetTop();
-	default:
-		wpi_assert(false);
-		return false;
-	}
+    switch (button)
+    {
+    case kTriggerButton: return GetTrigger();
+    case kTopButton: return GetTop();
+    default:
+        wpi_assert(false);
+        return false;
+    }
 }
 
 /**
@@ -247,7 +247,7 @@ bool Joystick::GetButton(ButtonType button)
  */
 UINT32 Joystick::GetAxisChannel(AxisType axis)
 {
-	return m_axes[axis];
+    return m_axes[axis];
 }
 
 /**
@@ -258,7 +258,7 @@ UINT32 Joystick::GetAxisChannel(AxisType axis)
  */
 void Joystick::SetAxisChannel(AxisType axis, UINT32 channel)
 {
-	m_axes[axis] = channel;
+    m_axes[axis] = channel;
 }
 
 /**
@@ -268,7 +268,7 @@ void Joystick::SetAxisChannel(AxisType axis, UINT32 channel)
  * @return The magnitude of the direction vector
  */
 float Joystick::GetMagnitude(){
-	return sqrt(pow(GetX(),2) + pow(GetY(),2) );
+    return sqrt(pow(GetX(),2) + pow(GetY(),2) );
 }
 
 /**
@@ -278,7 +278,7 @@ float Joystick::GetMagnitude(){
  * @return The direction of the vector in radians
  */
 float Joystick::GetDirectionRadians(){
-	return atan2(GetX(), -GetY());
+    return atan2(GetX(), -GetY());
 }
 
 /**
@@ -291,5 +291,5 @@ float Joystick::GetDirectionRadians(){
  * @return The direction of the vector in degrees
  */
 float Joystick::GetDirectionDegrees(){
-	return (180/acos(-1))*GetDirectionRadians();
+    return (180/acos(-1))*GetDirectionRadians();
 }
