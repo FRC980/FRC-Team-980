@@ -1,10 +1,10 @@
-/********************************************************************************
-*  Project   		: FIRST Motor Controller
-*  File Name  		: TwoColorDemo.cpp        
-*  Contributors 	: ELF
-*  Creation Date 	: Jan 3, 2009
-*  Revision History	: Source code & revision history maintained at sourceforge.WPI.edu   
-*  File Description	: Demo program showing color tracking using servos
+/******************************************************************************
+*  Project          : FIRST Motor Controller
+*  File Name        : TwoColorDemo.cpp        
+*  Contributors     : ELF
+*  Creation Date    : Jan 3, 2009
+*  Revision History : Source code & revision history maintained at sourceforge.WPI.edu   
+*  File Description : Demo program showing color tracking using servos
 */
 /*----------------------------------------------------------------------------*/
 /*        Copyright (c) FIRST 2008.  All Rights Reserved.                     */
@@ -49,11 +49,12 @@ int bigEnough(ParticleAnalysisReport * par)
 }
 
 /**
- * This is a demo program showing the use of the color tracking API to track two colors.
- * It uses the SimpleRobot class as a base of a robot application that will automatically call your
- * Autonomous and OperatorControl methods at the right time as controlled by the switches on
- * the driver station or the field controls. Autonomous mode tracks color assuming camera is 
- * mounted on a gimbal with two servos.
+ * This is a demo program showing the use of the color tracking API to
+ * track two colors.  It uses the SimpleRobot class as a base of a robot
+ * application that will automatically call your Autonomous and
+ * OperatorControl methods at the right time as controlled by the switches
+ * on the driver station or the field controls. Autonomous mode tracks
+ * color assuming camera is mounted on a gimbal with two servos.
  */
 class TwoColorDemo:public SimpleRobot
 {
@@ -84,12 +85,12 @@ class TwoColorDemo:public SimpleRobot
 
   public:
         /**
-	 * Constructor for this robot subclass.
-	 * Create an instance of a RobotDrive with left and right motors plugged into PWM
-	 * ports 1 and 2 on the first digital module. The two servos are PWM ports 3 and 4.
-	 * Tested with camera settings White Balance: Flurorescent1, Brightness 40, Exposure Auto
-	 */
-         TwoColorDemo(void)
+     * Constructor for this robot subclass.
+     * Create an instance of a RobotDrive with left and right motors plugged into PWM
+     * ports 1 and 2 on the first digital module. The two servos are PWM ports 3 and 4.
+     * Tested with camera settings White Balance: Flurorescent1, Brightness 40, Exposure Auto
+     */
+    TwoColorDemo(void)
     {
         ds = DriverStation::GetInstance();
         myRobot = new RobotDrive(1, 2, 0.5);    // robot will use PWM 1-2 for drive motors
@@ -145,11 +146,11 @@ class TwoColorDemo:public SimpleRobot
     }
 
         /**
-	 * Set servo positions (0.0 to 1.0) translated from normalized values (-1.0 to 1.0). 
-	 * 
-	 * @param normalizedHorizontal Pan Position from -1.0 to 1.0.
-	 * @param normalizedVertical Tilt Position from -1.0 to 1.0.
-	 */
+     * Set servo positions (0.0 to 1.0) translated from normalized values (-1.0 to 1.0). 
+     * 
+     * @param normalizedHorizontal Pan Position from -1.0 to 1.0.
+     * @param normalizedVertical Tilt Position from -1.0 to 1.0.
+     */
     void setServoPositions(float normalizedHorizontal,
                            float normalizedVertical)
     {
@@ -175,11 +176,11 @@ class TwoColorDemo:public SimpleRobot
     }
 
         /**
-	 * Adjust servo positions (0.0 to 1.0) translated from normalized values (-1.0 to 1.0). 
-	 * 
-	 * @param normalizedHorizontal Pan adjustment from -1.0 to 1.0.
-	 * @param normalizedVertical Tilt adjustment from -1.0 to 1.0.
-	 */
+     * Adjust servo positions (0.0 to 1.0) translated from normalized values (-1.0 to 1.0). 
+     * 
+     * @param normalizedHorizontal Pan adjustment from -1.0 to 1.0.
+     * @param normalizedVertical Tilt adjustment from -1.0 to 1.0.
+     */
     void adjustServoPositions(float normDeltaHorizontal,
                               float normDeltaVertical)
     {
@@ -226,10 +227,10 @@ class TwoColorDemo:public SimpleRobot
     }
 
         /**
-	 * Adjusts the servo gimbal based on the color tracked.
-	 * Driving the robot or operating an arm based on color input from gimbal-mounted 
-	 * camera is currently left as an exercise for the teams.
-	 */
+     * Adjusts the servo gimbal based on the color tracked.
+     * Driving the robot or operating an arm based on color input from gimbal-mounted 
+     * camera is currently left as an exercise for the teams.
+     */
     void Autonomous(void)
     {
         char funcName[] = "Autonomous";
@@ -386,10 +387,10 @@ class TwoColorDemo:public SimpleRobot
     }                           // end autonomous
 
         /**
-	 * unchanged from SimpleDemo:
-	 * Runs the motors under driver control with either tank or arcade steering selected
-	 * by a jumper in DS Digin 0. 
-	 */
+     * unchanged from SimpleDemo:
+     * Runs the motors under driver control with either tank or arcade steering selected
+     * by a jumper in DS Digin 0. 
+     */
     void OperatorControl(void)
     {
         char funcName[] = "OperatorControl";
