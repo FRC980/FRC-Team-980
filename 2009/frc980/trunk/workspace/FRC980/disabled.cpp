@@ -18,7 +18,7 @@ void Main::DisabledPeriodic()
     static int i = 0;
 
     GetWatchdog().Feed();
-    pLCD->Printf(DriverStationLCD::kMain_Line6, 1, "Disabled");
+    pLCD->Printf(DriverStationLCD::kMain_Line6, 1, "Disabled  ");
     d.Printf("Disabled %d\n", i++);
 
     DashboardData::UpdateAndSend();
