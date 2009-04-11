@@ -34,22 +34,30 @@ void Main::TeleopPeriodic()
 
     GetWatchdog().Feed();
 
-    // left & right top buttons (4 & 5) enable "smart" traction control
-    if (pjsDrive->GetRawButton(4))
+    // left, center & right top buttons (4, 3 & 5) enable various traction
+    // control options, which may change.  Lower top button (2) disables
+    // all traction control options, and the trigger button (1)
+    // TEMPORARILY (i.e. while held) enables only the low-pass filter
+    // mode.
+
+    if (pjsDrive->GetRawButton(4)) // top left
         pRobot->EnableTractionControl((tcOld = Robot980::TC_SMART_1));
 
-    if (pjsDrive->GetRawButton(5))
-        pRobot->EnableTractionControl((tcOld = Robot980::TC_SMART_2));
-
-    // lower thumb button enables "low pass filter" traction control
-    if (pjsDrive->GetRawButton(2))
+    if (pjsDrive->GetRawButton(3)) // top center
         pRobot->EnableTractionControl((tcOld = Robot980::TC_LOWPASS));
 
-    // trigger button (1) temporarily disables all traction control
+    if (pjsDrive->GetRawButton(5)) // top right
+        pRobot->EnableTractionControl((tcOld = Robot980::TC_SMART_2));
+
+    // lower thumb button disables all traction control
+    if (pjsDrive->GetRawButton(2)) // top bottom
+        pRobot->EnableTractionControl((tcOld = Robot980::TC_OFF));
+
+    // trigger button (1) temporarily sets "low pass filter" mode
     if (pjsDrive->GetRawButton(1))
     {
         bOldButton = true;
-        pRobot->EnableTractionControl(Robot980::TC_OFF);
+        pRobot->EnableTractionControl(Robot980::TC_LOWPASS);
     }
     else
     {
