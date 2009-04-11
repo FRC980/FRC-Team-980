@@ -21,7 +21,7 @@ static const char* const tcString(Robot980::tractionMode_t tc)
     switch (tc)
     {
     case Robot980::TC_OFF:
-        return "TC_OFF";
+        return "TC_OFF    ";
     case Robot980::TC_LOWPASS:
         return "TC_LOWPASS";
     case Robot980::TC_SMART_1:
