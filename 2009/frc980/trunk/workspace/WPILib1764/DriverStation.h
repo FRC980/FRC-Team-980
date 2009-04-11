@@ -15,7 +15,8 @@ struct FRCControlData;
 class AnalogChannel;
 
 /**
- * Provide access to the network communication data to / from the Driver Station.
+ * Provide access to the network communication data to / from the Driver
+ * Station.
  */
 class DriverStation : public SensorBase
 {
