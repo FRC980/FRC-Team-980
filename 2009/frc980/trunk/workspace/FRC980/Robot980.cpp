@@ -45,6 +45,7 @@ Robot980* Robot980::GetInstance()
 
 Robot980::Robot980()
     : m_tcTraction(TC_OFF)
+    , m_dFilterScale(0.33)      // scale used by low-pass filter
 
     , m_psdLeft(NULL)
     , m_psdRight(NULL)
@@ -279,7 +280,7 @@ void Robot980::Drive(float left, float right, DriverStationLCD* pLCD)
     m_pTimer->Reset();
     float l,r;
 
-    const double scale = (48/36)/(GEAR_RATIO);
+    const double scale = ((double)48/(double)36)/(GEAR_RATIO) * m_dFilterScale;
 
     switch (m_tcTraction)
     {

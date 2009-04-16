@@ -4,15 +4,18 @@
 #include "numbers.h"
 
 // practice bot
-//#define GEAR_RATIO                  54/32
+//#define GEAR_RATIO                  ((double)54/(double)32)
+
+// 2404 robot
+//#define GEAR_RATIO                  ((double)36/(double)48)
 
 // competition bot
-#define GEAR_RATIO                  48/36
+#define GEAR_RATIO                  ((double)48/(double)36)
 
 // Theoretical speed of CIM is 5500 RPM
 // free-running top speed = <speed of cim in rpm> / 60sec/min / <ratio of
 // toughbox> * <sprocket ratio> * pi * <wheel diameter in feet>
-#define TOP_SPEED   (5500/60 / 12.75 * (GEAR_RATIO) * M_PI * 0.5)
+#define TOP_SPEED   ((double)5500/(double)60 / (double)12.75 * (GEAR_RATIO) * M_PI * (double)0.5)
 
 // The slots for the Digital Side Car installed on the left & right side
 // of the robot
@@ -142,6 +145,8 @@ class Robot980 : public SensorBase
     void RunBelts(float lower, float upper); // 1 = in @ base, up and out
     void Flap(bool open);
     tractionMode_t GetTractionControl() { return m_tcTraction; };
+    void SetFilterScale(double d) { m_dFilterScale = d; };
+    double GetFilterScale() { return m_dFilterScale; };
 
     float getAngle();           // get angle from gyro
     void SetTrackColor(DriverStation::Alliance);
@@ -151,6 +156,7 @@ class Robot980 : public SensorBase
     virtual ~Robot980();
 
     tractionMode_t m_tcTraction;
+    double m_dFilterScale;      // scale used by low-pass filter
 
     // left and right drive systems
     SmartDrive* m_psdLeft;
