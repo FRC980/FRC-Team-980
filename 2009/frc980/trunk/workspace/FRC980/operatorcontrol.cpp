@@ -14,7 +14,7 @@ static bool bOldButton = false;
 void Main::TeleopInit()
 {
     Robot980* pRobot = Robot980::GetInstance();
-    pRobot->EnableTractionControl(Robot980::TC_LOWPASS);
+    pRobot->EnableTractionControl(Robot980::TC_OFF);
 
     tcOld = pRobot->GetTractionControl();
 }
