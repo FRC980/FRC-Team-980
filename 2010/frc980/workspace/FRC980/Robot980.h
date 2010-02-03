@@ -76,7 +76,22 @@ class Robot980 : public SensorBase
     int GetAutonMode();
 
     // 1 = forward, -1 = backwards
-    void Drive(float left, float right);
+	void Drive(float left, float right, float roller);
+	
+	// automatically determines roller speed if unspecified
+	void Drive(float left, float right);
+	
+	//TODO: Lift system
+	
+	//If the kicker is not fully retracted, retract it some more
+	//Returns true if the kicker is retracted [and the time restriction has passed]
+	bool KickerArm();
+	
+	void Kick();
+	
+	//TODO: Positioning system - gyro, accelerometer
+	
+	//TODO: Camera system and target tracking
 
     float getAngle();           // get angle from gyro
 
