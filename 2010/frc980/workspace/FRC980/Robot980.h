@@ -39,9 +39,6 @@
 #define CHAN_ENC_ARMER_A            7
 #define CHAN_ENC_ARMER_B            8
 
-#define CHAN_ENC_ARMER_A            7
-#define CHAN_ENC_ARMER_B            8
-
 #define CHAN_ENC_FIRE_A             9
 #define CHAN_ENC_FIRE_B             10
 
@@ -68,8 +65,6 @@ class Timer;
 
 class Robot980 : public SensorBase
 {
-  public:
-
   public:
     static Robot980 *GetInstance();
 
