@@ -48,8 +48,8 @@ Robot980::Robot980()
                                  CHAN_ENC_DRV_RIGHT_B,
                                  false, ENC_SCALE))
 
-    // Timer used for debugging
-    , m_pTimer(new Timer)
+    , m_pTimerDrive(new Timer)  // Timer used for debugging
+    , m_pTimerFire(new Timer)   // can only fire once every 2 seconds
 
     , m_pSrvPan(new Servo(DSC_SLOT, CAMERA_CHAN_PAN))
     , m_pSrvTilt(new Servo(DSC_SLOT, CAMERA_CHAN_TILT))
@@ -62,8 +62,11 @@ Robot980::Robot980()
     m_pEncDrvLeft->Start();
     m_pEncDrvRight->Start();
 
-    m_pTimer->Reset();
-    m_pTimer->Start();
+    m_pTimerDrive->Reset();
+    m_pTimerDrive->Start();
+
+    m_pTimerFire->Reset();
+    m_pTimerFire->Start();
 
     /* start the CameraTask  */
     m_pVideoServer = new PCVideoServer;
@@ -89,6 +92,9 @@ Robot980::~Robot980()
     // sensors
     delete m_pGyro;
 
+    delete m_pTimerDrive;
+    delete m_pTimerFire;
+
     // camera system
     delete m_pSrvPan;
     delete m_pSrvTilt;
@@ -99,16 +105,60 @@ Robot980::~Robot980()
 int Robot980::GetAutonMode()
 {
     AnalogModule *pAM = AnalogModule::GetInstance(SLOT_AUTO_MODE);
-    int i = pAM->GetValue(CHAN_AUTO_MODE);
+    int i = pAM->GetValue(CHAN_AUTO_MODE); // returns 10-bit number
 
-    return i;
+    // REVIEW: These are samples; exact values and quantities depend on
+    // what's actually built and need to be measured and tested.
+    if (i > 900)
+        return 6;
+    if (i > 750)
+        return 5;
+    if (i > 600)
+        return 4;
+    if (i > 450)
+        return 3;
+    if (i > 300)
+        return 2;
+    if (i > 150)
+        return 1;
+
+    return 0;
 }
 
 // 1 = forward, -1 = backwards
 void Robot980::Drive(float left, float right)
 {
-    m_pTimer->Reset();
+    m_pTimerDrive->Reset();
 
     m_pscLeft->Set(left);
     m_pscRight->Set(right);
+
+    // Roller
+    if (left + right > 0) // going forward
+        m_pscRoller->Set(0);
+    else
+    {
+        // Roller runs from a CIM through an 11:3 gearbox.  The Roller is
+        // a 3" dia; the ball is 9" dia, and the wheels are 6" dia.  This
+        // means RPM of ball is 2/3 RPM of wheels, and roller is 3x RPM of
+        // ball, making roller 2x RPM of wheels.  We then add an extra
+        // 10%.
+        double speed = (left + right) / 2;
+        speed *= 2 * 1.1 * (ROLLER_GEARBOX) / (GEARBOX_RATIO);
+        m_pscRoller->Set(limit(speed));
+    }
+}
+
+bool Robot980::Kick()
+{
+    if (! CanKick())
+        return false;
+
+    return false;
+}
+
+bool Robot980::CanKick()
+{
+
+    return false;
 }
