@@ -15,8 +15,6 @@ class Main : public IterativeRobot
    private:
       
    public:
-      //--- Class Variables ----------------------------------------------------
-      
       //--- Instance Variables -------------------------------------------------
       
       //--- Constructors -------------------------------------------------------
@@ -70,8 +68,6 @@ class Main : public IterativeRobot
       /*!\brief The teleoperated mode continuous method
        */
       virtual void TeleopContinuous();
-      
-      //--- Friends ------------------------------------------------------------
 };
 
 #endif // MAIN_H
