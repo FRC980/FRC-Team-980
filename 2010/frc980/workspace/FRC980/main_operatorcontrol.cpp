@@ -6,19 +6,20 @@
 #include "Robot980.h"
 #include "utils.h"
 
-// This function gets called once, each time the robot enters teleoperated
-// mode.
+//==============================================================================
+//==============================================================================
 void Main::TeleopInit()
 {
     Robot980* pRobot = Robot980::GetInstance();
 }
 
-// This function gets called continuously while in teleoperated mode.
+//==============================================================================
 void Main::TeleopContinuous()
-{}
+{
+    
+}
 
-// This function gets called each time new data is received from the
-// driver station, while in teleoperated mode.
+//==============================================================================
 void Main::TeleopPeriodic()
 {
     Robot980* pRobot = Robot980::GetInstance();
