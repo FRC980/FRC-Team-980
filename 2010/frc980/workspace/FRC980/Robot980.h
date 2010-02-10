@@ -81,12 +81,12 @@ class Robot980 : public SensorBase
 {
   public:
     static Robot980 *GetInstance();
-
+    
     // There will be a multi-position switch wired as a potentiometer,
     // connected to a single analog input.  GetAutonMode reads that analog
     // value and converts it to a single "mode" integer.
     int GetAutonMode();
-
+    
     // 1 = forward, -1 = backwards
     void Drive(float left, float right, float roller);
     
@@ -98,50 +98,49 @@ class Robot980 : public SensorBase
     // Returns true if the kicker is retracted [and the time restriction
     // has passed]
     bool CanKick();
-
+    
     // Fire the kicker, and then automatically re-arm
     bool Kick();
     
     // TODO: Positioning system - gyro, accelerometer
     
     // TODO: Camera system and target tracking
-
     float getAngle();           // get angle from gyro
-
+    
   private:
     // constructor/destructor are private to enforce this being a
     // singleton object, accessible only via Robot980::GetInstance();
     Robot980();
     virtual ~Robot980();
-
+    
     // left and right drive motors
     SpeedController* m_pscLeft;
     SpeedController* m_pscRight;
-
+    
     SpeedController* m_pscRoller;
     SpeedController* m_pscArmer;
     SpeedController* m_pscFire;
-
+    
     SpeedController* m_pscLift;
-
+    
     // sensors
     Gyro* m_pGyro;
-
+    
     // encoders on the drive wheels
     Encoder* m_pEncDrvLeft;
     Encoder* m_pEncDrvRight;
-
+    
     Encoder* m_pEncRoller;
-
+    
     // more sensors TBD
-
+    
     Timer* m_pTimerDrive; // timer used for debugging (calc & print speeds)
     Timer* m_pTimerFire;  // can only fire once every 2 seconds
-
+    
     // camera pan/tilt servos
     Servo* m_pSrvPan;
     Servo* m_pSrvTilt;
-
+    
     PCVideoServer* m_pVideoServer;
 };
 
