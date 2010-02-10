@@ -55,14 +55,15 @@ SmartDrive::~SmartDrive()
     delete m_controlLoop;
 }
 
-/**
- * Call the Calculate method as a non-static method. This avoids having to
- * prepend all local variables in that method with the class pointer. This
- * way the "this" pointer will be set up and class variables can be called
- * more easily.  This method is static and called by the Notifier class.
- * @param controller the address of the PID controller object to use in
- * the background loop
- */
+//
+// Call the Calculate method as a non-static method. This avoids having to
+// prepend all local variables in that method with the class pointer. This
+// way the "this" pointer will be set up and class variables can be called
+// more easily.  This method is static and called by the Notifier class.
+// 
+// param controller the address of the PID controller object to use in
+// the background loop
+//
 void SmartDrive::CallCalculate(void *pvsd)
 {
     SmartDrive *psd = static_cast<SmartDrive*>(pvsd);
