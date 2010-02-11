@@ -103,9 +103,9 @@ class Robot980 : public SensorBase
     bool Kick();
     
     // TODO: Positioning system - gyro, accelerometer
+    float getAngle();           // get angle from gyro
     
     // TODO: Camera system and target tracking
-    float getAngle();           // get angle from gyro
     
   private:
     // constructor/destructor are private to enforce this being a

@@ -149,6 +149,15 @@ void Robot980::Drive(float left, float right)
     }
 }
 
+void Robot980::Drive(float left, float right, float roller)
+{
+	m_pTimerDrive->Reset();
+
+    m_pscLeft->Set(left);
+    m_pscRight->Set(right);
+    m_pscRoller->Set(roller);
+}
+
 bool Robot980::Kick()
 {
     if (! CanKick())
