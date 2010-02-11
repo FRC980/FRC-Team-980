@@ -51,7 +51,7 @@ bool ReversableJaguar::GetReversed(void)
 }
 
 //==============================================================================
-void ReversableJaguar::SetReversed(bool bReversed = true)
+void ReversableJaguar::SetReversed(bool bReversed)
 {
    m_bReversed = bReversed;
 }

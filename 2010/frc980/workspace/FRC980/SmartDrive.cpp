@@ -153,13 +153,13 @@ void SmartDrive::Calculate(void)
 
 //==============================================================================
 //==============================================================================
-virtual void Set(float speed)
+void SmartDrive::Set(float speed)
 {
    this->m_dCmdSpeed = speed;
 }
 
 //==============================================================================
-virtual float Get(void)
+float SmartDrive::Get(void)
 {
    return this->m_dCmdSpeed;
 }
