@@ -17,17 +17,23 @@
 //   / <ratio of toughbox> * <sprocket ratio> * pi * <wheel diameter in feet>
 const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATIO) * M_PI * (double)0.5); /* ~ 17 ft/sec */
 
+// CAN Jaguar outputs
+#define CAN_LEFT_CIM                11
+#define CAN_LEFT_FP                 12
+#define CAN_RIGHT_CIM               13
+#define CAN_RIGHT_FP                14
+#define CAN_ROLLER                  15
+#define CAN_WINCH                   16
+
+
 // The slots for the Digital Side Car installed on the left & right side
 // of the robot
 #define DSC_SLOT                    4
 
 // PWM outputs
-#define CHAN_PWM_LEFT               1
-#define CHAN_PWM_RIGHT              2
-#define CHAN_PWM_ROLLER             3
-#define CHAN_PWM_ARMER              4
-#define CHAN_PWM_FIRE               5
-#define CHAN_PWM_LIFT               6
+#define CHAN_PWM_ARM1               1
+#define CHAN_PWM_ARM2               2
+#define CHAN_PWM_FIRE               3
 
 #define CAMERA_CHAN_PAN             7
 #define CAMERA_CHAN_TILT            8
@@ -113,15 +119,23 @@ class Robot980 : public SensorBase
     Robot980();
     virtual ~Robot980();
     
+    //Jaguars
+    
     // left and right drive motors
-    SpeedController* m_pscLeft;
-    SpeedController* m_pscRight;
+    SpeedController* m_pscLeft_cim;
+    SpeedController* m_pscLeft_fp;
+    SpeedController* m_pscRight_cim;
+    SpeedController* m_pscRight_fp;
     
     SpeedController* m_pscRoller;
-    SpeedController* m_pscArmer;
+    SpeedController* m_pscWinch;    
+    
+    //Victors
+    SpeedController* m_pscArm1;
+    SpeedController* m_pscArm2;
     SpeedController* m_pscFire;
     
-    SpeedController* m_pscLift;
+
     
     // sensors
     Gyro* m_pGyro;

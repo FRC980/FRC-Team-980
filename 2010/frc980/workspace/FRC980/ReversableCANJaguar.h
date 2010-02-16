@@ -1,16 +1,16 @@
-#ifndef REVERSABLEJAGUAR_H
-#define REVERSABLEJAGUAR_H
+#ifndef REVERSABLECANJAGUAR_H
+#define REVERSABLECANJAGUAR_H
 
-#include <Jaguar.h>
+#include "CANJaguar.h"
 
-//! A class to reverse Jaguare control on the robot
-/*!\class ReversableJaguar
+//! A class to reverse Jaguar control on the robot
+/*!\class ReversableCANJaguar
  *
- * The purpose of the ReversableJaguar class is to provide reversable
+ * The purpose of the ReversableCANJaguar class is to provide reversable
  * access to the Jaguar speed controllers for the motors
  *    
  */
-class ReversableJaguar : public Jaguar
+class ReversableCANJaguar : public CANJaguar
 {
    private:
       
@@ -22,15 +22,13 @@ class ReversableJaguar : public Jaguar
       //--- Instance Variables -------------------------------------------------
       
       
-      //--- Constructors -------------------------------------------------------
-      explicit ReversableJaguar(UINT32 channel, bool bReversed = true);
-      
-      /*!\brief The SmartDrive destructor
+      //--- Constructors -------------------------------------------------------     
+      /*!\brief The ReversableCANJaguar constructor
        */
-      ReversableJaguar(UINT32 slot, UINT32 channel, bool bReversed = true);
+      ReversableCANJaguar(UINT8 deviceNumber, bool bReversed = true, ControlMode controlMode = kPercentVoltage);
       
       //--- Destructors --------------------------------------------------------
-      virtual ~ ReversableJaguar();
+      virtual ~ ReversableCANJaguar();
       
       //--- Methods ------------------------------------------------------------
       virtual float Get(void);
@@ -42,4 +40,4 @@ class ReversableJaguar : public Jaguar
       void SetReversed(bool bReversed = true);
 };
 
-#endif // REVERSABLEJAGUAR_H
+#endif // REVERSABLECANJAGUAR_H

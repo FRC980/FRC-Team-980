@@ -4,7 +4,8 @@
 #include <math.h>
 #include <stdbool.h>
 
-#include "ReversableJaguar.h"
+#include "ReversableCANJaguar.h"
+#include "CANJaguar.h"
 #include "Robot980.h"
 #include "numbers.h"
 #include "utils.h"
@@ -24,14 +25,17 @@ Robot980* Robot980::GetInstance()
 
 Robot980::Robot980()
     // left and right drive motors
-    : m_pscLeft(new ReversableJaguar(DSC_SLOT, CHAN_PWM_LEFT, true))
-    , m_pscRight(new Jaguar(DSC_SLOT, CHAN_PWM_RIGHT))
-
-    , m_pscRoller(new Jaguar(DSC_SLOT, CHAN_PWM_ROLLER))
-    , m_pscArmer(new Jaguar(DSC_SLOT, CHAN_PWM_ARMER)) // may be victor?
-    , m_pscFire(new Jaguar(DSC_SLOT, CHAN_PWM_FIRE))   // may be victor?
-
-    , m_pscLift(new Jaguar(DSC_SLOT, CHAN_PWM_LIFT)) // may be victor?
+    : m_pscLeft_cim(new ReversableCANJaguar(CAN_LEFT_CIM, true))
+    , m_pscLeft_fp (new ReversableCANJaguar(CAN_LEFT_FP, true))
+    , m_pscRight_cim(new CANJaguar(CAN_RIGHT_CIM))
+    , m_pscRight_fp (new CANJaguar(CAN_RIGHT_FP))
+    
+    , m_pscRoller(new CANJaguar(CAN_ROLLER))
+    , m_pscWinch(new CANJaguar(CAN_WINCH))
+    
+    , m_pscArm1(new Victor(DSC_SLOT, CHAN_PWM_ARM1))
+    , m_pscArm2(new Victor(DSC_SLOT, CHAN_PWM_ARM2))
+    , m_pscFire(new Victor(DSC_SLOT, CHAN_PWM_FIRE))
 
     // sensors
     , m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
@@ -82,12 +86,16 @@ Robot980::~Robot980()
     delete m_pEncDrvRight;
 
     // speed controllers
-    delete m_pscLeft;
-    delete m_pscRight;
+    delete m_pscLeft_cim;
+    delete m_pscLeft_fp;
+    delete m_pscRight_cim;
+    delete m_pscRight_fp;   
     delete m_pscRoller;
-    delete m_pscArmer;
+    delete m_pscWinch;    
+    delete m_pscArm1;
+    delete m_pscArm2;
     delete m_pscFire;
-    delete m_pscLift;
+    
 
     // sensors
     delete m_pGyro;
@@ -130,9 +138,11 @@ void Robot980::Drive(float left, float right)
 {
     m_pTimerDrive->Reset();
 
-    m_pscLeft->Set(left);
-    m_pscRight->Set(right);
-
+    m_pscLeft_cim->Set(left);
+    //m_pscLeft_fp->Set(left);
+    m_pscRight_cim->Set(right);
+    //m_pscRight_fp->Set(right);
+    
     // Roller
     if (left + right > 0) // going forward
         m_pscRoller->Set(0);
@@ -153,8 +163,10 @@ void Robot980::Drive(float left, float right, float roller)
 {
 	m_pTimerDrive->Reset();
 
-    m_pscLeft->Set(left);
-    m_pscRight->Set(right);
+    m_pscLeft_cim->Set(left);
+    //m_pscLeft_fp->Set(left);
+    m_pscRight_cim->Set(right);
+    //m_pscRight_fp->Set(right);
     m_pscRoller->Set(roller);
 }
 

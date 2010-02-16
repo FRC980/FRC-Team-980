@@ -1,57 +1,48 @@
-#include "ReversableJaguar.h"
+#include "ReversableCANJaguar.h"
 
 //==============================================================================
 //==============================================================================
-ReversableJaguar::ReversableJaguar(UINT32 channel,
-                                   bool bReversed)
-   : Jaguar(channel)
+ReversableCANJaguar::ReversableCANJaguar(UINT8 deviceNumber,
+                                      bool bReversed, ControlMode controlMode)
+      
+   : CANJaguar(deviceNumber, controlMode)
    , m_bReversed(bReversed)
 {
    
 }
 
 //==============================================================================
-ReversableJaguar::ReversableJaguar(UINT32 slot,
-                                   UINT32 channel,
-                                   bool bReversed)
-   : Jaguar(slot, channel)
-   , m_bReversed(bReversed)
-{
-   
-}
-
-//==============================================================================
-ReversableJaguar::~ReversableJaguar()
+ReversableCANJaguar::~ReversableCANJaguar()
 {
    
 }
 
 //==============================================================================
 //==============================================================================
-float ReversableJaguar::Get(void)
+float ReversableCANJaguar::Get(void)
 {
    if (m_bReversed)
-      return - Jaguar::Get();
-   return Jaguar::Get();
+      return - CANJaguar::Get();
+   return CANJaguar::Get();
 }
 
 //==============================================================================
-void ReversableJaguar::Set(float value)
+void ReversableCANJaguar::Set(float value)
 {
    if (m_bReversed)
-      Jaguar::Set(- value);
+      CANJaguar::Set(- value);
    else
-      Jaguar::Set(value);
+      CANJaguar::Set(value);
 }
 
 //==============================================================================
-bool ReversableJaguar::GetReversed(void)
+bool ReversableCANJaguar::GetReversed(void)
 {
    return m_bReversed;
 }
 
 //==============================================================================
-void ReversableJaguar::SetReversed(bool bReversed)
+void ReversableCANJaguar::SetReversed(bool bReversed)
 {
    m_bReversed = bReversed;
 }
