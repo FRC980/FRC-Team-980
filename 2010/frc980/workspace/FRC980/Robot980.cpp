@@ -10,37 +10,31 @@
 #include "numbers.h"
 #include "utils.h"
 
-static Robot980* g_pInstance = NULL;
-
-Robot980* Robot980::GetInstance()
-{
-    if (!g_pInstance)
-    {
-        g_pInstance = new Robot980();
-    }
-    return g_pInstance;
-}
-
 #define ENC_SCALE   CounterBase::k1X
 
+//==============================================================================
+static Robot980* g_pInstance = NULL;
+
+//==============================================================================
+//==============================================================================
 Robot980::Robot980()
+    //--- Jaguars
     // left and right drive motors
     : m_pscLeft_cim(new ReversableCANJaguar(CAN_LEFT_CIM, true))
     , m_pscLeft_fp (new ReversableCANJaguar(CAN_LEFT_FP, true))
     , m_pscRight_cim(new CANJaguar(CAN_RIGHT_CIM))
     , m_pscRight_fp (new CANJaguar(CAN_RIGHT_FP))
     
+    // roller and winch motors
     , m_pscRoller(new CANJaguar(CAN_ROLLER))
     , m_pscWinch(new CANJaguar(CAN_WINCH))
     
+    //--- Victors
     , m_pscArm1(new Victor(DSC_SLOT, CHAN_PWM_ARM1))
     , m_pscArm2(new Victor(DSC_SLOT, CHAN_PWM_ARM2))
     , m_pscFire(new Victor(DSC_SLOT, CHAN_PWM_FIRE))
 
-    // sensors
-    , m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
-
-    // encoders on the drive wheels
+    //--- Encoders on the drive wheels
     , m_pEncDrvLeft(new Encoder(DSC_SLOT,
                                 CHAN_ENC_DRV_LEFT_A,
                                 DSC_SLOT,
@@ -51,10 +45,15 @@ Robot980::Robot980()
                                  DSC_SLOT,
                                  CHAN_ENC_DRV_RIGHT_B,
                                  false, ENC_SCALE))
+    
+    //--- Sensors
+    , m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
 
-    , m_pTimerDrive(new Timer)  // Timer used for debugging
-    , m_pTimerFire(new Timer)   // can only fire once every 2 seconds
-
+    //--- Timers
+    , m_pTimerDrive(new Timer)
+    , m_pTimerFire(new Timer)
+    
+    //--- Camera
     , m_pSrvPan(new Servo(DSC_SLOT, CAMERA_CHAN_PAN))
     , m_pSrvTilt(new Servo(DSC_SLOT, CAMERA_CHAN_TILT))
     , m_pVideoServer(NULL)
@@ -72,7 +71,7 @@ Robot980::Robot980()
     m_pTimerFire->Reset();
     m_pTimerFire->Start();
 
-    /* start the CameraTask  */
+    //--- start the CameraTask
     m_pVideoServer = new PCVideoServer;
 
     // tell SensorBase about us
@@ -81,35 +80,49 @@ Robot980::Robot980()
 
 Robot980::~Robot980()
 {
-    // encoders
-    delete m_pEncDrvLeft;
-    delete m_pEncDrvRight;
-
-    // speed controllers
+    //--- Speed controllers
     delete m_pscLeft_cim;
     delete m_pscLeft_fp;
     delete m_pscRight_cim;
-    delete m_pscRight_fp;   
+    delete m_pscRight_fp;
+    
     delete m_pscRoller;
-    delete m_pscWinch;    
+    delete m_pscWinch;
+    
     delete m_pscArm1;
     delete m_pscArm2;
     delete m_pscFire;
     
+    //--- Encoders
+    delete m_pEncDrvLeft;
+    delete m_pEncDrvRight;
 
-    // sensors
+    //--- Sensors
     delete m_pGyro;
-
+    
+    //--- Timers
     delete m_pTimerDrive;
     delete m_pTimerFire;
 
-    // camera system
+    //--- Camera
     delete m_pSrvPan;
     delete m_pSrvTilt;
-
     delete m_pVideoServer;
 }
 
+//==============================================================================
+//==============================================================================
+Robot980* Robot980::GetInstance()
+{
+    if (!g_pInstance)
+    {
+        g_pInstance = new Robot980();
+    }
+    return g_pInstance;
+}
+
+//==============================================================================
+//==============================================================================
 int Robot980::GetAutonMode()
 {
     AnalogModule *pAM = AnalogModule::GetInstance(SLOT_AUTO_MODE);
@@ -133,19 +146,45 @@ int Robot980::GetAutonMode()
     return 0;
 }
 
-// 1 = forward, -1 = backwards
-void Robot980::Drive(float left, float right)
+//==============================================================================
+//==============================================================================
+void Robot980::Drive(float left, float right, float roller)
 {
+    //--- Reset the Timer Drive
     m_pTimerDrive->Reset();
 
+    //--- Set the speed of the left motors
     m_pscLeft_cim->Set(left);
     //m_pscLeft_fp->Set(left);
+    
+    //--- Set the speed of the right motors
     m_pscRight_cim->Set(right);
     //m_pscRight_fp->Set(right);
     
-    // Roller
-    if (left + right > 0) // going forward
+    //--- Set the speed of the roller motor
+    m_pscRoller->Set(roller);
+}
+
+//==============================================================================
+void Robot980::Drive(float left, float right)
+{
+    //--- Reset the Timer Drive
+    m_pTimerDrive->Reset();
+
+    //--- Set the speed of the left motors
+    m_pscLeft_cim->Set(left);
+    //m_pscLeft_fp->Set(left);
+    
+    //--- Set the speed of the right motors
+    m_pscRight_cim->Set(right);
+    //m_pscRight_fp->Set(right);
+    
+    //--- Set the speed of the roller motor based upon the left and right speeds
+    //--- Set when going forward
+    if (left + right > 0){
         m_pscRoller->Set(0);
+    }
+    //--- Set when moving backwards
     else
     {
         // Roller runs from a CIM through an 11:3 gearbox.  The Roller is
@@ -159,18 +198,15 @@ void Robot980::Drive(float left, float right)
     }
 }
 
-void Robot980::Drive(float left, float right, float roller)
+//==============================================================================
+void Robot980::Lift(float speed)
 {
-	m_pTimerDrive->Reset();
-
-    m_pscLeft_cim->Set(left);
-    //m_pscLeft_fp->Set(left);
-    m_pscRight_cim->Set(right);
-    //m_pscRight_fp->Set(right);
-    m_pscRoller->Set(roller);
+    
 }
 
-bool Robot980::Kick()
+//==============================================================================
+//==============================================================================
+bool Robot980::KickerArmed(void)
 {
     if (! CanKick())
         return false;
@@ -178,8 +214,35 @@ bool Robot980::Kick()
     return false;
 }
 
-bool Robot980::CanKick()
+//==============================================================================
+void Robot980::ArmKicker(void)
+{
+    
+}
+
+//==============================================================================
+bool Robot980::KickerFired(void)
 {
 
+    return false;
+}
+
+//==============================================================================
+void Robot980::FireKicker(void)
+{
+    
+}
+
+//==============================================================================
+//==============================================================================
+float Robot980::GetAngle(void)
+{
+    return 1.0;
+}
+
+//==============================================================================
+//==============================================================================
+bool TargetAvailable(void)
+{
     return false;
 }
