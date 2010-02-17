@@ -8,24 +8,27 @@
 //==============================================================================
 Main::Main()
 {
-    
+   
 }
 
 //==============================================================================
 Main::~Main()
 {
-    
+   
 }
 
 //==============================================================================
 //==============================================================================
 void Main::RobotInit()
 {
-    Robot980::GetInstance();
+   Robot980::GetInstance();
 
-    Joystick::GetStickForPort(1);
+   //--- Set a pointer to the joystick
+   Joystick* pjsDrive = Joystick::GetStickForPort(1);
 
-    GetWatchdog().SetExpiration(250);
+   //--- Set the Watchdog expiration to 100ms
+   //    DO NOT CHANGE THIS NUMBER
+   GetWatchdog().SetExpiration(100);
 }
 
 //==============================================================================

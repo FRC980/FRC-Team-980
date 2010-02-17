@@ -168,9 +168,6 @@ void Robot980::Drive(float left, float right, float roller)
 //==============================================================================
 void Robot980::Drive(float left, float right)
 {
-   //--- Get access to the utilities
-   utils u;
-   
    //--- Reset the Timer Drive
    m_pTimerDrive->Reset();
 
@@ -182,9 +179,20 @@ void Robot980::Drive(float left, float right)
    m_pscRight_cim->Set(right);
    //m_pscRight_fp->Set(right);
    
-   //--- Set the speed of the roller motor based upon the left and right speeds
+   //--- Set the speed of the roller motor based upon the forward/back speed
+   //    The forward speed here represents a direct relation to the y-axis
+   //    input of the command joystick.
+   //
+   //    Ex: fForwardSpeed = u.limit(((y-x) + (y+x))/2)
+   //                      = u.limit((y-x+y+x)/2)
+   //                      = u.limit((2*y)/2)
+   //                      = u.limit(y)
+   //
+   utils u;
+   float fForwardSpeed = u.limit((left + right) / 2);
+   
    //--- Set when going forward
-   if (left + right > 0){
+   if (fForwardSpeed > 0){
       m_pscRoller->Set(0);
    }
    //--- Set when moving backwards
@@ -195,9 +203,9 @@ void Robot980::Drive(float left, float right)
       // means RPM of ball is 2/3 RPM of wheels, and roller is 3x RPM of
       // ball, making roller 2x RPM of wheels.  We then add an extra
       // 10%.
-      double speed = (left + right) / 2;
+      float speed = fForwardSpeed;
       speed *= 2 * 1.1 * (ROLLER_GEARBOX) / (GEARBOX_RATIO);
-      m_pscRoller->Set(u.limit(speed));
+      m_pscRoller->Set(speed); // Speed is limited by set command
    }
 }
 

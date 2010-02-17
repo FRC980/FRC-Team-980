@@ -27,7 +27,7 @@ void Main::TeleopPeriodic()
    //--- Set a pointer to the joystick
    Joystick* pjsDrive = Joystick::GetStickForPort(1);
 
-   //--- Feed the watchdog
+   //--- Feed the watchdog after getting data from Joystick in case Joystick hangs
    GetWatchdog().Feed();
    
    //--- Get the x and y position from the joystick
@@ -37,10 +37,10 @@ void Main::TeleopPeriodic()
    float y = pjsDrive->GetY();
    y = (y > 0) ? y * y : y * y * -1;
    
-   //--- Limit the final speed
-   utils u;
-   float fLeft  = u.limit(y - x);
-   float fRight = u.limit(y + x);
+   //--- Get the speed for the left and right motors
+   //    NOTE: The speed is limited in the Drive() method for safety
+   float fLeft  = (y - x);
+   float fRight = (y + x);
 
    //--- Drive the robot
    pRobot->Drive(fLeft, fRight);

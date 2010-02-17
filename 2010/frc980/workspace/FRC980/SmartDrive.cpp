@@ -56,6 +56,7 @@ SmartDrive::SmartDrive(uint8_t ID,
 //==============================================================================
 SmartDrive::~SmartDrive(void)
 {
+   //--- Delete the control loop
    delete m_controlLoop;
 }
 
@@ -83,28 +84,32 @@ void SmartDrive::Calculate(void)
    double dRobotVel=(dRobotCount-m_dPrevRobotCount) / m_kfPeriod / TOP_SPEED;
 
    double dTime = m_pTimer ? m_pTimer->Get() : 1;
-   if (m_pTimer)
+   if (m_pTimer){
       m_pTimer->Reset();
+   }
 
 #if 0
    if (!Main::getInstance().IsDisabled())
    {
       Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
-
+      
       if (!m_ku8ID ? (DEBUG_bOK0 && DEBUG_bOK1) : (DEBUG_bOK1 && !DEBUG_bOK0))
       {
          d.Printf("%d: T: %6.4f  Vel: %7.4f  Acl: %7.4f  Slp: %7.4f\n",
                   m_ku8ID, dTime, dMotorVel, dMotorVel - m_dPrevMotorVel,
                   dMotorVel - dRobotVel);
-
-         if (!m_ku8ID)
+         
+         if (!m_ku8ID){
             DEBUG_bOK0 = false;
-         else
+         }
+         else {
             DEBUG_bOK1 = false;
+         }
       }
    }
 #endif // 0
 
+   //--- If the speed controller is enabled
    if (m_bEnabled)
    {
       double dMotorAcl =
@@ -149,6 +154,7 @@ void SmartDrive::Calculate(void)
       }
    }
 
+   //--- Save the history information for the speed controller
    m_dPrevMotorCount = dMotorCount;
    m_dPrevRobotCount = dRobotCount;
 
@@ -176,7 +182,10 @@ float SmartDrive::Get(void)
 //==============================================================================
 void SmartDrive::Enable(bool bUseSlip)
 {
+   //--- Enable the speed controller
    this->m_bEnabled = true;
+   
+   //--- Determine if slip control should be used
    this->m_bUseSlip = bUseSlip;
    if (!this->m_bUseSlip)
       this->m_dCorInt = 0;
@@ -185,9 +194,11 @@ void SmartDrive::Enable(bool bUseSlip)
 //==============================================================================
 void SmartDrive::Disable(void)
 {
+   //--- Disable the speed controller
    this->m_bEnabled = false;
    // m_psc->Set(0);
 
+   //--- Set the PID values to 0
    this->m_dVelInt = 0;
    this->m_dCorInt = 0;
    this->m_dAclInt = 0;
