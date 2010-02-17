@@ -3,7 +3,7 @@
 
 #include "CANJaguar.h"
 
-//! A class to reverse Jaguar control on the robot
+//! A class to reverse CAN Jaguar control on the robot
 /*!\class ReversableCANJaguar
  *
  * The purpose of the ReversableCANJaguar class is to provide reversable

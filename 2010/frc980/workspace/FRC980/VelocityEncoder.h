@@ -2,20 +2,36 @@
 #define VELOCITYENCODER_H
 
 #include <PIDSource.h>
+
+//==============================================================================
 class Encoder;
 
-// This provides the PIDSource interface in the form of an encouder which
-// reports velocity (as opposed to a normal encoder which provides the
-// PIDSource interface reporting position)
+//==============================================================================
+//! The Velocity Encoder and PID Source for the Robot
+/*!\class VelocityEncoder
+ *
+ * This provides the PIDSource interface in the form of an encoder which
+ * reports velocity (as opposed to a normal encoder which provides the
+ * PIDSource interface reporting position)
+ */
 class VelocityEncoder : public PIDSource
 {
-  public:
-    VelocityEncoder(Encoder* pEnc);
-
-    virtual double PIDGet();
-
-  private:
-    Encoder* m_pEnc;
+   private:
+      //--- Instance Variables -------------------------------------------------
+      Encoder* m_pEnc;
+    
+   public:
+      //--- Instance Variables -------------------------------------------------
+      
+      //--- Constructors -------------------------------------------------------
+      /*!\brief The VelocityEncoder Constructor
+       */
+      VelocityEncoder(Encoder* pEnc);
+      
+      //--- Methods ------------------------------------------------------------
+      /*!\brief Return the Encoder Velocity/Rate
+       */
+      virtual double PIDGet(void);
 };
 
 #endif // VELOCITYENCODER_H

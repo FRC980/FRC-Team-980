@@ -1,16 +1,18 @@
 #ifndef SMARTDRIVE_H
 #define SMARTDRIVE_H
 
+#include <SpeedController.h>
+
 #define SD_ID_LEFT  0
 #define SD_ID_RIGHT 1
 
 typedef unsigned char uint8_t;
 
-#include <SpeedController.h>
-
+//==============================================================================
 class Encoder;
 class Timer;
 
+//==============================================================================
 //! The smart drive controls for the robot
 /*!\class SmartDrive
  *
