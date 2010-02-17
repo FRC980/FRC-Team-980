@@ -46,6 +46,7 @@ void CANJaguar::InitJaguar()
  * Constructor
  * 
  * @param deviceNumber The the address of the Jaguar on the CAN bus.
+ * @param controlMode The control mode to use for the jaguar
  */
 CANJaguar::CANJaguar(UINT8 deviceNumber, ControlMode controlMode)
 	: m_deviceNumber (deviceNumber)

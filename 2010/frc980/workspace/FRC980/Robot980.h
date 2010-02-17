@@ -14,8 +14,8 @@
 #define ROLLER_GEARBOX  ((double)11/(double)3)
 
 /*! Theoretical speed of CIM is 5500 RPM
- *  free-running top speed (in ft/sec) = <speed of cim in rpm> / 60sec/min
- *  <ratio of toughbox> * <sprocket ratio> * pi * <wheel diameter in feet>
+ *  free-running top speed (in ft/sec) = (speed of cim in rpm) / 60sec/min
+ *  (ratio of toughbox) * (sprocket ratio) * pi * (wheel diameter in feet)
  */
 const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATIO) * M_PI * (double)0.5); /* ~ 17 ft/sec */
 
@@ -188,7 +188,6 @@ class Robot980 : public SensorBase
       /*! \brief A drive method to move the robot and autonomously control the roller
        *  \param left The speed of the left drive motors
        *  \param right The speed of the right drive motors
-       *  \param roller The speed of the roller motor
        *  
        *  This method is used to drive the robot and also to control
        *  the speed of the roller.  The roller is dependent on the speed of
