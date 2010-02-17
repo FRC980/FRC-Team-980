@@ -105,7 +105,7 @@ class SmartDrive : public SpeedController
       //--- Destructors --------------------------------------------------------
       /*!\brief The SmartDrive destructor
        */
-      virtual ~SmartDrive();
+      virtual ~SmartDrive(void);
       
       //--- Methods ------------------------------------------------------------
       

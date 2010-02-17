@@ -10,32 +10,38 @@
 //==============================================================================
 void Main::TeleopInit()
 {
-    Robot980* pRobot = Robot980::GetInstance();
+   Robot980* pRobot = Robot980::GetInstance();
 }
 
 //==============================================================================
 void Main::TeleopContinuous()
 {
-    
+   
 }
 
 //==============================================================================
 void Main::TeleopPeriodic()
 {
-    Robot980* pRobot = Robot980::GetInstance();
+   Robot980* pRobot = Robot980::GetInstance();
 
-    Joystick* pjsDrive = Joystick::GetStickForPort(1);
+   //--- Set a pointer to the joystick
+   Joystick* pjsDrive = Joystick::GetStickForPort(1);
 
-    GetWatchdog().Feed();
+   //--- Feed the watchdog
+   GetWatchdog().Feed();
+   
+   //--- Get the x and y position from the joystick
+   float x = pjsDrive->GetX();
+   x = (x > 0) ? x * x : x * x * -1;
 
-    float x = pjsDrive->GetX();
-    x = (x > 0) ? x * x : x * x * -1;
+   float y = pjsDrive->GetY();
+   y = (y > 0) ? y * y : y * y * -1;
+   
+   //--- Limit the final speed
+   utils u;
+   float fLeft  = u.limit(y - x);
+   float fRight = u.limit(y + x);
 
-    float y = pjsDrive->GetY();
-    y = (y > 0) ? y * y : y * y * -1;
-
-    float fLeft  = limit(y - x);
-    float fRight = limit(y + x);
-
-    pRobot->Drive(fLeft, fRight);
+   //--- Drive the robot
+   pRobot->Drive(fLeft, fRight);
 }
