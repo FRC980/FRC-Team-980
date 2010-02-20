@@ -127,7 +127,7 @@ void SmartDrive::Calculate(void)
       double dSlippage = m_bUseSlip ? (dMotorVel - dRobotVel) : 0;
       
       //--- REPLACED ABS FROM UTILS.H WITH abs() FROM MATH.H
-      if (abs(dSlippage) <= .01){
+      if (ABS(dSlippage) <= .01){
          dSlippage = 0;
       }
       

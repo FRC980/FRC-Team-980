@@ -33,7 +33,7 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 // Digital Side Car Outputs
 
 // Digital Side Car Slot
-#define DSC_SLOT                    4   /*!< \def DSC_SLOT The slot number in the cRio for the Digital Side Car
+#define DSC_SLOT                    4   /*!< \def DSC_SLOT The slot number in the cRio for the Digital Side Car */
 
 // PWM outputs
 #define CHAN_PWM_ARM1               1   /*!< \def CHAN_PWM_ARM1 The Digital Side Car PWM Channel for the Kick Arming Motor number 1*/

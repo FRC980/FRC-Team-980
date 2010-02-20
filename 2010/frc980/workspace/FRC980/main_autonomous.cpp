@@ -12,21 +12,78 @@ static int iMode = 0;
 
 //==============================================================================
 //==============================================================================
-void Main::AutonomousInit()
+void Main::AutonomousInit(void)
 {
     Robot980* pRobot = Robot980::GetInstance();
     iMode = pRobot->GetAutonMode();
 }
 
 //==============================================================================
-void Main::AutonomousContinuous()
+void Main::AutonomousContinuous(void)
 {
     
 }
 
 //==============================================================================
-void Main::AutonomousPeriodic()
+void Main::AutonomousPeriodic(void)
 {
-    Robot980* pRobot = Robot980::GetInstance();
+    //Robot980* pRobot = Robot980::GetInstance();
     GetWatchdog().Feed();
+    
+    if (iMode == 1){
+       this->Auton1();
+    }
+    else if(iMode == 2){
+       this->Auton2();
+    }
+    else if(iMode == 3){
+       this->Auton3();
+    }
+    else if(iMode == 4){
+       this->Auton4();
+    }
+    else if(iMode == 5){
+       this->Auton5();
+    }
+    else if(iMode == 6){
+       this->Auton6();
+    }
 }
+
+//==============================================================================
+//==============================================================================
+void Main::Auton1(void)
+{
+	
+}
+
+//==============================================================================
+void Main::Auton2(void)
+{
+	
+}
+
+//==============================================================================
+void Main::Auton3(void)
+{
+	
+}
+
+//==============================================================================
+void Main::Auton4(void)
+{
+	
+}
+
+//==============================================================================
+void Main::Auton5(void)
+{
+	
+}
+
+//==============================================================================
+void Main::Auton6(void)
+{
+	
+}
+

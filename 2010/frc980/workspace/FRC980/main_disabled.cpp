@@ -8,19 +8,19 @@
 
 //==============================================================================
 //==============================================================================
-void Main::DisabledInit()
+void Main::DisabledInit(void)
 {
     
 }
 
 //==============================================================================
-void Main::DisabledContinuous()
+void Main::DisabledContinuous(void)
 {
     
 }
 
 //==============================================================================
-void Main::DisabledPeriodic()
+void Main::DisabledPeriodic(void)
 {
     GetWatchdog().Feed();
 }

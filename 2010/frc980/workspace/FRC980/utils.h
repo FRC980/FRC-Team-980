@@ -1,8 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-//--- THIS IS DISABLED BECAUSE IT LIVES IN MATH.H
-//#define ABS(x)	(((x) > 0) ? (x) : (-x))
+#define ABS(x)	(((x) > 0) ? (x) : (-x))
 
 //==============================================================================
 //! Utilities for use with the robot

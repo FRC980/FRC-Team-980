@@ -8,19 +8,19 @@
 
 //==============================================================================
 //==============================================================================
-void Main::TeleopInit()
+void Main::TeleopInit(void)
 {
-   Robot980* pRobot = Robot980::GetInstance();
+   //Robot980* pRobot = Robot980::GetInstance();
 }
 
 //==============================================================================
-void Main::TeleopContinuous()
+void Main::TeleopContinuous(void)
 {
    
 }
 
 //==============================================================================
-void Main::TeleopPeriodic()
+void Main::TeleopPeriodic(void)
 {
    Robot980* pRobot = Robot980::GetInstance();
 
