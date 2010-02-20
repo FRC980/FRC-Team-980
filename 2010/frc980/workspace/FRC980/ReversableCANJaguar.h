@@ -25,7 +25,7 @@ class ReversableCANJaguar : public CANJaguar
       //--- Constructors -------------------------------------------------------     
       /*!\brief The ReversableCANJaguar constructor
        */
-      ReversableCANJaguar(UINT8 deviceNumber, bool bReversed = true, ControlMode controlMode = kPercentVoltage);
+      ReversableCANJaguar(UINT8 deviceNumber, ControlMode controlMode = kPercentVoltage, bool bReversed = true);
       
       //--- Destructors --------------------------------------------------------
       virtual ~ ReversableCANJaguar();

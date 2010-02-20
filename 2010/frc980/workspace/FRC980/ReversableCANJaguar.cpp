@@ -3,7 +3,7 @@
 //==============================================================================
 //==============================================================================
 ReversableCANJaguar::ReversableCANJaguar(UINT8 deviceNumber,
-                                      bool bReversed, ControlMode controlMode)
+                                        ControlMode controlMode, bool bReversed)
       
    : CANJaguar(deviceNumber, controlMode)
    , m_bReversed(bReversed)
