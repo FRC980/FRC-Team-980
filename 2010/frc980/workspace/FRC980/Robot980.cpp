@@ -58,31 +58,39 @@ Robot980::Robot980()
    , m_pSrvTilt(new Servo(DSC_SLOT, CAMERA_CHAN_TILT))
    , m_pVideoServer(NULL)
 {
-   // pi * diameter * gear ratio / encoder ticks / in/ft
+   ////--- pi * diameter * gear ratio / encoder ticks / in/ft
    //m_pEncDrvLeft->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
    //m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
-
    //m_pEncDrvLeft->Start();
    //m_pEncDrvRight->Start();
-	   
-   m_pscLeft_cim->ConfigEncoderCodesPerRev(360);
-   m_pscLeft_cim->ConfigMaxOutputVoltage(12.0);
-   m_pscLeft_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
    
-   m_pscRight_cim->ConfigEncoderCodesPerRev(360);
-   m_pscRight_cim->ConfigMaxOutputVoltage(12.0);
+   //--- Encoder setup for Left CIM
+   m_pscLeft_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+   m_pscLeft_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+   m_pscLeft_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+
+   //--- Encoder setup for Right CIM
+   m_pscRight_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+   m_pscRight_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
    m_pscRight_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 
+   //--- Encoder setup for Roller
+   m_pscRoller->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+   m_pscRoller->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+   m_pscRoller->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+
+   //--- Define Drive Timer
    m_pTimerDrive->Reset();
    m_pTimerDrive->Start();
 
+   //--- Define Fire Timer
    m_pTimerFire->Reset();
    m_pTimerFire->Start();
 
-   //--- start the CameraTask
+   //--- Start the CameraTask
    m_pVideoServer = new PCVideoServer;
 
-   // tell SensorBase about us
+   //--- Tell SensorBase about us
    AddToSingletonList();
 }
 

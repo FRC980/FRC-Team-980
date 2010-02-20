@@ -22,13 +22,17 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 
 //==============================================================================
 // CAN Jaguar Outputs
-
 #define CAN_LEFT_CIM                11   /*!< \def CAN_LEFT_CIM The CAN Jaguar device number for the Left CIM Motor */
 #define CAN_LEFT_FP                 12   /*!< \def CAN_LEFT_FP The CAN Jaguar device number for the Left Fisher Price Motor */
 #define CAN_RIGHT_CIM               13   /*!< \def CAN_RIGHT_CIM The CAN Jaguar device number for the Right CIM Motor */
 #define CAN_RIGHT_FP                14   /*!< \def CAN_RIGHT_FP The CAN Jaguar device number for the Right Fisher Price Motor */
 #define CAN_ROLLER                  15   /*!< \def CAN_ROLLER The CAN Jaguar device number for the Roller Motor */
 #define CAN_WINCH                   16   /*!< \def CAN_WINCH The CAN Jaguar device number for the Winch Motor */
+
+// Jaguar Outputs
+#define MAX_JAGUAR_OUTPUT_VOLTAGE   12.0
+// Encoder setup information
+#define US_DIGITAL_ENC_COUNTS       250
 
 //==============================================================================
 // Digital Side Car Outputs
