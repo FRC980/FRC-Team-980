@@ -59,11 +59,19 @@ Robot980::Robot980()
    , m_pVideoServer(NULL)
 {
    // pi * diameter * gear ratio / encoder ticks / in/ft
-   m_pEncDrvLeft->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
-   m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
+   //m_pEncDrvLeft->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
+   //m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
 
-   m_pEncDrvLeft->Start();
-   m_pEncDrvRight->Start();
+   //m_pEncDrvLeft->Start();
+   //m_pEncDrvRight->Start();
+	   
+   m_pscLeft_cim->ConfigEncoderCodesPerRev(360);
+   m_pscLeft_cim->ConfigMaxOutputVoltage(12.0);
+   m_pscLeft_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+   
+   m_pscRight_cim->ConfigEncoderCodesPerRev(360);
+   m_pscRight_cim->ConfigMaxOutputVoltage(12.0);
+   m_pscRight_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 
    m_pTimerDrive->Reset();
    m_pTimerDrive->Start();

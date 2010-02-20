@@ -2,6 +2,7 @@
 #define ROBOT980_H
 
 #include "numbers.h"
+#include "CANJaguar.h"
 
 //==============================================================================
 /*! The Gear Ratio from output of gearbox to wheel */
@@ -109,14 +110,14 @@ class Robot980 : public SensorBase
       //--- Jaguars
       
       // left and right drive motors
-      SpeedController* m_pscLeft_cim;     /*!< The Left CIM motor speed controller */
-      SpeedController* m_pscLeft_fp;      /*!< The Left FP motor speed controller */
-      SpeedController* m_pscRight_cim;    /*!< The Right CIM motor speed controller */
-      SpeedController* m_pscRight_fp;     /*!< The Right FP motor speed controller */
+      CANJaguar* m_pscLeft_cim;     /*!< The Left CIM motor speed controller */
+      CANJaguar* m_pscLeft_fp;      /*!< The Left FP motor speed controller */
+      CANJaguar* m_pscRight_cim;    /*!< The Right CIM motor speed controller */
+      CANJaguar* m_pscRight_fp;     /*!< The Right FP motor speed controller */
       
       // roller and winch motors
-      SpeedController* m_pscRoller;       /*!< The Roller motor speed controller */
-      SpeedController* m_pscWinch;        /*!< The Winch motor speed controller */
+      CANJaguar* m_pscRoller;       /*!< The Roller motor speed controller */
+      CANJaguar* m_pscWinch;        /*!< The Winch motor speed controller */
       
       //--- Victors
       SpeedController* m_pscArm1;         /*!< The Arming motor 1 speed controller */
