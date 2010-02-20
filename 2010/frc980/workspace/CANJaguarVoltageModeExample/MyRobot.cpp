@@ -1,5 +1,5 @@
 #include "WPILib.h"
-#include "CANJaguar.h"
+#include "../CANJaguar/CANJaguar.h"
 
 /**
  * This is a demo program showing the use of the SimpleRobot base class.
@@ -14,8 +14,8 @@ class CANRobotDemo : public SimpleRobot
 
 public:
 	CANRobotDemo(void):
-		leftJag(1),		// These must be initialized in the same order
-		rightJag(2),	// as they are declared above.
+		leftJag(2),		// These must be initialized in the same order
+		rightJag(3),	// as they are declared above.
 		myRobot(leftJag, rightJag),
 		stick(1)
 	{
