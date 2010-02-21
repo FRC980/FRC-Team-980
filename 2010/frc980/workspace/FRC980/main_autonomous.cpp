@@ -12,20 +12,20 @@ static int iMode = 0;
 
 //==============================================================================
 //==============================================================================
-void Main::AutonomousInit(void)
+void Main::AutonomousInit()
 {
     Robot980* pRobot = Robot980::GetInstance();
     iMode = pRobot->GetAutonMode();
 }
 
 //==============================================================================
-void Main::AutonomousContinuous(void)
+void Main::AutonomousContinuous()
 {
     
 }
 
 //==============================================================================
-void Main::AutonomousPeriodic(void)
+void Main::AutonomousPeriodic()
 {
     //Robot980* pRobot = Robot980::GetInstance();
     GetWatchdog().Feed();
@@ -52,37 +52,37 @@ void Main::AutonomousPeriodic(void)
 
 //==============================================================================
 //==============================================================================
-void Main::Auton1(void)
+void Main::Auton1()
 {
 	
 }
 
 //==============================================================================
-void Main::Auton2(void)
+void Main::Auton2()
 {
 	
 }
 
 //==============================================================================
-void Main::Auton3(void)
+void Main::Auton3()
 {
 	
 }
 
 //==============================================================================
-void Main::Auton4(void)
+void Main::Auton4()
 {
 	
 }
 
 //==============================================================================
-void Main::Auton5(void)
+void Main::Auton5()
 {
 	
 }
 
 //==============================================================================
-void Main::Auton6(void)
+void Main::Auton6()
 {
 	
 }

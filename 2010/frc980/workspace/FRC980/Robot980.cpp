@@ -1,10 +1,10 @@
 #include <WPILib.h>
-#include <PCVideoServer.h>
+//#include <PCVideoServer.h>
 #include <Timer.h>
 #include <math.h>
 #include <stdbool.h>
 
-#include "ReversableCANJaguar.h"
+//#include "ReversableCANJaguar.h"
 #include "CANJaguar.h"
 #include "Robot980.h"
 #include "numbers.h"
@@ -21,9 +21,9 @@ Robot980::Robot980()
    //--- Jaguars
    // left and right drive motors
    : m_pscLeft_cim(new CANJaguar(CAN_LEFT_CIM, CANJaguar::kSpeed))
-   , m_pscLeft_fp (new CANJaguar(CAN_LEFT_FP, CANJaguar::kSpeed))
+   , m_pscLeft_fp(new CANJaguar(CAN_LEFT_FP, CANJaguar::kSpeed))
    , m_pscRight_cim(new CANJaguar(CAN_RIGHT_CIM, CANJaguar::kSpeed))
-   , m_pscRight_fp (new CANJaguar(CAN_RIGHT_FP, CANJaguar::kSpeed))
+   , m_pscRight_fp(new CANJaguar(CAN_RIGHT_FP, CANJaguar::kSpeed))
    
    // roller and winch motors
    , m_pscRoller(new CANJaguar(CAN_ROLLER, CANJaguar::kSpeed))
@@ -35,16 +35,16 @@ Robot980::Robot980()
    , m_pscFire(new Victor(DSC_SLOT, CHAN_PWM_FIRE))
 
    //--- Encoders on the drive wheels
-   , m_pEncDrvLeft(new Encoder(DSC_SLOT,
-                               CHAN_ENC_DRV_LEFT_A,
-                               DSC_SLOT,
-                               CHAN_ENC_DRV_LEFT_B,
-                               false, ENC_SCALE))
-   , m_pEncDrvRight(new Encoder(DSC_SLOT,
-                                CHAN_ENC_DRV_RIGHT_A,
-                                DSC_SLOT,
-                                CHAN_ENC_DRV_RIGHT_B,
-                                false, ENC_SCALE))
+   //, m_pEncDrvLeft(new Encoder(DSC_SLOT,
+   //                            CHAN_ENC_DRV_LEFT_A,
+   //                            DSC_SLOT,
+   //                            CHAN_ENC_DRV_LEFT_B,
+   //                            false, ENC_SCALE))
+   //, m_pEncDrvRight(new Encoder(DSC_SLOT,
+   //                             CHAN_ENC_DRV_RIGHT_A,
+   //                             DSC_SLOT,
+   //                             CHAN_ENC_DRV_RIGHT_B,
+   //                             false, ENC_SCALE))
    
    //--- Sensors
    , m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
@@ -54,11 +54,12 @@ Robot980::Robot980()
    , m_pTimerFire(new Timer)
    
    //--- Camera
-   , m_pSrvPan(new Servo(DSC_SLOT, CAMERA_CHAN_PAN))
-   , m_pSrvTilt(new Servo(DSC_SLOT, CAMERA_CHAN_TILT))
-   , m_pVideoServer(NULL)
+   //, m_pSrvPan(new Servo(DSC_SLOT, CAMERA_CHAN_PAN))
+   //, m_pSrvTilt(new Servo(DSC_SLOT, CAMERA_CHAN_TILT))
+   //, m_pVideoServer(NULL)
 {
    ////--- pi * diameter * gear ratio / encoder ticks / in/ft
+   //THESE ARE NO LONGER NEEDED, ENCODERS ARE READ DIRECTLY INTO CAN JAGUARS
    //m_pEncDrvLeft->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
    //m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
    //m_pEncDrvLeft->Start();
@@ -88,7 +89,7 @@ Robot980::Robot980()
    m_pTimerFire->Start();
 
    //--- Start the CameraTask
-   m_pVideoServer = new PCVideoServer;
+   //m_pVideoServer = new PCVideoServer;
 
    //--- Tell SensorBase about us
    AddToSingletonList();
@@ -111,8 +112,10 @@ Robot980::~Robot980()
    delete m_pscFire;
    
    //--- Encoders
-   delete m_pEncDrvLeft;
-   delete m_pEncDrvRight;
+   //THESE ARE NO LONGER NEEDED, ENCODERS ARE READ DIRECTLY INTO CAN JAGUARS
+   //delete m_pEncDrvLeft;
+   //delete m_pEncDrvRight;
+   //delete m_pEncRoller;
 
    //--- Sensors
    delete m_pGyro;
@@ -122,9 +125,9 @@ Robot980::~Robot980()
    delete m_pTimerFire;
 
    //--- Camera
-   delete m_pSrvPan;
-   delete m_pSrvTilt;
-   delete m_pVideoServer;
+   //delete m_pSrvPan;
+   //delete m_pSrvTilt;
+   //delete m_pVideoServer;
 }
 
 //==============================================================================
@@ -171,11 +174,11 @@ void Robot980::Drive(float left, float right, float roller)
 
    //--- Set the speed of the left motors
    m_pscLeft_cim->Set(left);
-   //m_pscLeft_fp->Set(left);
+   m_pscLeft_fp->Set(left);
    
    //--- Set the speed of the right motors
    m_pscRight_cim->Set(right);
-   //m_pscRight_fp->Set(right);
+   m_pscRight_fp->Set(right);
    
    //--- Set the speed of the roller motor
    m_pscRoller->Set(roller);
@@ -189,11 +192,11 @@ void Robot980::Drive(float left, float right)
 
    //--- Set the speed of the left motors
    m_pscLeft_cim->Set(left);
-   //m_pscLeft_fp->Set(left);
+   m_pscLeft_fp->Set(left);
    
    //--- Set the speed of the right motors
    m_pscRight_cim->Set(right);
-   //m_pscRight_fp->Set(right);
+   m_pscRight_fp->Set(right);
    
    //--- Set the speed of the roller motor based upon the forward/back speed
    //    The forward speed here represents a direct relation to the y-axis

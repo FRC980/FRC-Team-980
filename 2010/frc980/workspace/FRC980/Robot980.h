@@ -30,9 +30,9 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 #define CAN_WINCH                   16   /*!< \def CAN_WINCH The CAN Jaguar device number for the Winch Motor */
 
 // Jaguar Outputs
-#define MAX_JAGUAR_OUTPUT_VOLTAGE   12.0
+#define MAX_JAGUAR_OUTPUT_VOLTAGE   12.0 /*!< \def MAX_JAGUAR_OUTPUT_VOLTAGE The maximum output voltage of the CAN Jaguar */
 // Encoder setup information
-#define US_DIGITAL_ENC_COUNTS       250
+#define US_DIGITAL_ENC_COUNTS       250  /*!< \def US_DIGITAL_ENC_COUNTS The number of encoder counts for the US Digital Encoders */
 
 //==============================================================================
 // Digital Side Car Outputs
@@ -95,7 +95,7 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 //==============================================================================
 class Encoder;
 class Gyro;
-class PCVideoServer;
+//class PCVideoServer;
 class SpeedController;
 class Timer;
 
@@ -114,14 +114,14 @@ class Robot980 : public SensorBase
       //--- Jaguars
       
       // left and right drive motors
-      CANJaguar* m_pscLeft_cim;     /*!< The Left CIM motor speed controller */
-      CANJaguar* m_pscLeft_fp;      /*!< The Left FP motor speed controller */
-      CANJaguar* m_pscRight_cim;    /*!< The Right CIM motor speed controller */
-      CANJaguar* m_pscRight_fp;     /*!< The Right FP motor speed controller */
+	  CANJaguar* m_pscLeft_cim;     /*!< The Left CIM motor speed controller */
+	  CANJaguar* m_pscLeft_fp;      /*!< The Left FP motor speed controller */
+	  CANJaguar* m_pscRight_cim;    /*!< The Right CIM motor speed controller */
+	  CANJaguar* m_pscRight_fp;     /*!< The Right FP motor speed controller */
       
       // roller and winch motors
-      CANJaguar* m_pscRoller;       /*!< The Roller motor speed controller */
-      CANJaguar* m_pscWinch;        /*!< The Winch motor speed controller */
+	  CANJaguar* m_pscRoller;       /*!< The Roller motor speed controller */
+	  CANJaguar* m_pscWinch;        /*!< The Winch motor speed controller */
       
       //--- Victors
       SpeedController* m_pscArm1;         /*!< The Arming motor 1 speed controller */
@@ -129,9 +129,9 @@ class Robot980 : public SensorBase
       SpeedController* m_pscFire;         /*!< The Firing motor speed controller */
       
       //--- Encoders on the drive wheels
-      Encoder* m_pEncDrvLeft;             /*!< The Left motor drive encoder */
-      Encoder* m_pEncDrvRight;            /*!< The Right motor drive encoder */
-      Encoder* m_pEncRoller;              /*!< The Roller motor drive encoder */
+      //Encoder* m_pEncDrvLeft;             /*!< The Left motor drive encoder */
+      //Encoder* m_pEncDrvRight;            /*!< The Right motor drive encoder */
+      //Encoder* m_pEncRoller;              /*!< The Roller motor drive encoder */
       
       //--- Sensors
       Gyro* m_pGyro;                      /*!< The Gyro Sensor */
@@ -144,7 +144,7 @@ class Robot980 : public SensorBase
       //--- Camera
       Servo* m_pSrvPan;                  /*!< The Camera Pan Servo */
       Servo* m_pSrvTilt;                 /*!< The Camera Tilt Servo */
-      PCVideoServer* m_pVideoServer;     /*!< The Camera Video Source */
+      //PCVideoServer* m_pVideoServer;     /*!< The Camera Video Source */
       
       //--- Constructors -------------------------------------------------------
       /*! \brief The Robot 980 Constructor

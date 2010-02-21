@@ -20,78 +20,78 @@ class Main : public IterativeRobot
       //--- Constructors -------------------------------------------------------
       /*!\brief The Main contructor
        */
-      Main(void);
+      Main();
       
       //--- Destructors --------------------------------------------------------
       /*!\brief The Main destructor
        */
-      virtual ~Main(void);
+      virtual ~Main();
       
       //--- Methods ------------------------------------------------------------
       
       /*!\brief The robot initialization
        */
-      virtual void RobotInit(void);
+      virtual void RobotInit();
       
       /*!\brief The disabled mode initialization method
        */
-      virtual void DisabledInit(void);
+      virtual void DisabledInit();
       
       /*!\brief The disabled mode periodic method
        */
-      virtual void DisabledPeriodic(void);
+      virtual void DisabledPeriodic();
       
       /*!\brief The disabled mode continuous method
        */
-      virtual void DisabledContinuous(void);
+      virtual void DisabledContinuous();
       
       /*!\brief The autonomous mode initialization method
        */
-      virtual void AutonomousInit(void);
+      virtual void AutonomousInit();
       
       /*!\brief The autonomous mode periodic method
        */
-      virtual void AutonomousPeriodic(void);
+      virtual void AutonomousPeriodic();
       
       /*!\brief The autonomous mode continuous method
        */
-      virtual void AutonomousContinuous(void);
+      virtual void AutonomousContinuous();
       
       /*!\brief The teleoperated mode initialization method
        */
-      virtual void TeleopInit(void);
+      virtual void TeleopInit();
       
       /*!\brief The teleoperated mode periodic method
        */
-      virtual void TeleopPeriodic(void);
+      virtual void TeleopPeriodic();
       
       /*!\brief The teleoperated mode continuous method
        */
-      virtual void TeleopContinuous(void);
+      virtual void TeleopContinuous();
       
       /*!\brief The Autonomous mode method 1
        */
-      void Auton1(void);
+      void Auton1();
       
       /*!\brief The Autonomous mode method 2
        */
-      void Auton2(void);
+      void Auton2();
       
       /*!\brief The Autonomous mode method 3
        */
-      void Auton3(void);
+      void Auton3();
       
       /*!\brief The Autonomous mode method 4
        */
-      void Auton4(void);
+      void Auton4();
       
       /*!\brief The Autonomous mode method 5
        */
-      void Auton5(void);
+      void Auton5();
       
       /*!\brief The Autonomous mode method 6
        */
-      void Auton6(void);
+      void Auton6();
 };
 
 #endif // MAIN_H

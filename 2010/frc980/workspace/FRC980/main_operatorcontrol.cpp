@@ -8,20 +8,21 @@
 
 //==============================================================================
 //==============================================================================
-void Main::TeleopInit(void)
+void Main::TeleopInit()
 {
-   //Robot980* pRobot = Robot980::GetInstance();
+   Robot980::GetInstance();
 }
 
 //==============================================================================
-void Main::TeleopContinuous(void)
+void Main::TeleopContinuous()
 {
    
 }
 
 //==============================================================================
-void Main::TeleopPeriodic(void)
+void Main::TeleopPeriodic()
 {
+   //--- Get the Robot instance
    Robot980* pRobot = Robot980::GetInstance();
 
    //--- Set a pointer to the joystick
