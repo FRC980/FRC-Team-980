@@ -20,14 +20,14 @@ static Robot980* g_pInstance = NULL;
 Robot980::Robot980()
    //--- Jaguars
    // left and right drive motors
-   : m_pscLeft_cim(new CANJaguar(CAN_LEFT_CIM, CANJaguar::kSpeed))
-   , m_pscLeft_fp(new CANJaguar(CAN_LEFT_FP, CANJaguar::kSpeed))
-   , m_pscRight_cim(new CANJaguar(CAN_RIGHT_CIM, CANJaguar::kSpeed))
-   , m_pscRight_fp(new CANJaguar(CAN_RIGHT_FP, CANJaguar::kSpeed))
+   : m_pscLeft_cim(new CANJaguar(CAN_LEFT_CIM))//, CANJaguar::kSpeed))
+   , m_pscLeft_fp(new CANJaguar(CAN_LEFT_FP))//, CANJaguar::kSpeed))
+   , m_pscRight_cim(new CANJaguar(CAN_RIGHT_CIM))//, CANJaguar::kSpeed))
+   , m_pscRight_fp(new CANJaguar(CAN_RIGHT_FP))//, CANJaguar::kSpeed))
    
    // roller and winch motors
-   , m_pscRoller(new CANJaguar(CAN_ROLLER, CANJaguar::kSpeed))
-   , m_pscWinch(new CANJaguar(CAN_WINCH, CANJaguar::kSpeed))
+   , m_pscRoller(new CANJaguar(CAN_ROLLER))//, CANJaguar::kSpeed))
+   , m_pscWinch(new CANJaguar(CAN_WINCH))//, CANJaguar::kSpeed))
    
    //--- Victors
    , m_pscArm1(new Victor(DSC_SLOT, CHAN_PWM_ARM1))
