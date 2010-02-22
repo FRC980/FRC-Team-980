@@ -37,6 +37,8 @@ Robot980::Robot980()
    
    //--- Sensors
    //, m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
+   , m_lscArm(new DigitalInput(CHAN_LIMIT_ARM))
+   , m_lscFire(new DigitalInput(CHAN_LIMIT_FIRE))
 
    //--- Timers
    , m_pTimerDrive(new Timer)
@@ -98,6 +100,8 @@ Robot980::~Robot980()
 
    //--- Sensors
    //delete m_pGyro;
+   delete m_lscArm;
+   delete m_lscFire;
    
    //--- Timers
    delete m_pTimerDrive;

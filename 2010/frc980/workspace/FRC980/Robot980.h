@@ -49,8 +49,8 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 // Digital Inputs
 
 // Limit Switches for Kicking Mechanism
-#define CHAN_LIMIT_FIRE             1
-#define CHAN_LIMIT_WINCH            2
+#define CHAN_LIMIT_ARM              1
+#define CHAN_LIMIT_FIRE             2
 
 // Encoder on the winch
 #define CHAN_ENC_ARMER_A            10
@@ -119,6 +119,8 @@ class Robot980 : public SensorBase
       
       //--- Sensors
       //Gyro* m_pGyro;                      /*!< The Gyro Sensor */
+      DigitalInput *m_lscArm;             /*!< The Arming Mechanism Limit Switch */
+      DigitalInput *m_lscFire;            /*!< The Firing Mechanism Limit Switch */
       // more sensors TBD
       
       //--- Timers
