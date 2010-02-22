@@ -8,19 +8,23 @@
 
 //==============================================================================
 //==============================================================================
-void Main::DisabledInit()
+void Main::DisabledInit(void)
 {
     
 }
 
 //==============================================================================
-void Main::DisabledContinuous()
+void Main::DisabledContinuous(void)
 {
     
 }
 
 //==============================================================================
-void Main::DisabledPeriodic()
+void Main::DisabledPeriodic(void)
 {
+    //--- Get the Robot instance
+    //Robot980* pRobot = Robot980::GetInstance();
+
+    //--- Feed the watchdog
     GetWatchdog().Feed();
 }

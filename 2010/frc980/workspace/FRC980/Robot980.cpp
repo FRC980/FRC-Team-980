@@ -19,6 +19,7 @@ static Robot980* g_pInstance = NULL;
 //==============================================================================
 Robot980::Robot980()
    //--- Jaguars
+   //    NOTE: CANNOT RUN IN kSpeed MODE UNLESS ENCODERS ATTACHED
    // left and right drive motors
    : m_pscLeft_cim(new CANJaguar(CAN_LEFT_CIM))//, CANJaguar::kSpeed))
    , m_pscLeft_fp(new CANJaguar(CAN_LEFT_FP))//, CANJaguar::kSpeed))
@@ -26,7 +27,7 @@ Robot980::Robot980()
    , m_pscRight_fp(new CANJaguar(CAN_RIGHT_FP))//, CANJaguar::kSpeed))
    
    // roller and winch motors
-   , m_pscRoller(new CANJaguar(CAN_ROLLER))//, CANJaguar::kSpeed))
+   , m_pscRoller_cim(new CANJaguar(CAN_ROLLER))//, CANJaguar::kSpeed))
    , m_pscWinch(new CANJaguar(CAN_WINCH))//, CANJaguar::kSpeed))
    
    //--- Victors
@@ -47,11 +48,11 @@ Robot980::Robot980()
    //                             false, ENC_SCALE))
    
    //--- Sensors
-   , m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
+   //, m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
 
    //--- Timers
-   , m_pTimerDrive(new Timer)
-   , m_pTimerFire(new Timer)
+   //, m_pTimerDrive(new Timer)
+   //, m_pTimerFire(new Timer)
    
    //--- Camera
    //, m_pSrvPan(new Servo(DSC_SLOT, CAMERA_CHAN_PAN))
@@ -64,29 +65,40 @@ Robot980::Robot980()
    //m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
    //m_pEncDrvLeft->Start();
    //m_pEncDrvRight->Start();
+	
+   //--- Set the PID Values for each Jag in Speed or Current Mode
+   //double kp = 0.35;
+   //double ki = 0.003;
+   //double kd = 0.001;
+   //m_pscLeft_cim->SetPID( kp,  ki,  kd);
+   //m_pscLeft_fp->SetPID( kp,  ki,  kd);
+   //m_pscRight_cim->SetPID( kp,  ki,  kd);
+   //m_pscRight_fp->SetPID( kp,  ki,  kd);
+   //m_pscRoller_cim->SetPID( kp,  ki,  kd);
+   //m_pscWinch->SetPID( kp,  ki,  kd);
    
    //--- Encoder setup for Left CIM
-   m_pscLeft_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-   m_pscLeft_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-   m_pscLeft_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+   //m_pscLeft_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+   //m_pscLeft_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+   //m_pscLeft_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 
    //--- Encoder setup for Right CIM
-   m_pscRight_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-   m_pscRight_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-   m_pscRight_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+   //m_pscRight_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+   //m_pscRight_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+   //m_pscRight_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 
    //--- Encoder setup for Roller
-   m_pscRoller->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-   m_pscRoller->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-   m_pscRoller->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+   //m_pscRoller_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+   //m_pscRoller_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+   //m_pscRoller_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 
    //--- Define Drive Timer
-   m_pTimerDrive->Reset();
-   m_pTimerDrive->Start();
+   //m_pTimerDrive->Reset();
+   //m_pTimerDrive->Start();
 
    //--- Define Fire Timer
-   m_pTimerFire->Reset();
-   m_pTimerFire->Start();
+   //m_pTimerFire->Reset();
+   //m_pTimerFire->Start();
 
    //--- Start the CameraTask
    //m_pVideoServer = new PCVideoServer;
@@ -104,7 +116,7 @@ Robot980::~Robot980()
    delete m_pscRight_cim;
    delete m_pscRight_fp;
    
-   delete m_pscRoller;
+   delete m_pscRoller_cim;
    delete m_pscWinch;
    
    delete m_pscArm1;
@@ -118,11 +130,11 @@ Robot980::~Robot980()
    //delete m_pEncRoller;
 
    //--- Sensors
-   delete m_pGyro;
+   //delete m_pGyro;
    
    //--- Timers
-   delete m_pTimerDrive;
-   delete m_pTimerFire;
+   //delete m_pTimerDrive;
+   //delete m_pTimerFire;
 
    //--- Camera
    //delete m_pSrvPan;
@@ -170,7 +182,7 @@ int Robot980::GetAutonMode()
 void Robot980::Drive(float left, float right, float roller)
 {
    //--- Reset the Timer Drive
-   m_pTimerDrive->Reset();
+   //m_pTimerDrive->Reset();
 
    //--- Set the speed of the left motors
    m_pscLeft_cim->Set(left);
@@ -181,14 +193,14 @@ void Robot980::Drive(float left, float right, float roller)
    m_pscRight_fp->Set(right);
    
    //--- Set the speed of the roller motor
-   m_pscRoller->Set(roller);
+   m_pscRoller_cim->Set(roller);
 }
 
 //==============================================================================
 void Robot980::Drive(float left, float right)
 {
    //--- Reset the Timer Drive
-   m_pTimerDrive->Reset();
+   //m_pTimerDrive->Reset();
 
    //--- Set the speed of the left motors
    m_pscLeft_cim->Set(left);
@@ -197,6 +209,7 @@ void Robot980::Drive(float left, float right)
    //--- Set the speed of the right motors
    m_pscRight_cim->Set(right);
    m_pscRight_fp->Set(right);
+   
    
    //--- Set the speed of the roller motor based upon the forward/back speed
    //    The forward speed here represents a direct relation to the y-axis
@@ -212,7 +225,10 @@ void Robot980::Drive(float left, float right)
    
    //--- Set when going forward
    if (fForwardSpeed > 0){
-      m_pscRoller->Set(0);
+      m_pscRoller_cim->Set(0.0);
+   }
+   else if(fForwardSpeed == 0){
+	  m_pscRoller_cim->Set(-0.5); // Speed is limited by set command
    }
    //--- Set when moving backwards
    else
@@ -224,8 +240,9 @@ void Robot980::Drive(float left, float right)
       // 10%.
       float speed = fForwardSpeed;
       speed *= 2 * 1.1 * (ROLLER_GEARBOX) / (GEARBOX_RATIO);
-      m_pscRoller->Set(speed); // Speed is limited by set command
+      m_pscRoller_cim->Set(speed); // Speed is limited by set command
    }
+   
 }
 
 //==============================================================================

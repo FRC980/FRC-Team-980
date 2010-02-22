@@ -120,7 +120,7 @@ class Robot980 : public SensorBase
 	  CANJaguar* m_pscRight_fp;     /*!< The Right FP motor speed controller */
       
       // roller and winch motors
-	  CANJaguar* m_pscRoller;       /*!< The Roller motor speed controller */
+	  CANJaguar* m_pscRoller_cim;       /*!< The Roller motor speed controller */
 	  CANJaguar* m_pscWinch;        /*!< The Winch motor speed controller */
       
       //--- Victors
@@ -134,16 +134,16 @@ class Robot980 : public SensorBase
       //Encoder* m_pEncRoller;              /*!< The Roller motor drive encoder */
       
       //--- Sensors
-      Gyro* m_pGyro;                      /*!< The Gyro Sensor */
+      //Gyro* m_pGyro;                      /*!< The Gyro Sensor */
       // more sensors TBD
       
       //--- Timers
-      Timer* m_pTimerDrive;              /*!< The Timer used for debugging (calc & print speeds) */
-      Timer* m_pTimerFire;               /*!< The Timer used for firing. Can only fire once every 2 seconds */
+      //Timer* m_pTimerDrive;              /*!< The Timer used for debugging (calc & print speeds) */
+      //Timer* m_pTimerFire;               /*!< The Timer used for firing. Can only fire once every 2 seconds */
       
       //--- Camera
-      Servo* m_pSrvPan;                  /*!< The Camera Pan Servo */
-      Servo* m_pSrvTilt;                 /*!< The Camera Tilt Servo */
+      //Servo* m_pSrvPan;                  /*!< The Camera Pan Servo */
+      //Servo* m_pSrvTilt;                 /*!< The Camera Tilt Servo */
       //PCVideoServer* m_pVideoServer;     /*!< The Camera Video Source */
       
       //--- Constructors -------------------------------------------------------

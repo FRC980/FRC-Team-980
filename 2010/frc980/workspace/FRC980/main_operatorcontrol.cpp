@@ -8,28 +8,28 @@
 
 //==============================================================================
 //==============================================================================
-void Main::TeleopInit()
+void Main::TeleopInit(void)
 {
    Robot980::GetInstance();
 }
 
 //==============================================================================
-void Main::TeleopContinuous()
+void Main::TeleopContinuous(void)
 {
    
 }
 
 //==============================================================================
-void Main::TeleopPeriodic()
+void Main::TeleopPeriodic(void)
 {
    //--- Get the Robot instance
    Robot980* pRobot = Robot980::GetInstance();
 
-   //--- Set a pointer to the joystick
-   Joystick* pjsDrive = Joystick::GetStickForPort(1);
-
-   //--- Feed the watchdog after getting data from Joystick in case Joystick hangs
+   //--- Feed the watchdog
    GetWatchdog().Feed();
+
+   //--- Set a pointer to the joystick(s)
+   Joystick* pjsDrive = Joystick::GetStickForPort(1);
    
    //--- Get the x and y position from the joystick
    float x = pjsDrive->GetX();
