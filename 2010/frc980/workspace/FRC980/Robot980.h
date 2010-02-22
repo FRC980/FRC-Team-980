@@ -26,7 +26,7 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 #define CAN_LEFT_FP                 12   /*!< \def CAN_LEFT_FP The CAN Jaguar device number for the Left Fisher Price Motor */
 #define CAN_RIGHT_CIM               13   /*!< \def CAN_RIGHT_CIM The CAN Jaguar device number for the Right CIM Motor */
 #define CAN_RIGHT_FP                14   /*!< \def CAN_RIGHT_FP The CAN Jaguar device number for the Right Fisher Price Motor */
-#define CAN_ROLLER                  15   /*!< \def CAN_ROLLER The CAN Jaguar device number for the Roller Motor */
+#define CAN_ROLLER_CIM              15   /*!< \def CAN_ROLLER The CAN Jaguar device number for the Roller Motor */
 #define CAN_WINCH                   16   /*!< \def CAN_WINCH The CAN Jaguar device number for the Winch Motor */
 
 // Jaguar Outputs
@@ -45,33 +45,16 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 #define CHAN_PWM_ARM2               2   /*!< \def CHAN_PWM_ARM2 The Digital Side Car PWM Channel for the Kick Arming Motor number 2*/
 #define CHAN_PWM_FIRE               3   /*!< \def CHAN_PWM_FIRE The Digital Side Car PWM Channel for the Kick Firing Motor*/
 
-// Camera Servos
-#define CAMERA_CHAN_PAN             7   /*!< \def CAMERA_CHAN_PAN The Digital Side Car PWM Channel for the Camera Pan Servo */
-#define CAMERA_CHAN_TILT            8   /*!< \def CAMERA_CHAN_TILT The Digital Side Car PWM Channel for the Camera Tilt Servo */
-
 //==============================================================================
 // Digital Inputs
 
-// Encoders on left and right drive wheels
-#define CHAN_ENC_DRV_LEFT_A         1
-#define CHAN_ENC_DRV_LEFT_B         2
+// Limit Switches for Kicking Mechanism
+#define CHAN_LIMIT_FIRE             1
+#define CHAN_LIMIT_WINCH            2
 
-#define CHAN_ENC_DRV_RIGHT_A        3
-#define CHAN_ENC_DRV_RIGHT_B        4
-
-// Encoder on the roller, used to hold the ball
-#define CHAN_ENC_ROLLER_A           5
-#define CHAN_ENC_ROLLER_B           6
-
-// Encoder on the arming mechanism -- there may also be a limit switch to
-// indicate the mechanism is armed.
-#define CHAN_ENC_ARMER_A            7
-#define CHAN_ENC_ARMER_B            8
-
-// Encoder on the firing wheel -- this may instead be a potentiometer or 2
-// limit switches.
-#define CHAN_ENC_FIRE_A             9
-#define CHAN_ENC_FIRE_B             10
+// Encoder on the winch
+#define CHAN_ENC_ARMER_A            10
+#define CHAN_ENC_ARMER_B            11
 
 // Encoder on the lift mechanism
 #define CHAN_ENC_LIFT_A             11
@@ -79,8 +62,8 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 
 //==============================================================================
 // Analog Inputs
-#define SLOT_GYRO                   1   /*!< SLOT_GYRO The slot number in the cRio for the Gyro analog input*/
-#define CHAN_GYRO                   1   /*!< CHAN_GYRO The Analog Channel for the Gyro. FPGA requires gyro to be on chan 1 */
+//#define SLOT_GYRO                   1   /*!< SLOT_GYRO The slot number in the cRio for the Gyro analog input*/
+//#define CHAN_GYRO                   1   /*!< CHAN_GYRO The Analog Channel for the Gyro. FPGA requires gyro to be on chan 1 */
 
 #define SLOT_AUTO_MODE              1   /*!< SLOT_AUTO_MODE The slot number in the cRio for the Auto Mode analog input*/
 #define CHAN_AUTO_MODE              7   /*!< CHAN_AUTO_MODE The Analog Channel for the Auto Mode. */
@@ -88,16 +71,23 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 //==============================================================================
 // Define Additional Values
 
+//--- Reverse Drive Direction
+#define DRIVE_REVERSE               -1.0
+
+//--- Kicker Reset Period
+#define KICKER_RESET_PERIOD         2.0
+
+//--- Joystick Button Names
+#define JOYSTICK_TRIGGER            1
+#define JOYSTICK_THUMB_BOTTOM       2
+#define JOYSTICK_THUMB_TOP          3
+#define JOYSTICK_THUMB_LEFT         4
+#define JOYSTICK_THUMB_RIGHT        5
+
+//--- NULL Value
 #ifndef NULL
 #define NULL                        (0) /*!< \def NULL The NULL value is created here because it is not created elsewhere */
 #endif // NULL
-
-//==============================================================================
-class Encoder;
-class Gyro;
-//class PCVideoServer;
-class SpeedController;
-class Timer;
 
 //==============================================================================
 //! Code specific to the Team 980 Robot
@@ -112,7 +102,6 @@ class Robot980 : public SensorBase
    private:
       //--- Instance Variables -------------------------------------------------
       //--- Jaguars
-      
       // left and right drive motors
 	  CANJaguar* m_pscLeft_cim;     /*!< The Left CIM motor speed controller */
 	  CANJaguar* m_pscLeft_fp;      /*!< The Left FP motor speed controller */
@@ -128,23 +117,13 @@ class Robot980 : public SensorBase
       SpeedController* m_pscArm2;         /*!< The Arming motor 2 speed controller */
       SpeedController* m_pscFire;         /*!< The Firing motor speed controller */
       
-      //--- Encoders on the drive wheels
-      //Encoder* m_pEncDrvLeft;             /*!< The Left motor drive encoder */
-      //Encoder* m_pEncDrvRight;            /*!< The Right motor drive encoder */
-      //Encoder* m_pEncRoller;              /*!< The Roller motor drive encoder */
-      
       //--- Sensors
       //Gyro* m_pGyro;                      /*!< The Gyro Sensor */
       // more sensors TBD
       
       //--- Timers
-      //Timer* m_pTimerDrive;              /*!< The Timer used for debugging (calc & print speeds) */
-      //Timer* m_pTimerFire;               /*!< The Timer used for firing. Can only fire once every 2 seconds */
-      
-      //--- Camera
-      //Servo* m_pSrvPan;                  /*!< The Camera Pan Servo */
-      //Servo* m_pSrvTilt;                 /*!< The Camera Tilt Servo */
-      //PCVideoServer* m_pVideoServer;     /*!< The Camera Video Source */
+      Timer* m_pTimerDrive;              /*!< The Timer used for debugging (calc & print speeds) */
+      Timer* m_pTimerFire;               /*!< The Timer used for firing. Can only fire once every 2 seconds */
       
       //--- Constructors -------------------------------------------------------
       /*! \brief The Robot 980 Constructor
@@ -202,11 +181,10 @@ class Robot980 : public SensorBase
        */
       void Drive(float left, float right);
       
-      /*! \brief A method to run the robot lift motor
-       *  \param speed The speed to set the lift motor
+      /*! \brief A method to run the robot lift motor action
        *  \todo Write this method
        */
-      void Lift(float speed);
+      void Lift(void);
       
       /*! \brief Determine if the kicker has been retracted
        *  \return true if the kicker is retracted (and the time restriction
@@ -251,14 +229,7 @@ class Robot980 : public SensorBase
        *  
        *  \todo Positioning system - gyro, accelerometer
        */
-      float GetAngle(void);
-      
-      /*! \brief Determine if the Target is available
-       *  \return true if ball goal is in front of robot's field of view
-       *
-       *  \todo Complete Camera system, target and tracking
-       */
-      bool TargetAvailable(void);
+      //float GetAngle(void);
 };
 
 #endif // ROBOT980_H

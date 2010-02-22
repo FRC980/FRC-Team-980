@@ -45,4 +45,17 @@ void Main::TeleopPeriodic(void)
 
    //--- Drive the robot
    pRobot->Drive(fLeft, fRight);
+   
+   //--- Fire Kicker
+   if(pjsDrive->GetRawButton(JOYSTICK_TRIGGER)){
+	   pRobot->FireKicker();
+   }
+   
+   //--- Re-Arm Kicker (Checks if Kicker was fired
+   pRobot->ArmKicker();
+   
+   //--- Lift the Robot
+   if(pjsDrive->GetRawButton(JOYSTICK_THUMB_TOP)){
+   	   pRobot->Lift();
+   }
 }

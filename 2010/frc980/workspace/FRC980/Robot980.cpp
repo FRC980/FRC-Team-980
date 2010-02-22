@@ -18,7 +18,7 @@ static Robot980* g_pInstance = NULL;
 //==============================================================================
 //==============================================================================
 Robot980::Robot980()
-   //--- Jaguars
+   //--- Jaguars (Encoders attached directly to Jaguars)
    //    NOTE: CANNOT RUN IN kSpeed MODE UNLESS ENCODERS ATTACHED
    // left and right drive motors
    : m_pscLeft_cim(new CANJaguar(CAN_LEFT_CIM))//, CANJaguar::kSpeed))
@@ -27,45 +27,21 @@ Robot980::Robot980()
    , m_pscRight_fp(new CANJaguar(CAN_RIGHT_FP))//, CANJaguar::kSpeed))
    
    // roller and winch motors
-   , m_pscRoller_cim(new CANJaguar(CAN_ROLLER))//, CANJaguar::kSpeed))
+   , m_pscRoller_cim(new CANJaguar(CAN_ROLLER_CIM))//, CANJaguar::kSpeed))
    , m_pscWinch(new CANJaguar(CAN_WINCH))//, CANJaguar::kSpeed))
    
    //--- Victors
    , m_pscArm1(new Victor(DSC_SLOT, CHAN_PWM_ARM1))
    , m_pscArm2(new Victor(DSC_SLOT, CHAN_PWM_ARM2))
    , m_pscFire(new Victor(DSC_SLOT, CHAN_PWM_FIRE))
-
-   //--- Encoders on the drive wheels
-   //, m_pEncDrvLeft(new Encoder(DSC_SLOT,
-   //                            CHAN_ENC_DRV_LEFT_A,
-   //                            DSC_SLOT,
-   //                            CHAN_ENC_DRV_LEFT_B,
-   //                            false, ENC_SCALE))
-   //, m_pEncDrvRight(new Encoder(DSC_SLOT,
-   //                             CHAN_ENC_DRV_RIGHT_A,
-   //                             DSC_SLOT,
-   //                             CHAN_ENC_DRV_RIGHT_B,
-   //                             false, ENC_SCALE))
    
    //--- Sensors
    //, m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
 
    //--- Timers
-   //, m_pTimerDrive(new Timer)
-   //, m_pTimerFire(new Timer)
-   
-   //--- Camera
-   //, m_pSrvPan(new Servo(DSC_SLOT, CAMERA_CHAN_PAN))
-   //, m_pSrvTilt(new Servo(DSC_SLOT, CAMERA_CHAN_TILT))
-   //, m_pVideoServer(NULL)
-{
-   ////--- pi * diameter * gear ratio / encoder ticks / in/ft
-   //THESE ARE NO LONGER NEEDED, ENCODERS ARE READ DIRECTLY INTO CAN JAGUARS
-   //m_pEncDrvLeft->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
-   //m_pEncDrvRight->SetDistancePerPulse(M_PI * 6 * GEAR_RATIO / 250 / 12);
-   //m_pEncDrvLeft->Start();
-   //m_pEncDrvRight->Start();
-	
+   , m_pTimerDrive(new Timer)
+   , m_pTimerFire(new Timer)
+{	
    //--- Set the PID Values for each Jag in Speed or Current Mode
    //double kp = 0.35;
    //double ki = 0.003;
@@ -93,15 +69,12 @@ Robot980::Robot980()
    //m_pscRoller_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 
    //--- Define Drive Timer
-   //m_pTimerDrive->Reset();
-   //m_pTimerDrive->Start();
+   m_pTimerDrive->Reset();
+   m_pTimerDrive->Start();
 
    //--- Define Fire Timer
-   //m_pTimerFire->Reset();
-   //m_pTimerFire->Start();
-
-   //--- Start the CameraTask
-   //m_pVideoServer = new PCVideoServer;
+   m_pTimerFire->Reset();
+   m_pTimerFire->Start();
 
    //--- Tell SensorBase about us
    AddToSingletonList();
@@ -122,24 +95,13 @@ Robot980::~Robot980()
    delete m_pscArm1;
    delete m_pscArm2;
    delete m_pscFire;
-   
-   //--- Encoders
-   //THESE ARE NO LONGER NEEDED, ENCODERS ARE READ DIRECTLY INTO CAN JAGUARS
-   //delete m_pEncDrvLeft;
-   //delete m_pEncDrvRight;
-   //delete m_pEncRoller;
 
    //--- Sensors
    //delete m_pGyro;
    
    //--- Timers
-   //delete m_pTimerDrive;
-   //delete m_pTimerFire;
-
-   //--- Camera
-   //delete m_pSrvPan;
-   //delete m_pSrvTilt;
-   //delete m_pVideoServer;
+   delete m_pTimerDrive;
+   delete m_pTimerFire;
 }
 
 //==============================================================================
@@ -182,7 +144,7 @@ int Robot980::GetAutonMode()
 void Robot980::Drive(float left, float right, float roller)
 {
    //--- Reset the Timer Drive
-   //m_pTimerDrive->Reset();
+   m_pTimerDrive->Reset();
 
    //--- Set the speed of the left motors
    m_pscLeft_cim->Set(left);
@@ -200,16 +162,15 @@ void Robot980::Drive(float left, float right, float roller)
 void Robot980::Drive(float left, float right)
 {
    //--- Reset the Timer Drive
-   //m_pTimerDrive->Reset();
+   m_pTimerDrive->Reset();
 
    //--- Set the speed of the left motors
    m_pscLeft_cim->Set(left);
    m_pscLeft_fp->Set(left);
    
    //--- Set the speed of the right motors
-   m_pscRight_cim->Set(right);
-   m_pscRight_fp->Set(right);
-   
+   m_pscRight_cim->Set(right); //Set(right*DRIVE_REVERSE);
+   m_pscRight_fp->Set(right);  //Set(right*DRIVE_REVERSE);
    
    //--- Set the speed of the roller motor based upon the forward/back speed
    //    The forward speed here represents a direct relation to the y-axis
@@ -246,7 +207,7 @@ void Robot980::Drive(float left, float right)
 }
 
 //==============================================================================
-void Robot980::Lift(float speed)
+void Robot980::Lift(void)
 {
    
 }
@@ -255,41 +216,41 @@ void Robot980::Lift(float speed)
 //==============================================================================
 bool Robot980::KickerArmed(void)
 {
+   // IF THE SWITCH IS TRIPPED FOR THE KICKING CAM MOTOR
+   // AND THE SWITCH IS TRIPPED BECAUSE THE KICKING MECHANISM IS ALL THE WAY BACK
+   // THEN RETURN TRUE, ELSE FALSE
    return false;
 }
 
 //==============================================================================
 void Robot980::ArmKicker(void)
 {
-   if(this->KickerFired()){
-	   
+   if(!this->KickerArmed()){
+	   // RUN MOTOR UNTIL SWITCH IS TRIPPED AND UNWIND FOR TWO SECONDS
    }
 }
 
 //==============================================================================
 bool Robot980::KickerFired(void)
 {
-   return false;
+   return !this->KickerArmed();
 }
 
 //==============================================================================
 void Robot980::FireKicker(void)
 {
-   if(this->KickerArmed()){
+   if(this->KickerArmed() && m_pTimerFire->Get() > KICKER_RESET_PERIOD){
+	   //--- Reset the firing timer
+	   m_pTimerFire->Reset();
 	   
+	   //--- Run the Kick motor to release the kicker
    }
 }
 
 //==============================================================================
 //==============================================================================
-float Robot980::GetAngle(void)
-{
-   return 1.0;
-}
+//float Robot980::GetAngle(void)
+//{
+//   return 1.0;
+//}
 
-//==============================================================================
-//==============================================================================
-bool Robot980::TargetAvailable(void)
-{
-   return false;
-}
