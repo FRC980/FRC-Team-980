@@ -49,8 +49,9 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 // Digital Inputs
 
 // Limit Switches for Kicking Mechanism
-#define CHAN_LIMIT_ARM              1
-#define CHAN_LIMIT_FIRE             2
+#define CHAN_LIMIT_ARM              1   /*!< \def CHAN_LIMIT_ARM The Kicker Arming Limit Switch */
+#define CHAN_LIMIT_FIRE             2   /*!< \def CHAN_LIMIT_FIRE The Kicker Firing Limit Switch */
+#define CHAN_LIMIT_WINCH            3   /*!< \def CHAN_LIMIT_WINCH The Kicker Winch Limit Switch */
 
 // Encoder on the winch
 #define CHAN_ENC_ARMER_A            10
@@ -110,22 +111,27 @@ class Robot980 : public SensorBase
       
       // roller and winch motors
 	  CANJaguar* m_pscRoller_cim;       /*!< The Roller motor speed controller */
-	  CANJaguar* m_pscWinch;        /*!< The Winch motor speed controller */
+	  //CANJaguar* m_pscWinch;        /*!< The Winch motor speed controller */
       
       //--- Victors
-      SpeedController* m_pscArm1;         /*!< The Arming motor 1 speed controller */
-      SpeedController* m_pscArm2;         /*!< The Arming motor 2 speed controller */
-      SpeedController* m_pscFire;         /*!< The Firing motor speed controller */
+      Victor* m_pscArm1_win;         /*!< The Arming motor 1 speed controller */
+      Victor* m_pscArm2_win;         /*!< The Arming motor 2 speed controller */
+      Victor* m_pscFire_win;         /*!< The Firing motor speed controller */
       
       //--- Sensors
       //Gyro* m_pGyro;                      /*!< The Gyro Sensor */
-      DigitalInput *m_lscArm;             /*!< The Arming Mechanism Limit Switch */
-      DigitalInput *m_lscFire;            /*!< The Firing Mechanism Limit Switch */
+      DigitalInput *m_pscArm_switch;      /*!< The Arming Mechanism Limit Switch */
+      DigitalInput *m_pscFire_switch;     /*!< The Firing Mechanism Limit Switch */
+      DigitalInput *m_pscWinch_switch;     /*!< The Winch Mechanism Limit Switch */
       // more sensors TBD
       
       //--- Timers
       Timer* m_pTimerDrive;              /*!< The Timer used for debugging (calc & print speeds) */
       Timer* m_pTimerFire;               /*!< The Timer used for firing. Can only fire once every 2 seconds */
+      
+      //--- Winch variables
+      bool unwindWinch;
+      int countWinch;
       
       //--- Constructors -------------------------------------------------------
       /*! \brief The Robot 980 Constructor
@@ -183,18 +189,11 @@ class Robot980 : public SensorBase
        */
       void Drive(float left, float right);
       
-      /*! \brief A method to run the robot lift motor action
-       *  \todo Write this method
-       */
-      void Lift(void);
-      
       /*! \brief Determine if the kicker has been retracted
        *  \return true if the kicker is retracted (and the time restriction
        *  has passed)
        *  
        *  This method is used to determine if the kicker has been retracted.
-       *
-       *  \todo finish this method
        */
       bool KickerArmed(void);
       
@@ -202,27 +201,44 @@ class Robot980 : public SensorBase
        *  
        *  This method is used to arm the kicking mechanism by retracting
        *  the kicker
-       *
-       *  \todo finish this method
        */
       void ArmKicker(void);
+      
+      /*! \brief Stop the kicker winch
+       *  
+       *  This method is used to stop the kicker winch
+       */
+      void StopArmWinch(void);
+
+      /*! \brief Unwind the kicker winch
+       *  
+       *  This method is used to unwdind the kicker winch
+       */
+      void UnwindWinch(void);
       
       /*! \brief Determine if the kicker has been fired
        *  \return true if the kicker has fired
        *  
        *  This method is used to determine if the kicker has been retracted.
-       *
-       *  \todo finish this method
        */
       bool KickerFired(void);
       
       /*! \brief Fire the kicker
        *  
        *  This method is used to Fire the kicking mechanism
-       *
-       *  \todo finish this method
        */
       void FireKicker(void);
+      
+      /*! \brief Stop the kicker cam from moving
+       *  
+       *  This method is used to stop the kicker cam from moving
+       */
+      void StopKickerCam(void);
+      
+      /*! \brief A method to run the robot lift motor action
+       *  \todo Write this method
+       */
+      //void Lift(void);
       
       /*! \brief Get the angle from the gyro
        *

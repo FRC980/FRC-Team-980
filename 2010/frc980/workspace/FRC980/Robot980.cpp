@@ -28,17 +28,18 @@ Robot980::Robot980()
    
    // roller and winch motors
    , m_pscRoller_cim(new CANJaguar(CAN_ROLLER_CIM))//, CANJaguar::kSpeed))
-   , m_pscWinch(new CANJaguar(CAN_WINCH))//, CANJaguar::kSpeed))
+   //, m_pscWinch(new CANJaguar(CAN_WINCH))//, CANJaguar::kSpeed))
    
    //--- Victors
-   , m_pscArm1(new Victor(DSC_SLOT, CHAN_PWM_ARM1))
-   , m_pscArm2(new Victor(DSC_SLOT, CHAN_PWM_ARM2))
-   , m_pscFire(new Victor(DSC_SLOT, CHAN_PWM_FIRE))
+   , m_pscArm1_win(new Victor(DSC_SLOT, CHAN_PWM_ARM1))
+   , m_pscArm2_win(new Victor(DSC_SLOT, CHAN_PWM_ARM2))
+   , m_pscFire_win(new Victor(DSC_SLOT, CHAN_PWM_FIRE))
    
    //--- Sensors
    //, m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
-   , m_lscArm(new DigitalInput(CHAN_LIMIT_ARM))
-   , m_lscFire(new DigitalInput(CHAN_LIMIT_FIRE))
+   , m_pscArm_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_ARM))
+   , m_pscFire_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_FIRE))
+   , m_pscWinch_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_WINCH))
 
    //--- Timers
    , m_pTimerDrive(new Timer)
@@ -48,64 +49,68 @@ Robot980::Robot980()
    //double kp = 0.35;
    //double ki = 0.003;
    //double kd = 0.001;
-   //m_pscLeft_cim->SetPID( kp,  ki,  kd);
-   //m_pscLeft_fp->SetPID( kp,  ki,  kd);
-   //m_pscRight_cim->SetPID( kp,  ki,  kd);
-   //m_pscRight_fp->SetPID( kp,  ki,  kd);
-   //m_pscRoller_cim->SetPID( kp,  ki,  kd);
-   //m_pscWinch->SetPID( kp,  ki,  kd);
+   //this->m_pscLeft_cim->SetPID( kp,  ki,  kd);
+   //this->m_pscLeft_fp->SetPID( kp,  ki,  kd);
+   //this->m_pscRight_cim->SetPID( kp,  ki,  kd);
+   //this->m_pscRight_fp->SetPID( kp,  ki,  kd);
+   //this->m_pscRoller_cim->SetPID( kp,  ki,  kd);
+   //this->m_pscWinch->SetPID( kp,  ki,  kd);
    
    //--- Encoder setup for Left CIM
-   //m_pscLeft_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-   //m_pscLeft_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-   //m_pscLeft_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+   //this->m_pscLeft_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+   //this->m_pscLeft_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+   //this->m_pscLeft_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 
    //--- Encoder setup for Right CIM
-   //m_pscRight_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-   //m_pscRight_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-   //m_pscRight_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+   //this->m_pscRight_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+   //this->m_pscRight_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+   //this->m_pscRight_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 
    //--- Encoder setup for Roller
-   //m_pscRoller_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-   //m_pscRoller_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-   //m_pscRoller_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+   //this->m_pscRoller_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+   //this->m_pscRoller_cim->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+   //this->m_pscRoller_cim->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
 
    //--- Define Drive Timer
-   m_pTimerDrive->Reset();
-   m_pTimerDrive->Start();
+   this->m_pTimerDrive->Reset();
+   this->m_pTimerDrive->Start();
 
    //--- Define Fire Timer
-   m_pTimerFire->Reset();
-   m_pTimerFire->Start();
+   this->m_pTimerFire->Reset();
+   this->m_pTimerFire->Start();
 
    //--- Tell SensorBase about us
    AddToSingletonList();
+   
+   //--- Set up winch
+   this->unwindWinch = false;
+   this->countWinch = 0;
 }
 
 //==============================================================================
 Robot980::~Robot980()
 {
    //--- Speed controllers
-   delete m_pscLeft_cim;
-   delete m_pscLeft_fp;
-   delete m_pscRight_cim;
-   delete m_pscRight_fp;
+   delete this->m_pscLeft_cim;
+   delete this->m_pscLeft_fp;
+   delete this->m_pscRight_cim;
+   delete this->m_pscRight_fp;
    
-   delete m_pscRoller_cim;
-   delete m_pscWinch;
+   delete this->m_pscRoller_cim;
+   //delete this->m_pscWinch;
    
-   delete m_pscArm1;
-   delete m_pscArm2;
-   delete m_pscFire;
+   delete this->m_pscArm1_win;
+   delete this->m_pscArm2_win;
+   delete this->m_pscFire_win;
 
    //--- Sensors
-   //delete m_pGyro;
-   delete m_lscArm;
-   delete m_lscFire;
+   //delete this->m_pGyro;
+   delete this->m_pscArm_switch;
+   delete this->m_pscFire_switch;
    
    //--- Timers
-   delete m_pTimerDrive;
-   delete m_pTimerFire;
+   delete this->m_pTimerDrive;
+   delete this->m_pTimerFire;
 }
 
 //==============================================================================
@@ -148,33 +153,33 @@ int Robot980::GetAutonMode()
 void Robot980::Drive(float left, float right, float roller)
 {
    //--- Reset the Timer Drive
-   m_pTimerDrive->Reset();
+   this->m_pTimerDrive->Reset();
 
    //--- Set the speed of the left motors
-   m_pscLeft_cim->Set(left);
-   m_pscLeft_fp->Set(left);
+   this->m_pscLeft_cim->Set(left);
+   this->m_pscLeft_fp->Set(left);
    
    //--- Set the speed of the right motors
-   m_pscRight_cim->Set(right);
-   m_pscRight_fp->Set(right);
+   this->m_pscRight_cim->Set(right);
+   this->m_pscRight_fp->Set(right);
    
    //--- Set the speed of the roller motor
-   m_pscRoller_cim->Set(roller);
+   this->m_pscRoller_cim->Set(roller);
 }
 
 //==============================================================================
 void Robot980::Drive(float left, float right)
 {
    //--- Reset the Timer Drive
-   m_pTimerDrive->Reset();
+   this->m_pTimerDrive->Reset();
 
    //--- Set the speed of the left motors
-   m_pscLeft_cim->Set(left);
-   m_pscLeft_fp->Set(left);
+   this->m_pscLeft_cim->Set(left);
+   this->m_pscLeft_fp->Set(left);
    
    //--- Set the speed of the right motors
-   m_pscRight_cim->Set(right); //Set(right*DRIVE_REVERSE);
-   m_pscRight_fp->Set(right);  //Set(right*DRIVE_REVERSE);
+   this->m_pscRight_cim->Set(right); //Set(right*DRIVE_REVERSE);
+   this->m_pscRight_fp->Set(right);  //Set(right*DRIVE_REVERSE);
    
    //--- Set the speed of the roller motor based upon the forward/back speed
    //    The forward speed here represents a direct relation to the y-axis
@@ -190,10 +195,10 @@ void Robot980::Drive(float left, float right)
    
    //--- Set when going forward
    if (fForwardSpeed > 0){
-      m_pscRoller_cim->Set(0.0);
+      this->m_pscRoller_cim->Set(0.0);
    }
    else if(fForwardSpeed == 0){
-	  m_pscRoller_cim->Set(-0.5); // Speed is limited by set command
+	  this->m_pscRoller_cim->Set(-0.5); // Speed is limited by set command
    }
    //--- Set when moving backwards
    else
@@ -205,14 +210,8 @@ void Robot980::Drive(float left, float right)
       // 10%.
       float speed = fForwardSpeed;
       speed *= 2 * 1.1 * (ROLLER_GEARBOX) / (GEARBOX_RATIO);
-      m_pscRoller_cim->Set(speed); // Speed is limited by set command
+      this->m_pscRoller_cim->Set(speed); // Speed is limited by set command
    }
-   
-}
-
-//==============================================================================
-void Robot980::Lift(void)
-{
    
 }
 
@@ -220,17 +219,52 @@ void Robot980::Lift(void)
 //==============================================================================
 bool Robot980::KickerArmed(void)
 {
-   // IF THE SWITCH IS TRIPPED FOR THE KICKING CAM MOTOR
-   // AND THE SWITCH IS TRIPPED BECAUSE THE KICKING MECHANISM IS ALL THE WAY BACK
-   // THEN RETURN TRUE, ELSE FALSE
+   if(this->m_pscArm_switch->Get())
+      return true;
    return false;
 }
 
 //==============================================================================
 void Robot980::ArmKicker(void)
 {
-   if(!this->KickerArmed()){
-	   // RUN MOTOR UNTIL SWITCH IS TRIPPED AND UNWIND FOR TWO SECONDS
+   if(this->KickerFired() && !this->unwindWinch){
+	  this->m_pscArm1_win->Set(1.0);
+	  this->m_pscArm2_win->Set(1.0);
+	  
+	  this->unwindWinch = false;
+	  this->countWinch = 0;
+   }
+}
+
+//==============================================================================
+void Robot980::StopArmWinch(void)
+{
+   //--- Stop the kicker winch
+   if(this->KickerArmed() && !this->unwindWinch){
+	  this->m_pscArm1_win->Set(0.0);
+	  this->m_pscArm2_win->Set(0.0);
+	  
+	  this->unwindWinch = true;
+	  this->countWinch = 0;
+   }
+}
+
+//==============================================================================
+void Robot980::UnwindWinch(void)
+{
+   if(this->KickerArmed() && 
+      this->unwindWinch && 
+      this->countWinch < 2){
+	  
+	  this->m_pscArm1_win->Set(-1.0);
+	  this->m_pscArm2_win->Set(-1.0);
+      
+	  if(this->m_pscWinch_switch->Get()){
+         this->countWinch += 1;
+	  }
+   }
+   else {
+	   this->unwindWinch = false;
    }
 }
 
@@ -243,13 +277,29 @@ bool Robot980::KickerFired(void)
 //==============================================================================
 void Robot980::FireKicker(void)
 {
-   if(this->KickerArmed() && m_pTimerFire->Get() > KICKER_RESET_PERIOD){
+   if(this->KickerArmed() && this->m_pTimerFire->Get() > KICKER_RESET_PERIOD){
 	   //--- Reset the firing timer
-	   m_pTimerFire->Reset();
+	   this->m_pTimerFire->Reset();
 	   
 	   //--- Run the Kick motor to release the kicker
+	   this->m_pscFire_win->Set(1.0);
    }
 }
+
+//==============================================================================
+void Robot980::StopKickerCam(void)
+{
+	//--- If the fire switch was hit then stop the fire cam from moving
+	if(this->m_pscFire_switch->Get()){
+		this->m_pscFire_win->Set(0.0);
+	}
+}
+
+//==============================================================================
+//void Robot980::Lift(void)
+//{
+//   
+//}
 
 //==============================================================================
 //==============================================================================

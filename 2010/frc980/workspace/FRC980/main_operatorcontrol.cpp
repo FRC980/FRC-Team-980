@@ -48,15 +48,24 @@ void Main::TeleopPeriodic(void)
    
    //--- Fire and Re-Arm the Kicker
    if(pjsDrive->GetRawButton(JOYSTICK_TRIGGER)){
+	   //--- Fire the Kicker
 	   pRobot->FireKicker();
-       
-	   // A DELAY SHOULD BE HERE
-	   
-	   pRobot->ArmKicker();
    }
    
+   //--- Stop the fire Cam if it's still moving
+   pRobot->StopKickerCam();
+   
+   //--- Re-arm the Kicker
+   pRobot->ArmKicker();
+   
+   //--- Stop the arming winch and unload it
+   pRobot->StopArmWinch();
+   
+   //--- Unwind the winch
+   pRobot->UnwindWinch();
+   
    //--- Lift the Robot
-   if(pjsDrive->GetRawButton(JOYSTICK_THUMB_TOP)){
-   	   pRobot->Lift();
-   }
+   //if(pjsDrive->GetRawButton(JOYSTICK_THUMB_TOP)){
+   //	   pRobot->Lift();
+   //}
 }
