@@ -49,7 +49,7 @@ void Main::TeleopPeriodic(void)
    //--- Fire and Re-Arm the Kicker
    if(pjsDrive->GetRawButton(JOYSTICK_TRIGGER)){
 	   //--- Fire the Kicker
-	   pRobot->FireKicker();
+	   //pRobot->FireKicker();
    }
    
    //--- Stop the fire Cam if it's still moving
