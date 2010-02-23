@@ -53,16 +53,16 @@ void Main::TeleopPeriodic(void)
    }
    
    //--- Stop the fire Cam if it's still moving
-   pRobot->StopKickerCam();
+   //pRobot->StopKickerCam();
    
    //--- Re-arm the Kicker
-   pRobot->ArmKicker();
+   //pRobot->ArmKicker();
    
    //--- Stop the arming winch and unload it
-   pRobot->StopArmWinch();
+   //pRobot->StopArmWinch();
    
    //--- Unwind the winch
-   pRobot->UnwindWinch();
+   //pRobot->UnwindWinch();
    
    //--- Lift the Robot
    //if(pjsDrive->GetRawButton(JOYSTICK_THUMB_TOP)){

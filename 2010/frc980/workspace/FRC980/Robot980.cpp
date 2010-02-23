@@ -174,12 +174,12 @@ void Robot980::Drive(float left, float right)
    this->m_pTimerDrive->Reset();
 
    //--- Set the speed of the left motors
-   this->m_pscLeft_cim->Set(left);
-   this->m_pscLeft_fp->Set(left);
+   this->m_pscLeft_cim->Set(left*DRIVE_REVERSE);
+   this->m_pscLeft_fp->Set(left*DRIVE_REVERSE);
    
    //--- Set the speed of the right motors
-   this->m_pscRight_cim->Set(right); //Set(right*DRIVE_REVERSE);
-   this->m_pscRight_fp->Set(right);  //Set(right*DRIVE_REVERSE);
+   this->m_pscRight_cim->Set(right); 
+   this->m_pscRight_fp->Set(right);  
    
    //--- Set the speed of the roller motor based upon the forward/back speed
    //    The forward speed here represents a direct relation to the y-axis
