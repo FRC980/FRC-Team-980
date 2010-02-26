@@ -83,8 +83,8 @@ Robot980::Robot980()
    AddToSingletonList();
    
    //--- Set up winch
-   this->unwindWinch = false;
-   this->countWinch = 0;
+   this->m_bUnwindWinch = false;
+   this->m_lCountWinch = 0;
 }
 
 //==============================================================================
@@ -219,45 +219,39 @@ void Robot980::Drive(float left, float right)
 //==============================================================================
 bool Robot980::KickerArmed(void)
 {
-   if(this->m_pscArm_switch->Get())
+   if(this->m_pscArm_switch->Get()){
       return true;
+   }
    return false;
 }
 
 //==============================================================================
 void Robot980::ArmKicker(void)
 {
-   if(!this->KickerArmed() && !this->unwindWinch){
+   //--- Arm the kicker
+   if(!this->KickerArmed() && !this->m_bUnwindWinch){
 	  //--- Wind up the winch to arm the kicker
 	  this->m_pscArm1_win->Set(1.0);
 	  this->m_pscArm2_win->Set(1.0);
 	  
 	  //--- Disable the unwind function for the winch
-	  this->unwindWinch = false;
+	  this->m_bUnwindWinch = false;
    }
-}
-
-//==============================================================================
-void Robot980::StopArmWinch(void)
-{
    //--- Stop the kicker winch
-   if(this->KickerArmed() && !this->unwindWinch){
+   else if(this->KickerArmed() && !this->m_bUnwindWinch){
 	  //--- Stop the arming of the kicker with the winch
 	  this->m_pscArm1_win->Set(0.0);
 	  this->m_pscArm2_win->Set(0.0);
 	  
 	  //--- Enable the unwind function for the winch
-	  this->unwindWinch = true;
+	  this->m_bUnwindWinch = true;
+	  this->m_lCountWinch = 0;
    }
-}
-
-//==============================================================================
-void Robot980::UnwindWinch(void)
-{
-   if(this->KickerArmed() && this->unwindWinch){
+   //--- Unwind the kicker winch
+   else if(this->KickerArmed() && this->m_bUnwindWinch){
 	  
-	  //--- If the count is less than 2
-      if(this->countWinch < 2){
+	  //--- If the count is less than 2 continue to unwind
+      if(this->m_lCountWinch < 2){
 	  
 	     //--- Unwind the winch for the kciker
 	     this->m_pscArm1_win->Set(-1.0);
@@ -266,14 +260,13 @@ void Robot980::UnwindWinch(void)
 	     //--- If the winch switch is hit then add one to the count
 	     //    The count must equal 2 to stop unwinding
 	     if(this->m_pscWinch_switch->Get()){
-            this->countWinch += 1;
+            this->m_lCountWinch += 1;
 	     }
       }
-      //--- If the count is greater than 2
+      //--- If the count is greater than 2 stop unwinding
       else {
 	     //--- Disable the unwind function for the winch
-	     this->unwindWinch = false;
-	     this->countWinch = 0;
+	     this->m_bUnwindWinch = false;
       }
    }
 }
@@ -288,7 +281,7 @@ bool Robot980::KickerFired(void)
 void Robot980::FireKicker(void)
 {
    if(this->KickerArmed() && 
-      !this->unwindWinch &&
+      !this->m_bUnwindWinch &&
       this->m_pTimerFire->Get() > KICKER_RESET_PERIOD){
       
 	  //--- Reset the firing timer

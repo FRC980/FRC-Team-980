@@ -58,12 +58,6 @@ void Main::TeleopPeriodic(void)
    //--- Re-arm the Kicker
    //pRobot->ArmKicker();
    
-   //--- Stop the arming winch and unload it
-   //pRobot->StopArmWinch();
-   
-   //--- Unwind the winch
-   //pRobot->UnwindWinch();
-   
    //--- Lift the Robot
    //if(pjsDrive->GetRawButton(JOYSTICK_THUMB_TOP)){
    //	   pRobot->Lift();

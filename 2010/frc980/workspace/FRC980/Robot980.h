@@ -130,8 +130,8 @@ class Robot980 : public SensorBase
       Timer* m_pTimerFire;               /*!< The Timer used for firing. Can only fire once every 2 seconds */
       
       //--- Winch variables
-      bool unwindWinch;
-      int countWinch;
+      bool m_bUnwindWinch;
+      int m_lCountWinch;
       
       //--- Constructors -------------------------------------------------------
       /*! \brief The Robot 980 Constructor
@@ -200,21 +200,9 @@ class Robot980 : public SensorBase
       /*! \brief Arm the kicker
        *  
        *  This method is used to arm the kicking mechanism by retracting
-       *  the kicker
+       *  the kicker and then unwinding the winch
        */
       void ArmKicker(void);
-      
-      /*! \brief Stop the kicker winch
-       *  
-       *  This method is used to stop the kicker winch
-       */
-      void StopArmWinch(void);
-
-      /*! \brief Unwind the kicker winch
-       *  
-       *  This method is used to unwdind the kicker winch
-       */
-      void UnwindWinch(void);
       
       /*! \brief Determine if the kicker has been fired
        *  \return true if the kicker has fired
