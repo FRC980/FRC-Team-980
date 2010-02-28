@@ -120,9 +120,9 @@ class Robot980 : public SensorBase
       
       //--- Sensors
       //Gyro* m_pGyro;                      /*!< The Gyro Sensor */
-      DigitalInput *m_pscArm_switch;      /*!< The Arming Mechanism Limit Switch */
-      DigitalInput *m_pscFire_switch;     /*!< The Firing Mechanism Limit Switch */
-      DigitalInput *m_pscWinch_switch;     /*!< The Winch Mechanism Limit Switch */
+      DigitalInput *m_pdiArm_switch;      /*!< The Arming Mechanism Limit Switch */
+      DigitalInput *m_pdiFire_switch;     /*!< The Firing Mechanism Limit Switch */
+      DigitalInput *m_pdiWinch_switch;     /*!< The Winch Mechanism Limit Switch */
       // more sensors TBD
       
       //--- Timers
@@ -131,7 +131,7 @@ class Robot980 : public SensorBase
       
       //--- Winch variables
       bool m_bUnwindWinch;
-      int m_lCountWinch;
+      int m_iCountWinch;
       
       //--- Constructors -------------------------------------------------------
       /*! \brief The Robot 980 Constructor

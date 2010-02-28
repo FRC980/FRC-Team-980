@@ -37,9 +37,9 @@ Robot980::Robot980()
    
    //--- Sensors
    //, m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
-   , m_pscArm_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_ARM))
-   , m_pscFire_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_FIRE))
-   , m_pscWinch_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_WINCH))
+   , m_pdiArm_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_ARM))
+   , m_pdiFire_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_FIRE))
+   , m_pdiWinch_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_WINCH))
 
    //--- Timers
    , m_pTimerDrive(new Timer)
@@ -84,7 +84,7 @@ Robot980::Robot980()
    
    //--- Set up winch
    this->m_bUnwindWinch = false;
-   this->m_lCountWinch = 0;
+   this->m_iCountWinch = 0;
 }
 
 //==============================================================================
@@ -105,8 +105,8 @@ Robot980::~Robot980()
 
    //--- Sensors
    //delete this->m_pGyro;
-   delete this->m_pscArm_switch;
-   delete this->m_pscFire_switch;
+   delete this->m_pdiArm_switch;
+   delete this->m_pdiFire_switch;
    
    //--- Timers
    delete this->m_pTimerDrive;
@@ -219,7 +219,7 @@ void Robot980::Drive(float left, float right)
 //==============================================================================
 bool Robot980::KickerArmed(void)
 {
-   if(this->m_pscArm_switch->Get()){
+   if(this->m_pdiArm_switch->Get()){
       return true;
    }
    return false;
@@ -245,13 +245,13 @@ void Robot980::ArmKicker(void)
 	  
 	  //--- Enable the unwind function for the winch
 	  this->m_bUnwindWinch = true;
-	  this->m_lCountWinch = 0;
+	  this->m_iCountWinch = 0;
    }
    //--- Unwind the kicker winch
    else if(this->KickerArmed() && this->m_bUnwindWinch){
 	  
 	  //--- If the count is less than 2 continue to unwind
-      if(this->m_lCountWinch < 2){
+      if(this->m_iCountWinch < 2){
 	  
 	     //--- Unwind the winch for the kciker
 	     this->m_pscArm1_win->Set(-1.0);
@@ -259,8 +259,8 @@ void Robot980::ArmKicker(void)
       
 	     //--- If the winch switch is hit then add one to the count
 	     //    The count must equal 2 to stop unwinding
-	     if(this->m_pscWinch_switch->Get()){
-            this->m_lCountWinch += 1;
+	     if(this->m_pdiWinch_switch->Get()){
+            this->m_iCountWinch += 1;
 	     }
       }
       //--- If the count is greater than 2 stop unwinding
@@ -296,7 +296,7 @@ void Robot980::FireKicker(void)
 void Robot980::StopKickerCam(void)
 {
 	//--- If the fire switch was hit then stop the fire cam from moving
-	if(this->m_pscFire_switch->Get()){
+	if(this->m_pdiFire_switch->Get()){
 		this->m_pscFire_win->Set(0.0);
 	}
 }
