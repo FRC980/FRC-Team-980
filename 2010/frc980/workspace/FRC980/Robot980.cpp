@@ -217,7 +217,7 @@ void Robot980::Drive(float left, float right)
 
 //==============================================================================
 //==============================================================================
-bool Robot980::KickerArmed(void)
+bool Robot980::KickerRetracted(void)
 {
    if(this->m_pdiArm_switch->Get()){
       return true;
@@ -226,10 +226,27 @@ bool Robot980::KickerArmed(void)
 }
 
 //==============================================================================
+bool Robot980::KickerArmed(void)
+{
+   if(this->KickerRetracted() && 
+      !this->m_bUnwindWinch &&
+      this->m_pTimerFire->Get() > KICKER_RESET_PERIOD){
+        return true;
+   }
+   return false;
+}
+
+//==============================================================================
+bool Robot980::KickerFired(void)
+{
+   return !this->KickerRetracted();
+}
+
+//==============================================================================
 void Robot980::ArmKicker(void)
 {
    //--- Arm the kicker
-   if(!this->KickerArmed() && !this->m_bUnwindWinch){
+   if(!this->KickerRetracted() && !this->m_bUnwindWinch){
 	  //--- Wind up the winch to arm the kicker
 	  this->m_pscArm1_win->Set(1.0);
 	  this->m_pscArm2_win->Set(1.0);
@@ -238,7 +255,7 @@ void Robot980::ArmKicker(void)
 	  this->m_bUnwindWinch = false;
    }
    //--- Stop the kicker winch
-   else if(this->KickerArmed() && !this->m_bUnwindWinch){
+   else if(this->KickerRetracted() && !this->m_bUnwindWinch){
 	  //--- Stop the arming of the kicker with the winch
 	  this->m_pscArm1_win->Set(0.0);
 	  this->m_pscArm2_win->Set(0.0);
@@ -248,7 +265,7 @@ void Robot980::ArmKicker(void)
 	  this->m_iStateWinch = 0;
    }
    //--- Unwind the kicker winch
-   else if(this->KickerArmed() && this->m_bUnwindWinch){
+   else if(this->KickerRetracted() && this->m_bUnwindWinch){
 	  
 	  //--- If the state is less than 3 continue to unwind
       if(this->m_iStateWinch < 3){
@@ -286,17 +303,9 @@ void Robot980::ArmKicker(void)
 }
 
 //==============================================================================
-bool Robot980::KickerFired(void)
-{
-   return !this->KickerArmed();
-}
-
-//==============================================================================
 void Robot980::FireKicker(void)
 {
-   if(this->KickerArmed() && 
-      !this->m_bUnwindWinch &&
-      this->m_pTimerFire->Get() > KICKER_RESET_PERIOD){
+   if(this->KickerArmed()){
       
 	  //--- Reset the firing timer
 	  this->m_pTimerFire->Reset();

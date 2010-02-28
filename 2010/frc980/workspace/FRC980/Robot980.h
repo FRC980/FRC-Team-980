@@ -201,14 +201,16 @@ class Robot980 : public SensorBase
        *  It is true even if the winch belt is not yet fully extended in
        *  preparation for the next shot.
        */
-      bool KickerArmed(void);
+      bool KickerRetracted(void);
       
-      /*! \brief Arm the kicker
+      /*! \brief Determine if the kicker has been armed
+       *  \return true if the kicker is armed and ready to fire
        *  
-       *  This method is used to arm the kicking mechanism by retracting
-       *  the kicker and then unwinding the winch
+       *  This method is used to determine if the kicker is armed.
+       *  It checks if the kicker has been retracted, the winch unwound,
+       *  and the time restriction has passed.
        */
-      void ArmKicker(void);
+      bool KickerArmed(void);
       
       /*! \brief Determine if the kicker has been fired
        *  \return true if the kicker has fired
@@ -216,6 +218,13 @@ class Robot980 : public SensorBase
        *  This method is used to determine if the kicker has been retracted.
        */
       bool KickerFired(void);
+      
+      /*! \brief Arm the kicker
+       *  
+       *  This method is used to arm the kicking mechanism by retracting
+       *  the kicker and then unwinding the winch
+       */
+      void ArmKicker(void);
       
       /*! \brief Fire the kicker
        *  
