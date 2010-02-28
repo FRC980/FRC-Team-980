@@ -84,7 +84,7 @@ Robot980::Robot980()
    
    //--- Set up winch
    this->m_bUnwindWinch = false;
-   this->m_iCountWinch = 0;
+   this->m_iStateWinch = 0;
 }
 
 //==============================================================================
@@ -245,25 +245,39 @@ void Robot980::ArmKicker(void)
 	  
 	  //--- Enable the unwind function for the winch
 	  this->m_bUnwindWinch = true;
-	  this->m_iCountWinch = 0;
+	  this->m_iStateWinch = 0;
    }
    //--- Unwind the kicker winch
    else if(this->KickerArmed() && this->m_bUnwindWinch){
 	  
-	  //--- If the count is less than 2 continue to unwind
-      if(this->m_iCountWinch < 2){
+	  //--- If the state is less than 3 continue to unwind
+      if(this->m_iStateWinch < 3){
 	  
-	     //--- Unwind the winch for the kciker
+	     //--- Unwind the winch for the kicker
 	     this->m_pscArm1_win->Set(-1.0);
 	     this->m_pscArm2_win->Set(-1.0);
       
-	     //--- If the winch switch is hit then add one to the count
-	     //    The count must equal 2 to stop unwinding
-	     if(this->m_pdiWinch_switch->Get()){
-            this->m_iCountWinch += 1;
+	     //--- State 0, switch hit: increment the state
+	     if(this->m_pdiWinch_switch->Get() && m_iStateWinch==0){
+            this->m_iStateWinch += 1;
 	     }
+	     
+	     //--- State 1, switch released: increment the state
+	     //      Check that the switch is released before it can be
+	     //      triggered again. This prevents accidentally reading
+	     //      the switch as pressed on two immediately successive
+	     //      loops and thinking a whole rotation has been made.
+         if(this->m_pdiWinch_switch->Get() && m_iStateWinch==1){
+            this->m_iStateWinch += 1;
+         }
+         
+         //--- State 2, switch hit: increment the state
+          if(this->m_pdiWinch_switch->Get() && m_iStateWinch==2){
+             this->m_iStateWinch += 1;
+          }
+
       }
-      //--- If the count is greater than 2 stop unwinding
+      //--- If the count is 3 or greater, stop unwinding
       else {
 	     //--- Disable the unwind function for the winch
 	     this->m_bUnwindWinch = false;

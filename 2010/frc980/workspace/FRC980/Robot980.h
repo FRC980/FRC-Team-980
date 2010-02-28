@@ -131,7 +131,12 @@ class Robot980 : public SensorBase
       
       //--- Winch variables
       bool m_bUnwindWinch;
-      int m_iCountWinch;
+      int m_iStateWinch; // winch state: 0 = initial (wound up)
+                         //              1 = encoder switch hit for the first time
+                         //              2 = encoder switch released
+                         //              3 = encoder switch hit for the second time
+                         // \todo Use enum?
+
       
       //--- Constructors -------------------------------------------------------
       /*! \brief The Robot 980 Constructor
@@ -190,10 +195,11 @@ class Robot980 : public SensorBase
       void Drive(float left, float right);
       
       /*! \brief Determine if the kicker has been retracted
-       *  \return true if the kicker is retracted (and the time restriction
-       *  has passed)
+       *  \return true if the kicker is retracted (regardless of winch state)
        *  
        *  This method is used to determine if the kicker has been retracted.
+       *  It is true even if the winch belt is not yet fully extended in
+       *  preparation for the next shot.
        */
       bool KickerArmed(void);
       
