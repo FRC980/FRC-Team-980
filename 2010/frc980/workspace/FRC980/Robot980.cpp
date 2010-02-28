@@ -156,31 +156,20 @@ void Robot980::Drive(float left, float right, float roller)
    this->m_pTimerDrive->Reset();
 
    //--- Set the speed of the left motors
-   this->m_pscLeft_cim->Set(left);
-   this->m_pscLeft_fp->Set(left);
+   this->m_pscLeft_cim->Set(left*DRIVE_REVERSE);
+   this->m_pscLeft_fp->Set(left*DRIVE_REVERSE);
    
    //--- Set the speed of the right motors
    this->m_pscRight_cim->Set(right);
    this->m_pscRight_fp->Set(right);
    
    //--- Set the speed of the roller motor
-   this->m_pscRoller_cim->Set(roller);
+   this->m_pscRoller_cim->Set(roller); // Speed is limited by set command
 }
 
 //==============================================================================
 void Robot980::Drive(float left, float right)
-{
-   //--- Reset the Timer Drive
-   this->m_pTimerDrive->Reset();
-
-   //--- Set the speed of the left motors
-   this->m_pscLeft_cim->Set(left*DRIVE_REVERSE);
-   this->m_pscLeft_fp->Set(left*DRIVE_REVERSE);
-   
-   //--- Set the speed of the right motors
-   this->m_pscRight_cim->Set(right); 
-   this->m_pscRight_fp->Set(right);  
-   
+{  
    //--- Set the speed of the roller motor based upon the forward/back speed
    //    The forward speed here represents a direct relation to the y-axis
    //    input of the command joystick.
@@ -195,10 +184,10 @@ void Robot980::Drive(float left, float right)
    
    //--- Set when going forward
    if (fForwardSpeed > 0){
-      this->m_pscRoller_cim->Set(0.0);
+      this->Drive(left, right, 0.0);
    }
    else if(fForwardSpeed == 0){
-	  this->m_pscRoller_cim->Set(-0.5); // Speed is limited by set command
+       this->Drive(left, right, -0.5);
    }
    //--- Set when moving backwards
    else
@@ -210,7 +199,7 @@ void Robot980::Drive(float left, float right)
       // 10%.
       float speed = fForwardSpeed;
       speed *= 2 * 1.1 * (ROLLER_GEARBOX) / (GEARBOX_RATIO);
-      this->m_pscRoller_cim->Set(speed); // Speed is limited by set command
+      this->Drive(left, right, speed);
    }
    
 }
