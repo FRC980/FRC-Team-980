@@ -174,13 +174,12 @@ void Robot980::Drive(float left, float right)
    //    The forward speed here represents a direct relation to the y-axis
    //    input of the command joystick.
    //
-   //    Ex: fForwardSpeed = u.limit(((y-x) + (y+x))/2)
-   //                      = u.limit((y-x+y+x)/2)
-   //                      = u.limit((2*y)/2)
-   //                      = u.limit(y)
+   //    Ex: fForwardSpeed = utils::limit(((y-x) + (y+x))/2)
+   //                      = utils::limit((y-x+y+x)/2)
+   //                      = utils::limit((2*y)/2)
+   //                      = utils::limit(y)
    //
-   utils u;
-   float fForwardSpeed = u.limit((left + right) / 2);
+   float fForwardSpeed = utils::limit((left + right) / 2);
    
    //--- Set when going forward
    if (fForwardSpeed > 0){

@@ -70,10 +70,7 @@ void SmartDrive::CallCalculate(void *pvsd)
 
 //==============================================================================
 void SmartDrive::Calculate(void)
-{
-   //--- Set up utilities to use
-   utils u;
-   
+{   
    double dMotorCount = m_pEncDrive->GetDistance();
    double dRobotCount = m_pEncFollow->GetDistance();
 
@@ -119,10 +116,10 @@ void SmartDrive::Calculate(void)
       double dVelDelta = m_dCmdSpeed - dMotorVel;
       
       m_dVelInt += dVelDelta * m_kVelI;
-      m_dVelInt = u.limit(m_dVelInt, -1.0, 1.0);
+      m_dVelInt = utils::limit(m_dVelInt, -1.0, 1.0);
       
       double dVelError = m_kVelP * dVelDelta + m_dVelInt;
-      dVelError = u.limit(dVelError, -1.0, 1.0);
+      dVelError = utils::limit(dVelError, -1.0, 1.0);
       
       double dSlippage = m_bUseSlip ? (dMotorVel - dRobotVel) : 0;
       
@@ -133,14 +130,14 @@ void SmartDrive::Calculate(void)
       
       m_dCorInt += dSlippage * m_kCorI;
       // m_dCorInt = u.limit(m_dCorInt, -1.25, 1.25);
-      m_dCorInt = u.limit(m_dCorInt, -0.9, 0.9);
+      m_dCorInt = utils::limit(m_dCorInt, -0.9, 0.9);
       
       double dCor_out = dSlippage * m_kCorP + m_dCorInt;
       double dAclCmd = dVelError - dCor_out;
       double dAclError = dAclCmd - dMotorAcl;
       
       m_dAclInt += dAclError * m_kAclI;
-      m_dAclInt = u.limit(m_dAclInt, -1.0, 1.0);
+      m_dAclInt = utils::limit(m_dAclInt, -1.0, 1.0);
       
       double dMotorCmd = dAclError * m_kAclP + m_dAclInt;
       
@@ -150,7 +147,7 @@ void SmartDrive::Calculate(void)
       else
       {
          double d = m_psc->Get();
-         m_psc->Set(u.limit(dMotorCmd, d - dTime, d + dTime));
+         m_psc->Set(utils::limit(dMotorCmd, d - dTime, d + dTime));
       }
    }
 
@@ -167,8 +164,7 @@ void SmartDrive::Calculate(void)
 void SmartDrive::Set(float speed)
 {
    //--- Ensure that the speed is limited and then set the speed
-   utils u;
-   this->m_dCmdSpeed = u.limit(speed);
+   this->m_dCmdSpeed = utils::limit(speed);
 }
 
 //==============================================================================
