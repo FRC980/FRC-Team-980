@@ -131,11 +131,8 @@ class Robot980 : public SensorBase
       
       //--- Winch variables
       bool m_bUnwindWinch;
-      int m_iStateWinch; // winch state: 0 = initial (wound up)
-                         //              1 = encoder switch hit for the first time
-                         //              2 = encoder switch released
-                         //              3 = encoder switch hit for the second time
-                         // \todo Use enum?
+      int m_iCountWinch;
+      bool m_bOldWinchState;
 
       
       //--- Constructors -------------------------------------------------------
