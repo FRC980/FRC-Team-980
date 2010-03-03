@@ -46,17 +46,27 @@ void Main::TeleopPeriodic(void)
    //--- Drive the robot
    pRobot->Drive(fLeft, fRight);
    
+   //--- Whether kicker should reload automatically
+   static bool kickerReload = true;
+   
    //--- Fire and Re-Arm the Kicker
    if(pjsDrive->GetRawButton(JOYSTICK_TRIGGER)){
 	   //--- Fire the Kicker
 	   //pRobot->FireKicker();
+       //--- Reload automatically unless the left joystick button is pressed
+       //kickerReload = !pjsDrive->GetRawButton(JOYSTICK_THUMB_LEFT);
    }
+   
+   //--- Right joystick button reloads manually
+   //if (!kickerReload && pjsDrive->GetRawButton(JOYSTICK_THUMB_LEFT))
+       //kickerReload = true;
    
    //--- Stop the fire Cam if it's still moving
    //pRobot->StopKickerCam();
    
    //--- Re-arm the Kicker
-   //pRobot->ArmKicker();
+   //if(kickerReload)
+       //pRobot->ArmKicker();
    
    //--- Lift the Robot
    //if(pjsDrive->GetRawButton(JOYSTICK_THUMB_TOP)){
