@@ -39,7 +39,7 @@ class utils
        * and max values.  If the value to limit is outside the limits
        * then the value is set to either the min or max value.
        */
-      static double limit(double val, double min = -1, double max = 1);
+      double limit(double val, double min = -1, double max = 1);
 };
 
 #endif // UTILS_H
