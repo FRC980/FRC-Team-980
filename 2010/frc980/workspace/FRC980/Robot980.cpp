@@ -85,6 +85,7 @@ Robot980::Robot980()
    //--- Set up winch
    this->m_bUnwindWinch = false;
    this->m_iCountWinch = 0;
+   this->m_bOldWinchState = false;
 }
 
 //==============================================================================
