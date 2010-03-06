@@ -26,9 +26,9 @@ Robot980::Robot980()
    , m_pscRight_cim(new CANJaguar(CAN_RIGHT_CIM))//, CANJaguar::kSpeed))
    , m_pscRight_fp(new CANJaguar(CAN_RIGHT_FP))//, CANJaguar::kSpeed))
    
-   // roller and winch motors
+   // roller and lift motors
    , m_pscRoller_cim(new CANJaguar(CAN_ROLLER_CIM))//, CANJaguar::kSpeed))
-   //, m_pscWinch(new CANJaguar(CAN_WINCH))//, CANJaguar::kSpeed))
+   //, m_pscLift(new CANJaguar(CAN_LIFT))//, CANJaguar::kSpeed))
    
    //--- Victors
    , m_pscArm1_win(new Victor(DSC_SLOT, CHAN_PWM_ARM1))
@@ -54,7 +54,6 @@ Robot980::Robot980()
    //this->m_pscRight_cim->SetPID( kp,  ki,  kd);
    //this->m_pscRight_fp->SetPID( kp,  ki,  kd);
    //this->m_pscRoller_cim->SetPID( kp,  ki,  kd);
-   //this->m_pscWinch->SetPID( kp,  ki,  kd);
    
    //--- Encoder setup for Left CIM
    //this->m_pscLeft_cim->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
@@ -98,7 +97,7 @@ Robot980::~Robot980()
    delete this->m_pscRight_fp;
    
    delete this->m_pscRoller_cim;
-   //delete this->m_pscWinch;
+   //delete this->m_pscLift;
    
    delete this->m_pscArm1_win;
    delete this->m_pscArm2_win;
@@ -187,9 +186,9 @@ void Robot980::Drive(float left, float right)
    if (fForwardSpeed > 0){
       this->Drive(left, right, 0.0);
    }
-   else if(fForwardSpeed == 0){
-       this->Drive(left, right, -0.5);
-   }
+   //else if(fForwardSpeed == 0){
+   //    this->Drive(left, right, -0.5);
+   //}
    //--- Set when moving backwards
    else
    {
@@ -198,9 +197,8 @@ void Robot980::Drive(float left, float right)
       // means RPM of ball is 2/3 RPM of wheels, and roller is 3x RPM of
       // ball, making roller 2x RPM of wheels.  We then add an extra
       // 10%.
-      float speed = fForwardSpeed;
-      speed *= 2 * 1.1 * (ROLLER_GEARBOX) / (GEARBOX_RATIO);
-      this->Drive(left, right, speed);
+      fForwardSpeed *= 2 * 1.1 * (ROLLER_GEARBOX) / (GEARBOX_RATIO);
+      this->Drive(left, right, fForwardSpeed);
    }
    
 }

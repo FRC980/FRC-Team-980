@@ -47,29 +47,35 @@ void Main::TeleopPeriodic(void)
    pRobot->Drive(fLeft, fRight);
    
    //--- Whether kicker should reload automatically
-   static bool kickerReload = true;
+   //    This initialization is only done once because of the nature of
+   //    static variables.  It will retain whatever future value is set
+   //    after this point.
+   static bool bKickerReload = true;
    
    //--- Fire and Re-Arm the Kicker
    if(pjsDrive->GetRawButton(JOYSTICK_TRIGGER)){
 	   //--- Fire the Kicker
 	   //pRobot->FireKicker();
-       //--- Reload automatically unless the left joystick button is pressed
-       //kickerReload = !pjsDrive->GetRawButton(JOYSTICK_THUMB_LEFT);
+	   
+       //--- Reload automatically unless the right joystick button is pressed
+       bKickerReload  = !pjsDrive->GetRawButton(JOYSTICK_THUMB_RIGHT);
    }
    
-   //--- Right joystick button reloads manually
-   //if (!kickerReload && pjsDrive->GetRawButton(JOYSTICK_THUMB_LEFT))
-       //kickerReload = true;
+   //--- Left joystick button reloads manually
+   if(!bKickerReload && pjsDrive->GetRawButton(JOYSTICK_THUMB_LEFT)){
+      bKickerReload = true;
+   }
    
    //--- Stop the fire Cam if it's still moving
    //pRobot->StopKickerCam();
    
    //--- Re-arm the Kicker
-   //if(kickerReload)
-       //pRobot->ArmKicker();
+   //if(kickerReload){
+   //   pRobot->ArmKicker();
+   //{
    
-   //--- Lift the Robot
+   //--- Top joystick button Lifts the Robot
    //if(pjsDrive->GetRawButton(JOYSTICK_THUMB_TOP)){
-   //	   pRobot->Lift();
+   //   pRobot->Lift();
    //}
 }

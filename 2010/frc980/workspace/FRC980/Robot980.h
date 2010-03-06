@@ -1,20 +1,28 @@
 #ifndef ROBOT980_H
 #define ROBOT980_H
 
-#include "numbers.h"
-#include "CANJaguar.h"
+//--- Include the appropriate libraries
+#include "numbers.h"    // This includes numerical constants used by the robot
+#include "CANJaguar.h"  // This includes the necessary methods to use the CAN Jaguar
 
 //==============================================================================
-/*! The Gear Ratio from output of gearbox to wheel */
+/*! \def GEAR_RATIO
+ * The Gear Ratio from output of gearbox to wheel 
+ */
 #define GEAR_RATIO      ((double)1)
 
-/*! The Gearbox Ratio ~ 8.4586:1 */
+/*! \def GEARBOX_RATIO
+ * The Gearbox Ratio ~ 8.4586:1 
+ */
 #define GEARBOX_RATIO   ((double)50/(double)14*(double)45/(double)19)
 
-/*! The Roller Motor Gearbox Ratio ~ 3.67:1 */
+/*! \def ROLLER_GEARBOX 
+ * The Roller Motor Gearbox Ratio ~ 3.67:1 
+ */
 #define ROLLER_GEARBOX  ((double)11/(double)3)
 
-/*! Theoretical speed of CIM is 5500 RPM
+/*! \def TOP_SPEED
+ *  Theoretical speed of CIM is 5500 RPM
  *  free-running top speed (in ft/sec) = (speed of cim in rpm) / 60sec/min
  *  (ratio of toughbox) * (sprocket ratio) * pi * (wheel diameter in feet)
  */
@@ -27,7 +35,7 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 #define CAN_RIGHT_CIM               13   /*!< \def CAN_RIGHT_CIM The CAN Jaguar device number for the Right CIM Motor */
 #define CAN_RIGHT_FP                14   /*!< \def CAN_RIGHT_FP The CAN Jaguar device number for the Right Fisher Price Motor */
 #define CAN_ROLLER_CIM              15   /*!< \def CAN_ROLLER The CAN Jaguar device number for the Roller Motor */
-#define CAN_WINCH                   16   /*!< \def CAN_WINCH The CAN Jaguar device number for the Winch Motor */
+#define CAN_LIFT                    16   /*!< \def CAN_LIFT The CAN Jaguar device number for the Lift Motor */
 
 // Jaguar Outputs
 #define MAX_JAGUAR_OUTPUT_VOLTAGE   12.0 /*!< \def MAX_JAGUAR_OUTPUT_VOLTAGE The maximum output voltage of the CAN Jaguar */
@@ -53,13 +61,9 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 #define CHAN_LIMIT_FIRE             2   /*!< \def CHAN_LIMIT_FIRE The Kicker Firing Limit Switch */
 #define CHAN_LIMIT_WINCH            3   /*!< \def CHAN_LIMIT_WINCH The Kicker Winch Limit Switch */
 
-// Encoder on the winch
-#define CHAN_ENC_ARMER_A            10
-#define CHAN_ENC_ARMER_B            11
-
 // Encoder on the lift mechanism
-#define CHAN_ENC_LIFT_A             11
-#define CHAN_ENC_LIFT_B             12
+//#define CHAN_ENC_LIFT_A             11
+//#define CHAN_ENC_LIFT_B             12
 
 //==============================================================================
 // Analog Inputs
@@ -73,17 +77,20 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 // Define Additional Values
 
 //--- Reverse Drive Direction
-#define DRIVE_REVERSE               -1.0
+/*! \def DRIVE_REVERSE This variable is used to reverse the drive signal to 
+ *  motors that need to be moved in reverse
+ */
+#define DRIVE_REVERSE               -1.0 
 
 //--- Kicker Reset Period
-#define KICKER_RESET_PERIOD         2.0
+#define KICKER_RESET_PERIOD         2.0 /*!< \def KICKER_RESET_PERIOD The number of seconds that must elapse before the kicker can reset */
 
 //--- Joystick Button Names
-#define JOYSTICK_TRIGGER            1
-#define JOYSTICK_THUMB_BOTTOM       2
-#define JOYSTICK_THUMB_TOP          3
-#define JOYSTICK_THUMB_LEFT         4
-#define JOYSTICK_THUMB_RIGHT        5
+#define JOYSTICK_TRIGGER            1  /*!< \def JOYSTICK_TRIGGER The trigger used to kick the ball */
+#define JOYSTICK_THUMB_BOTTOM       2  /*!< \def JOYSTICK_THUMB_BOTTOM The bottom thumb button is not used */
+#define JOYSTICK_THUMB_TOP          3  /*!< \def JOYSTICK_THUMB_TOP The top thumb button is used to lift the robot */
+#define JOYSTICK_THUMB_LEFT         4  /*!< \def JOYSTICK_THUMB_LEFT The left thumb button is used to prevent the kicker from re-arming */
+#define JOYSTICK_THUMB_RIGHT        5  /*!< \def JOYSTICK_THUMB_RIGHT The right thumb button is used to manually re-arm the kicker */
 
 //--- NULL Value
 #ifndef NULL
@@ -104,36 +111,35 @@ class Robot980 : public SensorBase
       //--- Instance Variables -------------------------------------------------
       //--- Jaguars
       // left and right drive motors
-	  CANJaguar* m_pscLeft_cim;     /*!< The Left CIM motor speed controller */
-	  CANJaguar* m_pscLeft_fp;      /*!< The Left FP motor speed controller */
-	  CANJaguar* m_pscRight_cim;    /*!< The Right CIM motor speed controller */
-	  CANJaguar* m_pscRight_fp;     /*!< The Right FP motor speed controller */
+	  CANJaguar* m_pscLeft_cim;       /*!< The Left CIM motor speed controller */
+	  CANJaguar* m_pscLeft_fp;        /*!< The Left FP motor speed controller */
+	  CANJaguar* m_pscRight_cim;      /*!< The Right CIM motor speed controller */
+	  CANJaguar* m_pscRight_fp;       /*!< The Right FP motor speed controller */
       
-      // roller and winch motors
-	  CANJaguar* m_pscRoller_cim;       /*!< The Roller motor speed controller */
-	  //CANJaguar* m_pscWinch;        /*!< The Winch motor speed controller */
+      // roller and lift motors
+	  CANJaguar* m_pscRoller_cim;     /*!< The Roller motor speed controller */
+	  //CANJaguar* m_pscLift;          /*!< The Lift motor speed controller */
       
       //--- Victors
-      Victor* m_pscArm1_win;         /*!< The Arming motor 1 speed controller */
-      Victor* m_pscArm2_win;         /*!< The Arming motor 2 speed controller */
-      Victor* m_pscFire_win;         /*!< The Firing motor speed controller */
+      Victor* m_pscArm1_win;          /*!< The Arming motor 1 speed controller */
+      Victor* m_pscArm2_win;          /*!< The Arming motor 2 speed controller */
+      Victor* m_pscFire_win;          /*!< The Firing motor speed controller */
       
       //--- Sensors
-      //Gyro* m_pGyro;                      /*!< The Gyro Sensor */
-      DigitalInput *m_pdiArm_switch;      /*!< The Arming Mechanism Limit Switch */
-      DigitalInput *m_pdiFire_switch;     /*!< The Firing Mechanism Limit Switch */
-      DigitalInput *m_pdiWinch_switch;     /*!< The Winch Mechanism Limit Switch */
+      //Gyro* m_pGyro;                 /*!< The Gyro Sensor */
+      DigitalInput *m_pdiArm_switch;   /*!< The Arming Mechanism Limit Switch */
+      DigitalInput *m_pdiFire_switch;  /*!< The Firing Mechanism Limit Switch */
+      DigitalInput *m_pdiWinch_switch; /*!< The Winch Mechanism Limit Switch */
       // more sensors TBD
       
       //--- Timers
-      Timer* m_pTimerDrive;              /*!< The Timer used for debugging (calc & print speeds) */
-      Timer* m_pTimerFire;               /*!< The Timer used for firing. Can only fire once every 2 seconds */
+      Timer* m_pTimerDrive;            /*!< The Timer used for debugging (calc & print speeds) */
+      Timer* m_pTimerFire;             /*!< The Timer used for firing. Can only fire once every 2 seconds */
       
       //--- Winch variables
-      bool m_bUnwindWinch;
-      int m_iCountWinch;
-      bool m_bOldWinchState;
-
+      bool m_bUnwindWinch;             /*!< The boolean used to determine if the winch should unwind */
+      int m_iCountWinch;               /*!< The integer used to count the number of times the winch motor has turned */
+      bool m_bOldWinchState;           /*!< The boolean used to capture the previous state of the winch motor */
       
       //--- Constructors -------------------------------------------------------
       /*! \brief The Robot 980 Constructor
