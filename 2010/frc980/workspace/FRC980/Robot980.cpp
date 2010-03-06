@@ -21,10 +21,10 @@ Robot980::Robot980()
    //--- Jaguars (Encoders attached directly to Jaguars)
    //    NOTE: CANNOT RUN IN kSpeed MODE UNLESS ENCODERS ATTACHED
    // left and right drive motors
-   : m_pscLeft_cim(new CANJaguar(CAN_LEFT_CIM))//, CANJaguar::kSpeed))
-   , m_pscLeft_fp(new CANJaguar(CAN_LEFT_FP))//, CANJaguar::kSpeed))
-   , m_pscRight_cim(new CANJaguar(CAN_RIGHT_CIM))//, CANJaguar::kSpeed))
-   , m_pscRight_fp(new CANJaguar(CAN_RIGHT_FP))//, CANJaguar::kSpeed))
+   : m_pscLeft_cim1(new CANJaguar(CAN_LEFT_CIM1))//, CANJaguar::kSpeed))
+   , m_pscLeft_cim2(new CANJaguar(CAN_LEFT_CIM2))//, CANJaguar::kSpeed))
+   , m_pscRight_cim1(new CANJaguar(CAN_RIGHT_CIM1))//, CANJaguar::kSpeed))
+   , m_pscRight_cim2(new CANJaguar(CAN_RIGHT_CIM2))//, CANJaguar::kSpeed))
    
    // roller and lift motors
    , m_pscRoller_cim(new CANJaguar(CAN_ROLLER_CIM))//, CANJaguar::kSpeed))
@@ -49,10 +49,10 @@ Robot980::Robot980()
    //double kp = 0.35;
    //double ki = 0.003;
    //double kd = 0.001;
-   //this->m_pscLeft_cim->SetPID( kp,  ki,  kd);
-   //this->m_pscLeft_fp->SetPID( kp,  ki,  kd);
-   //this->m_pscRight_cim->SetPID( kp,  ki,  kd);
-   //this->m_pscRight_fp->SetPID( kp,  ki,  kd);
+   //this->m_pscLeft_cim1->SetPID( kp,  ki,  kd);
+   //this->m_pscLeft_cim2->SetPID( kp,  ki,  kd);
+   //this->m_pscRight_cim1->SetPID( kp,  ki,  kd);
+   //this->m_pscRight_cim2->SetPID( kp,  ki,  kd);
    //this->m_pscRoller_cim->SetPID( kp,  ki,  kd);
    
    //--- Encoder setup for Left CIM
@@ -91,10 +91,10 @@ Robot980::Robot980()
 Robot980::~Robot980()
 {
    //--- Speed controllers
-   delete this->m_pscLeft_cim;
-   delete this->m_pscLeft_fp;
-   delete this->m_pscRight_cim;
-   delete this->m_pscRight_fp;
+   delete this->m_pscLeft_cim1;
+   delete this->m_pscLeft_cim2;
+   delete this->m_pscRight_cim1;
+   delete this->m_pscRight_cim2;
    
    delete this->m_pscRoller_cim;
    //delete this->m_pscLift;
@@ -127,6 +127,7 @@ Robot980* Robot980::GetInstance()
 //==============================================================================
 int Robot980::GetAutonMode()
 {
+   //--- Get the analog value corresponsind to the autonomous mode to choose
    AnalogModule *pAM = AnalogModule::GetInstance(SLOT_AUTO_MODE);
    int i = pAM->GetValue(CHAN_AUTO_MODE); // returns 10-bit number
 
@@ -159,15 +160,15 @@ void Robot980::Drive(float left, float right, float roller)
    utils u;
    
    //--- Set the speed of the left motors
-   this->m_pscLeft_cim->Set(u.limit(left*DRIVE_REVERSE));
-   this->m_pscLeft_fp->Set(u.limit(left*DRIVE_REVERSE));
+   this->m_pscLeft_cim1->Set(u.limit(left*DRIVE_REVERSE));
+   this->m_pscLeft_cim2->Set(u.limit(left*DRIVE_REVERSE));
    
    //--- Set the speed of the right motors
-   this->m_pscRight_cim->Set(u.limit(right));
-   this->m_pscRight_fp->Set(u.limit(right));
+   this->m_pscRight_cim1->Set(u.limit(right));
+   this->m_pscRight_cim2->Set(u.limit(right));
    
    //--- Set the speed of the roller motor
-   this->m_pscRoller_cim->Set(u.limit(roller));
+   //this->m_pscRoller_cim->Set(u.limit(roller));
 }
 
 //==============================================================================

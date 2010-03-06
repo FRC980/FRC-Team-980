@@ -30,10 +30,10 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 
 //==============================================================================
 // CAN Jaguar Outputs
-#define CAN_LEFT_CIM                11   /*!< \def CAN_LEFT_CIM The CAN Jaguar device number for the Left CIM Motor */
-#define CAN_LEFT_FP                 12   /*!< \def CAN_LEFT_FP The CAN Jaguar device number for the Left Fisher Price Motor */
-#define CAN_RIGHT_CIM               13   /*!< \def CAN_RIGHT_CIM The CAN Jaguar device number for the Right CIM Motor */
-#define CAN_RIGHT_FP                14   /*!< \def CAN_RIGHT_FP The CAN Jaguar device number for the Right Fisher Price Motor */
+#define CAN_LEFT_CIM1               11   /*!< \def CAN_LEFT_CIM1 The CAN Jaguar device number for the Left CIM Motor */
+#define CAN_LEFT_CIM2               12   /*!< \def CAN_LEFT_CIM2 The CAN Jaguar device number for the Left CIM Motor */
+#define CAN_RIGHT_CIM1              13   /*!< \def CAN_RIGHT_CIM1 The CAN Jaguar device number for the Right CIM Motor */
+#define CAN_RIGHT_CIM2              14   /*!< \def CAN_RIGHT_CIM2 The CAN Jaguar device number for the Right CIM Motor */
 #define CAN_ROLLER_CIM              15   /*!< \def CAN_ROLLER The CAN Jaguar device number for the Roller Motor */
 #define CAN_LIFT                    16   /*!< \def CAN_LIFT The CAN Jaguar device number for the Lift Motor */
 
@@ -111,19 +111,19 @@ class Robot980 : public SensorBase
       //--- Instance Variables -------------------------------------------------
       //--- Jaguars
       // left and right drive motors
-	  CANJaguar* m_pscLeft_cim;       /*!< The Left CIM motor speed controller */
-	  CANJaguar* m_pscLeft_fp;        /*!< The Left FP motor speed controller */
-	  CANJaguar* m_pscRight_cim;      /*!< The Right CIM motor speed controller */
-	  CANJaguar* m_pscRight_fp;       /*!< The Right FP motor speed controller */
+	  CANJaguar* m_pscLeft_cim1;       /*!< The Left CIM1 motor speed controller */
+	  CANJaguar* m_pscLeft_cim2;       /*!< The Left CIM2 motor speed controller */
+	  CANJaguar* m_pscRight_cim1;      /*!< The Right CIM1 motor speed controller */
+	  CANJaguar* m_pscRight_cim2;      /*!< The Right CIM2 motor speed controller */
       
       // roller and lift motors
-	  CANJaguar* m_pscRoller_cim;     /*!< The Roller motor speed controller */
-	  //CANJaguar* m_pscLift;          /*!< The Lift motor speed controller */
+	  CANJaguar* m_pscRoller_cim;      /*!< The Roller motor speed controller */
+	  //CANJaguar* m_pscLift;            /*!< The Lift motor speed controller */
       
       //--- Victors
-      Victor* m_pscArm1_win;          /*!< The Arming motor 1 speed controller */
-      Victor* m_pscArm2_win;          /*!< The Arming motor 2 speed controller */
-      Victor* m_pscFire_win;          /*!< The Firing motor speed controller */
+      Victor* m_pscArm1_win;           /*!< The Arming motor 1 speed controller */
+      Victor* m_pscArm2_win;           /*!< The Arming motor 2 speed controller */
+      Victor* m_pscFire_win;           /*!< The Firing motor speed controller */
       
       //--- Sensors
       //Gyro* m_pGyro;                 /*!< The Gyro Sensor */
