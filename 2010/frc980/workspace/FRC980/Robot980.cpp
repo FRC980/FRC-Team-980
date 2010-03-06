@@ -154,17 +154,20 @@ void Robot980::Drive(float left, float right, float roller)
 {
    //--- Reset the Timer Drive
    this->m_pTimerDrive->Reset();
-
+   
+   //--- Set up utilities to use
+   utils u;
+   
    //--- Set the speed of the left motors
-   this->m_pscLeft_cim->Set(left*DRIVE_REVERSE);
-   this->m_pscLeft_fp->Set(left*DRIVE_REVERSE);
+   this->m_pscLeft_cim->Set(u.limit(left*DRIVE_REVERSE));
+   this->m_pscLeft_fp->Set(u.limit(left*DRIVE_REVERSE));
    
    //--- Set the speed of the right motors
-   this->m_pscRight_cim->Set(right);
-   this->m_pscRight_fp->Set(right);
+   this->m_pscRight_cim->Set(u.limit(right));
+   this->m_pscRight_fp->Set(u.limit(right));
    
    //--- Set the speed of the roller motor
-   this->m_pscRoller_cim->Set(roller); // Speed is limited by set command
+   this->m_pscRoller_cim->Set(u.limit(roller));
 }
 
 //==============================================================================
