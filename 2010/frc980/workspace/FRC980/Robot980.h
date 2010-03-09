@@ -6,6 +6,62 @@
 #include "CANJaguar.h"  // This includes the necessary methods to use the CAN Jaguar
 
 //==============================================================================
+/*
+FRC Team 980 - Wiring Diagram
+	
+	Jaguars
+	=======
+	
+	Left Drive CIM 1  --> Jag11
+	Left Drive CIM 2  --> Jag12
+	Right Drive CIM 1 --> Jag13
+	Right Drive CIM 2 --> Jag14
+	Lift Motor        --> Jag15
+	Roller FP         --> Jag16
+	
+	
+	Victors
+	=======
+	
+	Arming Window Motor 1 --> Victor1
+	Arming Window Motor 2 --> Victor2
+	Fire Window Motor     --> Victor3
+	
+	
+	Digital Side Car
+	================
+	
+	PWM Channels
+	------------
+	Arming Motors 1/2  --> DSC D/O 1
+	Fire Motors        --> DSC D/O 2
+	
+	Limit Switches
+	--------------
+	Arming Switch      --> DSC D/I 1
+	Fire Switch        --> DSC D/I 2
+	Winch Switch       --> DSC D/I 3
+	
+	
+	Classmate PC
+	============
+	Login: Driver; NO PASSWORD
+	Login: Developer; NO PASSWORD
+	
+	Classmate Ethernet Port    --> Wireless Hub
+	4-Port USB Expansion Black --> Left Classmate USB
+	                     Red   --> Right Classmate USB (This is optional)
+	
+	External Accessories
+	====================
+	
+	Joystick 1  --> USB Expansion Port
+	Joystick 2  --> USB Expansion Port
+	Stop Button --> USB Expansion Port
+
+*/
+
+//==============================================================================
 /*! \def GEAR_RATIO
  * The Gear Ratio from output of gearbox to wheel 
  */
