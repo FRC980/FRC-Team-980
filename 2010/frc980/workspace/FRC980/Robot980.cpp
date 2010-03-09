@@ -27,7 +27,7 @@ Robot980::Robot980()
    , m_pscRight_cim2(new CANJaguar(CAN_RIGHT_CIM2))//, CANJaguar::kSpeed))
    
    // roller and lift motors
-   , m_pscRoller_cim(new CANJaguar(CAN_ROLLER_CIM))//, CANJaguar::kSpeed))
+   , m_pscRoller_fp(new CANJaguar(CAN_ROLLER_FP))//, CANJaguar::kSpeed))
    //, m_pscLift(new CANJaguar(CAN_LIFT))//, CANJaguar::kSpeed))
    
    //--- Victors
@@ -96,7 +96,7 @@ Robot980::~Robot980()
    delete this->m_pscRight_cim1;
    delete this->m_pscRight_cim2;
    
-   delete this->m_pscRoller_cim;
+   delete this->m_pscRoller_fp;
    //delete this->m_pscLift;
    
    delete this->m_pscArm1_win;

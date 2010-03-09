@@ -34,8 +34,8 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 #define CAN_LEFT_CIM2               12   /*!< \def CAN_LEFT_CIM2 The CAN Jaguar device number for the Left CIM Motor */
 #define CAN_RIGHT_CIM1              13   /*!< \def CAN_RIGHT_CIM1 The CAN Jaguar device number for the Right CIM Motor */
 #define CAN_RIGHT_CIM2              14   /*!< \def CAN_RIGHT_CIM2 The CAN Jaguar device number for the Right CIM Motor */
-#define CAN_ROLLER_CIM              15   /*!< \def CAN_ROLLER The CAN Jaguar device number for the Roller Motor */
-#define CAN_LIFT                    16   /*!< \def CAN_LIFT The CAN Jaguar device number for the Lift Motor */
+#define CAN_LIFT                    15   /*!< \def CAN_LIFT The CAN Jaguar device number for the Lift Motor */
+#define CAN_ROLLER_FP               16   /*!< \def CAN_ROLLER_FP The CAN Jaguar device number for the Roller Motor */
 
 // Jaguar Outputs
 #define MAX_JAGUAR_OUTPUT_VOLTAGE   12.0 /*!< \def MAX_JAGUAR_OUTPUT_VOLTAGE The maximum output voltage of the CAN Jaguar */
@@ -117,7 +117,7 @@ class Robot980 : public SensorBase
 	  CANJaguar* m_pscRight_cim2;      /*!< The Right CIM2 motor speed controller */
       
       // roller and lift motors
-	  CANJaguar* m_pscRoller_cim;      /*!< The Roller motor speed controller */
+	  CANJaguar* m_pscRoller_fp;       /*!< The Roller motor speed controller */
 	  //CANJaguar* m_pscLift;            /*!< The Lift motor speed controller */
       
       //--- Victors
