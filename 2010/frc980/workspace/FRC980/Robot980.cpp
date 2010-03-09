@@ -31,8 +31,8 @@ Robot980::Robot980()
    //, m_pscLift(new CANJaguar(CAN_LIFT))//, CANJaguar::kSpeed))
    
    //--- Victors
-   , m_pscArm1_win(new Victor(DSC_SLOT, CHAN_PWM_ARM1))
-   , m_pscArm2_win(new Victor(DSC_SLOT, CHAN_PWM_ARM2))
+   , m_pscArm1_win(new Victor(DSC_SLOT, CHAN_PWM_ARM))
+   , m_pscArm2_win(new Victor(DSC_SLOT, CHAN_PWM_ARM))
    , m_pscFire_win(new Victor(DSC_SLOT, CHAN_PWM_FIRE))
    
    //--- Sensors
@@ -190,10 +190,11 @@ void Robot980::Drive(float left, float right)
    if (fForwardSpeed > 0){
       this->Drive(left, right, 0.0);
    }
-   //else if(fForwardSpeed == 0){
-   //    this->Drive(left, right, -0.5);
-   //}
-   //--- Set when moving backwards
+   //--- Set a constant speed if not moving forward
+   else if(fForwardSpeed == 0){
+       this->Drive(left, right, -0.5);
+   }
+   //--- Set a variable roller speed when moving backwards
    else
    {
       // Roller runs from a CIM through an 11:3 gearbox.  The Roller is
@@ -204,7 +205,6 @@ void Robot980::Drive(float left, float right)
       fForwardSpeed *= 2 * 1.1 * (ROLLER_GEARBOX) / (GEARBOX_RATIO);
       this->Drive(left, right, fForwardSpeed);
    }
-   
 }
 
 //==============================================================================

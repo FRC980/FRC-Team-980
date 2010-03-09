@@ -49,9 +49,8 @@ const double TOP_SPEED = ((double)5500/(double)60 / (GEARBOX_RATIO) * (GEAR_RATI
 #define DSC_SLOT                    4   /*!< \def DSC_SLOT The slot number in the cRio for the Digital Side Car */
 
 // PWM outputs
-#define CHAN_PWM_ARM1               1   /*!< \def CHAN_PWM_ARM1 The Digital Side Car PWM Channel for the Kick Arming Motor number 1*/
-#define CHAN_PWM_ARM2               2   /*!< \def CHAN_PWM_ARM2 The Digital Side Car PWM Channel for the Kick Arming Motor number 2*/
-#define CHAN_PWM_FIRE               3   /*!< \def CHAN_PWM_FIRE The Digital Side Car PWM Channel for the Kick Firing Motor*/
+#define CHAN_PWM_ARM                1   /*!< \def CHAN_PWM_ARM The Digital Side Car PWM Channel for both of the Kicker Arming Motors */
+#define CHAN_PWM_FIRE               2   /*!< \def CHAN_PWM_FIRE The Digital Side Car PWM Channel for the Kicker Firing Motor*/
 
 //==============================================================================
 // Digital Inputs
