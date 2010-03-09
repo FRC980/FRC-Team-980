@@ -37,9 +37,9 @@ Robot980::Robot980()
    
    //--- Sensors
    //, m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
-   , m_pdiArm_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_ARM))
-   , m_pdiFire_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_FIRE))
-   , m_pdiWinch_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_WINCH))
+   , m_pdiArm_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_ARMED))
+   , m_pdiFire_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_FIRE_READY))
+   , m_pdiWinch_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_WINCH_COUNTER))
 
    //--- Timers
    , m_pTimerDrive(new Timer)
@@ -185,6 +185,14 @@ void Robot980::Drive(float left, float right)
    //
    utils u;
    float fForwardSpeed = u.limit((left + right) / 2);
+   
+   /* IMPORTANT!
+    * 
+    * IF THE ROLLER IS GOING OPPOSITE THAN DESIRED THE 
+    * fForwardSpeed VARIABLE NEEDS TO BE REVERSED, BUT
+    * NOT THE ROLLER DRIVE SPEED.
+    * 
+    */
    
    //--- Set when going forward
    if (fForwardSpeed > 0){

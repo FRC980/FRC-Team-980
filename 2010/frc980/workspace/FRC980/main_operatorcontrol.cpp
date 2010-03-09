@@ -30,6 +30,7 @@ void Main::TeleopPeriodic(void)
 
    //--- Set a pointer to the joystick(s)
    Joystick* pjsDrive = Joystick::GetStickForPort(1);
+   Joystick* pjsKick  = Joystick::GetStickForPort(2);
    
    //--- Get the x and y position from the joystick
    float x = pjsDrive->GetX();
@@ -53,16 +54,16 @@ void Main::TeleopPeriodic(void)
    static bool bKickerReload = true;
    
    //--- Fire and Re-Arm the Kicker
-   if(pjsDrive->GetRawButton(JOYSTICK_TRIGGER)){
+   if(pjsKick->GetRawButton(JOYSTICK_TRIGGER)){
 	   //--- Fire the Kicker
 	   //pRobot->FireKicker();
 	   
        //--- Reload automatically unless the right joystick button is pressed
-       bKickerReload  = !pjsDrive->GetRawButton(JOYSTICK_THUMB_RIGHT);
+       bKickerReload  = !pjsKick->GetRawButton(JOYSTICK_THUMB_RIGHT);
    }
    
-   //--- Left joystick button reloads manually
-   if(!bKickerReload && pjsDrive->GetRawButton(JOYSTICK_THUMB_LEFT)){
+   //--- Left joystick button reloads manually if kicker reload is false
+   if(!bKickerReload && pjsKick->GetRawButton(JOYSTICK_THUMB_LEFT)){
       bKickerReload = true;
    }
    
@@ -75,7 +76,7 @@ void Main::TeleopPeriodic(void)
    //{
    
    //--- Top joystick button Lifts the Robot
-   //if(pjsDrive->GetRawButton(JOYSTICK_THUMB_TOP)){
+   //if(pjsKick->GetRawButton(JOYSTICK_THUMB_TOP)){
    //   pRobot->Lift();
    //}
 }
