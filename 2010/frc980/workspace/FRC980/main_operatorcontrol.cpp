@@ -24,6 +24,8 @@ void Main::TeleopPeriodic(void)
 {
    //--- Get the Robot instance
    Robot980* pRobot = Robot980::GetInstance();
+   
+   //setUserDsLcdData("main teleop periodic",20,100);
 
    //--- Feed the watchdog
    GetWatchdog().Feed();
@@ -56,7 +58,7 @@ void Main::TeleopPeriodic(void)
    //--- Fire and Re-Arm the Kicker
    if(pjsKick->GetRawButton(JOYSTICK_TRIGGER)){
 	   //--- Fire the Kicker
-	   //pRobot->FireKicker();
+	   pRobot->FireKicker();
 	   
        //--- Reload automatically unless the right joystick button is pressed
        bKickerReload  = !pjsKick->GetRawButton(JOYSTICK_THUMB_RIGHT);
@@ -68,12 +70,12 @@ void Main::TeleopPeriodic(void)
    }
    
    //--- Stop the fire Cam if it's still moving
-   //pRobot->StopKickerCam();
+   pRobot->StopKickerCam();
    
    //--- Re-arm the Kicker
-   //if(kickerReload){
-   //   pRobot->ArmKicker();
-   //{
+   if(bKickerReload){
+      pRobot->ArmKicker();
+   }
    
    //--- Top joystick button Lifts the Robot
    //if(pjsKick->GetRawButton(JOYSTICK_THUMB_TOP)){

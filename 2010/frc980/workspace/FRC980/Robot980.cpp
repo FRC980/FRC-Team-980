@@ -1,4 +1,5 @@
 #include <WPILib.h>
+#include <NetworkCommunication/FRCComm.h>
 //#include <PCVideoServer.h>
 #include <Timer.h>
 #include <math.h>
@@ -84,7 +85,7 @@ Robot980::Robot980()
    //--- Set up winch
    this->m_bUnwindWinch = false;
    this->m_iCountWinch = 0;
-   this->m_bOldWinchState = false;
+   this->m_bOldWinchState = true;
 }
 
 //==============================================================================
@@ -245,11 +246,17 @@ bool Robot980::KickerFired(void)
 //==============================================================================
 void Robot980::ArmKicker(void)
 {
+    char error[256];
+    sprintf(error, "ArmKicker:");
+    sprintf(error, "%d %d %d \n", this->m_pdiArm_switch->Get(), 
+            this->m_pdiFire_switch->Get(), this->m_pdiWinch_switch->Get()  );
+    setUserDsLcdData(error,strlen(error),100);
+        //setErrorData?
    //--- Arm the kicker
    if(!this->KickerRetracted() && !this->m_bUnwindWinch){
 	  //--- Wind up the winch to arm the kicker
-	  this->m_pscArm1_win->Set(1.0);
-	  this->m_pscArm2_win->Set(1.0);
+	  this->m_pscArm1_win->Set(0.25);
+	  this->m_pscArm2_win->Set(0.25);
 	  
 	  //--- Disable the unwind function for the winch
 	  this->m_bUnwindWinch = false;
@@ -271,17 +278,17 @@ void Robot980::ArmKicker(void)
       if(this->m_iCountWinch < 2){
 	  
 	     //--- Unwind the winch for the kicker
-	     this->m_pscArm1_win->Set(-1.0);
-	     this->m_pscArm2_win->Set(-1.0);
+	     this->m_pscArm1_win->Set(-0.25);
+	     this->m_pscArm2_win->Set(-0.25);
       
 	     //--- Switch hit: increment the state
 	     if(this->m_pdiWinch_switch->Get() && !m_bOldWinchState){
 	        this->m_bOldWinchState = true;
-            this->m_iCountWinch += 1;
 	     }
 	     //--- Switch released: old is now "off"
 	     else if(!this->m_pdiWinch_switch->Get() && m_bOldWinchState){
 	        this->m_bOldWinchState = false;
+            this->m_iCountWinch += 1;
          }
       }
       //--- If the count is 2 or greater, stop unwinding
@@ -301,7 +308,7 @@ void Robot980::FireKicker(void)
 	  this->m_pTimerFire->Reset();
 	   
 	  //--- Run the Kick motor to release the kicker
-	  this->m_pscFire_win->Set(1.0);
+	  this->m_pscFire_win->Set(0.25);
    }
 }
 
