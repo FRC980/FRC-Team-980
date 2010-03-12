@@ -8,72 +8,72 @@
 //==============================================================================
 /*
  * FRC Team 980 - Wiring Diagram
- * 
+ *
  * Jaguars
  * =======
- * 
+ *
  * Left Drive CIM 1  --> Jag11
  * Left Drive CIM 2  --> Jag12
  * Right Drive CIM 1 --> Jag13
  * Right Drive CIM 2 --> Jag14
  * Lift Motor        --> Jag15
  * Roller FP         --> Jag16
- * 
- * 
+ *
+ *
  * Victors
  * =======
- * 
+ *
  * Arming Window Motor 1 --> Victor1
  * Arming Window Motor 2 --> Victor2
  * Fire Window Motor     --> Victor3
- * 
- * 
+ *
+ *
  * Digital Side Car
  * ================
- * 
+ *
  * PWM Channels
  * ------------
  * Arming Motors 1/2  --> DSC D/O 1
  * Fire Motors        --> DSC D/O 2
- * 
+ *
  * Limit Switches
  * --------------
- * Arming Switch      --> DSC D/I 1
- * Fire Switch        --> DSC D/I 2
- * Winch Switch       --> DSC D/I 3
- * 
- * 
+ * Arming Switch (detects kicker in armed position) --> DSC D/I 1
+ * Fire Cam Switch (detects firing cam in position) --> DSC D/I 2
+ * Winch Switch (counts winch rotations)            --> DSC D/I 3
+ *
+ *
  * Classmate PC
  * ============
  * Login: Driver; NO PASSWORD
  * Login: Developer; NO PASSWORD
- * 
+ *
  * Classmate Ethernet Port    --> Wireless Hub
  * 4-Port USB Expansion Black --> Left Classmate USB
  * Red   --> Right Classmate USB (This is optional)
- * 
+ *
  * External Accessories
  * ====================
- * 
+ *
  * Joystick 1  --> USB Expansion Port
  * Joystick 2  --> USB Expansion Port
  * Stop Button --> USB Expansion Port
- * 
+ *
  */
 
 //==============================================================================
 /*! \def GEAR_RATIO
- * The Gear Ratio from output of gearbox to wheel 
+ * The Gear Ratio from output of gearbox to wheel
  */
 #define GEAR_RATIO      ((double)1)
 
 /*! \def GEARBOX_RATIO
- * The Gearbox Ratio ~ 8.4586:1 
+ * The Gearbox Ratio ~ 8.4586:1
  */
 #define GEARBOX_RATIO   ((double)50/(double)14*(double)45/(double)19)
 
-/*! \def ROLLER_GEARBOX 
- * The Roller Motor Gearbox Ratio ~ 3.67:1 
+/*! \def ROLLER_GEARBOX
+ * The Roller Motor Gearbox Ratio ~ 3.67:1
  */
 #define ROLLER_GEARBOX  ((double)11/(double)3)
 
@@ -132,7 +132,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 // Define Additional Values
 
 //--- Reverse Drive Direction
-/*! \def DRIVE_REVERSE This variable is used to reverse the drive signal to 
+/*! \def DRIVE_REVERSE This variable is used to reverse the drive signal to
  *  motors that need to be moved in reverse
  */
 #define DRIVE_REVERSE               -1.0
@@ -147,6 +147,11 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define JOYSTICK_THUMB_LEFT         4   /*!< \def JOYSTICK_THUMB_LEFT The left thumb button is used to prevent the kicker from re-arming */
 #define JOYSTICK_THUMB_RIGHT        5   /*!< \def JOYSTICK_THUMB_RIGHT The right thumb button is used to manually re-arm the kicker */
 
+// all switches should be wired the same -- either normal open = high, or
+// normal open = low.  In our case, normal open = low(?)
+#define SW_OPEN     true
+#define SW_CLOSED   false
+
 //--- NULL Value
 #ifndef NULL
 #define NULL                        (0) /*!< \def NULL The NULL value is created here because it is not created elsewhere */
@@ -158,7 +163,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
  *
  * The purpose of the Robot980 class is to contain code specific to the team's
  * robot.
- *    
+ *
  */
 class Robot980 : public SensorBase
 {
@@ -176,14 +181,13 @@ class Robot980 : public SensorBase
     // CANJaguar* m_pscLift;       /*!< The Lift motor speed controller */
 
     //--- Victors
-    Victor *m_pscArm1_win;      /*!< The Arming motor 1 speed controller */
-    Victor *m_pscArm2_win;      /*!< The Arming motor 2 speed controller */
-    Victor *m_pscFire_win;      /*!< The Firing motor speed controller */
+    Victor *m_pscArm_win;      /*!< The Arming motor 1 speed controller */
+    Victor *m_pscFire_win;     /*!< The Firing motor speed controller */
 
     //--- Sensors
     //Gyro* m_pGyro;                 /*!< The Gyro Sensor */
-    DigitalInput *m_pdiArm_switch;   /*!< The Arming Mechanism Limit Switch */
-    DigitalInput *m_pdiFire_switch;  /*!< The Firing Mechanism Limit Switch */
+    DigitalInput *m_pdiArmed_switch; /*!< The Arming Mechanism Limit Switch */
+    DigitalInput *m_pdiFireCam_switch; /*!< The Firing Mechanism Limit Switch */
     DigitalInput *m_pdiWinch_switch; /*!< The Winch Mechanism Limit Switch */
     // more sensors TBD
 
@@ -191,10 +195,19 @@ class Robot980 : public SensorBase
     Timer *m_pTimerDrive;       /*!< The Timer used for debugging (calc & print speeds) */
     Timer *m_pTimerFire;        /*!< The Timer used for firing. Can only fire once every 2 seconds */
 
-    //--- Winch variables
-    bool m_bUnwindWinch;        /*!< The boolean used to determine if the winch should unwind */
-    int  m_iCountWinch;         /*!< The integer used to count the number of times the winch motor has turned */
-    bool m_bOldWinchState;      /*!< The boolean used to capture the previous state of the winch motor */
+    //--- Firing mechanism state
+    typedef enum
+    {
+        UNKNOWN,                /* 0 */
+        READY_TO_FIRE,          /* 1 */
+        WINDING_FAST,           /* 2 */
+        WINDING_SLOW,           /* 3 */
+        PREUNWIND,              /* 4 */
+        UNWINDING_FAST,         /* 5 */
+        UNWINDING_SLOW,         /* 6 */
+    } arming_t;
+    arming_t m_armingState;
+    bool m_bArmingEnable;
 
     //--- Constructors -------------------------------------------------------
     /*! \brief The Robot 980 Constructor
@@ -231,7 +244,7 @@ class Robot980 : public SensorBase
      *  \param left The speed of the left drive motors
      *  \param right The speed of the right drive motors
      *  \param roller The speed of the roller motor
-     *  
+     *
      *  This method is used to drive the robot and also to control
      *  the speed of the roller.  The roller is independent of the speed of
      *  the drive system in this instance.
@@ -243,7 +256,7 @@ class Robot980 : public SensorBase
     /*! \brief A drive method to move the robot and autonomously control the roller
      *  \param left The speed of the left drive motors
      *  \param right The speed of the right drive motors
-     *  
+     *
      *  This method is used to drive the robot and also to control
      *  the speed of the roller.  The roller is dependent on the speed of
      *  the drive system in this instance.
@@ -254,7 +267,7 @@ class Robot980 : public SensorBase
 
     /*! \brief Determine if the kicker has been retracted
      *  \return true if the kicker is retracted (regardless of winch state)
-     *  
+     *
      *  This method is used to determine if the kicker has been retracted.
      *  It is true even if the winch belt is not yet fully extended in
      *  preparation for the next shot.
@@ -263,38 +276,47 @@ class Robot980 : public SensorBase
 
     /*! \brief Determine if the kicker has been armed
      *  \return true if the kicker is armed and ready to fire
-     *  
+     *
      *  This method is used to determine if the kicker is armed.
      *  It checks if the kicker has been retracted, the winch unwound,
      *  and the time restriction has passed.
      */
     bool KickerArmed(void);
 
-    /*! \brief Determine if the kicker has been fired
-     *  \return true if the kicker has fired
-     *  
-     *  This method is used to determine if the kicker has been retracted.
-     */
-    bool KickerFired(void);
-
     /*! \brief Arm the kicker
-     *  
+     *
      *  This method is used to arm the kicking mechanism by retracting
      *  the kicker and then unwinding the winch
      */
     void ArmKicker(void);
 
     /*! \brief Fire the kicker
-     *  
+     *
      *  This method is used to Fire the kicking mechanism
      */
     void FireKicker(void);
 
-    /*! \brief Stop the kicker cam from moving
-     *  
-     *  This method is used to stop the kicker cam from moving
+    void ArmingEnable(void);
+    void ArmingDisable(void);
+
+    // for debugging:
+    void SetWinch(float speed);
+
+    // REVIEW: These should be moved to interrupts on the dig-in switches
+    void HandleFiring(void);
+    void HandleArming(void);
+
+    /*! \brief Handle all "automatic" functions of the robot -- this is NOT autonomous mode
+     *
+     * This method handles all automatic functions of the robot, such as
+     * turning the compressor on or off.
+     *
+     * In 2010, we don't actually have a compressor, but we do have a
+     * firing mechanism which needs to re-arm itself automatically.
      */
-    void StopKickerCam(void);
+    void HandleAutomatic(void);
+
+    static void CallHandleAutomatic(void * unused);
 
     /*! \brief A method to run the robot lift motor action
      *  \todo Write this method
@@ -305,7 +327,7 @@ class Robot980 : public SensorBase
      *
      *  This method is used to get the angle information from the
      *  gyro onboard the robot
-     *  
+     *
      *  \todo Positioning system - gyro, accelerometer
      */
     //float GetAngle(void);

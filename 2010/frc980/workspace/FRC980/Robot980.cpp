@@ -16,13 +16,23 @@
 //==============================================================================
 static Robot980 *g_pInstance = NULL;
 
+static const char* szArmingArr[] = {
+    "UNKNOWN",                /* 0 */
+    "READY_TO_FIRE",          /* 1 */
+    "WINDING_FAST",           /* 2 */
+    "WINDING_SLOW",           /* 3 */
+    "PREUNWIND",              /* 4 */
+    "UNWINDING_FAST",         /* 5 */
+    "UNWINDING_SLOW",         /* 6 */
+};
+
 //==============================================================================
 //==============================================================================
 Robot980::Robot980()
     //--- Jaguars (Encoders attached directly to Jaguars)
     //    NOTE: CANNOT RUN IN kSpeed MODE UNLESS ENCODERS ATTACHED
     // left and right drive motors
-    :  m_pscLeft_cim1(new CANJaguar(CAN_LEFT_CIM1))  //, CANJaguar::kSpeed))
+    : m_pscLeft_cim1(new CANJaguar(CAN_LEFT_CIM1))   //, CANJaguar::kSpeed))
     , m_pscLeft_cim2(new CANJaguar(CAN_LEFT_CIM2))   //, CANJaguar::kSpeed))
     , m_pscRight_cim1(new CANJaguar(CAN_RIGHT_CIM1)) //, CANJaguar::kSpeed))
     , m_pscRight_cim2(new CANJaguar(CAN_RIGHT_CIM2)) //, CANJaguar::kSpeed))
@@ -30,16 +40,18 @@ Robot980::Robot980()
     , m_pscRoller_fp(new CANJaguar(CAN_ROLLER_FP))   //, CANJaguar::kSpeed))
     //, m_pscLift(new CANJaguar(CAN_LIFT))//, CANJaguar::kSpeed))
     //--- Victors
-    , m_pscArm1_win(new Victor(DSC_SLOT, CHAN_PWM_ARM))
-    , m_pscArm2_win(new Victor(DSC_SLOT, CHAN_PWM_ARM))
+    , m_pscArm_win(new Victor(DSC_SLOT, CHAN_PWM_ARM))
     , m_pscFire_win(new Victor(DSC_SLOT, CHAN_PWM_FIRE))
     //--- Sensors
     //, m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
-    , m_pdiArm_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_ARMED))
-    , m_pdiFire_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_FIRE_READY))
+    , m_pdiArmed_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_ARMED))
+    , m_pdiFireCam_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_FIRE_READY))
     , m_pdiWinch_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_WINCH_COUNTER))
-     //--- Timers
+    //--- Timers
     , m_pTimerDrive(new Timer), m_pTimerFire(new Timer)
+    //--- State variables
+    , m_armingState(UNKNOWN)
+    , m_bArmingEnable(true)
 {
     //--- Set the PID Values for each Jag in Speed or Current Mode
     //double kp = 0.35;
@@ -76,11 +88,6 @@ Robot980::Robot980()
 
     //--- Tell SensorBase about us
     AddToSingletonList();
-
-    //--- Set up winch
-    m_bUnwindWinch = false;
-    m_iCountWinch = 0;
-    m_bOldWinchState = true;
 }
 
 //==============================================================================
@@ -95,14 +102,14 @@ Robot980::~Robot980()
     delete m_pscRoller_fp;
     //delete m_pscLift;
 
-    delete m_pscArm1_win;
-    delete m_pscArm2_win;
+    delete m_pscArm_win;
     delete m_pscFire_win;
 
     //--- Sensors
     //delete m_pGyro;
-    delete m_pdiArm_switch;
-    delete m_pdiFire_switch;
+    delete m_pdiArmed_switch;
+    delete m_pdiFireCam_switch;
+    delete m_pdiWinch_switch;
 
     //--- Timers
     delete m_pTimerDrive;
@@ -164,7 +171,7 @@ void Robot980::Drive(float left, float right, float roller)
     m_pscRight_cim2->Set(u.limit(right));
 
     //--- Set the speed of the roller motor
-    //m_pscRoller_cim->Set(u.limit(roller));
+    m_pscRoller_fp->Set(u.limit(roller));
 }
 
 //==============================================================================
@@ -183,11 +190,11 @@ void Robot980::Drive(float left, float right)
     float fForwardSpeed = u.limit((left + right) / 2);
 
     /* IMPORTANT!
-     * 
-     * IF THE ROLLER IS GOING OPPOSITE THAN DESIRED THE 
+     *
+     * IF THE ROLLER IS GOING OPPOSITE THAN DESIRED THE
      * fForwardSpeed VARIABLE NEEDS TO BE REVERSED, BUT
      * NOT THE ROLLER DRIVE SPEED.
-     * 
+     *
      */
 
     //--- Set when going forward
@@ -213,93 +220,21 @@ void Robot980::Drive(float left, float right)
     }
 }
 
-//==============================================================================
-//==============================================================================
-bool Robot980::KickerRetracted(void)
-{
-    if (m_pdiArm_switch->Get())
-    {
-        return true;
-    }
-    return false;
-}
 
 //==============================================================================
 bool Robot980::KickerArmed(void)
 {
-    if (KickerRetracted() &&
-        !m_bUnwindWinch &&
-        m_pTimerFire->Get() > KICKER_RESET_PERIOD)
-    {
-        return true;
-    }
-    return false;
-}
-
-//==============================================================================
-bool Robot980::KickerFired(void)
-{
-    return !KickerRetracted();
+    return (m_pdiArmed_switch->Get() == SW_CLOSED);
 }
 
 //==============================================================================
 void Robot980::ArmKicker(void)
 {
-    char error[256];
-    sprintf(error, "ArmKicker:");
-    sprintf(error, "%d %d %d \n", m_pdiArm_switch->Get(),
-            m_pdiFire_switch->Get(), m_pdiWinch_switch->Get());
-    setUserDsLcdData(error, strlen(error), 100);
-    //setErrorData?
-    //--- Arm the kicker
-    if (!KickerRetracted() && !m_bUnwindWinch)
+    if ((READY_TO_FIRE == m_armingState) &&
+        (m_pdiArmed_switch->Get() == SW_OPEN))
     {
-        //--- Wind up the winch to arm the kicker
-        m_pscArm1_win->Set(0.25);
-        m_pscArm2_win->Set(0.25);
-
-        //--- Disable the unwind function for the winch
-        m_bUnwindWinch = false;
-    }
-    //--- Stop the kicker winch
-    else if (KickerRetracted() && !m_bUnwindWinch)
-    {
-        //--- Stop the arming of the kicker with the winch
-        m_pscArm1_win->Set(0.0);
-        m_pscArm2_win->Set(0.0);
-
-        //--- Enable the unwind function for the winch
-        m_bUnwindWinch = true;
-        m_iCountWinch = 0;
-    }
-    //--- Unwind the kicker winch
-    else if (KickerRetracted() && m_bUnwindWinch)
-    {
-        //--- If the state is less than 2 continue to unwind
-        if (m_iCountWinch < 2)
-        {
-            //--- Unwind the winch for the kicker
-            m_pscArm1_win->Set(-0.25);
-            m_pscArm2_win->Set(-0.25);
-
-            //--- Switch hit: increment the state
-            if (m_pdiWinch_switch->Get() && !m_bOldWinchState)
-            {
-                m_bOldWinchState = true;
-            }
-            //--- Switch released: old is now "off"
-            else if (!m_pdiWinch_switch->Get() && m_bOldWinchState)
-            {
-                m_bOldWinchState = false;
-                m_iCountWinch += 1;
-            }
-        }
-        //--- If the count is 2 or greater, stop unwinding
-        else
-        {
-            //--- Disable the unwind function for the winch
-            m_bUnwindWinch = false;
-        }
+        m_armingState = WINDING_FAST;
+        HandleArming();
     }
 }
 
@@ -312,24 +247,14 @@ void Robot980::FireKicker(void)
         m_pTimerFire->Reset();
 
         //--- Run the Kick motor to release the kicker
-        m_pscFire_win->Set(0.25);
-    }
-}
-
-//==============================================================================
-void Robot980::StopKickerCam(void)
-{
-    //--- If the fire switch was hit then stop the fire cam from moving
-    if (m_pdiFire_switch->Get())
-    {
-        m_pscFire_win->Set(0.0);
+        m_pscFire_win->Set(0.35);
     }
 }
 
 //==============================================================================
 //void Robot980::Lift(void)
 //{
-//   
+//
 //}
 
 //==============================================================================
@@ -338,3 +263,176 @@ void Robot980::StopKickerCam(void)
 //{
 //   return 1.0;
 //}
+
+void Robot980::SetWinch(float speed)
+{
+    m_pscArm_win->Set(speed);
+}
+
+void Robot980::HandleFiring(void)
+{
+    static bool bOldCamState = SW_OPEN;
+
+    if ((bOldCamState == SW_OPEN) &&
+        (m_pdiFireCam_switch->Get() == SW_CLOSED))
+    {
+        m_pscFire_win->Set(0);
+    }
+
+    bOldCamState = m_pdiFireCam_switch->Get();
+}
+
+void Robot980::ArmingEnable()
+{
+    m_bArmingEnable = true;
+}
+
+void Robot980::ArmingDisable()
+{
+    m_bArmingEnable = false;
+}
+
+void Robot980::HandleArming()
+{
+    static bool bOldWinchState = SW_OPEN;
+    static int  iWinchCounter = 0;
+
+    // winding = forward; unwinding = reverse
+#define WIND_FAST       0.5
+#define WIND_SLOW       0.35
+#define UNWIND_FAST     0.2
+#define UNWIND_SLOW     0.15
+#define UNWIND_COUNT    3
+
+    if (!m_bArmingEnable)
+    {
+        m_pscArm_win->Set(0);
+        return;
+    }
+
+    char error[256];
+    sprintf(error, "armed: %d  cam: %d  winch: %d  state: %d / %s\n",
+            m_pdiArmed_switch->Get(),
+            m_pdiFireCam_switch->Get(),
+            m_pdiWinch_switch->Get(),
+            (int)m_armingState,
+            szArmingArr[m_armingState]);
+    setErrorData(error, strlen(error), 100);
+
+    switch (m_armingState)
+    {
+    case UNKNOWN:
+    {
+        // At power-up, figure out the initial state of the kicker.
+        //
+        // REVIEW: This needs to be smarter, as there are more possible
+        // states.
+
+        bOldWinchState = m_pdiWinch_switch->Get();
+
+        if (m_pdiArmed_switch->Get() == SW_OPEN)
+        {
+            m_armingState = WINDING_FAST;
+        }
+        else
+        {
+            m_armingState = READY_TO_FIRE;
+        }
+    }
+    break;
+
+    case READY_TO_FIRE:
+    {
+        // winch is unwound, and kicker is armed
+        m_pscArm_win->Set(0);
+    }
+    break;
+
+    // we need to wind the winch in until the armed switch is closed;
+    // ideally this should be exactly two loops; we do the first one
+    // "fast" and the second one "slow".  After winding in, we need to
+    // unwind two loops.  In theory, the winch switch and the armed switch
+    // should both trigger at the same time.  In practice, this may not be
+    // possible to make happen.  We want to stop winding based only on the
+    // armed switch.  We have a "preunwind" state in hopes that we are
+    // slightly past the winch trigger when armed, rather than slightly
+    // before it.  We "pre unwind" for a partial loop, then unwind "fast"
+    // for one loop and finally unwind "slow" for one loop.  Finally, we
+    // are ready to fire.
+    case WINDING_FAST:          // first winding loop
+    {
+        m_pscArm_win->Set(WIND_FAST);
+        if ((SW_OPEN   == bOldWinchState) &&
+            (SW_CLOSED == m_pdiWinch_switch->Get()))
+        {
+            m_armingState = WINDING_SLOW;
+        }
+    }
+    if ((SW_OPEN == m_pdiArmed_switch->Get()))
+        break;
+    else
+        m_armingState = WINDING_SLOW;
+    // and fall through
+
+    case WINDING_SLOW:          // second winding loop
+    {
+        iWinchCounter = 0;
+        m_pscArm_win->Set(WIND_SLOW);
+        if ((SW_CLOSED == m_pdiArmed_switch->Get()))
+        {
+            m_armingState = UNWINDING_FAST;
+            if (m_pdiWinch_switch->Get() == SW_OPEN)
+                m_armingState = PREUNWIND;
+        }
+    }
+    break;
+
+    case PREUNWIND:
+    {
+        m_pscArm_win->Set(- UNWIND_FAST);
+        if (m_pdiWinch_switch->Get() == SW_CLOSED)
+            m_armingState = UNWINDING_FAST;
+    }
+    break;
+
+    case UNWINDING_FAST:
+    {
+        m_pscArm_win->Set(- UNWIND_FAST);
+        if ((SW_OPEN   == bOldWinchState) &&
+            (SW_CLOSED == m_pdiWinch_switch->Get()))
+        {
+            iWinchCounter++;
+        }
+
+        if (iWinchCounter >= UNWIND_COUNT)
+        {
+            m_armingState = UNWINDING_SLOW;
+        }
+    }
+    break;
+
+    case UNWINDING_SLOW:
+    {
+        m_pscArm_win->Set(- UNWIND_SLOW);
+        if ((SW_OPEN   == bOldWinchState) &&
+            (SW_CLOSED == m_pdiWinch_switch->Get()))
+        {
+            m_armingState = READY_TO_FIRE;
+        }
+    }
+    break;
+    }
+}
+
+void Robot980::HandleAutomatic()
+{
+    HandleFiring();
+    HandleArming();
+    // In the future, we may have additional automatic functionality (eg a
+    // compressor)
+}
+
+void Robot980::CallHandleAutomatic(void*) // static
+{
+    Robot980::GetInstance()->HandleAutomatic();
+}
