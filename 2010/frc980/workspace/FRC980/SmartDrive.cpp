@@ -25,7 +25,7 @@ SmartDrive::SmartDrive(uint8_t ID,
    , m_pEncDrive(pEncDrive)
    , m_pEncFollow(pEncFollow)
    , m_pTimer(NULL)
-   , m_controlLoop(new Notifier(SmartDrive::CallCalculate, this))   
+   , m_controlLoop(new Notifier(SmartDrive::CallCalculate, this))
    , m_ku8ID(ID)
    , m_kVelP(kvp)
    , m_kVelI(kvi)
@@ -73,7 +73,7 @@ void SmartDrive::Calculate(void)
 {
    //--- Set up utilities to use
    utils u;
-   
+
    double dMotorCount = m_pEncDrive->GetDistance();
    double dRobotCount = m_pEncFollow->GetDistance();
 
@@ -92,13 +92,13 @@ void SmartDrive::Calculate(void)
    if (!Main::getInstance().IsDisabled())
    {
       Dashboard &d = DriverStation::GetInstance()->GetDashboardPacker();
-      
+
       if (!m_ku8ID ? (DEBUG_bOK0 && DEBUG_bOK1) : (DEBUG_bOK1 && !DEBUG_bOK0))
       {
          d.Printf("%d: T: %6.4f  Vel: %7.4f  Acl: %7.4f  Slp: %7.4f\n",
                   m_ku8ID, dTime, dMotorVel, dMotorVel - m_dPrevMotorVel,
                   dMotorVel - dRobotVel);
-         
+
          if (!m_ku8ID){
             DEBUG_bOK0 = false;
          }
@@ -115,35 +115,35 @@ void SmartDrive::Calculate(void)
       double dMotorAcl =
           m_bUseAcl ? (dMotorVel - m_dPrevMotorVel) / m_kfPeriod : 0;
       // double dRobotAcl = (dRobotVel - m_dPrevRobotVel) / m_kfPeriod;
-      
+
       double dVelDelta = m_dCmdSpeed - dMotorVel;
-      
+
       m_dVelInt += dVelDelta * m_kVelI;
       m_dVelInt = u.limit(m_dVelInt, -1.0, 1.0);
-      
+
       double dVelError = m_kVelP * dVelDelta + m_dVelInt;
       dVelError = u.limit(dVelError, -1.0, 1.0);
-      
+
       double dSlippage = m_bUseSlip ? (dMotorVel - dRobotVel) : 0;
-      
+
       //--- REPLACED ABS FROM UTILS.H WITH abs() FROM MATH.H
       if (ABS(dSlippage) <= .01){
          dSlippage = 0;
       }
-      
+
       m_dCorInt += dSlippage * m_kCorI;
       // m_dCorInt = u.limit(m_dCorInt, -1.25, 1.25);
       m_dCorInt = u.limit(m_dCorInt, -0.9, 0.9);
-      
+
       double dCor_out = dSlippage * m_kCorP + m_dCorInt;
       double dAclCmd = dVelError - dCor_out;
       double dAclError = dAclCmd - dMotorAcl;
-      
+
       m_dAclInt += dAclError * m_kAclI;
       m_dAclInt = u.limit(m_dAclInt, -1.0, 1.0);
-      
+
       double dMotorCmd = dAclError * m_kAclP + m_dAclInt;
-      
+
       if (m_bUseSlip){
           m_psc->Set(dMotorCmd);
       }
@@ -168,14 +168,14 @@ void SmartDrive::Set(float speed)
 {
    //--- Ensure that the speed is limited and then set the speed
    utils u;
-   this->m_dCmdSpeed = u.limit(speed);
+   m_dCmdSpeed = u.limit(speed);
 }
 
 //==============================================================================
 float SmartDrive::Get(void)
 {
    //--- Return the current command speed
-   return this->m_dCmdSpeed;
+   return m_dCmdSpeed;
 }
 
 //==============================================================================
@@ -183,30 +183,30 @@ float SmartDrive::Get(void)
 void SmartDrive::Enable(bool bUseSlip)
 {
    //--- Enable the speed controller
-   this->m_bEnabled = true;
-   
+   m_bEnabled = true;
+
    //--- Determine if slip control should be used
-   this->m_bUseSlip = bUseSlip;
-   if (!this->m_bUseSlip)
-      this->m_dCorInt = 0;
+   m_bUseSlip = bUseSlip;
+   if (!m_bUseSlip)
+      m_dCorInt = 0;
 }
 
 //==============================================================================
 void SmartDrive::Disable(void)
 {
    //--- Disable the speed controller
-   this->m_bEnabled = false;
+   m_bEnabled = false;
    // m_psc->Set(0);
 
    //--- Set the PID values to 0
-   this->m_dVelInt = 0;
-   this->m_dCorInt = 0;
-   this->m_dAclInt = 0;
+   m_dVelInt = 0;
+   m_dCorInt = 0;
+   m_dAclInt = 0;
 }
 
 //==============================================================================
 void SmartDrive::Reset(void)
 {
    //--- Disable the speed controller
-   this->Disable();
+   Disable();
 }
