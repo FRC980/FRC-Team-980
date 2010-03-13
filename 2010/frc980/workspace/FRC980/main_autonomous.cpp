@@ -9,6 +9,7 @@
 //==============================================================================
 //==============================================================================
 static int iMode = 0;
+static Timer *pTimerAuton = new Timer;
 
 //==============================================================================
 //==============================================================================
@@ -16,6 +17,9 @@ void Main::AutonomousInit(void)
 {
     Robot980* pRobot = Robot980::GetInstance();
     iMode = pRobot->GetAutonMode();
+
+    pTimerAuton->Start();
+    pTimerAuton->Reset();
 }
 
 //==============================================================================
@@ -28,39 +32,34 @@ void Main::AutonomousContinuous(void)
 void Main::AutonomousPeriodic(void)
 {
     //--- Get the Robot instance
-    //Robot980* pRobot = Robot980::GetInstance();
+    Robot980* pRobot = Robot980::GetInstance();
 
     //--- Feed the watchdog
     GetWatchdog().Feed();
-    
-    //--- Switch to the correct autonomous mode
-    switch(iMode)
+
+    float t = pTimerAuton->Get();
+
+    if (t < 2)
     {
-       default:
-       case 1:
-    	   this->Auton1();
-    	   break;
+        pRobot->Drive(0.5, 0.5, 0.2); // left, right, roller
+    }
 
-       case 2:
-    	   this->Auton2();
-    	   break;
+    if (t > 2)
+    {
+        pRobot->Drive(0, 0, 0); // stop
 
-       case 3:
-    	   this->Auton3();
-    	   break;
+        static bool bFired = false;
 
-       case 4:
-    	   this->Auton4();
-    	   break;
+        if (! bFired)
+        {
+            pRobot->FireKicker();
+            bFired = true;
+        }
+    }
 
-       case 5:
-    	   this->Auton5();
-    	   break;
-
-       case 6:
-    	   this->Auton6();
-    	   break;
-    	   
+    if (t > 2.5)
+    {
+        pRobot->ArmKicker();
     }
 }
 
