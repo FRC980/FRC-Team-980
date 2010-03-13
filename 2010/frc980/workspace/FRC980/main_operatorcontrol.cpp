@@ -4,6 +4,7 @@
 #include "main.h"
 
 #include "Robot980.h"
+#include "jsbuttons.h"
 #include "utils.h"
 
 //==============================================================================
@@ -49,29 +50,50 @@ void Main::TeleopPeriodic(void)
    //--- Drive the robot
    pRobot->Drive(fLeft, fRight, pjsKick->GetZ());
 
-   if (pjsKick->GetRawButton(JOYSTICK_TRIGGER))
+   if (pjsKick->GetRawButton(JS_TRIGGER))
    {
        pRobot->FireKicker();
    }
 
-   if (pjsKick->GetRawButton(JOYSTICK_THUMB_BOTTOM))
+   if (pjsKick->GetRawButton(JS_TOP_BOTTOM))
    {
        pRobot->ArmKicker();
    }
 
    //--- Top joystick button Lifts the Robot
-   //if(pjsKick->GetRawButton(JOYSTICK_THUMB_TOP)){
+   //if(pjsKick->GetRawButton(JS_TOP_CENTER)){
    //   pRobot->Lift();
    //}
 
-   if (pjsKick->GetRawButton(7))
+   if (pjsKick->GetRawButton(JS_LEFT_BOTTOM))
        pRobot->ArmingEnable();
 
-   if (pjsKick->GetRawButton(6))
+   if (pjsKick->GetRawButton(JS_LEFT_TOP))
+   {
        pRobot->ArmingDisable();
+       pRobot->SetWinch(0);
+   }
 
-   pRobot->HandleAutomatic();   // REVIEW: This will be moved to a timer
+   {
+       // On pressing buttons 10 or 11, disable the arming, and run the
+       // winch at a constant speed.  On release, stop the winch but don't
+       // re-enable.
+       static bool bPressed_last = false;
+       bool bPressed = (pjsKick->GetRawButton(JS_RIGHT_TOP) ||
+                        pjsKick->GetRawButton(JS_RIGHT_BOTTOM));
 
-   if (pjsDrive->GetRawButton(7))
-       pRobot->SetWinch(pjsDrive->GetZ());
+       if (bPressed)
+           pRobot->ArmingDisable();
+
+       if (pjsKick->GetRawButton(JS_RIGHT_TOP))
+           pRobot->SetWinch(0.25); // wind
+
+       if (pjsKick->GetRawButton(JS_RIGHT_BOTTOM))
+           pRobot->SetWinch(-0.25); // unwind
+
+       if (!bPressed && bPressed_last) // on release...
+           pRobot->SetWinch(0);        // stop
+
+       bPressed_last = bPressed;
+   }
 }

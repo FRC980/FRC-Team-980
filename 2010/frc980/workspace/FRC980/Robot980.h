@@ -140,13 +140,6 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 //--- Kicker Reset Period
 #define KICKER_RESET_PERIOD         2.0 /*!< \def KICKER_RESET_PERIOD The number of seconds that must elapse before the kicker can reset */
 
-//--- Joystick Button Names
-#define JOYSTICK_TRIGGER            1   /*!< \def JOYSTICK_TRIGGER The trigger used to kick the ball */
-#define JOYSTICK_THUMB_BOTTOM       2   /*!< \def JOYSTICK_THUMB_BOTTOM The bottom thumb button is not used */
-#define JOYSTICK_THUMB_TOP          3   /*!< \def JOYSTICK_THUMB_TOP The top thumb button is used to lift the robot */
-#define JOYSTICK_THUMB_LEFT         4   /*!< \def JOYSTICK_THUMB_LEFT The left thumb button is used to prevent the kicker from re-arming */
-#define JOYSTICK_THUMB_RIGHT        5   /*!< \def JOYSTICK_THUMB_RIGHT The right thumb button is used to manually re-arm the kicker */
-
 // all switches should be wired the same -- either normal open = high, or
 // normal open = low.  In our case, normal open = low(?)
 #define SW_OPEN     true
@@ -195,16 +188,17 @@ class Robot980 : public SensorBase
     Timer *m_pTimerDrive;       /*!< The Timer used for debugging (calc & print speeds) */
     Timer *m_pTimerFire;        /*!< The Timer used for firing. Can only fire once every 2 seconds */
 
+    Timer *m_pTimerUnwind;
+    Notifier *m_pnWinchPolling;
+
     //--- Firing mechanism state
     typedef enum
     {
         UNKNOWN,                /* 0 */
         READY_TO_FIRE,          /* 1 */
-        WINDING_FAST,           /* 2 */
-        WINDING_SLOW,           /* 3 */
-        PREUNWIND,              /* 4 */
-        UNWINDING_FAST,         /* 5 */
-        UNWINDING_SLOW,         /* 6 */
+        WINDING,                /* 2 */
+        START_UNWINDING,        /* 3 */
+        UNWINDING,              /* 4 */
     } arming_t;
     arming_t m_armingState;
     bool m_bArmingEnable;
