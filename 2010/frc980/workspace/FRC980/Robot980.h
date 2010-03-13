@@ -259,15 +259,6 @@ class Robot980 : public SensorBase
      */
     void Drive(float left, float right);
 
-    /*! \brief Determine if the kicker has been retracted
-     *  \return true if the kicker is retracted (regardless of winch state)
-     *
-     *  This method is used to determine if the kicker has been retracted.
-     *  It is true even if the winch belt is not yet fully extended in
-     *  preparation for the next shot.
-     */
-    bool KickerRetracted(void);
-
     /*! \brief Determine if the kicker has been armed
      *  \return true if the kicker is armed and ready to fire
      *
