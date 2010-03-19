@@ -26,6 +26,7 @@ void Main::TeleopPeriodic(void)
    //--- Get the Robot instance
    Robot980* pRobot = Robot980::GetInstance();
 
+   //--- Set Driver Station LCD Data Display
    //setUserDsLcdData("main teleop periodic",20,100);
 
    //--- Feed the watchdog

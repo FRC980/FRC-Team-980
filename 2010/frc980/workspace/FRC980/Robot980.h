@@ -280,15 +280,33 @@ class Robot980 : public SensorBase
      *  This method is used to Fire the kicking mechanism
      */
     void FireKicker(void);
-
+    
+    /*! \brief
+     *
+     */
     void ArmingEnable(void);
+    
+    /*! \brief
+     *
+     */
     void ArmingDisable(void);
-
-    // for debugging:
+    
+    /*! \brief
+     *  \param speed
+     *
+     */
     void SetWinch(float speed);
-
-    // REVIEW: These should be moved to interrupts on the dig-in switches
+    
+    /*! \brief
+     *  \todo This should be moved to interrupts on the dig-in switches
+     *
+     */
     void HandleFiring(void);
+    
+    /*! \brief
+     *  \todo This should be moved to interrupts on the dig-in switches
+     *
+     */
     void HandleArming(void);
 
     /*! \brief Handle all "automatic" functions of the robot -- this is NOT autonomous mode
@@ -300,7 +318,11 @@ class Robot980 : public SensorBase
      * firing mechanism which needs to re-arm itself automatically.
      */
     void HandleAutomatic(void);
-
+    
+    /*! \brief
+     *  \param unused
+     *
+     */
     static void CallHandleAutomatic(void * unused);
 
     /*! \brief A method to run the robot lift motor action

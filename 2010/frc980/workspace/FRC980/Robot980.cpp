@@ -36,15 +36,18 @@ Robot980::Robot980()
     , m_pscRight_cim2(new CANJaguar(CAN_RIGHT_CIM2)) //, CANJaguar::kSpeed))
     // roller and lift motors
     , m_pscRoller_fp(new CANJaguar(CAN_ROLLER_FP))   //, CANJaguar::kSpeed))
-    //, m_pscLift(new CANJaguar(CAN_LIFT))//, CANJaguar::kSpeed))
+    //, m_pscLift(new CANJaguar(CAN_LIFT))             //, CANJaguar::kSpeed))
+    
     //--- Victors
     , m_pscArm_win(new Victor(DSC_SLOT, CHAN_PWM_ARM))
     , m_pscFire_win(new Victor(DSC_SLOT, CHAN_PWM_FIRE))
+    
     //--- Sensors
     //, m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
     , m_pdiArmed_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_ARMED))
     , m_pdiFireCam_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_FIRE_READY))
     , m_pdiWinch_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_WINCH_COUNTER))
+    
     //--- Timers
     , m_pTimerDrive(new Timer)
     , m_pTimerFire(NULL)
@@ -52,7 +55,7 @@ Robot980::Robot980()
 
     , m_pTimerUnwind(new Timer)
     , m_pnWinchPolling(new Notifier(Robot980::CallHandleAutomatic, this))
-      
+    
     //--- State variables
     , m_armingState(UNKNOWN)
     , m_bArmingEnable(true)
@@ -215,12 +218,12 @@ void Robot980::Drive(float left, float right)
     //--- Set when going forward
     if (fForwardSpeed > 0)
     {
-        Drive(left, right, 0.0);
+        this->Drive(left, right, 0.0);
     }
     //--- Set a constant speed if not moving forward
     else if (fForwardSpeed == 0)
     {
-        Drive(left, right, 0.5 * REVERSE_DRIVE);
+        this->Drive(left, right, 0.5 * REVERSE_DRIVE);
     }
     //--- Set a variable roller speed when moving backwards
     else
@@ -231,7 +234,7 @@ void Robot980::Drive(float left, float right)
         // ball, making roller 2x RPM of wheels.  We then add an extra
         // 10%.
         fForwardSpeed *= 2 * 1.1 * (ROLLER_GEARBOX) / (GEARBOX_RATIO);
-        Drive(left, right, fForwardSpeed);
+        this->Drive(left, right, fForwardSpeed);
     }
 }
 
@@ -248,14 +251,14 @@ void Robot980::ArmKicker(void)
         (m_pdiArmed_switch->Get() == SW_OPEN))
     {
         m_armingState = WINDING;
-        HandleArming();
+        this->HandleArming();
     }
 }
 
 //==============================================================================
 void Robot980::FireKicker(void)
 {
-    if (KickerArmed())
+    if (this->KickerArmed())
     {
         //--- Reset the firing timer
         if (m_pTimerFire)
@@ -399,8 +402,8 @@ void Robot980::HandleArming()
 //==============================================================================
 void Robot980::HandleAutomatic()
 {
-    HandleFiring();
-    HandleArming();
+    this->HandleFiring();
+    this->HandleArming();
     // In the future, we may have additional automatic functionality (eg a
     // compressor)
 }
