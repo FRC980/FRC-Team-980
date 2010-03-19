@@ -178,8 +178,8 @@ void Robot980::Drive(float left, float right, float roller)
     utils u;
 
     //--- Set the speed of the left motors
-    m_pscLeft_cim1->Set(u.limit(left * DRIVE_REVERSE));
-    m_pscLeft_cim2->Set(u.limit(left * DRIVE_REVERSE));
+    m_pscLeft_cim1->Set(u.limit(left * REVERSE_DRIVE));
+    m_pscLeft_cim2->Set(u.limit(left * REVERSE_DRIVE));
 
     //--- Set the speed of the right motors
     m_pscRight_cim1->Set(u.limit(right));
@@ -220,7 +220,7 @@ void Robot980::Drive(float left, float right)
     //--- Set a constant speed if not moving forward
     else if (fForwardSpeed == 0)
     {
-        Drive(left, right, -0.5);
+        Drive(left, right, 0.5 * REVERSE_DRIVE);
     }
     //--- Set a variable roller speed when moving backwards
     else
@@ -234,7 +234,6 @@ void Robot980::Drive(float left, float right)
         Drive(left, right, fForwardSpeed);
     }
 }
-
 
 //==============================================================================
 bool Robot980::KickerArmed(void)
@@ -271,23 +270,24 @@ void Robot980::FireKicker(void)
 }
 
 //==============================================================================
-//void Robot980::Lift(void)
-//{
-//
-//}
+void Robot980::ArmingEnable()
+{
+    m_bArmingEnable = true;
+}
 
 //==============================================================================
-//==============================================================================
-//float Robot980::GetAngle(void)
-//{
-//   return 1.0;
-//}
+void Robot980::ArmingDisable()
+{
+    m_bArmingEnable = false;
+}
 
+//==============================================================================
 void Robot980::SetWinch(float speed)
 {
     m_pscArm_win->Set(speed);
 }
 
+//==============================================================================
 void Robot980::HandleFiring(void)
 {
     static bool bOldCamState = SW_OPEN;
@@ -301,16 +301,7 @@ void Robot980::HandleFiring(void)
     bOldCamState = m_pdiFireCam_switch->Get();
 }
 
-void Robot980::ArmingEnable()
-{
-    m_bArmingEnable = true;
-}
-
-void Robot980::ArmingDisable()
-{
-    m_bArmingEnable = false;
-}
-
+//==============================================================================
 void Robot980::HandleArming()
 {
 #define WIND_SPEED      0.4
@@ -393,7 +384,7 @@ void Robot980::HandleArming()
 
     case UNWINDING:
     {
-        m_pscArm_win->Set(- UNWIND_SPEED);
+        m_pscArm_win->Set(UNWIND_SPEED * REVERSE_DRIVE);
 
         if (m_pTimerUnwind->Get() >= UNWIND_TIME)
         {
@@ -405,6 +396,7 @@ void Robot980::HandleArming()
     }
 }
 
+//==============================================================================
 void Robot980::HandleAutomatic()
 {
     HandleFiring();
@@ -413,7 +405,22 @@ void Robot980::HandleAutomatic()
     // compressor)
 }
 
+//==============================================================================
 void Robot980::CallHandleAutomatic(void*) // static
 {
     Robot980::GetInstance()->HandleAutomatic();
 }
+
+//==============================================================================
+//void Robot980::Lift(void)
+//{
+//
+//}
+
+//==============================================================================
+//==============================================================================
+//float Robot980::GetAngle(void)
+//{
+//   return 1.0;
+//}
+

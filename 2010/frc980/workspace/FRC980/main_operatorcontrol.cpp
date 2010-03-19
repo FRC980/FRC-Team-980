@@ -65,8 +65,9 @@ void Main::TeleopPeriodic(void)
    //   pRobot->Lift();
    //}
 
-   if (pjsKick->GetRawButton(JS_LEFT_BOTTOM))
+   if (pjsKick->GetRawButton(JS_LEFT_BOTTOM)){
        pRobot->ArmingEnable();
+   }
 
    if (pjsKick->GetRawButton(JS_LEFT_TOP))
    {
@@ -82,17 +83,21 @@ void Main::TeleopPeriodic(void)
        bool bPressed = (pjsKick->GetRawButton(JS_RIGHT_TOP) ||
                         pjsKick->GetRawButton(JS_RIGHT_BOTTOM));
 
-       if (bPressed)
+       if (bPressed){
            pRobot->ArmingDisable();
+       }
 
-       if (pjsKick->GetRawButton(JS_RIGHT_TOP))
+       if (pjsKick->GetRawButton(JS_RIGHT_TOP)){
            pRobot->SetWinch(0.25); // wind
+       }
 
-       if (pjsKick->GetRawButton(JS_RIGHT_BOTTOM))
-           pRobot->SetWinch(-0.25); // unwind
+       if (pjsKick->GetRawButton(JS_RIGHT_BOTTOM)){
+           pRobot->SetWinch(0.25 * REVERSE_DRIVE); // unwind
+       }
 
-       if (!bPressed && bPressed_last) // on release...
-           pRobot->SetWinch(0);        // stop
+       if (!bPressed && bPressed_last){ // on release...
+           pRobot->SetWinch(0);         // stop
+       }
 
        bPressed_last = bPressed;
    }
