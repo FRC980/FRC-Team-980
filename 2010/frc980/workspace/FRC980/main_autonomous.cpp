@@ -74,18 +74,22 @@ void Main::AutonomousPeriodic(void)
 
 //==============================================================================
 //==============================================================================
-void Main::Auton1()
+void Main::Auton1(void)
 {
+    //--- Get the Robot instance
+    Robot980* pRobot = Robot980::GetInstance();
+    
+    //--- Get the autonomous mode timer in seconds
     float t = pTimerAuton->Get();
 
     //--- In the first two seconds of the match drive forward
-    if (t < 2)
+    if (t < 2.0)
     {
         pRobot->Drive(0.5, 0.5, 0.2); // left, right, roller
     }
 
     //--- After two seconds stop the robot and fire
-    if (t > 2)
+    if (t >= 2.0)
     {
         pRobot->Drive(0, 0, 0); // stop
 
@@ -106,31 +110,31 @@ void Main::Auton1()
 }
 
 //==============================================================================
-void Main::Auton2()
+void Main::Auton2(void)
 {
 	
 }
 
 //==============================================================================
-void Main::Auton3()
+void Main::Auton3(void)
 {
 	
 }
 
 //==============================================================================
-void Main::Auton4()
+void Main::Auton4(void)
 {
 	
 }
 
 //==============================================================================
-void Main::Auton5()
+void Main::Auton5(void)
 {
 	
 }
 
 //==============================================================================
-void Main::Auton6()
+void Main::Auton6(void)
 {
 	
 }
