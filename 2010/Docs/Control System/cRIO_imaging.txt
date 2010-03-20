@@ -10,3 +10,5 @@ cRIO Imaging instructions
 
 4. Use FTP to install CANJaguar support on the cRIO
     (see BlackJagSetup_V1_021010.pdf)
+
+5. Set Console Out switch to off (this is required by CANJaguar)
