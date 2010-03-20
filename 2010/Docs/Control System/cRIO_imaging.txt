@@ -1,0 +1,12 @@
+cRIO Imaging instructions
+
+1. Configure PC network connection with proper IP address and subnet mask
+    (Subnet=255.0.0.0 and IP=10.9.80.6 or IP=10.24.4.6)
+
+2. Set cRIO switches to off, except Console Out, which MUST be on
+
+3. Reimage cRIO
+    Start/Programs/National Instruments/Labview 8.6/FRC cRIO Imaging Tool
+
+4. Use FTP to install CANJaguar support on the cRIO
+    (see BlackJagSetup_V1_021010.pdf)
