@@ -3,7 +3,19 @@
 
 //--- Include the appropriate libraries
 #include "numbers.h" // This includes numerical constants used by the robot
+
 #include "CANJaguar.h" // This includes the necessary methods to use the CAN Jaguar
+#include <Vision/PCVideoServer.h>
+
+// REVIEW: Style -- include full header, or just use a forward class
+// declaration?  Most of these get pulled in from "CANJaguar.h".
+
+// class CANJaguar;
+// class DigitalInput;
+// class Notifier;
+// class PCVideoServer;
+// class Timer;
+// class Victor;
 
 //==============================================================================
 /*
@@ -188,8 +200,8 @@ class Robot980 : public SensorBase
     Timer *m_pTimerDrive;       /*!< The Timer used for debugging (calc & print speeds) */
     Timer *m_pTimerFire;        /*!< The Timer used for firing. Can only fire once every 2 seconds */
 
-    Timer *m_pTimerUnwind;
-    Notifier *m_pnWinchPolling;
+    Timer *m_pTimerUnwind;      /*!< Timer used for unwinding */
+    Notifier *m_pnWinchPolling; /*!< Notifier class (for periodic asynchronous funcion calls) to poll the winch switches */
 
     //--- Firing mechanism state
     typedef enum
@@ -199,9 +211,11 @@ class Robot980 : public SensorBase
         WINDING,                /* 2 */
         START_UNWINDING,        /* 3 */
         UNWINDING,              /* 4 */
-    } arming_t;
-    arming_t m_armingState;
-    bool m_bArmingEnable;
+    } arming_t;                 /*!< State machine for firing mechanism */
+    arming_t m_armingState;     /*!< Current state of firing mechanism */
+    bool m_bArmingEnable;       /*!< DEBUG: enable/disable arming */
+
+    PCVideoServer* m_pVideoServer;
 
     //--- Constructors -------------------------------------------------------
     /*! \brief The Robot 980 Constructor
@@ -280,9 +294,8 @@ class Robot980 : public SensorBase
      *  This method is used to Fire the kicking mechanism
      */
     void FireKicker(void);
-    
-    /*! \brief
-     *
+
+    /*! \brief DEBUG: enable/disable arming
      */
     void ArmingEnable(void);
     
@@ -290,10 +303,9 @@ class Robot980 : public SensorBase
      *
      */
     void ArmingDisable(void);
-    
-    /*! \brief
+
+    /*! \brief DEBUG: set constant winch speed
      *  \param speed
-     *
      */
     void SetWinch(float speed);
     

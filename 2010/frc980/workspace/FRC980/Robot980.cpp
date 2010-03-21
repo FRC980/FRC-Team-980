@@ -1,7 +1,7 @@
 #include <WPILib.h>
 #include <NetworkCommunication/FRCComm.h>
-//#include <PCVideoServer.h>
 #include <Timer.h>
+#include <Vision/PCVideoServer.h>
 #include <math.h>
 #include <stdbool.h>
 
@@ -59,6 +59,9 @@ Robot980::Robot980()
     //--- State variables
     , m_armingState(UNKNOWN)
     , m_bArmingEnable(true)
+
+    , m_pVideoServer(NULL)
+//    , m_pVideoServer(new PCVideoServer)
 {
     //--- Set the PID Values for each Jag in Speed or Current Mode
     //double kp = 0.35;
@@ -103,11 +106,25 @@ Robot980::Robot980()
     AddToSingletonList();
 
     m_pnWinchPolling->StartPeriodic(0.010);
+
+    if (m_pVideoServer)
+    {
+        AxisCamera::GetInstance().WriteRotation(AxisCamera::kRotation_180);
+        AxisCamera::GetInstance().WriteResolution(AxisCamera::kResolution_320x240);
+        AxisCamera::GetInstance().WriteMaxFPS(15);
+        m_pVideoServer->Start();
+    }
 }
 
 //==============================================================================
 Robot980::~Robot980()
 {
+    if (m_pVideoServer)
+    {
+        m_pVideoServer->Stop();
+        delete m_pVideoServer;
+    }
+
     //--- Speed controllers
     delete m_pscLeft_cim1;
     delete m_pscLeft_cim2;
