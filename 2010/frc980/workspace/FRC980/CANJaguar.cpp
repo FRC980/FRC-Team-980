@@ -831,8 +831,9 @@ bool CANJaguar::GetPowerCycled()
 /**
  * Set the maximum voltage change rate.
  * 
- * When in percent voltage output mode, the rate at which the voltage changes can
- * be limited to reduce current spikes.  Set this to 0.0 to disable rate limiting.
+ * When in percent voltage output mode, the rate at which the voltage
+ * changes can be limited to reduce current spikes.  Set this to 0.0 to
+ * disable rate limiting.
  * 
  * @param rampRate The maximum rate of voltage change in Percent Voltage mode in V/s.
  */
