@@ -246,7 +246,11 @@ class Robot980 : public SensorBase
      *  connected to a single analog input.  GetAutonMode reads that analog
      *  value and converts it to a single "mode" integer.
      */
-    int  GetAutonMode(void);
+    int GetAutonMode(void);
+
+    /*! \brief Set the Jaguars to either brake mode or coast mode
+     */
+    void SetBrakes(bool brakeOnStop);
 
     /*! \brief A drive method to move the robot and control the roller
      *  \param left The speed of the left drive motors

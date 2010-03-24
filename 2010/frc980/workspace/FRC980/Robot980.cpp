@@ -101,7 +101,7 @@ Robot980::Robot980()
 
     m_pTimerUnwind->Reset();
     m_pTimerUnwind->Start();
-
+    
     //--- Tell SensorBase about us
     AddToSingletonList();
 
@@ -184,6 +184,19 @@ int Robot980::GetAutonMode()
 }
 
 //==========================================================================
+void Robot980::SetBrakes(bool brakeOnStop)
+{
+    // kNeutralMode_Jumper, kNeutralMode_Brake, kNeutralMode_Coast
+    CANJaguar::NeutralMode mode = brakeOnStop
+        ? CANJaguar::kNeutralMode_Brake
+        : CANJaguar::kNeutralMode_Coast;
+
+    m_pscLeft_cim1->ConfigNeutralMode(mode);
+    m_pscLeft_cim2->ConfigNeutralMode(mode);
+    m_pscRight_cim1->ConfigNeutralMode(mode);
+    m_pscRight_cim2->ConfigNeutralMode(mode);
+}
+
 //==========================================================================
 void Robot980::Drive(float left, float right, float roller)
 {
@@ -430,7 +443,6 @@ void Robot980::DebugPrinting()
     sprintf(string2, "\n");
     strncat(string1, string2, 255-strlen(string2));
     setErrorData(string1, strlen(string1), 100);
-
 }
 
 //==========================================================================
