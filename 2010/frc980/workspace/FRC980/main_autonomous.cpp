@@ -26,18 +26,18 @@ void Main::AutonomousInit(void)
 //==============================================================================
 void Main::AutonomousContinuous(void)
 {
-    
+
 }
 
 //==============================================================================
 void Main::AutonomousPeriodic(void)
 {
     //--- Get the Robot instance
-    Robot980* pRobot = Robot980::GetInstance();
+    Robot980::GetInstance();
 
     //--- Feed the watchdog
     GetWatchdog().Feed();
-    
+
     //--- NOTE: THIS IS A STOPGAP UNTIL A WAY TO CHOOSE THIS MODE IS MADE
     //    ALSO IT ALLOWS US TO START UTILIZING MORE THAN ONE AUTON MODE
     iMode = 1;
@@ -45,31 +45,31 @@ void Main::AutonomousPeriodic(void)
     //--- Switch to the correct autonomous mode
     switch(iMode)
     {
-	default:
-	
-	case 1:
-	    this->Auton1();
-	    break;
-	
-	case 2:
-	    this->Auton2();
-	    break;
-	
-	case 3:
-	    this->Auton3();
-	    break;
-	
-	case 4:
-	    this->Auton4();
-	    break;
-	
-	case 5:
-	    this->Auton5();
-	    break;
-	
-	case 6:
-	    this->Auton6();
-	    break;
+    default:
+
+    case 1:
+        this->Auton1();
+        break;
+
+    case 2:
+        this->Auton2();
+        break;
+
+    case 3:
+        this->Auton3();
+        break;
+
+    case 4:
+        this->Auton4();
+        break;
+
+    case 5:
+        this->Auton5();
+        break;
+
+    case 6:
+        this->Auton6();
+        break;
     }
 }
 
@@ -79,7 +79,7 @@ void Main::Auton1(void)
 {
     //--- Get the Robot instance
     Robot980* pRobot = Robot980::GetInstance();
-    
+
     //--- Get the autonomous mode timer in seconds
     float t = pTimerAuton->Get();
 
@@ -113,30 +113,29 @@ void Main::Auton1(void)
 //==============================================================================
 void Main::Auton2(void)
 {
-	
+
 }
 
 //==============================================================================
 void Main::Auton3(void)
 {
-	
+
 }
 
 //==============================================================================
 void Main::Auton4(void)
 {
-	
+
 }
 
 //==============================================================================
 void Main::Auton5(void)
 {
-	
+
 }
 
 //==============================================================================
 void Main::Auton6(void)
 {
-	
-}
 
+}
