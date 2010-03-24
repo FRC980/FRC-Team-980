@@ -278,11 +278,12 @@ class Robot980 : public SensorBase
     /*! \brief Determine if the kicker has been armed
      *  \return true if the kicker is armed and ready to fire
      *
-     *  This method is used to determine if the kicker is armed.  It
-     *  checks if the kicker has been retracted, the winch unwound, and
-     *  the time restriction has passed.
+     *  This method is used to determine if the kicker is ready to fire.
+     *  It checks if the kicker has been retracted, and the winch unwound.
+     *  (There is no time restriction, as the kicker does not exceed the
+     *  frame perimeter.)
      */
-    bool KickerArmed(void);
+    bool KickerReady(void);
 
     /*! \brief Arm the kicker
      *
@@ -292,10 +293,11 @@ class Robot980 : public SensorBase
     void ArmKicker(void);
 
     /*! \brief Fire the kicker
+     *  \return true if the kicker was ready to fire; false if it was not
      *
      *  This method is used to Fire the kicking mechanism
      */
-    void FireKicker(void);
+    bool FireKicker(void);
 
     /*! \brief DEBUG: enable/disable arming
      */

@@ -274,9 +274,10 @@ void Robot980::Drive(float left, float right)
 }
 
 //==========================================================================
-bool Robot980::KickerArmed(void)
+bool Robot980::KickerReady(void)
 {
-    return (m_pdiArmed_switch->Get() == SW_CLOSED);
+    return ((READY_TO_FIRE == m_armingState) &&
+            (m_pdiArmed_switch->Get() == SW_CLOSED));
 }
 
 //==========================================================================
@@ -291,9 +292,9 @@ void Robot980::ArmKicker(void)
 }
 
 //==========================================================================
-void Robot980::FireKicker(void)
+bool Robot980::FireKicker(void)
 {
-    if (this->KickerArmed()) // TODO: check winch state; check pTimerFire > 2
+    if (this->KickerReady())
     {
         //--- Reset the firing timer
         if (m_pTimerFire)
@@ -306,7 +307,11 @@ void Robot980::FireKicker(void)
         m_pscFire_win->Set(0.50);
         m_armingState = FIRED;
         this->RunWinchState();
+
+        return true;
     }
+
+    return false;
 }
 
 //==========================================================================
