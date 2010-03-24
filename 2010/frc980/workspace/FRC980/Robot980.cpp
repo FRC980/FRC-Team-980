@@ -341,7 +341,7 @@ void Robot980::HandleFiring(void)
 
 //==========================================================================
 #define WIND_SPEED      0.4
-#define UNWIND_SPEED    0.2
+#define UNWIND_SPEED    0.4
 #define UNWIND_TIME     2.5     /* in seconds */
 #define UNWIND_COUNT    10      /* both edges, 2 sensors per rotation */
 
