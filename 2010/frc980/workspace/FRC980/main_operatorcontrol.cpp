@@ -75,37 +75,5 @@ void Main::TeleopPeriodic(void)
     if (pjsKick->GetRawButton(JS_LEFT_TOP))
     {
         pRobot->ArmingDisable();
-        pRobot->SetWinch(0);
-    }
-
-    {
-        // On pressing buttons 10 or 11, disable the arming, and run the
-        // winch at a constant speed.  On release, stop the winch but don't
-        // re-enable.
-        static bool bPressed_last = false;
-        bool bPressed = (pjsKick->GetRawButton(JS_RIGHT_TOP) ||
-                         pjsKick->GetRawButton(JS_RIGHT_BOTTOM));
-
-        if (bPressed)
-        {
-            pRobot->ArmingDisable();
-        }
-
-        if (pjsKick->GetRawButton(JS_RIGHT_TOP))
-        {
-            pRobot->SetWinch(0.25); // wind
-        }
-
-        if (pjsKick->GetRawButton(JS_RIGHT_BOTTOM))
-        {
-            pRobot->SetWinch(0.25 * REVERSE_DRIVE); // unwind
-        }
-
-        if (!bPressed && bPressed_last) // on release...
-        {
-            pRobot->SetWinch(0);         // stop
-        }
-
-        bPressed_last = bPressed;
     }
 }

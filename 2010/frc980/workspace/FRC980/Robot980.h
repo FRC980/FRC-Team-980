@@ -144,10 +144,10 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 // Define Additional Values
 
 //--- Reverse Drive Direction
-/*! \def REVERSE_DRIVE This variable is used to reverse the drive signal to
- *  motors that need to be moved in reverse
+/*! \def DRIVE_REVERSE This variable is used to reverse the signal to
+ *  drive motors
  */
-#define REVERSE_DRIVE               -1.0
+#define DRIVE_REVERSE               -1.0
 
 //--- Kicker Reset Period
 #define KICKER_RESET_PERIOD         2.0 /*!< \def KICKER_RESET_PERIOD The number of seconds that must elapse before the kicker can reset */
@@ -162,7 +162,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define NULL                        (0) /*!< \def NULL The NULL value is created here because it is not created elsewhere */
 #endif  // NULL
 
-//==============================================================================
+//==========================================================================
 //! Code specific to the Team 980 Robot
 /*!\class Robot980
  *
@@ -173,7 +173,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 class Robot980 : public SensorBase
 {
   private:
-    //--- Instance Variables -------------------------------------------------
+    //--- Instance Variables -----------------------------------------------
     //--- Jaguars
     // left and right drive motors
     CANJaguar* m_pscLeft_cim1; /*!< The Left CIM1 motor speed controller */
@@ -200,16 +200,13 @@ class Robot980 : public SensorBase
     Timer* m_pTimerDrive;       /*!< The Timer used for debugging (calc & print speeds) */
     Timer* m_pTimerFire;        /*!< The Timer used for firing. Can only fire once every 2 seconds */
 
-    Timer* m_pTimerUnwind;      /*!< Timer used for unwinding */
-    Notifier* m_pnWinchPolling; /*!< Notifier class (for periodic asynchronous funcion calls) to poll the winch switches */
-
     //--- Firing mechanism state
     typedef enum
     {
         UNKNOWN,                /* 0 */
         READY_TO_FIRE,          /* 1 */
-        WINDING,                /* 2 */
-        START_UNWINDING,        /* 3 */
+        FIRED,                  /* 2 */
+        WINDING,                /* 3 */
         UNWINDING,              /* 4 */
     } arming_t;                 /*!< State machine for firing mechanism */
     arming_t m_armingState;     /*!< Current state of firing mechanism */
@@ -217,7 +214,7 @@ class Robot980 : public SensorBase
 
     PCVideoServer* m_pVideoServer;
 
-    //--- Constructors -------------------------------------------------------
+    //--- Constructors ----------------------------------------------------
     /*! \brief The Robot 980 Constructor
      *
      *  The constructor/destructor are private to enforce this being a
@@ -225,7 +222,7 @@ class Robot980 : public SensorBase
      */
     Robot980();
 
-    //--- Destructors --------------------------------------------------------
+    //--- Destructors -----------------------------------------------------
     /*! \brief The Robot 980 Destructor
      *
      *  The constructor/destructor are private to enforce this being a
@@ -234,17 +231,17 @@ class Robot980 : public SensorBase
     virtual ~Robot980();
 
   public:
-    //--- Instance Variables -------------------------------------------------
-
-    //--- Constructors -------------------------------------------------------
+    //--- Constructors ----------------------------------------------------
+    /*! \brief Robot980 is a singleton class -- get the instance of it
+     */
     static Robot980 *GetInstance();
 
-    //--- Methods ------------------------------------------------------------
+    //--- Methods ---------------------------------------------------------
     /*!\brief The accessor method for the autonomous mode
      *
      *  There will be a multi-position switch wired as a potentiometer,
-     *  connected to a single analog input.  GetAutonMode reads that analog
-     *  value and converts it to a single "mode" integer.
+     *  connected to a single analog input.  GetAutonMode reads that
+     *  analog value and converts it to a single "mode" integer.
      */
     int GetAutonMode(void);
 
@@ -265,13 +262,14 @@ class Robot980 : public SensorBase
      */
     void Drive(float left, float right, float roller);
 
-    /*! \brief A drive method to move the robot and autonomously control the roller
+    /*! \brief A drive method to move the robot and autonomously control
+     *  the roller
      *  \param left The speed of the left drive motors
      *  \param right The speed of the right drive motors
      *
-     *  This method is used to drive the robot and also to control
-     *  the speed of the roller.  The roller is dependent on the speed of
-     *  the drive system in this instance.
+     *  This method is used to drive the robot and also to control the
+     *  speed of the roller.  The roller is dependent on the speed of the
+     *  drive system in this instance.
      *
      *  For reference: 1 = forward, -1 = backwards
      */
@@ -280,16 +278,16 @@ class Robot980 : public SensorBase
     /*! \brief Determine if the kicker has been armed
      *  \return true if the kicker is armed and ready to fire
      *
-     *  This method is used to determine if the kicker is armed.
-     *  It checks if the kicker has been retracted, the winch unwound,
-     *  and the time restriction has passed.
+     *  This method is used to determine if the kicker is armed.  It
+     *  checks if the kicker has been retracted, the winch unwound, and
+     *  the time restriction has passed.
      */
     bool KickerArmed(void);
 
     /*! \brief Arm the kicker
      *
-     *  This method is used to arm the kicking mechanism by retracting
-     *  the kicker and then unwinding the winch
+     *  This method is used to arm the kicking mechanism by retracting the
+     *  kicker and then unwinding the winch
      */
     void ArmKicker(void);
 
@@ -303,47 +301,38 @@ class Robot980 : public SensorBase
      */
     void ArmingEnable(void);
     
-    /*! \brief
-     *
+    /*! \brief DEBUG: enable/disable arming
      */
     void ArmingDisable(void);
 
-    /*! \brief DEBUG: set constant winch speed
-     *  \param speed
-     */
-    void SetWinch(float speed);
-    
-    /*! \brief
-     *  \todo This should be moved to interrupts on the dig-in switches
-     *
+    /*! \brief Stop the firing cam when switch is triggered
      */
     void HandleFiring(void);
     
-    /*! \brief
-     *  \todo This should be moved to interrupts on the dig-in switches
-     *
+    /*! \brief A switch has been triggered or a timeout has occurred --
+     *  figure out which new state to transition to
      */
-    void HandleArming(void);
+    void DoWinchStateMachineTransition(bool bTimeout);
 
-    /*! \brief DEBUG: print some internal state periodically
+    /*! \brief Run appropriate motor(s) for the given state
      */
-    void DebugPrinting(void);
-
-    /*! \brief Handle all "automatic" functions of the robot -- this is NOT autonomous mode
-     *
-     * This method handles all automatic functions of the robot, such as
-     * turning the compressor on or off.
-     *
-     * In 2010, we don't actually have a compressor, but we do have a
-     * firing mechanism which needs to re-arm itself automatically.
-     */
-    void HandleAutomatic(void);
+    void RunWinchState();
     
-    /*! \brief
-     *  \param unused
-     *
+    /*! \brief Calls method to stop the firing cam from turning; called by
+     *  interrupt on cam switch
      */
-    static void CallHandleAutomatic(void * unused);
+    static void CallStopCam(tNIRIO_u32 interruptAssertedMask,
+                            void* param);
+
+    /*! \brief Calls method to handle winch state machine; called by
+     *  interrupts on various switch
+     */
+    static void CallWinchStateMachineInt(tNIRIO_u32 mask, void* param);
+
+    /*! \brief Calls method to handle winch state machine; called by
+     *  notifier to indicate a timeout has occurred
+     */
+    static void CallWinchStateMachineTimer(void* param);
 
     /*! \brief A method to run the robot lift motor action
      *  \todo Write this method
