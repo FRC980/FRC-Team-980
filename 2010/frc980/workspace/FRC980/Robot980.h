@@ -176,32 +176,32 @@ class Robot980 : public SensorBase
     //--- Instance Variables -------------------------------------------------
     //--- Jaguars
     // left and right drive motors
-    CANJaguar * m_pscLeft_cim1; /*!< The Left CIM1 motor speed controller */
-    CANJaguar *m_pscLeft_cim2;  /*!< The Left CIM2 motor speed controller */
-    CANJaguar *m_pscRight_cim1; /*!< The Right CIM1 motor speed controller */
-    CANJaguar *m_pscRight_cim2; /*!< The Right CIM2 motor speed controller */
+    CANJaguar* m_pscLeft_cim1; /*!< The Left CIM1 motor speed controller */
+    CANJaguar* m_pscLeft_cim2;  /*!< The Left CIM2 motor speed controller */
+    CANJaguar* m_pscRight_cim1; /*!< The Right CIM1 motor speed controller */
+    CANJaguar* m_pscRight_cim2; /*!< The Right CIM2 motor speed controller */
 
     // roller and lift motors
-    CANJaguar *m_pscRoller_fp;  /*!< The Roller motor speed controller */
+    CANJaguar* m_pscRoller_fp;  /*!< The Roller motor speed controller */
     // CANJaguar* m_pscLift;       /*!< The Lift motor speed controller */
 
     //--- Victors
-    Victor *m_pscArm_win;      /*!< The Arming motor 1 speed controller */
-    Victor *m_pscFire_win;     /*!< The Firing motor speed controller */
+    Victor* m_pscArm_win;      /*!< The Arming motor 1 speed controller */
+    Victor* m_pscFire_win;     /*!< The Firing motor speed controller */
 
     //--- Sensors
     //Gyro* m_pGyro;                 /*!< The Gyro Sensor */
-    DigitalInput *m_pdiArmed_switch; /*!< The Arming Mechanism Limit Switch */
-    DigitalInput *m_pdiFireCam_switch; /*!< The Firing Mechanism Limit Switch */
-    DigitalInput *m_pdiWinch_switch; /*!< The Winch Mechanism Limit Switch */
+    DigitalInput* m_pdiArmed_switch; /*!< The Arming Mechanism Limit Switch */
+    DigitalInput* m_pdiFireCam_switch; /*!< The Firing Mechanism Limit Switch */
+    DigitalInput* m_pdiWinch_switch; /*!< The Winch Mechanism Limit Switch */
     // more sensors TBD
 
     //--- Timers
-    Timer *m_pTimerDrive;       /*!< The Timer used for debugging (calc & print speeds) */
-    Timer *m_pTimerFire;        /*!< The Timer used for firing. Can only fire once every 2 seconds */
+    Timer* m_pTimerDrive;       /*!< The Timer used for debugging (calc & print speeds) */
+    Timer* m_pTimerFire;        /*!< The Timer used for firing. Can only fire once every 2 seconds */
 
-    Timer *m_pTimerUnwind;      /*!< Timer used for unwinding */
-    Notifier *m_pnWinchPolling; /*!< Notifier class (for periodic asynchronous funcion calls) to poll the winch switches */
+    Timer* m_pTimerUnwind;      /*!< Timer used for unwinding */
+    Notifier* m_pnWinchPolling; /*!< Notifier class (for periodic asynchronous funcion calls) to poll the winch switches */
 
     //--- Firing mechanism state
     typedef enum
@@ -231,7 +231,7 @@ class Robot980 : public SensorBase
      *  The constructor/destructor are private to enforce this being a
      *  singleton object, accessible only via Robot980::GetInstance();
      */
-    virtual ~ Robot980();
+    virtual ~Robot980();
 
   public:
     //--- Instance Variables -------------------------------------------------
@@ -320,6 +320,10 @@ class Robot980 : public SensorBase
      *
      */
     void HandleArming(void);
+
+    /*! \brief DEBUG: print some internal state periodically
+     */
+    void DebugPrinting(void);
 
     /*! \brief Handle all "automatic" functions of the robot -- this is NOT autonomous mode
      *

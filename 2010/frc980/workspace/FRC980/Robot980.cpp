@@ -11,9 +11,9 @@
 #include "numbers.h"
 #include "utils.h"
 
-#define ENC_SCALE   CounterBase::k1X    /*!< \def ENC_SCALE The encoder scaling */
+#define ENC_SCALE   CounterBase::k1X /*!< \def ENC_SCALE The encoder scaling */
 
-//==============================================================================
+//==========================================================================
 static Robot980 *g_pInstance = NULL;
 
 static const char* szArmingArr[] = {
@@ -24,8 +24,8 @@ static const char* szArmingArr[] = {
     "UNWINDING",              /* 4 */
 };
 
-//==============================================================================
-//==============================================================================
+//==========================================================================
+//==========================================================================
 Robot980::Robot980()
     //--- Jaguars (Encoders attached directly to Jaguars)
     //    NOTE: CANNOT RUN IN kSpeed MODE UNLESS ENCODERS ATTACHED
@@ -116,7 +116,7 @@ Robot980::Robot980()
     }
 }
 
-//==============================================================================
+//==========================================================================
 Robot980::~Robot980()
 {
     if (m_pVideoServer)
@@ -151,7 +151,7 @@ Robot980::~Robot980()
     delete m_pnWinchPolling;
 }
 
-//==============================================================================
+//==========================================================================
 Robot980 *Robot980::GetInstance()
 {
     if (!g_pInstance)
@@ -161,34 +161,30 @@ Robot980 *Robot980::GetInstance()
     return g_pInstance;
 }
 
-//==============================================================================
-//==============================================================================
+//==========================================================================
+//==========================================================================
 int Robot980::GetAutonMode()
 {
     //--- Get the analog value corresponsind to the autonomous mode to choose
     AnalogModule *pAM = AnalogModule::GetInstance(SLOT_AUTO_MODE);
     int i = pAM->GetValue(CHAN_AUTO_MODE);      // returns 10-bit number
 
-    // REVIEW: These are samples; exact values and quantities depend on
-    // what's actually built and need to be measured and tested.
     if (i > 900)
-        return 6;
-    if (i > 750)
         return 5;
-    if (i > 600)
+    if (i > 700)
         return 4;
-    if (i > 450)
+    if (i > 500)
         return 3;
     if (i > 300)
         return 2;
-    if (i > 150)
+    if (i > 100)
         return 1;
 
     return 0;
 }
 
-//==============================================================================
-//==============================================================================
+//==========================================================================
+//==========================================================================
 void Robot980::Drive(float left, float right, float roller)
 {
     //--- Reset the Timer Drive
@@ -209,7 +205,7 @@ void Robot980::Drive(float left, float right, float roller)
     m_pscRoller_fp->Set(u.limit(roller));
 }
 
-//==============================================================================
+//==========================================================================
 void Robot980::Drive(float left, float right)
 {
     //--- Set the speed of the roller motor based upon the forward/back speed
@@ -255,13 +251,13 @@ void Robot980::Drive(float left, float right)
     }
 }
 
-//==============================================================================
+//==========================================================================
 bool Robot980::KickerArmed(void)
 {
     return (m_pdiArmed_switch->Get() == SW_CLOSED);
 }
 
-//==============================================================================
+//==========================================================================
 void Robot980::ArmKicker(void)
 {
     if ((READY_TO_FIRE == m_armingState) &&
@@ -272,7 +268,7 @@ void Robot980::ArmKicker(void)
     }
 }
 
-//==============================================================================
+//==========================================================================
 void Robot980::FireKicker(void)
 {
     if (this->KickerArmed())
@@ -289,25 +285,25 @@ void Robot980::FireKicker(void)
     }
 }
 
-//==============================================================================
+//==========================================================================
 void Robot980::ArmingEnable()
 {
     m_bArmingEnable = true;
 }
 
-//==============================================================================
+//==========================================================================
 void Robot980::ArmingDisable()
 {
     m_bArmingEnable = false;
 }
 
-//==============================================================================
+//==========================================================================
 void Robot980::SetWinch(float speed)
 {
     m_pscArm_win->Set(speed);
 }
 
-//==============================================================================
+//==========================================================================
 void Robot980::HandleFiring(void)
 {
     static bool bOldCamState = SW_OPEN;
@@ -321,7 +317,7 @@ void Robot980::HandleFiring(void)
     bOldCamState = m_pdiFireCam_switch->Get();
 }
 
-//==============================================================================
+//==========================================================================
 void Robot980::HandleArming()
 {
 #define WIND_SPEED      0.4
@@ -416,29 +412,58 @@ void Robot980::HandleArming()
     }
 }
 
-//==============================================================================
+//==========================================================================
+void Robot980::DebugPrinting()
+{
+    AnalogModule* pAM = AnalogModule::GetInstance(SLOT_AUTO_MODE);
+
+    char string1[256] = {0};
+    char string2[256] = {0};
+
+    sprintf(string1, "ANA:");
+    for (int chan = 1 ; chan <= 8 ; chan++)
+    {
+        int i = pAM->GetValue(chan);      // returns 10-bit number
+        sprintf(string2, "  %d:%04d", chan, i);
+        strncat(string1, string2, 255-strlen(string2));
+    }
+    sprintf(string2, "\n");
+    strncat(string1, string2, 255-strlen(string2));
+    setErrorData(string1, strlen(string1), 100);
+
+}
+
+//==========================================================================
 void Robot980::HandleAutomatic()
 {
     this->HandleFiring();
     this->HandleArming();
     // In the future, we may have additional automatic functionality (eg a
     // compressor)
+
+    static int i = 0;
+
+    if (++i >= 10)
+    {
+        i = 0;
+        DebugPrinting();
+    }
 }
 
-//==============================================================================
+//==========================================================================
 void Robot980::CallHandleAutomatic(void*) // static
 {
     Robot980::GetInstance()->HandleAutomatic();
 }
 
-//==============================================================================
+//==========================================================================
 //void Robot980::Lift(void)
 //{
 //
 //}
 
-//==============================================================================
-//==============================================================================
+//==========================================================================
+//==========================================================================
 //float Robot980::GetAngle(void)
 //{
 //   return 1.0;
