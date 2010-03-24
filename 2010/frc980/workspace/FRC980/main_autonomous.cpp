@@ -6,13 +6,11 @@
 #include "Robot980.h"
 #include "utils.h"
 
-//==============================================================================
-//==============================================================================
+//==========================================================================
 static int iMode = 0;
 static Timer *pTimerAuton = new Timer;
 
-//==============================================================================
-//==============================================================================
+//==========================================================================
 void Main::AutonomousInit(void)
 {
     Robot980* pRobot = Robot980::GetInstance();
@@ -23,18 +21,14 @@ void Main::AutonomousInit(void)
     pTimerAuton->Reset();
 }
 
-//==============================================================================
+//==========================================================================
 void Main::AutonomousContinuous(void)
 {
-
 }
 
-//==============================================================================
+//==========================================================================
 void Main::AutonomousPeriodic(void)
 {
-    //--- Get the Robot instance
-    Robot980::GetInstance();
-
     //--- Feed the watchdog
     GetWatchdog().Feed();
 
@@ -73,9 +67,32 @@ void Main::AutonomousPeriodic(void)
     }
 }
 
-//==============================================================================
-//==============================================================================
+//==========================================================================
 void Main::Auton1(void)
+{
+    // drive 8 feet, kick, then turn right 90 degrees
+}
+
+//==========================================================================
+void Main::Auton2(void)
+{
+    // drive 8 feet, kick, drive 3 feet, kick, turn left 90 degrees
+}
+
+//==========================================================================
+void Main::Auton3(void)
+{
+    // drive 8 feet, kick, drive 3 feet, kick, drive 3 feet, kick, turn right
+}
+
+//==========================================================================
+void Main::Auton4(void)
+{
+    // drive 18 feet, then turn right 90 degrees
+}
+
+//==========================================================================
+void Main::Auton5(void)
 {
     //--- Get the Robot instance
     Robot980* pRobot = Robot980::GetInstance();
@@ -83,10 +100,10 @@ void Main::Auton1(void)
     //--- Get the autonomous mode timer in seconds
     float t = pTimerAuton->Get();
 
-    //--- In the first two seconds of the match drive forward
-    if (t < 2.0)
+    //--- In the first few seconds of the match drive forward
+    if (t < 1.5)
     {
-        pRobot->Drive(0.5, 0.5, 0.2); // left, right, roller
+        pRobot->Drive(-0.5, -0.5, 0.2); // left, right, roller
     }
 
     //--- After two seconds stop the robot and fire
@@ -94,7 +111,7 @@ void Main::Auton1(void)
     {
         pRobot->Drive(0, 0, 0); // stop
 
-        static bool bFired = false;
+        static bool bFired = true;
 
         if (! bFired)
         {
@@ -103,38 +120,14 @@ void Main::Auton1(void)
         }
     }
 
-    //--- After two and a half seconds rearm the kicker
-    if (t > 2.5)
+    //--- After three and a half seconds rearm the kicker
+    if (t > 3.5)
     {
         pRobot->ArmKicker();
     }
 }
 
-//==============================================================================
-void Main::Auton2(void)
-{
-
-}
-
-//==============================================================================
-void Main::Auton3(void)
-{
-
-}
-
-//==============================================================================
-void Main::Auton4(void)
-{
-
-}
-
-//==============================================================================
-void Main::Auton5(void)
-{
-
-}
-
-//==============================================================================
+//==========================================================================
 void Main::Auton6(void)
 {
 
