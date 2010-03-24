@@ -124,8 +124,8 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 // Digital Inputs
 
 // Limit Switches for Kicking Mechanism
-#define CHAN_LIMIT_ARMED            2   /*!< \def CHAN_LIMIT_ARMED The Kicker Arming Limit Switch */
-#define CHAN_LIMIT_FIRE_READY       1   /*!< \def CHAN_LIMIT_FIRE_READY The Kicker Firing Limit Switch */
+#define CHAN_LIMIT_ARMED            2   /*!< \def CHAN_LIMIT_ARMED The Kicker Arming Limit Switch -- detects that the kicker is in the "armed" position */
+#define CHAN_LIMIT_FIRE_READY       1   /*!< \def CHAN_LIMIT_FIRE_READY The Kicker Firing Limit Switch -- detects that the firing cam is in the ready-to-fire position */
 #define CHAN_LIMIT_WINCH_COUNTER    3   /*!< \def CHAN_LIMIT_WINCH The Kicker Winch Limit Switch */
 
 // Encoder on the lift mechanism
