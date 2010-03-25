@@ -212,19 +212,16 @@ void Robot980::Drive(float left, float right, float roller)
     //--- Reset the Timer Drive
     m_pTimerDrive->Reset();
 
-    //--- Set up utilities to use
-    utils u;
-
     //--- Set the speed of the left motors
-    m_pscLeft_cim1->Set(u.limit(left * DRIVE_REVERSE));
-    m_pscLeft_cim2->Set(u.limit(left * DRIVE_REVERSE));
+    m_pscLeft_cim1->Set(utils::limit(left * DRIVE_REVERSE));
+    m_pscLeft_cim2->Set(utils::limit(left * DRIVE_REVERSE));
 
     //--- Set the speed of the right motors
-    m_pscRight_cim1->Set(u.limit(right));
-    m_pscRight_cim2->Set(u.limit(right));
+    m_pscRight_cim1->Set(utils::limit(right));
+    m_pscRight_cim2->Set(utils::limit(right));
 
     //--- Set the speed of the roller motor
-    m_pscRoller_fp->Set(u.limit(roller));
+    m_pscRoller_fp->Set(utils::limit(roller));
 }
 
 //==========================================================================
@@ -234,13 +231,12 @@ void Robot980::Drive(float left, float right)
     //    The forward speed here represents a direct relation to the y-axis
     //    input of the command joystick.
     //
-    //    Ex: fForwardSpeed = u.limit(((y-x) + (y+x))/2)
-    //                      = u.limit((y-x+y+x)/2)
-    //                      = u.limit((2*y)/2)
-    //                      = u.limit(y)
+    //    Ex: fForwardSpeed = utils::limit(((y-x) + (y+x))/2)
+    //                      = utils::limit((y-x+y+x)/2)
+    //                      = utils::limit((2*y)/2)
+    //                      = utils::limit(y)
     //
-    utils u;
-    float fForwardSpeed = u.limit((left + right) / 2);
+    float fForwardSpeed = utils::limit((left + right) / 2);
 
     /* IMPORTANT!
      *
@@ -408,10 +404,8 @@ void Robot980::DoWinchStateMachineTransition(bool bTimeout)
             pNotifyWinch->Stop();
             m_armingState = READY_TO_FIRE;
 
-            char error[256];
-            sprintf(error, "unwind count: %d  timeout: %d\n",
-                    iUnwindCount, bTimeout ? 1 : 0);
-            setErrorData(error, strlen(error), 100);
+            utils::message("unwind count: %d  timeout: %d\n",
+                           iUnwindCount, bTimeout ? 1 : 0);
         }
     }
     break;
@@ -420,14 +414,12 @@ void Robot980::DoWinchStateMachineTransition(bool bTimeout)
     static arming_t lastState = UNKNOWN;
     if (lastState != m_armingState)
     {
-        char error[256];
-        sprintf(error, "armed: %d  cam: %d  winch: %d  state: %d / %s\n",
-                m_pdiArmed_switch->Get(),
-                m_pdiFireCam_switch->Get(),
-                m_pdiWinch_switch->Get(),
-                (int)m_armingState,
-                szArmingArr[m_armingState]);
-        setErrorData(error, strlen(error), 100);
+        utils::message("armed: %d  cam: %d  winch: %d  state: %d / %s\n",
+                       m_pdiArmed_switch->Get(),
+                       m_pdiFireCam_switch->Get(),
+                       m_pdiWinch_switch->Get(),
+                       (int)m_armingState,
+                       szArmingArr[m_armingState]);
 
         lastState = m_armingState;
     }

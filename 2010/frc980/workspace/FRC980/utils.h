@@ -39,7 +39,11 @@ class utils
        * and max values.  If the value to limit is outside the limits
        * then the value is set to either the min or max value.
        */
-      double limit(double val, double min = -1, double max = 1);
+      static double limit(double val, double min = -1, double max = 1);
+
+      // Prints a message to the error console
+      //   Arguments are the same as printf
+      static void message(char* fmt, ...);
 };
 
 #endif // UTILS_H
