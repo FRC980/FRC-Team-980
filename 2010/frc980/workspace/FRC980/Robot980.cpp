@@ -218,12 +218,12 @@ void Robot980::Drive(float left, float right, float roller)
     m_pTimerDrive->Reset();
 
     //--- Set the speed of the left motors
-    m_pscLeft_cim1->Set(utils::limit(- left));
-    m_pscLeft_cim2->Set(utils::limit(- left));
+    m_pscLeft_cim1->Set(utils::limit(left));
+    m_pscLeft_cim2->Set(utils::limit(left));
 
     //--- Set the speed of the right motors
-    m_pscRight_cim1->Set(utils::limit(right));
-    m_pscRight_cim2->Set(utils::limit(right));
+    m_pscRight_cim1->Set(utils::limit(- right));
+    m_pscRight_cim2->Set(utils::limit(- right));
 
     //--- Set the speed of the roller motor
     m_pscRoller_fp->Set(utils::limit(roller));
@@ -467,8 +467,7 @@ void Robot980::RunWinchState()
 {
     if (!m_bArmingEnable)
     {
-        char* error = "winch disabled\n";
-        setErrorData(error, strlen(error), 10);
+        utils::message("winch disabled\n");
         return;
     }
 

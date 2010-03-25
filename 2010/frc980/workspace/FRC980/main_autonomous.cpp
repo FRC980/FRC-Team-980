@@ -15,10 +15,14 @@ void Main::AutonomousInit(void)
 {
     Robot980* pRobot = Robot980::GetInstance();
     iMode = pRobot->GetAutonMode();
+    iMode = 6;
+
     pRobot->SetBrakes(true);
 
     pTimerAuton->Start();
     pTimerAuton->Reset();
+
+    utils::message("Running autonomous mode %d\n", iMode);
 }
 
 //==========================================================================
@@ -31,10 +35,6 @@ void Main::AutonomousPeriodic(void)
 {
     //--- Feed the watchdog
     GetWatchdog().Feed();
-
-    //--- NOTE: THIS IS A STOPGAP UNTIL A WAY TO CHOOSE THIS MODE IS MADE
-    //    ALSO IT ALLOWS US TO START UTILIZING MORE THAN ONE AUTON MODE
-    iMode = 1;
 
     //--- Switch to the correct autonomous mode
     switch(iMode)
@@ -71,6 +71,45 @@ void Main::AutonomousPeriodic(void)
 void Main::Auton1(void)
 {
     // drive 8 feet, kick, then turn right 90 degrees
+    Robot980* pRobot = Robot980::GetInstance();
+
+    static enum {
+        START,
+        DRIVE_8_ft,
+        KICK_1,
+        TURN_right,
+    } auton1State = START;
+
+    static Timer *pTimer = new Timer;
+
+    switch (auton1State)
+    {
+    case START:
+    {
+        if (!pRobot->KickerReady())
+            pRobot->ArmKicker();
+        pTimer->Start();
+        pTimer->Reset();
+        auton1State = DRIVE_8_ft;
+    }
+    // fall through
+
+    case DRIVE_8_ft:
+    {
+        // TODO: user encoders to measure distance
+    }
+    break;
+
+    case KICK_1:
+    {
+    }
+    break;
+
+    case TURN_right:
+    {
+    }
+    break;
+    }
 }
 
 //==========================================================================
@@ -94,6 +133,12 @@ void Main::Auton4(void)
 //==========================================================================
 void Main::Auton5(void)
 {
+
+}
+
+//==========================================================================
+void Main::Auton6(void)
+{
     //--- Get the Robot instance
     Robot980* pRobot = Robot980::GetInstance();
 
@@ -103,7 +148,7 @@ void Main::Auton5(void)
     //--- In the first few seconds of the match drive forward
     if (t < 1.5)
     {
-        pRobot->Drive(-0.5, -0.5, 0.2); // left, right, roller
+        pRobot->Drive(0.5, 0.5, 0.2); // left, right, roller
     }
 
     //--- After two seconds stop the robot and fire
@@ -125,10 +170,4 @@ void Main::Auton5(void)
     {
         pRobot->ArmKicker();
     }
-}
-
-//==========================================================================
-void Main::Auton6(void)
-{
-
 }

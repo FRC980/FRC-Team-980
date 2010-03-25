@@ -41,30 +41,31 @@ void Main::TeleopPeriodic(void)
     float x = pjsDrive->GetX();
     x = (x > 0) ? x * x : x * x * -1;
 
-    float y = pjsDrive->GetY();
+    // pushing joystick away is negative Y, but we want it to be
+    // "forward", which should be positive, so we have a "-" here
+    float y = - pjsDrive->GetY();
     y = (y > 0) ? y * y : y * y * -1;
 
     //--- Get the speed for the left and right motors
     //    NOTE: The speed is limited in the Drive() method for safety
-    float fLeft  = (y - x);
-    float fRight = (y + x);
+    float fLeft  = (y + x);
+    float fRight = (y - x);
+
+    utils::message("X: %.4f  Y: %.4f  L: %.4f  R: %.4f\n", x, y, fLeft, fRight);
 
     //--- Drive the robot
     pRobot->Drive(fLeft, fRight, pjsKick->GetZ());
 
     if (pjsKick->GetRawButton(JS_TRIGGER))
     {
-        char* msg = NULL;
-
         if (pRobot->FireKicker())
         {
-            msg = "FIRING\n";
+            utils::message("FIRING\n");
         }
         else
         {
-            msg = "not firing\n";
+            utils::message("not firing\n");
         }
-        setErrorData(msg, strlen(msg), 100);
     }
 
     if (pjsKick->GetRawButton(JS_TOP_BOTTOM))
