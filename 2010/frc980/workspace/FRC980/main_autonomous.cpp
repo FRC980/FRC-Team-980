@@ -10,7 +10,7 @@
 static int iMode = 0;
 static Timer *pTimerAuton = new Timer;
 
-void Auton2404(void);
+void Auton2404(int iMode);
 
 void Auton1(void);
 void Auton2(void);
@@ -92,7 +92,7 @@ void Auton2404(int iMode)
 
     Robot980* pRobot = Robot980::GetInstance();
 
-    static enum {
+    typedef enum {
         START,
         DRIVE_8_FT,
         KICK_1,
@@ -103,7 +103,8 @@ void Auton2404(int iMode)
         TURN_RIGHT,
         TURN_LEFT,
         STOP,
-    } autonState = START;
+    } autonState_t;
+    static autonState_t autonState = START;
 
     static Timer *pTimer = new Timer;
 
@@ -115,16 +116,16 @@ void Auton2404(int iMode)
             pRobot->ArmKicker();
         pTimer->Start();
         pTimer->Reset();
-        auton1State = DRIVE_8_ft;
+        autonState = DRIVE_8_FT;
     }
     // fall through
 
-    case DRIVE_8_ft:
+    case DRIVE_8_FT:
     {
         // TODO: user encoders to measure distance
         pRobot->Drive(DRIVE_SPEED_8FT, DRIVE_SPEED_8FT);
         if (pTimer->Get() >= DRIVE_TIME_8FT)
-            autonState++;
+            autonState = (autonState_t)((int)autonState + 1);
     }
     break;
 
@@ -139,7 +140,7 @@ void Auton2404(int iMode)
             if (1 == iMode)
                 autonState = TURN_RIGHT;
             else
-                autonState++;
+                autonState = (autonState_t)((int)autonState + 1);
         }
     }
     break;
@@ -155,7 +156,7 @@ void Auton2404(int iMode)
             if (2 == iMode)
                 autonState = TURN_LEFT;
             else
-                autonState++;
+                autonState = (autonState_t)((int)autonState + 1);
         }
     }
     break;
@@ -168,7 +169,7 @@ void Auton2404(int iMode)
             pTimer->Start();
             pTimer->Reset();
 
-            autonState++;
+            autonState = (autonState_t)((int)autonState + 1);
         }
     }
     break;
@@ -180,7 +181,7 @@ void Auton2404(int iMode)
         pRobot->Drive(DRIVE_SPEED_3FT, DRIVE_SPEED_3FT);
         if (pTimer->Get() >= DRIVE_TIME_3FT)
         {
-            autonState++;
+            autonState = (autonState_t)((int)autonState + 1);
         }
     }
     break;
