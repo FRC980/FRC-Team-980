@@ -68,30 +68,6 @@ class Main : public IterativeRobot
     /*!\brief The teleoperated mode continuous method
      */
     virtual void TeleopContinuous(void);
-
-    /*!\brief The Autonomous mode method 1
-     */
-    void Auton1(void);
-
-    /*!\brief The Autonomous mode method 2
-     */
-    void Auton2(void);
-
-    /*!\brief The Autonomous mode method 3
-     */
-    void Auton3(void);
-
-    /*!\brief The Autonomous mode method 4
-     */
-    void Auton4(void);
-
-    /*!\brief The Autonomous mode method 5
-     */
-    void Auton5(void);
-
-    /*!\brief The Autonomous mode method 6
-     */
-    void Auton6(void);
 };
 
 #endif // MAIN_H
