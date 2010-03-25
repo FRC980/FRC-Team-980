@@ -143,12 +143,6 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 //==============================================================================
 // Define Additional Values
 
-//--- Reverse Drive Direction
-/*! \def DRIVE_REVERSE This variable is used to reverse the signal to
- *  drive motors
- */
-#define DRIVE_REVERSE               -1.0
-
 //--- Kicker Reset Period
 #define KICKER_RESET_PERIOD         2.0 /*!< \def KICKER_RESET_PERIOD The number of seconds that must elapse before the kicker can reset */
 
