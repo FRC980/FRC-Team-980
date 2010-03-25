@@ -352,7 +352,8 @@ void Robot980::HandleFiring(void)
 
 void Robot980::DoWinchStateMachineTransition(bool bTimeout)
 {
-    static Notifier notifyWinch(Robot980::CallWinchStateMachineTimer, this);
+    static Notifier* pNotifyWinch =
+        new Notifier(Robot980::CallWinchStateMachineTimer, this);
     static int iUnwindCount = 0;
 
     // Some event has occurred -- switch triggered, timeout, startup --
@@ -394,7 +395,7 @@ void Robot980::DoWinchStateMachineTransition(bool bTimeout)
         if ((SW_CLOSED == m_pdiArmed_switch->Get()))
         {
             m_armingState = UNWINDING;
-            notifyWinch.StartSingle(UNWIND_TIME);
+            pNotifyWinch->StartSingle(UNWIND_TIME);
             iUnwindCount = 0;
         }
     }
@@ -404,7 +405,7 @@ void Robot980::DoWinchStateMachineTransition(bool bTimeout)
     {
         if ((iUnwindCount++ >= UNWIND_COUNT) || bTimeout)
         {
-            notifyWinch.Stop();
+            pNotifyWinch->Stop();
             m_armingState = READY_TO_FIRE;
 
             char error[256];
@@ -486,14 +487,14 @@ void Robot980::CallStopCam(tNIRIO_u32 mask, void*) // static
 }
 
 //==========================================================================
-void CallWinchStateMachineInt(tNIRIO_u32 mask, void*) // static
+void Robot980::CallWinchStateMachineInt(tNIRIO_u32 mask, void*) // static
 {
     Robot980::GetInstance()->DoWinchStateMachineTransition(false);
     Robot980::GetInstance()->RunWinchState();
 }
 
 //==========================================================================
-void CallWinchStateMachineTimer(void*) // static
+void Robot980::CallWinchStateMachineTimer(void*) // static
 {
     Robot980::GetInstance()->DoWinchStateMachineTransition(true);
     Robot980::GetInstance()->RunWinchState();
