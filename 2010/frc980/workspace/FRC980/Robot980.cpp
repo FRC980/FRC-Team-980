@@ -50,8 +50,9 @@ Robot980::Robot980()
     
     //--- Timers
     , m_pTimerDrive(new Timer)
-    , m_pTimerFire(NULL)
-    
+    , m_pTimerFire(new Timer)
+    , m_pTimerWinch(new Timer)
+
     //--- State variables
     , m_armingState(UNKNOWN)
     , m_bArmingEnable(true)
@@ -95,11 +96,14 @@ Robot980::Robot980()
         m_pTimerFire->Start();
     }
 
+    m_pTimerWinch->Reset();
+    m_pTimerWinch->Start();
+
     // setup interrupts
     if (1)
     {
         m_pdiFireCam_switch->RequestInterrupts(Robot980::CallStopCam, this);
-        m_pdiFireCam_switch->SetUpSourceEdge(true, true);
+        m_pdiFireCam_switch->SetUpSourceEdge(false, true);
         m_pdiFireCam_switch->EnableInterrupts();
 
         m_pdiArmed_switch->RequestInterrupts(Robot980::CallWinchStateMachineInt,
@@ -158,6 +162,7 @@ Robot980::~Robot980()
     //--- Timers
     delete m_pTimerDrive;
     delete m_pTimerFire;
+    delete m_pTimerWinch;
 }
 
 //==========================================================================
@@ -272,6 +277,8 @@ void Robot980::Drive(float left, float right)
 //==========================================================================
 bool Robot980::KickerReady(void)
 {
+    return (m_pdiArmed_switch->Get() == SW_CLOSED);
+
     return ((READY_TO_FIRE == m_armingState) &&
             (m_pdiArmed_switch->Get() == SW_CLOSED));
 }
@@ -287,6 +294,23 @@ void Robot980::ArmKicker(void)
     }
 }
 
+void Robot980::Unwind(void)
+{
+    m_armingState = WINDING;
+    DoWinchStateMachineTransition(false);
+    RunWinchState();
+}
+
+void Robot980::PrintState(void)
+{
+    utils::message("armed: %d  cam: %d  winch: %d  state: %d / %s\n",
+                   m_pdiArmed_switch->Get(),
+                   m_pdiFireCam_switch->Get(),
+                   m_pdiWinch_switch->Get(),
+                   (int)m_armingState,
+                   szArmingArr[m_armingState]);
+}
+
 //==========================================================================
 bool Robot980::FireKicker(void)
 {
@@ -300,7 +324,7 @@ bool Robot980::FireKicker(void)
         }
 
         //--- Run the Kick motor to release the kicker
-        m_pscFire_win->Set(0.50);
+        m_pscFire_win->Set(1.0);
         m_armingState = FIRED;
         this->RunWinchState();
 
@@ -329,22 +353,24 @@ void Robot980::HandleFiring(void)
 {
     static bool bOldCamState = SW_OPEN;
 
-    if ((bOldCamState == SW_OPEN) &&
-        (m_pdiFireCam_switch->Get() == SW_CLOSED))
+    if (m_pTimerFire->Get() > 0.100)
     {
-        m_pscFire_win->Set(0);
+        if (m_pdiFireCam_switch->Get() == SW_CLOSED)
+        {
+            m_pscFire_win->Set(0);
 
-        ArmKicker();
+            ArmKicker();
+        }
     }
 
     bOldCamState = m_pdiFireCam_switch->Get();
 }
 
 //==========================================================================
-#define WIND_SPEED      0.4
-#define UNWIND_SPEED    0.4
-#define UNWIND_TIME     2.5     /* in seconds */
-#define UNWIND_COUNT    10      /* both edges, 2 sensors per rotation */
+#define WIND_SPEED      1.0
+#define UNWIND_SPEED    1.0
+#define UNWIND_TIME     2.0     /* in seconds */
+//#define UNWIND_COUNT    10      /* both edges, 2 sensors per rotation */
 
 void Robot980::DoWinchStateMachineTransition(bool bTimeout)
 {
@@ -392,6 +418,8 @@ void Robot980::DoWinchStateMachineTransition(bool bTimeout)
         {
             m_armingState = UNWINDING;
             pNotifyWinch->StartSingle(UNWIND_TIME);
+            m_pTimerWinch->Start();
+            m_pTimerWinch->Reset();
             iUnwindCount = 0;
         }
     }
@@ -399,13 +427,28 @@ void Robot980::DoWinchStateMachineTransition(bool bTimeout)
 
     case UNWINDING:
     {
-        if ((iUnwindCount++ >= UNWIND_COUNT) || bTimeout)
+        iUnwindCount++;
+
+        if
+#ifdef UNWIND_COUNT
+            ((iUnwindCount >= UNWIND_COUNT) ||
+             bTimeout || (m_pTimerWinch->Get() >= UNWIND_TIME))
+#else
+            (bTimeout || (m_pTimerWinch->Get() >= UNWIND_TIME - 0.1))
+#endif
         {
             pNotifyWinch->Stop();
             m_armingState = READY_TO_FIRE;
+            m_pscArm_win->Set(0); // this is cheating, but something's broken
 
-            utils::message("unwind count: %d  timeout: %d\n",
-                           iUnwindCount, bTimeout ? 1 : 0);
+            utils::message("unwind count: %d  time: %.4f  timeout: %d\n",
+                           iUnwindCount, m_pTimerWinch->Get(),
+                           bTimeout ? 1 : 0);
+        }
+        else
+        {
+            utils::message("unwind count: %d  time: %.4f\n",
+                           iUnwindCount, m_pTimerWinch->Get());
         }
     }
     break;
@@ -414,13 +457,7 @@ void Robot980::DoWinchStateMachineTransition(bool bTimeout)
     static arming_t lastState = UNKNOWN;
     if (lastState != m_armingState)
     {
-        utils::message("armed: %d  cam: %d  winch: %d  state: %d / %s\n",
-                       m_pdiArmed_switch->Get(),
-                       m_pdiFireCam_switch->Get(),
-                       m_pdiWinch_switch->Get(),
-                       (int)m_armingState,
-                       szArmingArr[m_armingState]);
-
+        PrintState();
         lastState = m_armingState;
     }
 }
@@ -430,6 +467,8 @@ void Robot980::RunWinchState()
 {
     if (!m_bArmingEnable)
     {
+        char* error = "winch disabled\n";
+        setErrorData(error, strlen(error), 10);
         return;
     }
 

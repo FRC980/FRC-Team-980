@@ -54,12 +54,32 @@ void Main::TeleopPeriodic(void)
 
     if (pjsKick->GetRawButton(JS_TRIGGER))
     {
-        pRobot->FireKicker();
+        char* msg = NULL;
+
+        if (pRobot->FireKicker())
+        {
+            msg = "FIRING\n";
+        }
+        else
+        {
+            msg = "not firing\n";
+        }
+        setErrorData(msg, strlen(msg), 100);
     }
 
     if (pjsKick->GetRawButton(JS_TOP_BOTTOM))
     {
         pRobot->ArmKicker();
+    }
+
+    if (pjsKick->GetRawButton(10))
+    {
+        pRobot->Unwind();
+    }
+
+    if (pjsKick->GetRawButton(11))
+    {
+        pRobot->PrintState();
     }
 
     //--- Top joystick button Lifts the Robot

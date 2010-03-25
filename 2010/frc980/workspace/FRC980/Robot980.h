@@ -199,6 +199,7 @@ class Robot980 : public SensorBase
     //--- Timers
     Timer* m_pTimerDrive;       /*!< The Timer used for debugging (calc & print speeds) */
     Timer* m_pTimerFire;        /*!< The Timer used for firing. Can only fire once every 2 seconds */
+    Timer* m_pTimerWinch;
 
     //--- Firing mechanism state
     typedef enum
@@ -291,6 +292,8 @@ class Robot980 : public SensorBase
      *  kicker and then unwinding the winch
      */
     void ArmKicker(void);
+    void Unwind(void);
+    void PrintState(void);
 
     /*! \brief Fire the kicker
      *  \return true if the kicker was ready to fire; false if it was not
