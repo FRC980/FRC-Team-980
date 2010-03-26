@@ -71,13 +71,14 @@ void Main::TeleopPeriodic(void)
     float fLeft  = (y + x);
     float fRight = (y - x);
 
-    utils::message("X: %.4f  Y: %.4f  L: %.4f  R: %.4f\n", x, y, fLeft, fRight);
-
     //--- Drive the robot
     pRobot->Drive(fLeft, fRight, pjsKick->GetZ());
 
     //--- Debug: run winch from joystick
-    //pRobot->RunWinch(pjsKick->GetY());
+    if (pjsKick->GetRawButton(4))
+    {
+        pRobot->RunWinch(pjsKick->GetY());
+    }
 
     if (pjsKick->GetRawButton(JS_TRIGGER))
     {
