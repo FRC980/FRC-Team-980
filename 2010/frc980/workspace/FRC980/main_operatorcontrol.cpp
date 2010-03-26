@@ -76,6 +76,9 @@ void Main::TeleopPeriodic(void)
     //--- Drive the robot
     pRobot->Drive(fLeft, fRight, pjsKick->GetZ());
 
+    //--- Debug: run winch from joystick
+    //pRobot->RunWinch(pjsKick->GetY());
+
     if (pjsKick->GetRawButton(JS_TRIGGER))
     {
         if (pRobot->FireKicker())

@@ -271,6 +271,9 @@ class Robot980 : public SensorBase
      */
     void Drive(float left, float right);
 
+    // \brief Run winch at given speed (debug method)
+    void RunWinch(float speed);
+
     /*! \brief Determine if the kicker has been armed
      *  \return true if the kicker is armed and ready to fire
      *
@@ -311,6 +314,7 @@ class Robot980 : public SensorBase
     
     /*! \brief A switch has been triggered or a timeout has occurred --
      *  figure out which new state to transition to
+     *  \param exitState The state we should be exiting out of, if known
      */
     void DoWinchStateMachineTransition(arming_t exitState);
 

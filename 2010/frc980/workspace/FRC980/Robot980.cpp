@@ -280,6 +280,11 @@ void Robot980::Drive(float left, float right)
 }
 
 //==========================================================================
+void Robot980::RunWinch(float speed) {
+    m_pscArm_win->Set(utils::limit(speed));
+}
+
+//==========================================================================
 bool Robot980::KickerReady(void)
 {
     return (m_pdiArmed_switch->Get() == SW_CLOSED);
@@ -560,4 +565,3 @@ void Robot980::CallWinchStateMachineTimer(void*) // static
 //{
 //   return 1.0;
 //}
-
