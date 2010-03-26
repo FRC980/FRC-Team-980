@@ -194,6 +194,9 @@ class Robot980 : public SensorBase
     Timer* m_pTimerDrive;       /*!< The Timer used for debugging (calc & print speeds) */
     Timer* m_pTimerFire;        /*!< The Timer used for firing. Can only fire once every 2 seconds */
     Timer* m_pTimerWinch;
+    int m_iUnwindCount;
+
+    Notifier* m_pNoteWinch;
 
     //--- Firing mechanism state
     typedef enum
@@ -312,11 +315,10 @@ class Robot980 : public SensorBase
      */
     void HandleFiring(void);
     
-    /*! \brief A switch has been triggered or a timeout has occurred --
-     *  figure out which new state to transition to
-     *  \param exitState The state we should be exiting out of, if known
+    /*! \brief A switch has been triggered -- figure out which new state
+     *  to transition to
      */
-    void DoWinchStateMachineTransition(arming_t exitState);
+    void DoWinchStateMachineTransition();
 
     /*! \brief Run appropriate motor(s) for the given state
      */
@@ -331,10 +333,11 @@ class Robot980 : public SensorBase
     /*! \brief Calls method to handle winch state machine; called by
      *  interrupts on various switch
      */
-    static void CallWinchStateMachineInt(tNIRIO_u32 mask, void* param);
+    static void ArmedIntHandler(tNIRIO_u32 mask, void* param);
 
-    /*! \brief Calls method to handle winch state machine; called by
-     *  notifier to indicate a timeout has occurred
+    static void WinchIntHandler(tNIRIO_u32 mask, void* param);
+
+    /*! \brief Calls RunWinchState()
      */
     static void CallWinchStateMachineTimer(void* param);
 
