@@ -435,6 +435,7 @@ void Robot980::DoWinchStateMachineTransition(arming_t exitState)
         // if we are told to, start unwinding
         if (WOUND == exitState)
         {
+            m_armingState = UNWINDING;
             pNotifyWinch->StartSingle(UNWIND_TIME);
             m_pTimerWinch->Start();
             m_pTimerWinch->Reset();
@@ -455,13 +456,13 @@ void Robot980::DoWinchStateMachineTransition(arming_t exitState)
             ((UNWINDING == exitState) || (m_pTimerWinch->Get() >= UNWIND_TIME - 0.1))
 #endif
         {
-            pNotifyWinch->Stop();
             m_armingState = READY_TO_FIRE;
             m_pscArm_win->Set(0); // this is cheating, but something's broken
 
             utils::message("unwind count: %d  time: %.4f  timeout: %d\n",
                            iUnwindCount, m_pTimerWinch->Get(),
                            (UNWINDING == exitState) ? 1 : 0);
+            pNotifyWinch->Stop();
         }
         else
         {
@@ -524,6 +525,7 @@ void Robot980::RunWinchState()
     {
         m_pscArm_win->Set(0);
     }
+    break;
 
     case UNWINDING:
     {
