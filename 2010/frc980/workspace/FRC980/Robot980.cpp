@@ -1,7 +1,7 @@
 #include <WPILib.h>
 #include <NetworkCommunication/FRCComm.h>
 #include <Timer.h>
-#include <Vision/PCVideoServer.h>
+//#include <Vision/PCVideoServer.h>
 #include <math.h>
 #include <stdbool.h>
 
@@ -57,7 +57,7 @@ Robot980::Robot980()
     , m_armingState(UNKNOWN)
     , m_bArmingEnable(true)
 
-    , m_pVideoServer(NULL)
+    //, m_pVideoServer(NULL)
 //    , m_pVideoServer(new PCVideoServer)
 {
     //--- Set the PID Values for each Jag in Speed or Current Mode
@@ -123,6 +123,7 @@ Robot980::Robot980()
     //--- Tell SensorBase about us
     AddToSingletonList();
 
+/*
     if (m_pVideoServer)
     {
         AxisCamera::GetInstance().WriteRotation(AxisCamera::kRotation_180);
@@ -130,16 +131,19 @@ Robot980::Robot980()
         AxisCamera::GetInstance().WriteMaxFPS(15);
         m_pVideoServer->Start();
     }
+*/
 }
 
 //==========================================================================
 Robot980::~Robot980()
 {
+/*
     if (m_pVideoServer)
     {
         m_pVideoServer->Stop();
         delete m_pVideoServer;
     }
+*/
 
     //--- Speed controllers
     delete m_pscLeft_cim1;

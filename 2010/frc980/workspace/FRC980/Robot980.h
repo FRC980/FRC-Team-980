@@ -5,7 +5,7 @@
 #include "numbers.h" // This includes numerical constants used by the robot
 
 #include "CANJaguar.h" // This includes the necessary methods to use the CAN Jaguar
-#include <Vision/PCVideoServer.h>
+//#include <Vision/PCVideoServer.h>
 
 // REVIEW: Style -- include full header, or just use a forward class
 // declaration?  Most of these get pulled in from "CANJaguar.h".
@@ -207,7 +207,7 @@ class Robot980 : public SensorBase
     arming_t m_armingState;     /*!< Current state of firing mechanism */
     bool m_bArmingEnable;       /*!< DEBUG: enable/disable arming */
 
-    PCVideoServer* m_pVideoServer;
+    //PCVideoServer* m_pVideoServer;
 
     //--- Constructors ----------------------------------------------------
     /*! \brief The Robot 980 Constructor
