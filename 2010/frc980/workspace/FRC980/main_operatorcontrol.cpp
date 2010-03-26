@@ -93,12 +93,12 @@ void Main::TeleopPeriodic(void)
         pRobot->ArmKicker();
     }
 
-    if (pjsKick->GetRawButton(10))
+    if (pjsKick->GetRawButton(JS_TOP_CENTER))
     {
         pRobot->Unwind();
     }
 
-    if (pjsKick->GetRawButton(11))
+    if (pjsKick->GetRawButton(JS_RIGHT_TOP))
     {
         pRobot->PrintState();
     }

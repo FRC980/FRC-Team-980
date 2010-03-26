@@ -21,7 +21,8 @@ static const char* szArmingArr[] = {
     "READY_TO_FIRE",          /* 1 */
     "FIRED",                  /* 2 */
     "WINDING",                /* 3 */
-    "UNWINDING",              /* 4 */
+    "WOUND",                  /* 4 */
+    "UNWINDING",              /* 5 */
 };
 
 //==========================================================================
@@ -118,7 +119,7 @@ Robot980::Robot980()
     }
 
     // figure out what our UNKNOWN state should be
-    DoWinchStateMachineTransition(false);
+    DoWinchStateMachineTransition(UNKNOWN);
 
     //--- Tell SensorBase about us
     AddToSingletonList();
@@ -300,8 +301,7 @@ void Robot980::ArmKicker(void)
 
 void Robot980::Unwind(void)
 {
-    m_armingState = WINDING;
-    DoWinchStateMachineTransition(false);
+    DoWinchStateMachineTransition(WOUND);
     RunWinchState();
 }
 
@@ -376,7 +376,7 @@ void Robot980::HandleFiring(void)
 #define UNWIND_TIME     2.0     /* in seconds */
 //#define UNWIND_COUNT    10      /* both edges, 2 sensors per rotation */
 
-void Robot980::DoWinchStateMachineTransition(bool bTimeout)
+void Robot980::DoWinchStateMachineTransition(arming_t exitState)
 {
     static Notifier* pNotifyWinch =
         new Notifier(Robot980::CallWinchStateMachineTimer, this);
@@ -417,10 +417,19 @@ void Robot980::DoWinchStateMachineTransition(bool bTimeout)
 
     case WINDING:
     {
-        // if we've armed, start unwinding
+        // if we've armed, enter the wound state
         if ((SW_CLOSED == m_pdiArmed_switch->Get()))
         {
-            m_armingState = UNWINDING;
+            m_armingState = WOUND;
+        }
+    }
+    break;
+    
+    case WOUND:
+    {
+        // if we are told to, start unwinding
+        if (WOUND == exitState)
+        {
             pNotifyWinch->StartSingle(UNWIND_TIME);
             m_pTimerWinch->Start();
             m_pTimerWinch->Reset();
@@ -436,9 +445,9 @@ void Robot980::DoWinchStateMachineTransition(bool bTimeout)
         if
 #ifdef UNWIND_COUNT
             ((iUnwindCount >= UNWIND_COUNT) ||
-             bTimeout || (m_pTimerWinch->Get() >= UNWIND_TIME))
+             (UNWINDING == exitState) || (m_pTimerWinch->Get() >= UNWIND_TIME))
 #else
-            (bTimeout || (m_pTimerWinch->Get() >= UNWIND_TIME - 0.1))
+            ((UNWINDING == exitState) || (m_pTimerWinch->Get() >= UNWIND_TIME - 0.1))
 #endif
         {
             pNotifyWinch->Stop();
@@ -447,7 +456,7 @@ void Robot980::DoWinchStateMachineTransition(bool bTimeout)
 
             utils::message("unwind count: %d  time: %.4f  timeout: %d\n",
                            iUnwindCount, m_pTimerWinch->Get(),
-                           bTimeout ? 1 : 0);
+                           (UNWINDING == exitState) ? 1 : 0);
         }
         else
         {
@@ -483,7 +492,7 @@ void Robot980::RunWinchState()
         // We should never be "running" an the UNKNOWN state.  If we are,
         // we need to invoke a transition to figure out what state we
         // should be in.
-        DoWinchStateMachineTransition(false);
+        DoWinchStateMachineTransition(UNKNOWN);
     }
     break;
 
@@ -505,6 +514,11 @@ void Robot980::RunWinchState()
         m_pscArm_win->Set(WIND_SPEED);
     }
     break;
+    
+    case WOUND:
+    {
+        m_pscArm_win->Set(0);
+    }
 
     case UNWINDING:
     {
@@ -523,14 +537,14 @@ void Robot980::CallStopCam(tNIRIO_u32 mask, void*) // static
 //==========================================================================
 void Robot980::CallWinchStateMachineInt(tNIRIO_u32 mask, void*) // static
 {
-    Robot980::GetInstance()->DoWinchStateMachineTransition(false);
+    Robot980::GetInstance()->DoWinchStateMachineTransition(UNKNOWN);
     Robot980::GetInstance()->RunWinchState();
 }
 
 //==========================================================================
 void Robot980::CallWinchStateMachineTimer(void*) // static
 {
-    Robot980::GetInstance()->DoWinchStateMachineTransition(true);
+    Robot980::GetInstance()->DoWinchStateMachineTransition(UNWINDING);
     Robot980::GetInstance()->RunWinchState();
 }
 
