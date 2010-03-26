@@ -45,6 +45,26 @@ void Main::TeleopPeriodic(void)
     // "forward", which should be positive, so we have a "-" here
     float y = - pjsDrive->GetY();
     y = (y > 0) ? y * y : y * y * -1;
+    
+    // Slow mode imposes a speed limit
+    // Left thumb button on joystick enables, right thumb button disables
+    static bool bSlowMode = false;
+    if (pjsDrive->GetRawButton(JS_TOP_LEFT))
+    {
+        bSlowMode = true;
+        utils::message("Slow mode enabled");
+    }
+    if (pjsDrive->GetRawButton(JS_TOP_RIGHT))
+    {
+        bSlowMode = false;
+        utils::message("Slow mode disabled");
+    }
+    
+    if (bSlowMode)
+    {
+        x /= 0.5;
+        y /= 0.5;
+    }
 
     //--- Get the speed for the left and right motors
     //    NOTE: The speed is limited in the Drive() method for safety
