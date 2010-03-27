@@ -40,15 +40,15 @@ void Main::TeleopPeriodic(void)
     // Slow mode imposes a speed limit
     // Left thumb button on joystick enables, right thumb button disables
     static bool bSlowMode = false;
-    if (pjsDrive->GetRawButton(JS_TOP_LEFT))
+    if (pjsDrive->GetRawButton(JS_TOP_LEFT) && !bSlowMode)
     {
         bSlowMode = true;
-        utils::message("Slow mode enabled");
+        utils::message("slow mode");
     }
-    if (pjsDrive->GetRawButton(JS_TOP_RIGHT))
+    if (pjsDrive->GetRawButton(JS_TOP_RIGHT) && bSlowMode)
     {
         bSlowMode = false;
-        utils::message("Slow mode disabled");
+        utils::message("fast mode");
     }
 
     //--- Get the x and y position from the joystick
