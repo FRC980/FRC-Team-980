@@ -291,6 +291,15 @@ void Robot980::RunWinch(float speed) {
 //==========================================================================
 void Robot980::SetState(arming_t state) {
     m_armingState=state;
+    if (FIRED == m_armingState)
+    {
+        if (m_pTimerFire)
+        {
+            m_pTimerFire->Reset();
+            m_pTimerFire->Start();
+        }
+        m_pscFire_win->Set(1.0);
+    }
     utils::message("Now in state %d / %s\n",
             (int)m_armingState,
             szArmingArr[m_armingState]);

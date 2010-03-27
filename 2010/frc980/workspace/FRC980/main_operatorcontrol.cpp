@@ -52,12 +52,14 @@ void Main::TeleopPeriodic(void)
     }
 
     //--- Get the x and y position from the joystick
-    float x = bSlowMode ? pjsDrive->GetX() / 2.0 : pjsDrive->GetX();
+    float x = pjsDrive->GetX();
+    if (bSlowMode) x = x / 2.0;
     x = (x > 0) ? x * x : x * x * -1;
 
     // pushing joystick away is negative Y, but we want it to be
     // "forward", which should be positive, so we have a "-" here
-    float y = bSlowMode ? - pjsDrive->GetY() / 2.0 : - pjsDrive->GetY();
+    float y = - pjsDrive->GetY();
+    if (bSlowMode) y = y / 2.0;
     y = (y > 0) ? y * y : y * y * -1;
 
     //--- Get the speed for the left and right motors
