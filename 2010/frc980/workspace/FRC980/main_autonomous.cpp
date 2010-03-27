@@ -287,7 +287,7 @@ void Auton6(void)
 
         if (! bFired)
         {
-            //pRobot->FireKicker();
+            pRobot->FireKicker();
             bFired = true;
         }
     }
@@ -295,6 +295,6 @@ void Auton6(void)
     //--- After three and a half seconds rearm the kicker
     if (t > 3.5)
     {
-        //pRobot->ArmKicker();
+        pRobot->ArmKicker();
     }
 }
