@@ -33,6 +33,10 @@ void Main::TeleopPeriodic(void)
     //--- Feed the watchdog
     GetWatchdog().Feed();
     
+    //--- Set a pointer to the joystick(s)
+    Joystick* pjsDrive = Joystick::GetStickForPort(1);
+    Joystick* pjsKick  = Joystick::GetStickForPort(2);
+    
     // Slow mode imposes a speed limit
     // Left thumb button on joystick enables, right thumb button disables
     static bool bSlowMode = false;
@@ -46,10 +50,6 @@ void Main::TeleopPeriodic(void)
         bSlowMode = false;
         utils::message("Slow mode disabled");
     }
-
-    //--- Set a pointer to the joystick(s)
-    Joystick* pjsDrive = Joystick::GetStickForPort(1);
-    Joystick* pjsKick  = Joystick::GetStickForPort(2);
 
     //--- Get the x and y position from the joystick
     float x = bSlowMode ? pjsDrive->GetX() / 2.0 : pjsDrive->GetX();
@@ -105,7 +105,7 @@ void Main::TeleopPeriodic(void)
     //if(pjsKick->GetRawButton(JS_TOP_CENTER)){
     //    pRobot->Lift();
     //}
-
+    /*
     if (pjsKick->GetRawButton(JS_LEFT_BOTTOM))
     {
         pRobot->ArmingEnable();
@@ -114,5 +114,21 @@ void Main::TeleopPeriodic(void)
     if (pjsKick->GetRawButton(JS_LEFT_TOP))
     {
         pRobot->ArmingDisable();
+    }*/
+    
+    // debug: set states manually
+    if (pjsKick->GetRawButton(6))
+    {
+        pRobot->SetState(Robot980::READY_TO_FIRE);
+    }
+    
+    if (pjsKick->GetRawButton(7))
+    {
+        pRobot->SetState(Robot980::FIRED);
+    }
+    
+    if (pjsKick->GetRawButton(8))
+    {
+        pRobot->SetState(Robot980::WOUND);
     }
 }

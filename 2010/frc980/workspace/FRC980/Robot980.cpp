@@ -289,6 +289,15 @@ void Robot980::RunWinch(float speed) {
 }
 
 //==========================================================================
+void Robot980::SetState(arming_t state) {
+    m_armingState=state;
+    utils::message("Now in state %d / %s\n",
+            (int)m_armingState,
+            szArmingArr[m_armingState]);
+    RunWinchState();
+}
+
+//==========================================================================
 bool Robot980::KickerReady(void)
 {
     return (m_pdiArmed_switch->Get() == SW_CLOSED);

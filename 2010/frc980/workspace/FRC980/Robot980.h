@@ -198,6 +198,7 @@ class Robot980 : public SensorBase
 
     Notifier* m_pNoteWinch;
 
+  public:
     //--- Firing mechanism state
     typedef enum
     {
@@ -208,6 +209,7 @@ class Robot980 : public SensorBase
         WOUND,                  /* 4 */
         UNWINDING,              /* 5 */
     } arming_t;                 /*!< State machine for firing mechanism */
+  private:
     arming_t m_armingState;     /*!< Current state of firing mechanism */
     bool m_bArmingEnable;       /*!< DEBUG: enable/disable arming */
 
@@ -276,6 +278,9 @@ class Robot980 : public SensorBase
 
     // \brief Run winch at given speed (debug method)
     void RunWinch(float speed);
+    
+    // debug: set state
+    void SetState(arming_t state);
 
     /*! \brief Determine if the kicker has been armed
      *  \return true if the kicker is armed and ready to fire
