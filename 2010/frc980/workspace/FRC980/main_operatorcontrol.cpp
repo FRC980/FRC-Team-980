@@ -32,19 +32,6 @@ void Main::TeleopPeriodic(void)
 
     //--- Feed the watchdog
     GetWatchdog().Feed();
-
-    //--- Set a pointer to the joystick(s)
-    Joystick* pjsDrive = Joystick::GetStickForPort(1);
-    Joystick* pjsKick  = Joystick::GetStickForPort(2);
-
-    //--- Get the x and y position from the joystick
-    float x = pjsDrive->GetX();
-    x = (x > 0) ? x * x : x * x * -1;
-
-    // pushing joystick away is negative Y, but we want it to be
-    // "forward", which should be positive, so we have a "-" here
-    float y = - pjsDrive->GetY();
-    y = (y > 0) ? y * y : y * y * -1;
     
     // Slow mode imposes a speed limit
     // Left thumb button on joystick enables, right thumb button disables
@@ -59,12 +46,19 @@ void Main::TeleopPeriodic(void)
         bSlowMode = false;
         utils::message("Slow mode disabled");
     }
-    
-    if (bSlowMode)
-    {
-        x /= 0.5;
-        y /= 0.5;
-    }
+
+    //--- Set a pointer to the joystick(s)
+    Joystick* pjsDrive = Joystick::GetStickForPort(1);
+    Joystick* pjsKick  = Joystick::GetStickForPort(2);
+
+    //--- Get the x and y position from the joystick
+    float x = bSlowMode ? pjsDrive->GetX() / 2.0 : pjsDrive->GetX();
+    x = (x > 0) ? x * x : x * x * -1;
+
+    // pushing joystick away is negative Y, but we want it to be
+    // "forward", which should be positive, so we have a "-" here
+    float y = bSlowMode ? - pjsDrive->GetY() / 2.0 : - pjsDrive->GetY();
+    y = (y > 0) ? y * y : y * y * -1;
 
     //--- Get the speed for the left and right motors
     //    NOTE: The speed is limited in the Drive() method for safety
