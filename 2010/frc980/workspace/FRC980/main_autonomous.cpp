@@ -275,7 +275,7 @@ void Auton6(void)
     //--- In the first few seconds of the match drive forward
     if (t < 1.5)
     {
-        pRobot->Drive(0.5, 0.5, 0.2); // left, right, roller
+        pRobot->Drive(0.5, 0.5, -0.2); // left, right, roller
     }
 
     //--- After two seconds stop the robot and fire
@@ -283,7 +283,7 @@ void Auton6(void)
     {
         pRobot->Drive(0, 0, 0); // stop
 
-        static bool bFired = true;
+        static bool bFired = false;
 
         if (! bFired)
         {
