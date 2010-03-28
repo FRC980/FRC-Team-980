@@ -320,19 +320,19 @@ void Auton6(void)
     }
 
     //--- Forward
-    else if (t < 10.5)
+    else if (t < 12)
     {
         pRobot->Drive(0.5, 0.5, -0.2);   // left, right, roller
     }
     
     //--- Pause
-    else if (t < 11.5)
+    else if (t < 14)
     {
         pRobot->Drive(0, 0, -0.2);       // left, right, roller
     }
 
     //--- Back
-    else if (t < 12.9 /*13*/)
+    else if (t < 16.0 /*17*/)
     {
         //pRobot->SetBrakes(false);
         pRobot->Drive(-0.5, -0.5, -0.2); // left, right, roller
