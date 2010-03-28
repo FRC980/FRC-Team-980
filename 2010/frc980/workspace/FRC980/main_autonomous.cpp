@@ -314,25 +314,25 @@ void Auton6(void)
     float t = pTimerAuton->Get();
 
     //--- Wait
-    if (t < 9)
+    if (t < 11)
     {
         pRobot->Drive(0, 0, 0);          // left, right, roller
     }
 
     //--- Forward
-    else if (t < 12)
+    else if (t < 14)
     {
         pRobot->Drive(0.5, 0.5, -0.2);   // left, right, roller
     }
     
     //--- Pause
-    else if (t < 14)
+    else if (t < 16)
     {
         pRobot->Drive(0, 0, -0.2);       // left, right, roller
     }
 
     //--- Back
-    else if (t < 16.0 /*17*/)
+    else if (t < 18.0 /*19*/)
     {
         //pRobot->SetBrakes(false);
         pRobot->Drive(-0.5, -0.5, -0.2); // left, right, roller
