@@ -274,7 +274,7 @@ void Auton5(void)
     //--- Stop and fire
     else if (t < 3.0)
     {
-        pRobot->Drive(0, 0, 0); // stop
+        pRobot->Drive(0, 0, -0.2); // stop
 
         static bool bFired = false;
 
@@ -296,6 +296,11 @@ void Auton5(void)
     else if (t < 6.9)
     {
         pRobot->Drive(-0.4, -0.4, -0.2); // left, right, roller
+    }
+
+    else
+    {
+        pRobot->Drive(0,0,0);
     }
 }
 
