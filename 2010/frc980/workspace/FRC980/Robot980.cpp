@@ -193,17 +193,17 @@ int Robot980::GetAutonMode()
     int i = pAM->GetValue(CHAN_AUTO_MODE);      // returns 10-bit number
 
     if (i > 900)
-        return 5;
+        return 6;
     if (i > 700)
-        return 4;
+        return 5;
     if (i > 500)
-        return 3;
+        return 4;
     if (i > 300)
-        return 2;
+        return 3;
     if (i > 100)
-        return 1;
+        return 2;
 
-    return 0;
+    return 1;
 }
 
 //==========================================================================
@@ -328,7 +328,6 @@ void Robot980::ArmKicker(void)
 
 void Robot980::Unwind(void)
 {
-    m_armingState = WOUND;
     RunWinchState();
     m_armingState = UNWINDING;
     RunWinchState();
@@ -404,6 +403,7 @@ void Robot980::HandleFiring(void)
 #define UNWIND_SPEED    1.0
 #define UNWIND_TIME     2.0     /* in seconds */
 #define UNWIND_COUNT    10      /* both edges, 2 sensors per rotation */
+#define AUTO_UNWIND     1
 
 void Robot980::DoWinchStateMachineTransition()
 {
@@ -452,6 +452,7 @@ void Robot980::DoWinchStateMachineTransition()
         if ((SW_CLOSED == m_pdiArmed_switch->Get()))
         {
             m_armingState = WOUND;
+            RunWinchState();
         }
     }
     break;
@@ -531,6 +532,7 @@ void Robot980::RunWinchState()
         m_pTimerWinch->Start();
         m_pTimerWinch->Reset();
         m_iUnwindCount = 0;
+        if (AUTO_UNWIND) {m_armingState = UNWINDING; RunWinchState();}
     }
     break;
 

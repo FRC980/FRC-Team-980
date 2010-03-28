@@ -25,7 +25,7 @@ void Main::AutonomousInit(void)
 {
     Robot980* pRobot = Robot980::GetInstance();
     iMode = pRobot->GetAutonMode();
-    iMode = 6;
+    iMode = 5;
 
     pRobot->SetBrakes(true);
 
@@ -49,8 +49,6 @@ void Main::AutonomousPeriodic(void)
     //--- Switch to the correct autonomous mode
     switch(iMode)
     {
-    default:
-
     case 1:
     case 2:
     case 3:
@@ -65,6 +63,7 @@ void Main::AutonomousPeriodic(void)
         Auton5();
         break;
 
+    default:
     case 6:
         Auton6();
         break;
@@ -260,7 +259,44 @@ void Auton4(void)
 //==========================================================================
 void Auton5(void)
 {
+    //--- Get the Robot instance
+    Robot980* pRobot = Robot980::GetInstance();
 
+    //--- Get the autonomous mode timer in seconds
+    float t = pTimerAuton->Get();
+
+    //--- Drive forward
+    if (t < 1.0)
+    {
+        pRobot->Drive(0.4, 0.4, -0.2); // left, right, roller
+    }
+
+    //--- Stop and fire
+    else if (t < 3.0)
+    {
+        pRobot->Drive(0, 0, 0); // stop
+
+        static bool bFired = false;
+
+        if (! bFired)
+        {
+            pRobot->FireKicker();
+            bFired = true;
+        }
+    }
+
+    //--- Rearm the kicker and set coasting mode
+    else if (t < 6.0)
+    {
+        pRobot->ArmKicker();
+        pRobot->SetBrakes(false);
+    }
+
+    //--- Drive back to the starting position
+    else if (t < 6.9)
+    {
+        pRobot->Drive(-0.4, -0.4, -0.2); // left, right, roller
+    }
 }
 
 //==========================================================================
@@ -287,7 +323,7 @@ void Auton6(void)
 
         if (! bFired)
         {
-            pRobot->FireKicker();
+            //pRobot->FireKicker();
             bFired = true;
         }
     }
@@ -295,6 +331,6 @@ void Auton6(void)
     //--- After three and a half seconds rearm the kicker
     if (t > 3.5)
     {
-        pRobot->ArmKicker();
+        //pRobot->ArmKicker();
     }
 }
