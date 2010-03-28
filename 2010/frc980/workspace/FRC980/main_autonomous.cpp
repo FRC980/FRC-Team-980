@@ -25,9 +25,9 @@ void Main::AutonomousInit(void)
 {
     Robot980* pRobot = Robot980::GetInstance();
     iMode = pRobot->GetAutonMode();
-    iMode = 5;
+    iMode = 6;
 
-    pRobot->SetBrakes(true);
+    pRobot->SetBrakes(false);
 
     pTimerAuton->Start();
     pTimerAuton->Reset();
@@ -313,29 +313,34 @@ void Auton6(void)
     //--- Get the autonomous mode timer in seconds
     float t = pTimerAuton->Get();
 
-    //--- In the first few seconds of the match drive forward
-    if (t < 1.5)
+    //--- Wait
+    if (t < 9)
     {
-        pRobot->Drive(0.5, 0.5, -0.2); // left, right, roller
+        pRobot->Drive(0, 0, 0);          // left, right, roller
     }
 
-    //--- After two seconds stop the robot and fire
-    if (t >= 2.0)
+    //--- Forward
+    else if (t < 10.5)
     {
-        pRobot->Drive(0, 0, 0); // stop
-
-        static bool bFired = false;
-
-        if (! bFired)
-        {
-            //pRobot->FireKicker();
-            bFired = true;
-        }
+        pRobot->Drive(0.5, 0.5, -0.2);   // left, right, roller
+    }
+    
+    //--- Pause
+    else if (t < 11.5)
+    {
+        pRobot->Drive(0, 0, -0.2);       // left, right, roller
     }
 
-    //--- After three and a half seconds rearm the kicker
-    if (t > 3.5)
+    //--- Back
+    else if (t < 12.9 /*13*/)
     {
-        //pRobot->ArmKicker();
+        //pRobot->SetBrakes(false);
+        pRobot->Drive(-0.5, -0.5, -0.2); // left, right, roller
+    }
+
+    //--- Stop
+    else
+    {
+        pRobot->Drive(0, 0, 0);          // left, right, roller
     }
 }
