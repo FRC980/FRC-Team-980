@@ -207,7 +207,8 @@ class Robot980 : public SensorBase
         FIRED,                  /* 2 */
         WINDING,                /* 3 */
         WOUND,                  /* 4 */
-        UNWINDING,              /* 5 */
+        INIT_UNWINDING,         /* 5 */
+        UNWINDING,              /* 6 */
     } arming_t;                 /*!< State machine for firing mechanism */
   private:
     arming_t m_armingState;     /*!< Current state of firing mechanism */

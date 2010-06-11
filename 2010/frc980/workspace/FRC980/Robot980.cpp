@@ -22,7 +22,8 @@ static const char* szArmingArr[] = {
     "FIRED",                  /* 2 */
     "WINDING",                /* 3 */
     "WOUND",                  /* 4 */
-    "UNWINDING",              /* 5 */
+    "INIT_UNWINDING",         /* 5 */
+    "UNWINDING",              /* 6 */
 };
 
 //==========================================================================
@@ -328,8 +329,9 @@ void Robot980::ArmKicker(void)
 
 void Robot980::Unwind(void)
 {
+    // \todo Use set_state instead here!
     RunWinchState();
-    m_armingState = UNWINDING;
+    m_armingState = INIT_UNWINDING;
     RunWinchState();
 }
 
@@ -451,13 +453,18 @@ void Robot980::DoWinchStateMachineTransition()
         // if we've armed, enter the wound state
         if ((SW_CLOSED == m_pdiArmed_switch->Get()))
         {
-            m_armingState = WOUND;
+            m_armingState = (AUTO_UNWIND ? INIT_UNWINDING : WOUND);
             RunWinchState();
         }
     }
     break;
     
     case WOUND:
+    {
+    }
+    break;
+
+    case INIT_UNWINDING:
     {
     }
     break;
@@ -472,6 +479,10 @@ void Robot980::DoWinchStateMachineTransition()
             m_armingState = READY_TO_FIRE;
         }
 #endif
+        if (m_pTimerWinch->Get() >= UNWIND_TIME)
+        {
+            m_armingState = READY_TO_FIRE;
+        }
         utils::message("unwind count: %d  time: %.4f\n",
                        m_iUnwindCount, m_pTimerWinch->Get());
     }
@@ -529,21 +540,25 @@ void Robot980::RunWinchState()
     case WOUND:
     {
         m_pscArm_win->Set(0);
-        m_pTimerWinch->Start();
-        m_pTimerWinch->Reset();
-        m_iUnwindCount = 0;
-        if (AUTO_UNWIND) {m_armingState = UNWINDING; RunWinchState();}
     }
     break;
 
+    case INIT_UNWINDING:
+	{
+        m_pscArm_win->Set(0); //if we were winding before, stop
+
+        m_pTimerWinch->Start();
+        m_pTimerWinch->Reset();
+        m_iUnwindCount = 0;
+        m_pscArm_win->Set(- UNWIND_SPEED);
+
+		m_armingState = UNWINDING;
+	}
+	//fall through
+
     case UNWINDING:
     {
-        m_pscArm_win->Set(- UNWIND_SPEED);
-        if (m_pTimerWinch->Get() >= UNWIND_TIME)
-        {
-            m_pscArm_win->Set(0);
-            m_armingState = READY_TO_FIRE;
-        }
+		//nothing to do here
     }
     break;
     }
