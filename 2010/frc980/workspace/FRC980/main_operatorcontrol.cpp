@@ -71,9 +71,16 @@ void Main::TeleopPeriodic(void)
     pRobot->Drive(fLeft, fRight, pjsKick->GetZ());
 
     //--- Debug: run winch from joystick
+    static bool bRunWinchJs = false;
     if (pjsKick->GetRawButton(4))
     {
         pRobot->RunWinch(pjsKick->GetY());
+        bRunWinchJs = true;
+    }
+    else if (bRunWinchJs)
+    {
+        pRobot->RunWinch(0);
+        bRunWinchJs = false;
     }
 
     if (pjsKick->GetRawButton(JS_TRIGGER))
