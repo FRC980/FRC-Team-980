@@ -277,10 +277,12 @@ class Robot980 : public SensorBase
      */
     void Drive(float left, float right);
 
-    // \brief Run winch at given speed (debug method)
+    /*! \brief DEBUG: Run winch at given speed
+     */
     void RunWinch(float speed);
     
-    // debug: set state
+    /*! \brief DEBUG: set the current state
+     */
     void SetState(arming_t state);
 
     /*! \brief Determine if the kicker has been armed
@@ -299,7 +301,13 @@ class Robot980 : public SensorBase
      *  kicker and then unwinding the winch
      */
     void ArmKicker(void);
+
+    /*! \brief Unwind the winch
+     */
     void Unwind(void);
+
+    /*! \brief Print a debug message displaying the current status
+     */
     void PrintState(void);
 
     /*! \brief Fire the kicker
@@ -309,11 +317,11 @@ class Robot980 : public SensorBase
      */
     bool FireKicker(void);
 
-    /*! \brief DEBUG: enable/disable arming
+    /*! \brief DEBUG: enable automatic re-arming
      */
     void ArmingEnable(void);
     
-    /*! \brief DEBUG: enable/disable arming
+    /*! \brief DEBUG: disable automatic re-arming
      */
     void ArmingDisable(void);
 

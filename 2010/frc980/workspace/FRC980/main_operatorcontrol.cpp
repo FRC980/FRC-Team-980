@@ -110,22 +110,18 @@ void Main::TeleopPeriodic(void)
         pRobot->PrintState();
     }
 
-    //--- Top joystick button Lifts the Robot
-    //if(pjsKick->GetRawButton(JS_TOP_CENTER)){
-    //    pRobot->Lift();
-    //}
     /*
-    if (pjsKick->GetRawButton(JS_LEFT_BOTTOM))
+    if (pjsKick->GetRawButton())
     {
         pRobot->ArmingEnable();
     }
 
-    if (pjsKick->GetRawButton(JS_LEFT_TOP))
+    if (pjsKick->GetRawButton())
     {
         pRobot->ArmingDisable();
     }*/
     
-    // debug: set states manually
+    //--- DEBUG: set states manually
     if (pjsKick->GetRawButton(6))
     {
         pRobot->SetState(Robot980::READY_TO_FIRE);

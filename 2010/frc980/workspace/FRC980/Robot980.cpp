@@ -550,7 +550,6 @@ void Robot980::RunWinchState()
         m_pTimerWinch->Start();
         m_pTimerWinch->Reset();
         m_iUnwindCount = 0;
-        m_pscArm_win->Set(- UNWIND_SPEED);
 
 		m_armingState = UNWINDING;
 	}
@@ -558,7 +557,7 @@ void Robot980::RunWinchState()
 
     case UNWINDING:
     {
-		//nothing to do here
+        m_pscArm_win->Set(- UNWIND_SPEED);
     }
     break;
     }
