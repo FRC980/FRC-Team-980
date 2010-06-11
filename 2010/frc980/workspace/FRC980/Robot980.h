@@ -213,7 +213,7 @@ class Robot980 : public SensorBase
   private:
     arming_t m_armingState;     /*!< Current state of firing mechanism */
     bool m_bArmingEnable;       /*!< DEBUG: enable/disable arming */
-
+    bool m_bAutoUnwind;
     //PCVideoServer* m_pVideoServer;
 
     //--- Constructors ----------------------------------------------------
@@ -324,6 +324,12 @@ class Robot980 : public SensorBase
     /*! \brief DEBUG: disable automatic re-arming
      */
     void ArmingDisable(void);
+
+    /*! \brief Toggle automatic unwinding
+     *
+     * When the winch is unwound, the robot cannot climb over a bump
+     */
+    void SetAutoUnwind(bool);
 
     /*! \brief Stop the firing cam when switch is triggered
      */

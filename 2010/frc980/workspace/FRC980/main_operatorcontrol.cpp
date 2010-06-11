@@ -95,6 +95,17 @@ void Main::TeleopPeriodic(void)
         }
     }
 
+    if (pjsKick->GetRawButton(6))
+    {
+        pRobot->SetAutoUnwind(true);
+    }
+
+    if (pjsKick->GetRawButton(7))
+    {
+        pRobot->SetAutoUnwind(false);
+    }
+
+
     if (pjsKick->GetRawButton(JS_TOP_BOTTOM))
     {
         pRobot->ArmKicker();
@@ -122,18 +133,13 @@ void Main::TeleopPeriodic(void)
     }*/
     
     //--- DEBUG: set states manually
-    if (pjsKick->GetRawButton(6))
-    {
-        pRobot->SetState(Robot980::READY_TO_FIRE);
-    }
-    
-    if (pjsKick->GetRawButton(7))
-    {
-        pRobot->SetState(Robot980::FIRED);
-    }
-    
     if (pjsKick->GetRawButton(8))
     {
         pRobot->SetState(Robot980::WOUND);
+    }
+    
+    if (pjsKick->GetRawButton(9))
+    {
+        pRobot->SetState(Robot980::UNKNOWN);
     }
 }

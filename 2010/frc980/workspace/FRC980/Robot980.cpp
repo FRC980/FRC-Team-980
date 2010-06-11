@@ -61,6 +61,7 @@ Robot980::Robot980()
     //--- State variables
     , m_armingState(UNKNOWN)
     , m_bArmingEnable(true)
+    , m_bAutoUnwind (true)
 
     //, m_pVideoServer(NULL)
 //    , m_pVideoServer(new PCVideoServer)
@@ -301,6 +302,10 @@ void Robot980::SetState(arming_t state) {
         }
         m_pscFire_win->Set(1.0);
     }
+    if (UNKNOWN == m_armingState)
+    {
+        DoWinchStateMachineTransition();
+    }
     utils::message("Now in state %d / %s\n",
             (int)m_armingState,
             szArmingArr[m_armingState]);
@@ -329,18 +334,16 @@ void Robot980::ArmKicker(void)
 
 void Robot980::Unwind(void)
 {
-    // \todo Use set_state instead here!
-    RunWinchState();
-    m_armingState = INIT_UNWINDING;
-    RunWinchState();
+    SetState(INIT_UNWINDING);
 }
 
 void Robot980::PrintState(void)
 {
-    utils::message("armed: %d  cam: %d  winch: %d  state: %d / %s\n",
+    utils::message("armed: %d  cam: %d  winch: %d  autoUnwind: %d state: %d / %s\n",
                    m_pdiArmed_switch->Get(),
                    m_pdiFireCam_switch->Get(),
                    m_pdiWinch_switch->Get(),
+                   m_bAutoUnwind,
                    (int)m_armingState,
                    szArmingArr[m_armingState]);
 }
@@ -383,6 +386,12 @@ void Robot980::ArmingDisable()
 }
 
 //==========================================================================
+void Robot980::SetAutoUnwind(bool value)
+{
+    m_bAutoUnwind = value;
+}
+
+//==========================================================================
 void Robot980::HandleFiring(void)
 {
     static bool bOldCamState = SW_OPEN;
@@ -405,7 +414,6 @@ void Robot980::HandleFiring(void)
 #define UNWIND_SPEED    1.0
 #define UNWIND_TIME     2.0     /* in seconds */
 #define UNWIND_COUNT    10      /* both edges, 2 sensors per rotation */
-#define AUTO_UNWIND     1
 
 void Robot980::DoWinchStateMachineTransition()
 {
@@ -453,7 +461,7 @@ void Robot980::DoWinchStateMachineTransition()
         // if we've armed, enter the wound state
         if ((SW_CLOSED == m_pdiArmed_switch->Get()))
         {
-            m_armingState = (AUTO_UNWIND ? INIT_UNWINDING : WOUND);
+            m_armingState = (m_bAutoUnwind ? INIT_UNWINDING : WOUND);
             RunWinchState();
         }
     }
