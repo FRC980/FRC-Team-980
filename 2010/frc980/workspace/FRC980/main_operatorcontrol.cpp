@@ -70,6 +70,12 @@ void Main::TeleopPeriodic(void)
     //--- Drive the robot
     pRobot->Drive(fLeft, fRight, pjsKick->GetZ());
 
+    //Debug lift switches
+    if (pjsDrive->GetRawButton(11))
+    {
+        pRobot->PrintLiftSwitchStatus();
+    }
+
     //--- Debug: run winch from joystick
     static bool bRunWinchJs = false;
     if (pjsKick->GetRawButton(4))
@@ -81,6 +87,10 @@ void Main::TeleopPeriodic(void)
     {
         pRobot->RunWinch(0);
         bRunWinchJs = false;
+    }
+    else
+    {
+        pRobot->Lift(- pjsKick->GetY());
     }
 
     if (pjsKick->GetRawButton(JS_TRIGGER))
@@ -141,5 +151,9 @@ void Main::TeleopPeriodic(void)
     if (pjsKick->GetRawButton(9))
     {
         pRobot->SetState(Robot980::UNKNOWN);
+<<<<<<< HEAD
+=======
+        //SetState will detect the state we are actually in
+>>>>>>> nikita_states
     }
 }

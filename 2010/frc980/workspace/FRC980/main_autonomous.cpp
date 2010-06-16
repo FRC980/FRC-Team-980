@@ -25,7 +25,7 @@ void Main::AutonomousInit(void)
 {
     Robot980* pRobot = Robot980::GetInstance();
     iMode = pRobot->GetAutonMode();
-    iMode = 6;
+    iMode = 5;
 
     pRobot->SetBrakes(false);
 
@@ -268,6 +268,7 @@ void Auton5(void)
     //--- Drive forward
     if (t < 1.0)
     {
+        pRobot->ArmKicker();
         pRobot->Drive(0.4, 0.4, -0.2); // left, right, roller
     }
 

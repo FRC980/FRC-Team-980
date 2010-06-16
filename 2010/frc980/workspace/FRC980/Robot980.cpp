@@ -38,7 +38,7 @@ Robot980::Robot980()
     , m_pscRight_cim2(new CANJaguar(CAN_RIGHT_CIM2)) //, CANJaguar::kSpeed))
     // roller and lift motors
     , m_pscRoller_fp(new CANJaguar(CAN_ROLLER_FP))   //, CANJaguar::kSpeed))
-    //, m_pscLift(new CANJaguar(CAN_LIFT))             //, CANJaguar::kSpeed))
+    , m_pscLift(new CANJaguar(CAN_LIFT))             //, CANJaguar::kSpeed))
     
     //--- Victors
     , m_pscArm_win(new Victor(DSC_SLOT, CHAN_PWM_ARM))
@@ -49,7 +49,8 @@ Robot980::Robot980()
     , m_pdiArmed_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_ARMED))
     , m_pdiFireCam_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_FIRE_READY))
     , m_pdiWinch_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_WINCH_COUNTER))
-    
+    , m_pdiLiftOut_switch(new DigitalInput(DSC_SLOT, CHAN_LIFT_OUT_SWITCH))
+    , m_pdiLiftIn_switch(new DigitalInput(DSC_SLOT, CHAN_LIFT_IN_SWITCH))
     //--- Timers
     , m_pTimerDrive(new Timer)
     , m_pTimerFire(new Timer)
@@ -614,10 +615,19 @@ void Robot980::CallWinchStateMachineTimer(void*) // static
 }
 
 //==========================================================================
-//void Robot980::Lift(void)
-//{
-//
-//}
+void Robot980::Lift(float speed)
+{
+    m_pscLift->Set(utils::limit(speed));
+}
+
+//==========================================================================
+void Robot980::PrintLiftSwitchStatus(void)
+{
+    utils::message("Lift: out=%d in=%d\n",
+                   m_pdiLiftOut_switch->Get(),
+                   m_pdiLiftIn_switch->Get()
+                   );
+}
 
 //==========================================================================
 //==========================================================================

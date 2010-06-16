@@ -127,7 +127,8 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define CHAN_LIMIT_ARMED            2   /*!< \def CHAN_LIMIT_ARMED The Kicker Arming Limit Switch -- detects that the kicker is in the "armed" position */
 #define CHAN_LIMIT_FIRE_READY       1   /*!< \def CHAN_LIMIT_FIRE_READY The Kicker Firing Limit Switch -- detects that the firing cam is in the ready-to-fire position */
 #define CHAN_LIMIT_WINCH_COUNTER    3   /*!< \def CHAN_LIMIT_WINCH The Kicker Winch Limit Switch */
-
+#define CHAN_LIFT_OUT_SWITCH        4
+#define CHAN_LIFT_IN_SWITCH         5
 // Encoder on the lift mechanism
 //#define CHAN_ENC_LIFT_A             11
 //#define CHAN_ENC_LIFT_B             12
@@ -177,7 +178,7 @@ class Robot980 : public SensorBase
 
     // roller and lift motors
     CANJaguar* m_pscRoller_fp;  /*!< The Roller motor speed controller */
-    // CANJaguar* m_pscLift;       /*!< The Lift motor speed controller */
+    CANJaguar* m_pscLift;       /*!< The Lift motor speed controller */
 
     //--- Victors
     Victor* m_pscArm_win;      /*!< The Arming motor 1 speed controller */
@@ -188,6 +189,8 @@ class Robot980 : public SensorBase
     DigitalInput* m_pdiArmed_switch; /*!< The Arming Mechanism Limit Switch */
     DigitalInput* m_pdiFireCam_switch; /*!< The Firing Mechanism Limit Switch */
     DigitalInput* m_pdiWinch_switch; /*!< The Winch Mechanism Limit Switch */
+    DigitalInput* m_pdiLiftOut_switch;
+    DigitalInput* m_pdiLiftIn_switch;
     // more sensors TBD
 
     //--- Timers
@@ -364,7 +367,11 @@ class Robot980 : public SensorBase
     /*! \brief A method to run the robot lift motor action
      *  \todo Write this method
      */
-    //void Lift(void);
+    void Lift(float speed);
+
+    //! \brief DEBUG: print out lift switches status
+
+    void PrintLiftSwitchStatus(void);
 
     /*! \brief Get the angle from the gyro
      *
