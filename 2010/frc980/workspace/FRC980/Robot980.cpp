@@ -38,7 +38,8 @@ Robot980::Robot980()
     , m_pscRight_cim2(new CANJaguar(CAN_RIGHT_CIM2)) //, CANJaguar::kSpeed))
     // roller and lift motors
     , m_pscRoller_fp(new CANJaguar(CAN_ROLLER_FP))   //, CANJaguar::kSpeed))
-    , m_pscLift(new CANJaguar(CAN_LIFT))             //, CANJaguar::kSpeed))
+    // , m_pscLift(new CANJaguar(CAN_LIFT))             //, CANJaguar::kSpeed))
+    , m_pscLift(new Victor(DSC_SLOT, CHAN_PWM_LIFT))
     
     //--- Victors
     , m_pscArm_win(new Victor(DSC_SLOT, CHAN_PWM_ARM))
@@ -51,6 +52,7 @@ Robot980::Robot980()
     , m_pdiWinch_switch(new DigitalInput(DSC_SLOT, CHAN_LIMIT_WINCH_COUNTER))
     , m_pdiLiftOut_switch(new DigitalInput(DSC_SLOT, CHAN_LIFT_OUT_SWITCH))
     , m_pdiLiftIn_switch(new DigitalInput(DSC_SLOT, CHAN_LIFT_IN_SWITCH))
+    , m_pdiBallPresent_switch(new DigitalInput(DSC_SLOT, CHAN_BALL_SWITCH))
     //--- Timers
     , m_pTimerDrive(new Timer)
     , m_pTimerFire(new Timer)
@@ -221,6 +223,11 @@ void Robot980::SetBrakes(bool brakeOnStop)
     m_pscRight_cim1->ConfigNeutralMode(mode);
     m_pscRight_cim2->ConfigNeutralMode(mode);
     m_pscLeft_cim2->ConfigNeutralMode(mode);
+}
+
+bool Robot980::BallPresent()
+{
+    return (m_pdiBallPresent_switch->Get() == SW_CLOSED);
 }
 
 //==========================================================================

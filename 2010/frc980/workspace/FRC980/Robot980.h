@@ -119,6 +119,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 // PWM outputs
 #define CHAN_PWM_ARM                1   /*!< \def CHAN_PWM_ARM The Digital Side Car PWM Channel for both of the Kicker Arming Motors */
 #define CHAN_PWM_FIRE               2   /*!< \def CHAN_PWM_FIRE The Digital Side Car PWM Channel for the Kicker Firing Motor */
+#define CHAN_PWM_LIFT               3   /*!< \def CHAN_PWM_LIFT The Digital Side Car PWM Channel for the Lifter Motor */
 
 //==============================================================================
 // Digital Inputs
@@ -132,6 +133,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 // Encoder on the lift mechanism
 //#define CHAN_ENC_LIFT_A             11
 //#define CHAN_ENC_LIFT_B             12
+#define CHAN_BALL_SWITCH           10
 
 //==============================================================================
 // Analog Inputs
@@ -177,12 +179,12 @@ class Robot980 : public SensorBase
     CANJaguar* m_pscRight_cim2; /*!< The Right CIM2 motor speed controller */
 
     // roller and lift motors
-    CANJaguar* m_pscRoller_fp;  /*!< The Roller motor speed controller */
-    CANJaguar* m_pscLift;       /*!< The Lift motor speed controller */
+    SpeedController* m_pscRoller_fp;  /*!< The Roller motor speed controller */
+    SpeedController* m_pscLift; /*!< The Lift motor speed controller */
 
     //--- Victors
-    Victor* m_pscArm_win;      /*!< The Arming motor 1 speed controller */
-    Victor* m_pscFire_win;     /*!< The Firing motor speed controller */
+    SpeedController* m_pscArm_win; /*!< The Arming motor 1 speed controller */
+    SpeedController* m_pscFire_win; /*!< The Firing motor speed controller */
 
     //--- Sensors
     //Gyro* m_pGyro;                 /*!< The Gyro Sensor */
@@ -191,6 +193,7 @@ class Robot980 : public SensorBase
     DigitalInput* m_pdiWinch_switch; /*!< The Winch Mechanism Limit Switch */
     DigitalInput* m_pdiLiftOut_switch;
     DigitalInput* m_pdiLiftIn_switch;
+    DigitalInput* m_pdiBallPresent_switch;
     // more sensors TBD
 
     //--- Timers
@@ -279,6 +282,8 @@ class Robot980 : public SensorBase
      *  For reference: 1 = forward, -1 = backwards
      */
     void Drive(float left, float right);
+
+    bool BallPresent();
 
     /*! \brief DEBUG: Run winch at given speed
      */

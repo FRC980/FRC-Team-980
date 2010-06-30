@@ -68,7 +68,8 @@ void Main::TeleopPeriodic(void)
     float fRight = (y - x);
 
     //--- Drive the robot
-    pRobot->Drive(fLeft, fRight, pjsKick->GetZ());
+    pRobot->Drive(fLeft, fRight, pRobot->BallPresent()
+                  ? pjsKick->GetZ() : (pjsKick->GetZ() / 4));
 
     //Debug lift switches
     if (pjsDrive->GetRawButton(11))
@@ -151,9 +152,5 @@ void Main::TeleopPeriodic(void)
     if (pjsKick->GetRawButton(9))
     {
         pRobot->SetState(Robot980::UNKNOWN);
-<<<<<<< HEAD
-=======
-        //SetState will detect the state we are actually in
->>>>>>> nikita_states
     }
 }
