@@ -624,7 +624,16 @@ void Robot980::CallWinchStateMachineTimer(void*) // static
 //==========================================================================
 void Robot980::Lift(float speed)
 {
-    m_pscLift->Set(utils::limit(speed));
+    // speed < 0 => in, speed > 1 => out
+    
+    bool bLiftFullExtended =
+        // 1 = black, 0 = silver
+        !(m_pdiLiftOut_switch->Get() && m_pdiLiftIn_switch->Get());
+
+    m_pscLift->Set(utils::limit(speed, -1, bLiftFullExtended ? 0 : 1));
+//    utils::message("Lift: %f  ext: %d  in: %d  out: %d\n",
+//                   speed, (int)bLiftFullExtended,
+//                   m_pdiLiftIn_switch->Get(), m_pdiLiftOut_switch->Get());
 }
 
 //==========================================================================

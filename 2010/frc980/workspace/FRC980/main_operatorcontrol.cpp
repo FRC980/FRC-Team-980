@@ -67,9 +67,22 @@ void Main::TeleopPeriodic(void)
     float fLeft  = (y + x);
     float fRight = (y - x);
 
+
+    static Timer* pTimerRoller = NULL;
+    if (! pTimerRoller)
+    {
+        pTimerRoller = new Timer;
+        pTimerRoller->Reset();
+        pTimerRoller->Start();
+    }
+
     //--- Drive the robot
-    pRobot->Drive(fLeft, fRight, pRobot->BallPresent()
-                  ? pjsKick->GetZ() : (pjsKick->GetZ() / 4));
+    if (pRobot->BallPresent())
+        pTimerRoller->Reset();
+    // roller runs "slow" until sensor detects a ball, then it runs "fast"
+    // until a few seconds after loosing the ball.
+    pRobot->Drive(fLeft, fRight, (pTimerRoller->Get() < 3.0)
+                  ? pjsKick->GetZ() : (pjsKick->GetZ() / 3));
 
     //Debug lift switches
     if (pjsDrive->GetRawButton(11))

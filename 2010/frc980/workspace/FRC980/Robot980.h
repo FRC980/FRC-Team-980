@@ -200,6 +200,7 @@ class Robot980 : public SensorBase
     Timer* m_pTimerDrive;       /*!< The Timer used for debugging (calc & print speeds) */
     Timer* m_pTimerFire;        /*!< The Timer used for firing. Can only fire once every 2 seconds */
     Timer* m_pTimerWinch;
+
     int m_iUnwindCount;
 
     Notifier* m_pNoteWinch;
