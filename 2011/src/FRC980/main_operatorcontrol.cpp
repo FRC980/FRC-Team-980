@@ -17,6 +17,34 @@ void Main::TeleopContinuous(void)
 {
 }
 
+/*
+Usage:
+RUN_ONCE(pjsDrive,11)
+{
+    //do something when button 11 is pressed
+}
+
+RUN_ONCE_VAR(pjsDrive,11,second_time)
+{
+    //use a different variable if the same joystick
+    //button is used twice in different places
+}
+
+ */
+
+#define RUN_ONCE_VAR(joystick,button,var)              \
+    static bool var = false;                           \
+    if (! joystick->GetRawButton(button))              \
+    {                                                  \
+         var = false;                                  \
+    }                                                  \
+    else if (joystick->GetRawButton(button) &&         \
+             !var && (var=true))
+
+#define RUN_ONCE(joystick,button)                      \
+    RUN_ONCE_VAR(joystick,button,joystick##_##button##_pressed)
+
+
 void Main::TeleopPeriodic(void)
 {
     //--- Get the Robot instance
@@ -66,5 +94,10 @@ void Main::TeleopPeriodic(void)
     else
     {
         pRobot->Drive(fLeft, fRight);
+    }
+
+    RUN_ONCE(pjsDrive,11)
+    {
+        pRobot->PrintState();
     }
 }
