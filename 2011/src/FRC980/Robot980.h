@@ -133,7 +133,6 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define CHAN_LINE_CENTER            2   /*!< \def CHAN_LINE_SENSOR_CENTER Input for center line sensor */
 #define CHAN_LINE_RIGHT             3   /*!< \def CHAN_LINE_SENSOR_RIGHT Input for right line sensor */
 
-
 //==============================================================================
 // Analog Inputs
 #define SLOT_GYRO                   1   /*!< SLOT_GYRO The slot number in the cRio for the Gyro analog input*/
@@ -253,6 +252,16 @@ class Robot980 : public SensorBase
      *  \todo Positioning system - gyro, accelerometer
      */
     float GetAngle(void);
+
+    /*! \brief Send command to jaguar for claw open
+     */
+    void OpenClaw(void);
+    
+    /*! \brief Send command to jaguar for claw close
+     */
+    void CloseClaw(void);
+
+
 };
 
 #endif  // ROBOT980_H

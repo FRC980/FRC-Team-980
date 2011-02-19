@@ -1,0 +1,3 @@
+#define JS_BUTTON_CLAW_OPEN	4
+#define JS_BUTTON_CLAW_CLOSE	5
+

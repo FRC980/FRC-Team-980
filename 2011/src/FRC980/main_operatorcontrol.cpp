@@ -2,6 +2,7 @@
 #include <math.h>
 
 #include "main.h"
+#include "main_operatorcontrol.h"
 
 #include "Robot980.h"
 #include "jsbuttons.h"
@@ -99,5 +100,15 @@ void Main::TeleopPeriodic(void)
     RUN_ONCE(pjsDrive,11)
     {
         pRobot->PrintState();
+    }
+
+    if(pjsArm->GetRawButton(JS_BUTTON_CLAW_OPEN))
+    {
+	pRobot->OpenClaw();
+    }
+
+    if(pjsArm->GetRawButton(JS_BUTTON_CLAW_CLOSE))
+    {
+	pRobot->CloseClaw();
     }
 }
