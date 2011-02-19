@@ -43,5 +43,28 @@ void Main::TeleopPeriodic(void)
     float fLeft = (y + x);
     float fRight = (y - x);
 
-    pRobot->Drive(fLeft, fRight);
+
+
+    // Slow mode imposes a speed limit
+    // Left thumb button on joystick enables, right thumb button disables
+    static bool bSlowMode = false;
+    if (pjsDrive->GetRawButton(JS_TOP_LEFT) && !bSlowMode)
+    {
+        bSlowMode = true;
+        utils::message("slow mode");
+    }
+    if (pjsDrive->GetRawButton(JS_TOP_RIGHT) && bSlowMode)
+    {
+        bSlowMode = false;
+        utils::message("fast mode");
+    }
+
+    if (bSlowMode)
+    {
+        pRobot->Drive(fLeft/2.0, fRight/2.0);
+    }
+    else
+    {
+        pRobot->Drive(fLeft, fRight);
+    }
 }
