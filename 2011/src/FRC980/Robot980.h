@@ -237,6 +237,10 @@ class Robot980 : public SensorBase
      */
     void Drive(float left, float right);
 
+    //! \brief Get data from line tracker
+    //  \return (left, middle, right) booleans stored as char
+    char GetLineTracker(bool invert = false);
+
     /*! \brief Print a debug message displaying the current status
      */
     void PrintState(void);

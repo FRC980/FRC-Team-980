@@ -168,6 +168,19 @@ void Robot980::Drive(float left, float right)
     m_pscRight2->Set(utils::limit(-right));
 }
 
+//==========================================================================
+char Robot980::GetLineTracker(bool invert /* = false */)
+{
+    int leftValue   = m_pdiLineLeft->Get()   ? 1 : 0;
+    int centerValue = m_pdiLineCenter->Get() ? 1 : 0;
+    int rightValue  = m_pdiLineRight->Get()  ? 1 : 0;
+    if(invert)
+    	return leftValue + centerValue * 2 + rightValue * 4;
+    else
+    	return leftValue * 4 + centerValue * 2 + rightValue;
+}
+
+//==========================================================================
 void Robot980::PrintState(void)
 {
     utils::message("");
