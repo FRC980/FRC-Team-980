@@ -173,8 +173,8 @@ class Robot980 : public SensorBase
     CANJaguar *m_pscLeft2;   /*!< The 2nd Left Drive motor speed controller */
     CANJaguar *m_pscRight1;  /*!< The 1st Right Drive motor speed controller */
     CANJaguar *m_pscRight2;  /*!< The 2nd Right Drive motor speed controller */
-    CANJaguar *m_pscClaw;    /*!< The arm's claw motor speed controller */
     CANJaguar *m_pscMiniDeploy; /*!< The minibot deploy motor speed controller */
+    CANJaguar *m_pscClaw;    /*!< The arm's claw motor speed controller */
 
     //--- Victors
     SpeedController *m_pscShoulder; /*!< The shoulder motor speed controller */
