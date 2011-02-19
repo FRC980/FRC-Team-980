@@ -1,0 +1,17 @@
+List of Sensors:
+Left Drive: 2 jaguars controled by CAN bus
+	    One incoder with 2 digital inputs or directly to jaguar
+Right Drive: 2 jaguars controled by CAN bus
+	     One incoder with 2 digital inputs or directly to jaguar
+Linetrackers: 3 digital inputs
+Shoulder: 2 victors, 1 pwm(Y-cable)
+	  1 pot., anologue in
+3 Lights: Digital out or relay out	
+Claw: 1 jaguar
+      2 switches to digital in or jaguar, pot. going to anologue or jaguar, 
+      encoder going to digital(2 slots) or jaguar, none of the above and use 
+      current sensor in jaguar
+Camera: power and ethernet
+Autonomous Switch: anologue input
+MiniBot Deploy: jaguar controled by CAN bus
+		2 limit switches digital inputs or directly to jaguar      
