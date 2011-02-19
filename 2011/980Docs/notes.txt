@@ -15,3 +15,19 @@ Camera: power and ethernet
 Autonomous Switch: anologue input
 MiniBot Deploy: jaguar controled by CAN bus
 		2 limit switches digital inputs or directly to jaguar      
+
+
+
+Status
+
+[x] Drive robot
+[ ] Move arm
+[ ] Gripper
+[ ] Button-controlled arm
+[ ] Line tracking (auto only)
+[ ] Odometry
+[x] Slow mode driving
+[ ] Driving straight
+[ ] Joystick deadband
+[ ] Minibot deployment
+[ ] Camera targeting
