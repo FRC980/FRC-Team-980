@@ -228,9 +228,11 @@ char Robot980::GetLineTracker(bool invert /* = false */)
 //==========================================================================
 void Robot980::PrintState(void)
 {
-    utils::message("l/r encoder value: %f %f\n",
+    utils::message("Encoders: L1/L2::R1/R2 %f %f :: %f %f\n",
         m_pscLeft1->GetPosition(),
-        m_pscRight1->GetPosition());
+        m_pscLeft2->GetPosition(),
+        m_pscRight1->GetPosition(),
+        m_pscRight2->GetPosition());
 }
 
 //==========================================================================
