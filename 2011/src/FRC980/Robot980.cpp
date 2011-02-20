@@ -60,6 +60,7 @@ Robot980::Robot980()
     //m_pscLeft->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
     
     m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+    m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscLeft1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
     m_pscLeft1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
     
@@ -72,6 +73,7 @@ Robot980::Robot980()
     //m_pscRight->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
     
     m_pscRight1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+    m_pscRight1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscRight1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
     m_pscRight1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
