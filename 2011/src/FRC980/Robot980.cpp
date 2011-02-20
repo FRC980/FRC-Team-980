@@ -58,11 +58,26 @@ Robot980::Robot980()
     //m_pscLeft->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
     //m_pscLeft->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
     //m_pscLeft->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+    
+    m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+    m_pscLeft1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+    m_pscLeft1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+    
+    m_pscLeft2->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+    m_pscLeft2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
     //--- Encoder setup for Right CIM
     //m_pscRight->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
     //m_pscRight->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
     //m_pscRight->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+    
+    m_pscRight1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+    m_pscRight1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+    m_pscRight1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+
+    m_pscRight2->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+    m_pscRight2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+
 
     //--- Define Drive Timer
     m_pTimerDrive->Reset();
@@ -169,6 +184,30 @@ void Robot980::Drive(float left, float right)
 }
 
 //==========================================================================
+void Robot980::setArmSpeed(float speed)
+{
+    AnalogModule *pAM = AnalogModule::GetInstance(SLOT_ARM_POTENTIOMETER);
+    int i = pAM->GetValue(CHAN_ARM_POTENTIOMETER);
+
+    if(speed < 0.0)
+    {
+        //going up
+	if( i > 830 )
+	    m_pscShoulder->Set(0.0);
+	else
+	    m_pscShoulder->Set(utils::limit(speed));
+    }
+    else
+    {
+        //going down
+	if( i < 440 )
+	    m_pscShoulder->Set(0.0);
+	else
+	    m_pscShoulder->Set(utils::limit(speed));
+    }
+}
+
+//==========================================================================
 char Robot980::GetLineTracker(bool invert /* = false */)
 {
     int leftValue   = m_pdiLineLeft->Get()   ? 1 : 0;
@@ -183,7 +222,9 @@ char Robot980::GetLineTracker(bool invert /* = false */)
 //==========================================================================
 void Robot980::PrintState(void)
 {
-    utils::message("");
+    utils::message("l/r encoder value: %f %f\n",
+        m_pscLeft1->GetPosition(),
+        m_pscRight1->GetPosition());
 }
 
 //==========================================================================

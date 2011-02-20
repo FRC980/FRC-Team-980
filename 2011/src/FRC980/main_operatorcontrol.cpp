@@ -72,7 +72,7 @@ void Main::TeleopPeriodic(void)
     float fLeft = (y + x);
     float fRight = (y - x);
 
-
+    pRobot->setArmSpeed(pjsArm->GetY());
 
     // Slow mode imposes a speed limit
     // Left thumb button on joystick enables, right thumb button disables

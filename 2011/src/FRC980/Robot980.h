@@ -141,6 +141,8 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define SLOT_AUTO_MODE              1   /*!< SLOT_AUTO_MODE The slot number in the cRio for the Auto Mode analog input */
 #define CHAN_AUTO_MODE              7   /*!< CHAN_AUTO_MODE The Analog Channel for the Auto Mode. */
 
+#define SLOT_ARM_POTENTIOMETER      1
+#define CHAN_ARM_POTENTIOMETER	    5
 //==============================================================================
 // Define Additional Values
 
@@ -183,6 +185,7 @@ class Robot980 : public SensorBase
     DigitalInput *m_pdiLineLeft;   /*!< Line Sensor Left */
     DigitalInput *m_pdiLineCenter; /*!< Line Sensor Center */
     DigitalInput *m_pdiLineRight;  /*!< Line Sensor Right */
+    
     // more sensors TBD
 
     //--- Timers
@@ -235,6 +238,11 @@ class Robot980 : public SensorBase
      *  For reference: 1 = forward, -1 = backwards
      */
     void Drive(float left, float right);
+    
+    /*! \brief A method to move the arm up and down
+     *  \param speed The speed of the window moters
+     */
+    void setArmSpeed(float speed);
 
     //! \brief Get data from line tracker
     //  \return (left, middle, right) booleans stored as char
