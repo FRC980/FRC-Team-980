@@ -114,7 +114,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 // Jaguar Outputs
 #define MAX_JAGUAR_OUTPUT_VOLTAGE   12.0        /*!< \def MAX_JAGUAR_OUTPUT_VOLTAGE The maximum output voltage of the CAN Jaguar */
 // Encoder setup information
-#define US_DIGITAL_ENC_COUNTS       250 /*!< \def US_DIGITAL_ENC_COUNTS The number of encoder counts for the US Digital Encoders */
+#define US_DIGITAL_ENC_COUNTS       360 /*!< \def US_DIGITAL_ENC_COUNTS The number of encoder counts for the US Digital Encoders */
 
 //==============================================================================
 // Digital Side Car Outputs
