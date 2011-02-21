@@ -10,6 +10,7 @@
 static int iMode = 0;
 static Timer *pTimerAuton = new Timer;
 static bool goLeft = false;
+static float encoder_initial;
 
 void Auton1(void);
 void Auton2(void);
@@ -26,18 +27,22 @@ void Main::AutonomousInit(void)
 
     pRobot->SetBrakes(false);
 
-    pTimerAuton->Start();
-    pTimerAuton->Reset();
-
-    if (iMode == 1)
+    switch (iMode)
     {
+    case 1:
         char binaryValue = pRobot->GetLineTracker();
         if(binaryValue == 1)
             goLeft = true;
         utils::message("GoingLeft: %d\n", goLeft);
+        break;
     }
 
+    encoder_initial = pRobot->GetRightEncoder();
+
     utils::message("Running autonomous mode %d\n", iMode);
+
+    pTimerAuton->Start();
+    pTimerAuton->Reset();
 }
 
 //==========================================================================
@@ -178,4 +183,16 @@ void Auton6(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     float t = pTimerAuton->Get();
+
+    float distance = pRobot->GetRightEncoder() - encoder_initial;
+
+    if (distance < 10.0)
+    {
+        pRobot->Drive(0.15,0.15);
+        utils::message("Distance = %f\n", distance);
+    }
+    else
+    {
+        pRobot->Drive(0.0,0.0);
+    }
 }

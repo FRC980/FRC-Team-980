@@ -218,6 +218,12 @@ char Robot980::GetLineTracker(bool invert /* = false */)
 }
 
 //==========================================================================
+float Robot980::GetRightEncoder()
+{
+    return m_pscRight1->GetPosition();
+}
+
+//==========================================================================
 void Robot980::PrintState(void)
 {
     utils::message("l/r encoder value: %f %f\n",

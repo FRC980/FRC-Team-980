@@ -248,6 +248,9 @@ class Robot980 : public SensorBase
     //  \return (left, middle, right) booleans stored as char
     char GetLineTracker(bool invert = false);
 
+    //! \brief Get right encoder value
+    float GetRightEncoder();
+
     /*! \brief Print a debug message displaying the current status
      */
     void PrintState(void);
