@@ -14,6 +14,8 @@ static bool bStraightLine = true;
 static bool bLineTrackModeInitialized = false;
 static float encoder_initial;
 
+float GetSpeedStraight(void);
+float GetSpeedTurn(void);
 void AutonLineTrack(void);
 void Auton1(void);
 void Auton2(void);
@@ -85,25 +87,24 @@ void Main::AutonomousPeriodic(void)
 
 
 //==========================================================================
+float GetSpeedStraight(void)
+{
+    return 0.15;
+}
+
+float GetSpeedTurn(void)
+{
+    return 0.15;
+}
+
 void AutonLineTrack(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
-    float time = pTimerAuton->Get();
-    
-    static double forkProfile[] = {0.5, 0.5, 0.4, 0.4, 0.3, 0.3, 0.03, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-    static double straightProfile[] = {0.5, 0.5, 0.35, 0.35, 0.25, 0.25, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    float t = pTimerAuton->Get();
 
     static double stopTime;
-    static double* powerProfile;
-    static bool atCross;    // true when robot has reached end
-
-    int timeInSeconds = (int) time;
-    static int oldTimeInSeconds = -1;
-
-    double steeringGain = 0.3;
-    
-    char binaryValue = pRobot->GetLineTracker(! goLeft);
-    static char previousValue=0;
+    static bool atCross = false;    // true when robot has reached end
+    static char previousValue = 0; // previous binary value
 
     if (!bLineTrackModeInitialized)
     {
@@ -114,61 +115,75 @@ void AutonLineTrack(void)
         utils::message("GoingLeft: %d\n", goLeft);
 
         stopTime = bStraightLine ? 2.0 : 4.0;
-        powerProfile = bStraightLine ? straightProfile : forkProfile;
-        atCross = false;
 
-        oldTimeInSeconds = -1;
+        atCross = false;
 
         previousValue=0;
 
         bLineTrackModeInitialized = true;
     }
-    
-    double speed, turn;
 
-    if (! goLeft)
+
+    if (atCross)
     {
-        // flip the sensors and the steering gain
-        steeringGain *= -1;
+        //We have reached the cross
+        //Now hang the ubertube
+        utils::message("At cross");
+        return;
     }
 
-    speed = powerProfile[timeInSeconds];    // speed value for this time
-    speed = 0.15;
-    turn = 0;                               // default to no turn
+    char binaryValue = pRobot->GetLineTracker(! goLeft);    
+    double speed = bStraightLine ? GetSpeedStraight() : GetSpeedTurn();
+    double steeringGain = speed * (goLeft ? 2.0 : -2.0);
+        // If going left, steer to the right, and vice versa
+        // Make steering gain a function of speed
+    double turn = 0;
 
     switch (binaryValue) {
+        // three bits in the format [outer, middle, inner]
     case 1:
-        // just the outside sensor - drive straight
+        // just the inside sensor - drive straight
         turn = 0;
         break;
     case 7:
         // all sensors - maybe at the "T"
-        if (time> stopTime) {
+        if (t > stopTime) {
             atCross = true;
             speed = 0;
         }
         break;
     case 0:
-        // no sensors - apply previous correction
-        if (previousValue == 0 || previousValue == 1) {
+        // no sensors
+        if (previousValue == 0)
+        {
+            // If we start the match with no sensor reads!!!
+            utils::message("WARNING: no sensor data");
+            // apply the steering gain
+            turn = steeringGain;
+        }
+        if (previousValue == 1) {
+            // Previously it was just the outside sensor
+            // We drove away from the line, so steer back
             turn = steeringGain;
         }
         else {
+            // In the rare case that the line is now on the
+            // opposite side of the sensors, steer back
             turn = -steeringGain;
         }
         break;
     default:
-        // anything else, steer back to the line
+        // If the line is read by the middle or outside sensors
         turn = -steeringGain;
     }
-    // useful debugging output for tuning your power profile and steering gain
-//    if(binaryValue != previousValue)
-        utils::message("Time: %2.2f sensor: %d speed: %1.2f turn: %1.2f atCross: %d\n", time, binaryValue, speed, turn, atCross);
+    
+    utils::message("Time: %2.2f sensor: %d speed: %1.2f turn: %1.2f atCross: %d\n", t, binaryValue, speed, turn, atCross);
+    
     // move the robot forward
     pRobot->Drive(speed+turn, speed-turn);
+    
     if (binaryValue != 0) previousValue = binaryValue;
 
-    oldTimeInSeconds = timeInSeconds;
     Wait(0.01);
 }
 
@@ -218,7 +233,8 @@ void Auton6(void)
 
     if (distance < 9.0)
     {
-        pRobot->Drive(0.25,0.25);
+        float speed = GetSpeedStraight();
+        pRobot->Drive(speed,speed);
         utils::message("Distance = %f\n", distance);
     }
     else
