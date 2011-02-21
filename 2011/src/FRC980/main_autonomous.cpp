@@ -34,10 +34,17 @@ void Main::AutonomousInit(void)
     {
     case 1:
         goLeft = true;
+        bStraightLine = false;
         bLineTrackModeInitialized = false;
         break;
     case 2:
+        //goLeft doesn't matter
+        bStraightLine = true;
+        bLineTrackModeInitialized = false;
+        break;
+    case 3:
         goLeft = false;
+        bStraightLine = false;
         bLineTrackModeInitialized = false;
         break;
     }
