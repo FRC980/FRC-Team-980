@@ -216,9 +216,9 @@ void Auton6(void)
 
     float distance = pRobot->GetRightEncoder() - encoder_initial;
 
-    if (distance < 10.0)
+    if (distance < 9.0)
     {
-        pRobot->Drive(0.15,0.15);
+        pRobot->Drive(0.25,0.25);
         utils::message("Distance = %f\n", distance);
     }
     else
