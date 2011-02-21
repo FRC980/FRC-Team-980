@@ -10,8 +10,11 @@
 static int iMode = 0;
 static Timer *pTimerAuton = new Timer;
 static bool goLeft = false;
+static bool bStraightLine = true;
+static bool bLineTrackModeInitialized = false;
 static float encoder_initial;
 
+void AutonLineTrack(void);
 void Auton1(void);
 void Auton2(void);
 void Auton3(void);
@@ -30,10 +33,12 @@ void Main::AutonomousInit(void)
     switch (iMode)
     {
     case 1:
-        char binaryValue = pRobot->GetLineTracker();
-        if(binaryValue == 1)
-            goLeft = true;
-        utils::message("GoingLeft: %d\n", goLeft);
+        goLeft = true;
+        bLineTrackModeInitialized = false;
+        break;
+    case 2:
+        goLeft = false;
+        bLineTrackModeInitialized = false;
         break;
     }
 
@@ -59,9 +64,11 @@ void Main::AutonomousPeriodic(void)
     //--- Switch to the correct autonomous mode
     switch (iMode)
     {
-    case 1:  Auton1();  break;
-    case 2:  Auton2();  break;
-    case 3:  Auton3();  break;
+    case 1:
+    case 2:
+    case 3:
+        AutonLineTrack();
+        break;
     case 4:  Auton4();  break;
     case 5:  Auton5();  break;
     default:
@@ -71,37 +78,44 @@ void Main::AutonomousPeriodic(void)
 
 
 //==========================================================================
-void Auton1(void)
+void AutonLineTrack(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     float time = pTimerAuton->Get();
-
-#define STRAIGHT_LINE true
     
     static double forkProfile[] = {0.07, 0.07, 0.06, 0.06, 0.06, 0.05, 0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     static double straightProfile[] = {0.5, 0.5, 0.35, 0.35, 0.25, 0.25, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-    double steeringGain = 0.65;
 
-    static bool startup = true;
-    if (startup)
-    {
-        utils::message("Line tracker auton mode");
-        utils::message("StraightLine: %d\n", STRAIGHT_LINE);
-        utils::message("GoingLeft: %d\n", goLeft);
-        startup = false;
-    }
-
-    static double stopTime = STRAIGHT_LINE ? 2.0 : 4.0;
-
-    static double* powerProfile = STRAIGHT_LINE ? straightProfile : forkProfile;
-
-    static bool atCross = false;    // true when robot has reached end
+    static double stopTime;
+    static double* powerProfile;
+    static bool atCross;    // true when robot has reached end
 
     int timeInSeconds = (int) time;
     static int oldTimeInSeconds = -1;
+
+    double steeringGain = 0.65;
     
     char binaryValue = pRobot->GetLineTracker(! goLeft);
     static char previousValue=0;
+
+    if (!bLineTrackModeInitialized)
+    {
+        // Print out a message displaying which
+        // line tracking mode we chose
+        utils::message("Line tracker auton mode");
+        utils::message("StraightLine: %d\n", bStraightLine);
+        utils::message("GoingLeft: %d\n", goLeft);
+
+        stopTime = bStraightLine ? 2.0 : 4.0;
+        powerProfile = bStraightLine ? straightProfile : forkProfile;
+        atCross = false;
+
+        oldTimeInSeconds = -1;
+
+        previousValue=0;
+
+        bLineTrackModeInitialized = true;
+    }
     
     double speed, turn;
 
@@ -148,6 +162,14 @@ void Auton1(void)
 
     oldTimeInSeconds = timeInSeconds;
     Wait(0.01);
+}
+
+
+//==========================================================================
+void Auton1(void)
+{
+    Robot980 *pRobot = Robot980::GetInstance();
+    float t = pTimerAuton->Get();
 }
 
 //==========================================================================
