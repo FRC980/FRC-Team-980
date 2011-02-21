@@ -54,11 +54,7 @@ Robot980::Robot980()
     //m_pscRight1->SetPID( kp,  ki,  kd);
     //m_pscRight2->SetPID( kp,  ki,  kd);
 
-    //--- Encoder setup for Left CIM
-    //m_pscLeft->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-    //m_pscLeft->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-    //m_pscLeft->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
-    
+    //--- Encoder setup for Left CIMs
     m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscLeft1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
@@ -69,11 +65,7 @@ Robot980::Robot980()
     m_pscLeft2->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
     m_pscLeft2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
-    //--- Encoder setup for Right CIM
-    //m_pscRight->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-    //m_pscRight->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-    //m_pscRight->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
-    
+    //--- Encoder setup for Right CIMs
     m_pscRight1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
     m_pscRight1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscRight1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
