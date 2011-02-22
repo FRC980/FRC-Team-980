@@ -16,6 +16,8 @@ static float encoder_initial;
 
 float GetSpeedStraight(void);
 float GetSpeedTurn(void);
+float GetSteeringGainStraight(void);
+float GetSteeringGainTurn(void);
 void AutonLineTrack(void);
 void Auton1(void);
 void Auton2(void);
@@ -40,7 +42,7 @@ void Main::AutonomousInit(void)
         bLineTrackModeInitialized = false;
         break;
     case 2:
-        //goLeft doesn't matter
+        goLeft = true;
         bStraightLine = true;
         bLineTrackModeInitialized = false;
         break;
@@ -48,6 +50,9 @@ void Main::AutonomousInit(void)
         goLeft = false;
         bStraightLine = false;
         bLineTrackModeInitialized = false;
+        break;
+	case 6:
+	    pRobot->SetBrakes(true);
         break;
     }
 
@@ -87,20 +92,58 @@ void Main::AutonomousPeriodic(void)
 
 
 //==========================================================================
+
+#define LINEAR_RAMP(variable,start_variable,end_variable,start_speed,end_speed) \
+    start_speed + (end_speed-start_speed)/(end_variable-start_variable)*(end_variable-variable)
+
 float GetSpeedStraight(void)
 {
-    return 0.15;
+    Robot980 *pRobot = Robot980::GetInstance();
+    float distance = pRobot->GetRightEncoder() - encoder_initial;
+    if (distance < 90.0)
+        return 0.25;
+    else if (distance < 100.0)
+        return LINEAR_RAMP(distance,90.0,100.0,0.25,0);
+    else
+        return 0.0;
+}
+
+float GetSteeringGainStraight(void)
+{
+    return GetSpeedStraight() * 1.0;
 }
 
 float GetSpeedTurn(void)
 {
-    return 0.15;
+    Robot980 *pRobot = Robot980::GetInstance();
+    float distance = pRobot->GetRightEncoder() - encoder_initial;
+
+    if (distance < 100.0)
+        return 0.25;
+    else if (distance < 131.4)
+        return LINEAR_RAMP(distance,100.0,131.4,0.25,0.15);
+    else
+        return 0.15;
+
+}
+
+float GetSteeringGainTurn(void)
+{
+    Robot980 *pRobot = Robot980::GetInstance();
+    float distance = pRobot->GetRightEncoder() - encoder_initial;
+    if (distance < 100.0)
+        return 0.25;
+    else if (distance < 131.4)
+        return GetSpeedTurn() * LINEAR_RAMP(distance,100,131.4,1.0,1.5);
+    else
+        return 0.20;
 }
 
 void AutonLineTrack(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     float t = pTimerAuton->Get();
+    float distance = pRobot->GetRightEncoder() - encoder_initial;
 
     static double stopTime;
     static bool atCross = false;    // true when robot has reached end
@@ -115,9 +158,7 @@ void AutonLineTrack(void)
         utils::message("GoingLeft: %d\n", goLeft);
 
         stopTime = bStraightLine ? 2.0 : 4.0;
-
         atCross = false;
-
         previousValue=0;
 
         bLineTrackModeInitialized = true;
@@ -134,9 +175,9 @@ void AutonLineTrack(void)
 
     char binaryValue = pRobot->GetLineTracker(! goLeft);    
     double speed = bStraightLine ? GetSpeedStraight() : GetSpeedTurn();
-    double steeringGain = speed * (goLeft ? 2.0 : -2.0);
+    double steeringGain = bStraightLine ? GetSteeringGainStraight() : GetSteeringGainTurn();
+    if (! goLeft) steeringGain *= -1.0;
         // If going left, steer to the right, and vice versa
-        // Make steering gain a function of speed
     double turn = 0;
 
     switch (binaryValue) {
@@ -147,7 +188,7 @@ void AutonLineTrack(void)
         break;
     case 7:
         // all sensors - maybe at the "T"
-        if (t > stopTime) {
+        if (t > stopTime || (pRobot->GetRightEncoder() - encoder_initial > 160.0) ) {
             atCross = true;
             speed = 0;
         }
@@ -177,7 +218,7 @@ void AutonLineTrack(void)
         turn = -steeringGain;
     }
     
-    utils::message("Time: %2.2f sensor: %d speed: %1.2f turn: %1.2f atCross: %d\n", t, binaryValue, speed, turn, atCross);
+    utils::message("t=%2.2f sensor=%d speed=%1.2f turn=%1.2f distance=%f\n", t, binaryValue, speed, turn, distance);
     
     // move the robot forward
     pRobot->Drive(speed+turn, speed-turn);
@@ -231,7 +272,7 @@ void Auton6(void)
 
     float distance = pRobot->GetRightEncoder() - encoder_initial;
 
-    if (distance < 9.0)
+    if (distance < 100.0)
     {
         float speed = GetSpeedStraight();
         pRobot->Drive(speed,speed);
@@ -240,5 +281,6 @@ void Auton6(void)
     else
     {
         pRobot->Drive(0.0,0.0);
+        utils::message("Distance_final = %f\n", distance);
     }
 }

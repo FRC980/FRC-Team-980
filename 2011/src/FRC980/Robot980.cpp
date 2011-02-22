@@ -190,18 +190,18 @@ void Robot980::setArmSpeed(float speed)
     if(speed < 0.0)
     {
         //going up
-	if( i > 830 )
-	    m_pscShoulder->Set(0.0);
-	else
-	    m_pscShoulder->Set(utils::limit(speed));
+    if( i > 830 )
+        m_pscShoulder->Set(0.0);
+    else
+        m_pscShoulder->Set(utils::limit(speed));
     }
     else
     {
         //going down
-	if( i < 440 )
-	    m_pscShoulder->Set(0.0);
-	else
-	    m_pscShoulder->Set(utils::limit(speed));
+    if( i < 440 )
+        m_pscShoulder->Set(0.0);
+    else
+        m_pscShoulder->Set(utils::limit(speed));
     }
 }
 
@@ -212,15 +212,15 @@ char Robot980::GetLineTracker(bool invert /* = false */)
     int centerValue = m_pdiLineCenter->Get() ? 1 : 0;
     int rightValue  = m_pdiLineRight->Get()  ? 1 : 0;
     if(invert)
-    	return leftValue + centerValue * 2 + rightValue * 4;
+        return leftValue + centerValue * 2 + rightValue * 4;
     else
-    	return leftValue * 4 + centerValue * 2 + rightValue;
+        return leftValue * 4 + centerValue * 2 + rightValue;
 }
 
 //==========================================================================
 float Robot980::GetRightEncoder()
 {
-    return m_pscRight1->GetPosition();
+    return m_pscRight1->GetPosition() * 3.14159 * WHEEL_DIAMETER;
 }
 
 //==========================================================================

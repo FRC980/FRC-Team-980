@@ -97,6 +97,11 @@ void Main::TeleopPeriodic(void)
         pRobot->Drive(fLeft, fRight);
     }
 
+    if(pjsDrive->GetRawButton(10))
+    {
+		utils::message("Line tracker:%d", pRobot->GetLineTracker());
+    }
+
     RUN_ONCE(pjsDrive,11)
     {
         pRobot->PrintState();

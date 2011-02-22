@@ -102,6 +102,9 @@
  */
 const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RATIO) * M_PI * (double)0.5);     /* ~ 17 ft/sec */
 
+//Wheel diameter in inches
+#define WHEEL_DIAMETER (6.0)
+
 //==============================================================================
 // CAN Jaguar Outputs
 #define CAN_LEFT_DRIVE1             11  /*!< \def CAN_LEFT_DRIVE1 The CAN Jaguar device number for the Left Drive Motor */
@@ -142,7 +145,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define CHAN_AUTO_MODE              7   /*!< CHAN_AUTO_MODE The Analog Channel for the Auto Mode. */
 
 #define SLOT_ARM_POTENTIOMETER      1
-#define CHAN_ARM_POTENTIOMETER	    5
+#define CHAN_ARM_POTENTIOMETER      5
 //==============================================================================
 // Define Additional Values
 
