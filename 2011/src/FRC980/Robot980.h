@@ -259,7 +259,7 @@ class Robot980 : public SensorBase
     void Drive(float left, float right);
     
     /*! \brief A method to move the arm up and down
-     *  \param speed The speed of the window moters
+     *  \param position The target arm position
      */
     void SetPosition(int position);
 

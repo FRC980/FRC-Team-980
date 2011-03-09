@@ -2,7 +2,6 @@
 #include <math.h>
 
 #include "main.h"
-#include "main_operatorcontrol.h"
 
 #include "Robot980.h"
 #include "jsbuttons.h"
