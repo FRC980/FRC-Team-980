@@ -132,9 +132,15 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 //==============================================================================
 // Digital Inputs
 
+// Line tracking sensors
 #define CHAN_LINE_LEFT              1   /*!< \def CHAN_LINE_SENSOR_LEFT Input for left line sensor */
 #define CHAN_LINE_CENTER            2   /*!< \def CHAN_LINE_SENSOR_CENTER Input for center line sensor */
 #define CHAN_LINE_RIGHT             3   /*!< \def CHAN_LINE_SENSOR_RIGHT Input for right line sensor */
+
+// Digital Outputs
+#define CHAN_LIGHT_TRIANGLE         14  
+#define CHAN_LIGHT_CIRCLE           15
+#define CHAN_LIGHT_SQUARE           16
 
 //==============================================================================
 // Analog Inputs
@@ -144,7 +150,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define SLOT_AUTO_MODE              1   /*!< SLOT_AUTO_MODE The slot number in the cRio for the Auto Mode analog input */
 #define CHAN_AUTO_MODE              7   /*!< CHAN_AUTO_MODE The Analog Channel for the Auto Mode. */
 
-#define SLOT_ARM_POTENTIOMETER      1
+#define ANALOG_SLOT      1
 #define CHAN_ARM_POTENTIOMETER      5
 //==============================================================================
 // Define Additional Values
@@ -181,14 +187,24 @@ class Robot980 : public SensorBase
     CANJaguar *m_pscClaw;    /*!< The arm's claw motor speed controller */
 
     //--- Victors
-    SpeedController *m_pscShoulder; /*!< The shoulder motor speed controller */
+    Victor *m_pscShoulder; /*!< The shoulder motor speed controller */
+
+    //--- Digital Outputs (Lights)
+    DigitalOutput* m_pdoLightTriangle;
+    DigitalOutput* m_pdoLightCircle;
+    DigitalOutput* m_pdoLightSquare;
 
     //--- Sensors
     Gyro* m_pGyro;                 /*!< The Gyro Sensor */
     DigitalInput *m_pdiLineLeft;   /*!< Line Sensor Left */
     DigitalInput *m_pdiLineCenter; /*!< Line Sensor Center */
     DigitalInput *m_pdiLineRight;  /*!< Line Sensor Right */
+    AnalogChannel* m_pacAutonSwitch;
+    AnalogChannel* m_pacArmPosition;
     
+    //--- PIDs
+    PIDController* m_pidArm;
+
     // more sensors TBD
 
     //--- Timers
@@ -245,11 +261,15 @@ class Robot980 : public SensorBase
     /*! \brief A method to move the arm up and down
      *  \param speed The speed of the window moters
      */
-    void setArmSpeed(float speed);
+    void SetPosition(int position);
 
     //! \brief Get data from line tracker
     //  \return (left, middle, right) booleans stored as char
     char GetLineTracker(bool invert = false);
+
+    //! \briefSet the LED color
+    // 0=none, 1=triangle, 2=circle, 3=square \todo use enum
+    void LightLED(int num);
 
     //! \brief Get right encoder value
     float GetRightEncoder();
