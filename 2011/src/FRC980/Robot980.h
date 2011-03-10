@@ -151,7 +151,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define CHAN_AUTO_MODE              7   /*!< CHAN_AUTO_MODE The Analog Channel for the Auto Mode. */
 
 #define ANALOG_SLOT      1
-#define CHAN_ARM_POTENTIOMETER      5
+#define CHAN_ARM_POTENTIOMETER      4
 //==============================================================================
 // Define Additional Values
 
@@ -187,8 +187,9 @@ class Robot980 : public SensorBase
     CANJaguar *m_pscClaw;    /*!< The arm's claw motor speed controller */
 
     //--- Victors
+public:
     Victor *m_pscShoulder; /*!< The shoulder motor speed controller */
-
+private:
     //--- Digital Outputs (Lights)
     DigitalOutput* m_pdoLightTriangle;
     DigitalOutput* m_pdoLightCircle;
@@ -287,14 +288,9 @@ class Robot980 : public SensorBase
      */
     float GetAngle(void);
 
-    /*! \brief Send command to jaguar for claw open
+    /*! \brief Send command to jaguar for claw
      */
-    void OpenClaw(void);
-    
-    /*! \brief Send command to jaguar for claw close
-     */
-    void CloseClaw(void);
-
+    void RunClaw(float speed);
 
 };
 

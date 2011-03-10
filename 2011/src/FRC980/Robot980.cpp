@@ -199,11 +199,11 @@ void Robot980::Drive(float left, float right)
 void Robot980::SetPosition(int target) {
     if(!m_pidArm->IsEnabled())
     {
-        m_pidArm->Enable();
+//        m_pidArm->Enable();
         utils::message("enabling PID");
     }
 
-    m_pidArm->SetSetpoint(target);
+//    m_pidArm->SetSetpoint(target);
 }
 
 //==========================================================================
@@ -261,15 +261,9 @@ void Robot980::PrintState(void)
 }
 
 //==========================================================================
-void Robot980::OpenClaw()
+void Robot980::RunClaw(float speed)
 {
-    m_pscClaw->Set(0.5);
-}
-
-//==========================================================================
-void Robot980::CloseClaw()
-{
-    m_pscClaw->Set(-0.5);
+    m_pscClaw->Set(speed);
 }
 
 //==========================================================================
