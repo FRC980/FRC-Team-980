@@ -88,7 +88,7 @@ Robot980::Robot980()
     m_pscRight2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
     
     //--- Set up PID loops
-    m_pidArm->SetInputRange(350.0,850);
+    m_pidArm->SetInputRange(40.0,700);
     m_pidArm->SetTolerance(4.0 /*%*/);
 
     //--- Define Drive Timer
