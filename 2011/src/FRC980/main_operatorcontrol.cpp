@@ -175,7 +175,7 @@ void Main::TeleopPeriodic(void)
     if (arm_speed > 0.1)
     {
         //up
-        pRobot->m_pscShoulder->Set(arm_speed-0.1)/4.0);
+        pRobot->m_pscShoulder->Set((arm_speed-0.1)/4.0);
     }
     else if (arm_speed < -0.1)
     {
