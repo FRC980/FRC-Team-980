@@ -7,6 +7,20 @@
 #include "utils.h"
 
 //==========================================================================
+
+typedef enum 
+{
+    AUTON_INIT,
+    AUTON_CLOSE_CLAW,
+    AUTON_DRIVE_FORWARD,
+    AUTON_RAISE_ARM,
+    AUTON_OPEN_CLAW,
+    AUTON_LOWER_ARM,
+    AUTON_DRIVE_REVERSE
+} auton_state_t
+
+auton_state_t auton_state = AUTON_INIT;
+
 static int iMode = 0;
 static Timer *pTimerAuton = new Timer;
 static bool goLeft = false;
@@ -58,6 +72,7 @@ void Main::AutonomousInit(void)
     }
 
     encoder_initial = pRobot->GetRightEncoder();
+    auton_state = AUTON_INIT;
 
     utils::message("Running autonomous mode %d\n", iMode);
 
@@ -276,29 +291,40 @@ void Auton6(void)
 
     float target_arm_height = 465;
     float target_distance = 100.0;
-    static bool reached_target_distance = false;
 
-    if (distance < target_distance)
+    switch (auton_state)
     {
-        if (distance < 10.0)
+    case AUTON_INIT:
+        auton_state = AUTON_CLOSE_CLAW;
+        //fall through
+    case AUTON_CLOSE_CLAW:
+        pRobot->RunClaw(-0.9);
+        if (t > 1.8)
+            auton_state = AUTON_DRIVE_FORWARD;
+        break;
+    case AUTON_DRIVE_FORWARD:
+        if (distance < target_distance)
         {
-            reached_target_distance = false;
+            float speed = GetSpeedStraight();
+            pRobot->Drive(speed,speed);
+            utils::message("Distance = %f\n", distance);
         }
-        float speed = GetSpeedStraight();
-        pRobot->Drive(speed,speed);
-        utils::message("Distance = %f\n", distance);
-
-        //pRobot->SetPosition(465);
-    }
-    else
-    {
-        pRobot->Drive(0.0,0.0);
-        utils::message("Distance_final = %f\n", distance);
-        reached_target_distance = true;
-    }
-    
-    if (reached_target_distance)
-    {
-        pRobot->SetPosition(465-10);
+        else
+        {
+            pRobot->Drive(0.0,0.0);
+            utils::message("Distance_final = %f\n", distance);
+            auton_state = AUTON_RAISE_ARM;
+        }
+        break;
+    case AUTON_RAISE_ARM:
+        pRobot->SetPosition(target_arm_height);
+        if (
+            ((pRobot->GetPosition() - target_arm_height) < 10)
+            || ((pRobot->GetPosition() - target_arm_height) > -10)
+            )
+        {
+            auton_state=AUTON_OPEN_CLAW
+        }
+        break;
     }
 }

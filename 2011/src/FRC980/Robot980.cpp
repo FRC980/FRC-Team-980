@@ -207,6 +207,11 @@ void Robot980::SetPosition(int target) {
 }
 
 //==========================================================================
+int Robot980::GetPosition() {
+    return m_pidArm->Get();
+}
+
+//==========================================================================
 char Robot980::GetLineTracker(bool invert /* = false */)
 {
     int leftValue   = m_pdiLineLeft->Get()   ? 1 : 0;
