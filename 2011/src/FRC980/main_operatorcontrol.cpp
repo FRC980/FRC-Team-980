@@ -188,12 +188,12 @@ void Main::TeleopPeriodic(void)
     if (arm_js_speed > 0.1)
     {
         target_position = -1;
-        pRobot->SetSpeed(arm_js_speed - 0.1);
+        pRobot->SetArmSpeed(arm_js_speed - 0.1);
     }
     else if (arm_js_speed < -0.1)
     {
         target_position = -1;
-        pRobot->SetSpeed((arm_js_speed + 0.1)/4.0);
+        pRobot->SetArmSpeed((arm_js_speed + 0.1)/4.0);
     }
 
     if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)
