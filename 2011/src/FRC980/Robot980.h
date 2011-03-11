@@ -269,8 +269,8 @@ private:
     char GetLineTracker(bool invert = false);
 
     //! \briefSet the LED color
-    // 1=triangle, 2=circle, 3=square \todo use enum
-    void LightLED(int num, bool enable=true);
+    // 0=none, 1=triangle, 2=circle, 3=square \todo use enum
+    void LightLED(int num);
 
     //! \brief Get right encoder value
     float GetRightEncoder();

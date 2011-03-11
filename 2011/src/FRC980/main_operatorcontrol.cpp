@@ -117,31 +117,24 @@ void Main::TeleopPeriodic(void)
         pRobot->PrintState();
     }
 
-    if(pjsDrive->GetRawButton(DRIVE_LED_TRIANGLE))
+    RUN_ONCE(pjsDrive, DRIVE_LED_NONE)
+    {
+        pRobot->LightLED(0);
+    }
+
+    RUN_ONCE(pjsDrive, DRIVE_LED_TRIANGLE)
     {
         pRobot->LightLED(1);
     }
-    else
-    {
-        pRobot->LightLED(1,false);
-    }
 
-    if(pjsDrive->GetRawButton(DRIVE_LED_CIRCLE))
+    RUN_ONCE(pjsDrive, DRIVE_LED_CIRCLE)
     {
         pRobot->LightLED(2);
     }
-    else
-    {
-        pRobot->LightLED(2,false);
-    }
 
-    if(pjsDrive->GetRawButton(DRIVE_LED_SQUARE))
+    RUN_ONCE(pjsDrive, DRIVE_LED_SQUARE)
     {
         pRobot->LightLED(3);
-    }
-    else
-    {
-        pRobot->LightLED(3,false);
     }
 
     //--- Arm code
