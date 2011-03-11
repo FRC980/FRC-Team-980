@@ -264,7 +264,7 @@ private:
      */
     void SetPosition(int position);
 
-    float SetArmSpeed(float speed);
+    void SetArmSpeed(float speed);
 
     //! \brief Get data from line tracker
     //  \return (left, middle, right) booleans stored as char
