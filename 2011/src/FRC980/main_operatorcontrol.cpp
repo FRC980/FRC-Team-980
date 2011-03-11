@@ -7,10 +7,14 @@
 #include "jsbuttons.h"
 #include "utils.h"
 
+static Timer *pTimerClaw = new Timer;
+
 void Main::TeleopInit(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     pRobot->SetBrakes(false);
+    pTimerClaw->Start();
+    pTimerClaw->Reset();
 }
 
 void Main::TeleopContinuous(void)
@@ -175,9 +179,15 @@ void Main::TeleopPeriodic(void)
     if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)
     {
         pRobot->RunClaw(0.9);
+        pTimerClaw->Reset();
     }
     else if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)
     {
         pRobot->RunClaw(-0.9);
+        pTimerClaw->Reset();
+    }
+    if (pTimerClaw->Get() > 1.8)
+    {
+        pRobot->RunClaw(0.0);
     }
 }
