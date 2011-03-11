@@ -323,7 +323,7 @@ void Auton6(void)
             || ((pRobot->GetPosition() - target_arm_height) > -10)
             )
         {
-            auton_state=AUTON_OPEN_CLAW
+            auton_state=AUTON_OPEN_CLAW;
         }
         break;
     }
