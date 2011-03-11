@@ -273,15 +273,31 @@ void Auton6(void)
 
     float distance = pRobot->GetRightEncoder() - encoder_initial;
 
-    if (distance < 100.0)
+    float target_arm_height = 465;
+    float target_distance = 100.0;
+    static bool reached_target_distance = false;
+
+    if (distance < target_distance)
     {
+        if (distance < 10.0)
+        {
+            reached_target_distance = false;
+        }
         float speed = GetSpeedStraight();
         pRobot->Drive(speed,speed);
         utils::message("Distance = %f\n", distance);
+
+        //pRobot->SetPosition(465);
     }
     else
     {
         pRobot->Drive(0.0,0.0);
         utils::message("Distance_final = %f\n", distance);
+        reached_target_distance = true;
+    }
+    
+    if (reached_target_distance)
+    {
+        pRobot->SetPosition(465-10);
     }
 }
