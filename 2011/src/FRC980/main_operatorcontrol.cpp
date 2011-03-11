@@ -196,8 +196,4 @@ void Main::TeleopPeriodic(void)
     {
 	    pRobot->RunClaw(-1.0);
     }
-    else
-    {
-        pRobot->RunClaw(0.0);
-    }
 }
