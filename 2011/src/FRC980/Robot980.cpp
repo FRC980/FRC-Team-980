@@ -50,7 +50,7 @@ Robot980::Robot980()
     , m_pTimerDrive(new Timer)
 
       //--- PIDs
-    , m_pidArm(new PIDController(0.4/30.0,0.0,0.0,m_pacArmPosition, m_pscShoulder))
+    , m_pidArm(new PIDController(0.2/30.0,0.0,0.0,m_pacArmPosition, m_pscShoulder))
       //--- State variables
       //--- Camera
     //, m_pVideoServer(NULL)
