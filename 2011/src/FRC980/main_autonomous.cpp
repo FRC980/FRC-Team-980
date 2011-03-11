@@ -268,6 +268,7 @@ void Auton5(void)
 //==========================================================================
 void Auton6(void)
 {
+    return;
     Robot980 *pRobot = Robot980::GetInstance();
     float t = pTimerAuton->Get();
 
