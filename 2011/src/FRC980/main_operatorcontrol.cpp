@@ -159,17 +159,17 @@ void Main::TeleopPeriodic(void)
 
     RUN_ONCE(pjsArm, ARM_POSITION_LOW)
     {
-        target_position = target_center ? 130 : 175;
+        target_position = target_center ? 175 : 130;
         utils::message("Position #1: %D", target_position);
     }
     RUN_ONCE(pjsArm, ARM_POSITION_MIDDLE)
     {
-        target_position = target_center ? 285 : 300;
+        target_position = target_center ? 300 : 285;
         utils::message("Position #2: %D", target_position);
     }
     RUN_ONCE(pjsArm, ARM_POSITION_HIGH)
     {
-        target_position = target_center ? 430 : 465;
+        target_position = target_center ? 465 : 430;
         utils::message("Position #3: %D", target_position);
     }
 
