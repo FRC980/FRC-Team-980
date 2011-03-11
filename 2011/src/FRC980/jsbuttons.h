@@ -13,7 +13,7 @@
 
 //D-pad(only reads -1,0, or 1)
 #define XB_AXIS_DPAD_X          6
-#define XB_AXIS_DPAD_y          7
+#define XB_AXIS_DPAD_Y          7
 
 
 //-- Buttons
