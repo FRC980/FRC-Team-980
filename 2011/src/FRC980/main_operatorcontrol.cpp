@@ -190,10 +190,10 @@ void Main::TeleopPeriodic(void)
 #endif
     if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)
     {
-	    pRobot->RunClaw(1.0);
+        pRobot->RunClaw(1.0);
     }
     else if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)
     {
-	    pRobot->RunClaw(-1.0);
+        pRobot->RunClaw(-1.0);
     }
 }
