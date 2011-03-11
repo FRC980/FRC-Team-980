@@ -32,10 +32,9 @@
 //-- Aliases - drive controller
 #define DRIVE_SLOW_MODE         XB_BUTTON_BUMPER_LEFT
 #define DRIVE_FAST_MODE         XB_BUTTON_BUMPER_RIGHT
-#define DRIVE_LED_NONE          XB_BUTTON_A +20
-#define DRIVE_LED_TRIANGLE      XB_BUTTON_B +20
-#define DRIVE_LED_CIRCLE        XB_BUTTON_Y +20
-#define DRIVE_LED_SQUARE        XB_BUTTON_X +20
+#define DRIVE_LED_TRIANGLE      XB_BUTTON_B
+#define DRIVE_LED_CIRCLE        XB_BUTTON_Y
+#define DRIVE_LED_SQUARE        XB_BUTTON_X
 
 //-- Aliases - drive controller for debugging
 #define DRIVE_PRINT_LINETRACKER XB_BUTTON_Y +20
