@@ -156,34 +156,38 @@ void Main::TeleopPeriodic(void)
         target_center = false;
         utils::message("Targeting side");
     }
-    RUN_ONCE(pjsArm, ARM_POSITION_GROUND)
+    if(pjsArm->GetRawButton(ARM_POSITION_GROUND))
     {
         target_position = 30;
         utils::message("Position #3: %D", target_position);
     }
-    RUN_ONCE(pjsArm, ARM_POSITION_LOW)
+    else if(pjsArm->GetRawButton(ARM_POSITION_LOW))
     {
         target_position = target_center ? 175 : 130;
         utils::message("Position #1: %D", target_position);
     }
-    RUN_ONCE(pjsArm, ARM_POSITION_MIDDLE)
+    else if(pjsArm->GetRawButton(ARM_POSITION_MIDDLE))
     {
         target_position = target_center ? 300 : 285;
         utils::message("Position #2: %D", target_position);
     }
-    RUN_ONCE(pjsArm, ARM_POSITION_HIGH)
+    else if(pjsArm->GetRawButton(ARM_POSITION_HIGH))
     {
         target_position = target_center ? 465 : 430;
         utils::message("Position #3: %D", target_position);
     }
+    else
+    {
+        target_position = -1;
+    }
 
     if (target_position != -1)
     {
-        int displacement = (int)(-pjsArm->GetY() * 110);
+        int displacement = (int)(-GetRawAxis(XB_AXIS_RIGHT_Y) * 110);
         pRobot->SetPosition(target_position + displacement);
     }
 
-    float arm_js_speed = pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y);
+    float arm_js_speed = -pjsArm->GetY();
 
     if (arm_js_speed > 0.1)
     {
