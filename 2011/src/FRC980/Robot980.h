@@ -266,6 +266,10 @@ private:
 
     void SetArmSpeed(float speed);
 
+    //! \brief Get current arm position
+    int GetPosition();
+
+
     //! \brief Get data from line tracker
     //  \return (left, middle, right) booleans stored as char
     char GetLineTracker(bool invert = false);

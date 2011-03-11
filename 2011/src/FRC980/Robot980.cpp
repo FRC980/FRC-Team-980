@@ -207,6 +207,7 @@ void Robot980::SetPosition(int target) {
 }
 
 //==========================================================================
+
 void Robot980::SetArmSpeed(float speed) {
     if(m_pidArm->IsEnabled())
     {
@@ -216,6 +217,13 @@ void Robot980::SetArmSpeed(float speed) {
     }
 
     m_pscShoulder->Set(speed);
+}
+
+//==========================================================================
+
+int Robot980::GetPosition() {
+    return m_pidArm->Get();
+
 }
 
 //==========================================================================
