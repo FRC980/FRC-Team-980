@@ -181,6 +181,10 @@ void Main::TeleopPeriodic(void)
         //up
         pRobot->m_pscShoulder->Set((pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y)+0.1)*(10.0/9.0));
     }
+    else
+    {
+        pRobot->m_pscShoulder->Set(0.0);
+    }
 
     if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)
     {
