@@ -52,7 +52,7 @@
 
 
 //-- Aliases - arm controller
-#define ARM_PRINT_STATUS          XB_BUTTON_X
+#define ARM_PRINT_STATUS            XB_BUTTON_X
 #define ARM_ENABLE_TARGET_CENTER    XB_BUTTON_BUMPER_RIGHT
 #define ARM_DISABLE_TARGET_CENTER   XB_BUTTON_BUMPER_LEFT
 #define ARM_POSITION_LOW            XB_BUTTON_A
