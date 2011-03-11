@@ -16,7 +16,8 @@ typedef enum
     AUTON_RAISE_ARM,
     AUTON_OPEN_CLAW,
     AUTON_LOWER_ARM,
-    AUTON_DRIVE_REVERSE
+    AUTON_DRIVE_REVERSE,
+    AUTON_DONE
 } auton_state_t;
 
 auton_state_t auton_state = AUTON_INIT;
@@ -303,6 +304,7 @@ void Auton6(void)
             auton_state = AUTON_DRIVE_FORWARD;
         break;
     case AUTON_DRIVE_FORWARD:
+        pRobot->SetPosition(target_arm_height);
         if (distance < target_distance)
         {
             float speed = GetSpeedStraight();
@@ -317,7 +319,7 @@ void Auton6(void)
         }
         break;
     case AUTON_RAISE_ARM:
-        pRobot->SetPosition(target_arm_height);
+        auton_state = AUTON_DONE; return;
         if (
             ((pRobot->GetPosition() - target_arm_height) < 10)
             || ((pRobot->GetPosition() - target_arm_height) > -10)
