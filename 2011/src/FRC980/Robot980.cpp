@@ -207,6 +207,18 @@ void Robot980::SetPosition(int target) {
 }
 
 //==========================================================================
+float Robot980::SetArmSpeed(float speed) {
+    if(m_pidArm->IsEnabled())
+    {
+        m_pidArm->Disable();
+        utils::message("disabling PID");
+        return;
+    }
+
+    m_pscShoulder->Set(speed);
+}
+
+//==========================================================================
 char Robot980::GetLineTracker(bool invert /* = false */)
 {
     int leftValue   = m_pdiLineLeft->Get()   ? 1 : 0;

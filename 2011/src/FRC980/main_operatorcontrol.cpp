@@ -143,7 +143,7 @@ void Main::TeleopPeriodic(void)
 
     //--- Arm code
     static bool target_center = false;
-    static int target_position = 30;
+    static int target_position = -1;
 
     RUN_ONCE(pjsArm, ARM_ENABLE_TARGET_CENTER)
     {
@@ -177,8 +177,24 @@ void Main::TeleopPeriodic(void)
         utils::message("Position #3: %D", target_position);
     }
 
-    int displacement = (int)(-pjsArm->GetY() * 110);
-    pRobot->SetPosition(target_position + displacement);
+    if (target_position != -1)
+    {
+        int displacement = (int)(-pjsArm->GetY() * 110);
+        pRobot->SetPosition(target_position + displacement);
+    }
+
+    float arm_js_speed = pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y);
+
+    if (arm_js_speed > 0.1)
+    {
+        target_position = -1;
+        pRobot->SetSpeed(arm_js_speed - 0.1);
+    }
+    else if (arm_js_speed < -0.1)
+    {
+        target_position = -1;
+        pRobot->SetSpeed((arm_js_speed + 0.1)/4.0);
+    }
 
     if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)
     {
