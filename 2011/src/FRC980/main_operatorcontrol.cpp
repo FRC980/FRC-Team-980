@@ -196,7 +196,7 @@ void Main::TeleopPeriodic(void)
 
     if (target_position != -1)
     {
-        int displacement = (int)(-GetRawAxis(XB_AXIS_RIGHT_Y) * 110);
+        int displacement = (int)(-pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y) * 110);
         pRobot->SetPosition(target_position + displacement);
     }
 
