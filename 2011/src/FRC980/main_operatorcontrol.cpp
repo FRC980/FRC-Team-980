@@ -154,7 +154,7 @@ void Main::TeleopPeriodic(void)
     RUN_ONCE(pjsArm, ARM_DISABLE_TARGET_CENTER)
     {
         target_center = false;
-        utils::message("Targeting center");
+        utils::message("Targeting side");
     }
     RUN_ONCE(pjsArm, ARM_POSITION_GROUND)
     {
