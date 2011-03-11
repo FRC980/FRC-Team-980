@@ -210,7 +210,7 @@ void Main::TeleopPeriodic(void)
         pRobot->RunClaw(-0.9);
         pTimerClaw->Reset();
     }
-    if (pTimerClaw->Get() > 1.8)
+    if (pTimerClaw->Get() > 1.0)
     {
         pRobot->RunClaw(0.0);
     }
