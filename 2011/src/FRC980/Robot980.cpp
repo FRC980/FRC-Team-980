@@ -219,29 +219,18 @@ char Robot980::GetLineTracker(bool invert /* = false */)
 }
 
 //==========================================================================
-void Robot980::LightLED(int num)
+void Robot980::LightLED(int num, bool enable /*=true*/)
 {
     switch(num)
     {
-    case 0:
-        m_pdoLightTriangle->Set(0);
-        m_pdoLightCircle->Set(0);
-        m_pdoLightSquare->Set(0);
-        break;
     case 1:
-        m_pdoLightTriangle->Set(1);
-        m_pdoLightCircle->Set(0);
-        m_pdoLightSquare->Set(0);
+        m_pdoLightTriangle->Set(enable ? 1 : 0);
         break;
     case 2:
-        m_pdoLightTriangle->Set(0);
-        m_pdoLightCircle->Set(1);
-        m_pdoLightSquare->Set(0);
+        m_pdoLightCircle->Set(enable ? 1 : 0);
         break;
     case 3:
-        m_pdoLightTriangle->Set(0);
-        m_pdoLightCircle->Set(0);
-        m_pdoLightSquare->Set(1);
+        m_pdoLightSquare->Set(enable ? 1 : 0);
         break;
     }
 }
