@@ -170,7 +170,8 @@ void Main::TeleopPeriodic(void)
     }
 
     int displacement = (int)(pjsArm->GetY() * 80);
-    //pRobot->SetPosition(target_position + displacement);
+    pRobot->SetPosition(target_position + displacement);
+#if 0
     float arm_speed = -pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y);
     if (arm_speed > 0.1)
     {
@@ -186,7 +187,7 @@ void Main::TeleopPeriodic(void)
     {
         pRobot->m_pscShoulder->Set(0.0);
     }
-
+#endif
     if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)
     {
 	    pRobot->RunClaw(1.0);

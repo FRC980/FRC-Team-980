@@ -199,11 +199,11 @@ void Robot980::Drive(float left, float right)
 void Robot980::SetPosition(int target) {
     if(!m_pidArm->IsEnabled())
     {
-//        m_pidArm->Enable();
+        m_pidArm->Enable();
         utils::message("enabling PID");
     }
 
-//    m_pidArm->SetSetpoint(target);
+    m_pidArm->SetSetpoint(target);
 }
 
 //==========================================================================
