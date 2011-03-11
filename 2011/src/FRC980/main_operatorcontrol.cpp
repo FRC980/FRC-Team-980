@@ -139,7 +139,7 @@ void Main::TeleopPeriodic(void)
 
     //--- Arm code
     static bool target_center = false;
-    static int target_position = 200;
+    static int target_position = 570;
 
     RUN_ONCE(pjsArm, ARM_ENABLE_TARGET_CENTER)
     {
@@ -155,17 +155,17 @@ void Main::TeleopPeriodic(void)
 
     RUN_ONCE(pjsArm, ARM_POSITION_LOW)
     {
-        target_position = target_center ? 200 : 250;
+        target_position = target_center ? 130 : 175;
         utils::message("Position #1: %D", target_position);
     }
     RUN_ONCE(pjsArm, ARM_POSITION_MIDDLE)
     {
-        target_position = target_center ? 300 : 350;
+        target_position = target_center ? 285 : 300;
         utils::message("Position #2: %D", target_position);
     }
     RUN_ONCE(pjsArm, ARM_POSITION_HIGH)
     {
-        target_position = target_center ? 400 : 450;
+        target_position = target_center ? 430 : 465;
         utils::message("Position #3: %D", target_position);
     }
 
