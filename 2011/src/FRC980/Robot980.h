@@ -138,9 +138,9 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define CHAN_LINE_RIGHT             3   /*!< \def CHAN_LINE_SENSOR_RIGHT Input for right line sensor */
 
 // Digital Outputs
-#define CHAN_LIGHT_TRIANGLE         14  
-#define CHAN_LIGHT_CIRCLE           15
-#define CHAN_LIGHT_SQUARE           16
+#define CHAN_LIGHT_TRIANGLE         12  
+#define CHAN_LIGHT_CIRCLE           13
+#define CHAN_LIGHT_SQUARE           14
 
 //==============================================================================
 // Analog Inputs
