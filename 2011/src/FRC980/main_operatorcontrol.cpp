@@ -170,15 +170,14 @@ void Main::TeleopPeriodic(void)
     }
 
     int displacement = (int)(pjsArm->GetY() * 80);
-    int displacement_2 = (int)(pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y) * 120);
     //pRobot->SetPosition(target_position + displacement + displacement_2);
-    if (pjsArm->GetY() > 0.0)
+    if (pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y) > 0.0)
     {
-        pRobot->m_pscShoulder->Set(pjsArm->GetY()/4.0);
+        pRobot->m_pscShoulder->Set(pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y)/4.0);
     }
     else
     {
-        pRobot->m_pscShoulder->Set(pjsArm->GetY());
+        pRobot->m_pscShoulder->Set(pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y));
     }
 
     if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)
