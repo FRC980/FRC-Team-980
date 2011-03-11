@@ -111,16 +111,7 @@ void Main::TeleopPeriodic(void)
         pRobot->Drive(fLeft, fRight);
     }
 
-    if(pjsDrive->GetRawButton(DRIVE_PRINT_LINETRACKER))
-    {
-		utils::message("Line tracker:%d", pRobot->GetLineTracker());
-    }
-
-    if(pjsArm->GetRawButton(ARM_PRINT_STATUS))
-    {
-        pRobot->PrintState();
-    }
-
+    //--- LED signal lights
     RUN_ONCE(pjsDrive, DRIVE_LED_NONE)
     {
         pRobot->LightLED(0);
@@ -141,7 +132,35 @@ void Main::TeleopPeriodic(void)
         pRobot->LightLED(3);
     }
 
+    //--- Minibot deployment
+    if(pjsArm->GetRawAxis(XB_AXIS_DPAD_Y) != 0)
+    {
+        // D-pad - safety for minibot deployment
+        if (pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y > 0.3))
+        {
+            pRobot->Deploy(0.2);
+        }
+        else
+        {
+            pRobot->Deploy(0.0);
+        }
+    }
+
+    //--- Additional code on drive joystick
+    if(pjsDrive->GetRawButton(DRIVE_PRINT_LINETRACKER))
+    {
+		utils::message("Line tracker:%d", pRobot->GetLineTracker());
+    }
+
+
+
+
     //--- Arm code
+    if(pjsArm->GetRawButton(ARM_PRINT_STATUS))
+    {
+        pRobot->PrintState();
+    }
+
     static bool target_center = false;
     static int target_position = -1;
 

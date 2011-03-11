@@ -286,6 +286,11 @@ void Robot980::RunClaw(float speed)
     m_pscClaw->Set(speed);
 }
 
+void Robot980::Deploy(float speed)
+{
+    m_pscMiniDeploy->Set(speed);
+}
+
 //==========================================================================
 //float Robot980::GetAngle(void)
 //{

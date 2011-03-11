@@ -298,6 +298,10 @@ private:
      */
     void RunClaw(float speed);
 
+    /*! \brief Run the deployment motor
+     */
+    void Deploy(float speed);
+
 };
 
 #endif  // ROBOT980_H
