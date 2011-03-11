@@ -17,7 +17,7 @@ typedef enum
     AUTON_OPEN_CLAW,
     AUTON_LOWER_ARM,
     AUTON_DRIVE_REVERSE
-} auton_state_t
+} auton_state_t;
 
 auton_state_t auton_state = AUTON_INIT;
 
