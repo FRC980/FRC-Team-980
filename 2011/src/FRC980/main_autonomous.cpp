@@ -31,6 +31,7 @@ void Main::AutonomousInit(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     iMode = pRobot->GetAutonMode();
+    iMode = 6;
 
     pRobot->SetBrakes(false);
 
