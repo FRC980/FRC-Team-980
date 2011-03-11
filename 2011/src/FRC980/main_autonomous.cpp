@@ -291,7 +291,7 @@ void Auton6(void)
     float distance = pRobot->GetRightEncoder() - encoder_initial;
 
     float target_arm_height = 465;
-    float target_distance = 100.0;
+    float target_distance = 195.0;
 
     switch (auton_state)
     {
