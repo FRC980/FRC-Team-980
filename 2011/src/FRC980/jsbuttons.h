@@ -38,7 +38,6 @@
 #define DRIVE_LED_SQUARE        XB_BUTTON_X +20
 
 //-- Aliases - drive controller for debugging
-#define DRIVE_PRINT_STATUS      XB_BUTTON_X
 #define DRIVE_PRINT_LINETRACKER XB_BUTTON_Y +20
 
 #define DRIVE_AUTON_INIT        XB_BUTTON_A +20
@@ -53,6 +52,7 @@
 
 
 //-- Aliases - arm controller
+#define ARM_PRINT_STATUS          XB_BUTTON_X
 #define ARM_ENABLE_TARGET_CENTER    XB_BUTTON_BUMPER_RIGHT
 #define ARM_DISABLE_TARGET_CENTER   XB_BUTTON_BUMPER_LEFT
 #define ARM_POSITION_LOW            XB_BUTTON_A

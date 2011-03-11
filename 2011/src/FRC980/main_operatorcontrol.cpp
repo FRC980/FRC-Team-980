@@ -112,7 +112,7 @@ void Main::TeleopPeriodic(void)
 		utils::message("Line tracker:%d", pRobot->GetLineTracker());
     }
 
-    if(pjsDrive->GetRawButton(DRIVE_PRINT_STATUS))
+    if(pjsArm->GetRawButton(ARM_PRINT_STATUS))
     {
         pRobot->PrintState();
     }
