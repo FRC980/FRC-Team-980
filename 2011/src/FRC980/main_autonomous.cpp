@@ -299,8 +299,11 @@ void Auton6(void)
         //fall through
     case AUTON_CLOSE_CLAW:
         pRobot->RunClaw(-0.9);
-        if (t > 1.8)
+        if (t > 1.0)
+        {
             auton_state = AUTON_DRIVE_FORWARD;
+            pRobot->RunClaw(0.0);
+        }
         break;
     case AUTON_DRIVE_FORWARD:
         pRobot->SetPosition(target_arm_height);
