@@ -338,13 +338,16 @@ void Auton6(void)
         }
         break;
     case AUTON_OPEN_CLAW:
-        pRobot->RunClaw(0.9);
         if ( (t - initial_state_time) > 1.0)
         {
             pRobot->RunClaw(0.0);
             auton_state = AUTON_LOWER_ARM;
             initial_state_time = t;
             utils::message("claw open");
+        }
+        else
+        {
+            pRobot->RunClaw(0.9);
         }
         break;
     case AUTON_LOWER_ARM:
@@ -357,11 +360,14 @@ void Auton6(void)
         }
         break;
     case AUTON_DRIVE_REVERSE:
-        pRobot->Drive(-0.25, -0.25);
         if ( (t - initial_state_time) > 2.0)
         {
             pRobot->Drive(0.0, 0.0);
             auton_state = AUTON_DONE;
+        }
+        else
+        {
+            pRobot->Drive(-0.25, -0.25);
         }
         break;
     }
