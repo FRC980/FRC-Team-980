@@ -330,7 +330,7 @@ void Auton6(void)
         {
             pRobot->SetArmSpeed(0.0);
             auton_state=AUTON_OPEN_CLAW;
-            initial_state_time = pTimerAuton->Get();
+            initial_state_time = t;
         }
         else
         {
@@ -343,7 +343,7 @@ void Auton6(void)
         {
             pRobot->RunClaw(0.0);
             auton_state = AUTON_LOWER_ARM;
-            initial_state_time = pTimerAuton->Get();
+            initial_state_time = t;
         }
         break;
     case AUTON_LOWER_ARM:
@@ -351,7 +351,7 @@ void Auton6(void)
         if ( (t - initial_state_time) > 2.0)
         {
             auton_state = AUTON_DRIVE_REVERSE;
-            initial_state_time = pTimerAuton->Get();
+            initial_state_time = t;
             utils::message("driving back");
         }
         break;
