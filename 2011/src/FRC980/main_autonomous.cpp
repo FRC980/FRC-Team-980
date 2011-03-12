@@ -328,7 +328,7 @@ void Auton6(void)
             || ((pRobot->GetPosition() - target_arm_height) > -10)
             )
         {
-            pRobot->SetArmSpeed(0.0);
+            pRobot->SetArmSpeed(0.0);t
             auton_state=AUTON_OPEN_CLAW;
             initial_state_time = t;
         }
@@ -344,6 +344,7 @@ void Auton6(void)
             pRobot->RunClaw(0.0);
             auton_state = AUTON_LOWER_ARM;
             initial_state_time = t;
+            utils::message("claw open");
         }
         break;
     case AUTON_LOWER_ARM:
