@@ -332,6 +332,10 @@ void Auton6(void)
             auton_state=AUTON_OPEN_CLAW;
             initial_claw_time = pTimerAuton->Get();
         }
+        else
+        {
+            utils::message("Arm at %f", pRobot->GetPosition());
+        }
         break;
     case AUTON_OPEN_CLAW:
         if ( (t - initial_claw_time) > 1.0)
