@@ -321,12 +321,12 @@ void Auton6(void)
         }
         break;
     case AUTON_RAISE_ARM:
-        auton_state = AUTON_DONE; return;
         if (
             ((pRobot->GetPosition() - target_arm_height) < 10)
             || ((pRobot->GetPosition() - target_arm_height) > -10)
             )
         {
+            pRobot->SetArmSpeed(0.0);
             auton_state=AUTON_OPEN_CLAW;
         }
         break;
