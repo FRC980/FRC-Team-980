@@ -334,7 +334,7 @@ void Auton6(void)
         }
         break;
     case AUTON_OPEN_CLAW:
-        if (t - initial_claw_time > 1.0)
+        if ( (t - initial_claw_time) > 1.0)
         {
             auton_state = AUTON_DONE;
             pRobot->RunClaw(0.0);
