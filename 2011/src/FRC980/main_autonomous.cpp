@@ -310,7 +310,7 @@ void Auton6(void)
         }
         break;
     case AUTON_RELEASE_CLAW:
-        if ( (t - initial_state_time) < 0.5)
+        if ( (t - initial_state_time) < 0.4)
         {
             pRobot->Drive(1.0,1.0)
         }
