@@ -305,11 +305,23 @@ void Auton6(void)
         if (t > 1.0)
         {
             auton_state = AUTON_RELEASE_CLAW;
+            initial_state_time = t;
             pRobot->RunClaw(0.0);
         }
         break;
     case AUTON_RELEASE_CLAW:
-        auton_state = AUTON_DRIVE_FORWARD;
+        if ( (t - initial_state_time) < 0.5)
+        {
+            pRobot->Drive(1.0,1.0)
+        }
+        else if ( (t - initial_state_time) < 1.0)
+        {
+            pRobot->Drive(0.0,0.0)
+        }
+        else
+        {
+            auton_state = AUTON_DRIVE_FORWARD;
+        }
         break;
     case AUTON_DRIVE_FORWARD:
         pRobot->SetPosition(target_arm_height);
