@@ -136,12 +136,14 @@ void Main::TeleopPeriodic(void)
     if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)
     {
         // D-pad - safety for minibot deployment
-        if (pjsArm->GetRawAxis(XB_AXIS_DPAD_Y) < -0.3)
+        if (pjsArm->GetRawAxis(XB_AXIS_DPAD_Y) == -1)
         {
             pRobot->Deploy(0.2);
+            utils::message("deploying minibot");
         }
         else
         {
+            utils::message("safety is off");
             pRobot->Deploy(0.0);
         }
     }
