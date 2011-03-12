@@ -198,23 +198,27 @@ void Main::TeleopPeriodic(void)
         target_position = -1;
     }
 
-    float arm_js_speed = -pjsArm->GetY();
-
-    if (arm_js_speed > 0.1)
-    {
-        target_position = -1;
-        pRobot->SetArmSpeed(arm_js_speed - 0.1);
-    }
-    else if (arm_js_speed < -0.1)
-    {
-        target_position = -1;
-        pRobot->SetArmSpeed((arm_js_speed + 0.1)/4.0);
-    }
-
     if (target_position != -1)
     {
         int displacement = (int)(-pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y) * 110);
         pRobot->SetPosition(target_position + displacement);
+    }
+    else
+    {
+
+        float arm_js_speed = -pjsArm->GetY();
+
+        if (arm_js_speed > 0)
+        {
+            target_position = -1;
+            pRobot->SetArmSpeed(arm_js_speed);
+        }
+        else
+        {
+            target_position = -1;
+            pRobot->SetArmSpeed(arm_js_speed);
+        }
+
     }
 
     if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)
