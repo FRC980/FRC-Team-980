@@ -291,7 +291,7 @@ void Auton6(void)
     float distance = pRobot->GetRightEncoder() - encoder_initial;
 
     float target_arm_height = 465;
-    float target_distance = 195.0;
+    float target_distance = 6.0*12.0; //195.0;
 
     static float initial_state_time = pTimerAuton->Get();
 
@@ -310,11 +310,11 @@ void Auton6(void)
         }
         break;
     case AUTON_RELEASE_CLAW:
-        if ( (t - initial_state_time) < 0.4)
+        if ( (t - initial_state_time) < 0.2)
         {
-            pRobot->Drive(1.0,1.0)
+            pRobot->Drive(-1.0,-1.0)
         }
-        else if ( (t - initial_state_time) < 1.0)
+        else if ( (t - initial_state_time) < 0.4)
         {
             pRobot->Drive(0.0,0.0)
         }
