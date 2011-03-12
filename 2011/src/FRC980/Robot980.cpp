@@ -216,8 +216,8 @@ void Robot980::SetArmSpeed(float speed) {
         return;
     }
 
-    if ((m_pacArmPosition->Get() > 570) && (speed > 0))
-        return;
+    if ((m_pacArmPosition->GetValue() > 570) && (speed > 0))
+        m_pscShoulder->Set(0.0);
     m_pscShoulder->Set(speed);
 }
 
