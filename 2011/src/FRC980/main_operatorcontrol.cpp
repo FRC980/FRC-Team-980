@@ -135,8 +135,13 @@ void Main::TeleopPeriodic(void)
     //--- Minibot deployment
     if(pjsDrive->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)
     {
-        // D-pad - safety for minibot deployment
+        // Right joystick - safety for minibot deployment
         if (pjsDrive->GetRawAxis(XB_AXIS_RIGHT_Y) < -0.3)
+        {
+            pRobot->Deploy(-0.2);
+            utils::message("deploying minibot");
+        }
+        else if (pjsDrive->GetRawAxis(XB_AXIS_RIGHT_Y) > 0.3)
         {
             pRobot->Deploy(0.2);
             utils::message("deploying minibot");
