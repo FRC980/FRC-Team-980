@@ -292,7 +292,7 @@ void Auton6(void)
     float target_arm_height = 465;
     float target_distance = 195.0;
 
-    float initial_state_time = pTimerAuton->Get();
+    static float initial_state_time = pTimerAuton->Get();
 
     switch (auton_state)
     {
@@ -348,6 +348,7 @@ void Auton6(void)
         else
         {
             pRobot->RunClaw(0.9);
+            utils::message("closing claw");
         }
         break;
     case AUTON_LOWER_ARM:
