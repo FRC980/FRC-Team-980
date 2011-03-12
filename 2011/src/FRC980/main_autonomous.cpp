@@ -352,10 +352,11 @@ void Auton6(void)
         {
             auton_state = AUTON_DRIVE_REVERSE;
             initial_state_time = pTimerAuton->Get();
+            utils::message("driving back");
         }
         break;
     case AUTON_DRIVE_REVERSE:
-        pRobot->Drive(-0.2, -0.2);
+        pRobot->Drive(-0.25, -0.25);
         if ( (t - initial_state_time) > 2.0)
         {
             pRobot->Drive(0.0, 0.0);
