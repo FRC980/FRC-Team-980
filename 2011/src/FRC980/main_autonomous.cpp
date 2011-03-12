@@ -328,7 +328,7 @@ void Auton6(void)
             || ((pRobot->GetPosition() - target_arm_height) > -10)
             )
         {
-            pRobot->SetArmSpeed(0.0);t
+            pRobot->SetArmSpeed(0.0);
             auton_state=AUTON_OPEN_CLAW;
             initial_state_time = t;
         }
