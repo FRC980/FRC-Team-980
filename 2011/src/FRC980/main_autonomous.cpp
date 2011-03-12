@@ -292,7 +292,7 @@ void Auton6(void)
     float target_arm_height = 465;
     float target_distance = 195.0;
 
-    float initial_claw_time = pTimerAuton->Get();
+    float initial_state_time = pTimerAuton->Get();
 
     switch (auton_state)
     {
@@ -330,7 +330,7 @@ void Auton6(void)
         {
             pRobot->SetArmSpeed(0.0);
             auton_state=AUTON_OPEN_CLAW;
-            initial_claw_time = pTimerAuton->Get();
+            initial_state_time = pTimerAuton->Get();
         }
         else
         {
@@ -338,16 +338,29 @@ void Auton6(void)
         }
         break;
     case AUTON_OPEN_CLAW:
-        if ( (t - initial_claw_time) > 1.0)
+        pRobot->RunClaw(0.9);
+        if ( (t - initial_state_time) > 1.0)
         {
-            auton_state = AUTON_DONE;
             pRobot->RunClaw(0.0);
-        }
-        else
-        {
-            pRobot->RunClaw(0.9);
+            auton_state = AUTON_LOWER_ARM;
+            initial_state_time = pTimerAuton->Get();
         }
         break;
-
+    case AUTON_LOWER_ARM:
+        //let gravity do the work
+        if ( (t - initial_state_time) > 2.0)
+        {
+            auton_state = AUTON_DRIVE_REVERSE;
+            initial_state_time = pTimerAuton->Get();
+        }
+        break;
+    case AUTON_DRIVE_REVERSE:
+        pRobot->Drive(-0.2, -0.2);
+        if ( (t - initial_state_time) > 2.0)
+        {
+            pRobot->Drive(0.0, 0.0);
+            auton_state = AUTON_DONE;
+        }
+        break;
     }
 }
