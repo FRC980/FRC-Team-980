@@ -269,7 +269,7 @@ void Robot980::LightLED(int num)
 //==========================================================================
 float Robot980::GetRightEncoder()
 {
-    return m_pscRight1->GetPosition() * 15.0;//3.14159 * WHEEL_DIAMETER;
+    return m_pscRight1->GetPosition() * 25.0;//3.14159 * WHEEL_DIAMETER;
 }
 
 //==========================================================================
