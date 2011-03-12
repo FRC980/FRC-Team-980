@@ -136,7 +136,7 @@ void Main::TeleopPeriodic(void)
     if( (pjsDrive->GetRawAxis(XB_AXIS_RIGHT_Y) < -0.3) && (pjsDrive->GetRawAxis(XB_AXIS_RIGHT_Y) < -0.3))
     {
         // Right joystick up and right trigger pressed
-        pRobot->Deploy(-0.2);
+        pRobot->Deploy(-0.7);
         utils::message("deploying minibot");
     }
     else
