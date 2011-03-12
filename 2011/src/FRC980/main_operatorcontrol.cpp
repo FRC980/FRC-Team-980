@@ -231,7 +231,7 @@ void Main::TeleopPeriodic(void)
     else if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)
     {
         //close
-        pRobot->RunClaw(-0.7);
+        pRobot->RunClaw(-0.8);
         pTimerClaw->Reset();
     }
     if (pTimerClaw->Get() > 1.0)
