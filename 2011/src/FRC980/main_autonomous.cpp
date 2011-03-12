@@ -12,6 +12,7 @@ typedef enum
 {
     AUTON_INIT,
     AUTON_CLOSE_CLAW,
+    AUTON_RELEASE_CLAW,
     AUTON_DRIVE_FORWARD,
     AUTON_RAISE_ARM,
     AUTON_OPEN_CLAW,
@@ -303,9 +304,12 @@ void Auton6(void)
         pRobot->RunClaw(-0.9);
         if (t > 1.0)
         {
-            auton_state = AUTON_DRIVE_FORWARD;
+            auton_state = AUTON_RELEASE_CLAW;
             pRobot->RunClaw(0.0);
         }
+        break;
+    case AUTON_RELEASE_CLAW:
+        auton_state = AUTON_DRIVE_FORWARD;
         break;
     case AUTON_DRIVE_FORWARD:
         pRobot->SetPosition(target_arm_height);
