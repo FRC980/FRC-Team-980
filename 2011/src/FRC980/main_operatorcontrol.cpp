@@ -7,10 +7,14 @@
 #include "jsbuttons.h"
 #include "utils.h"
 
+static Timer *pTimerClaw = new Timer;
+
 void Main::TeleopInit(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     pRobot->SetBrakes(false);
+    pTimerClaw->Start();
+    pTimerClaw->Reset();
 }
 
 void Main::TeleopContinuous(void)
@@ -54,8 +58,21 @@ void Main::TeleopPeriodic(void)
     GetWatchdog().Feed();
 
     //--- Set a pointer to the joystick(s)
-    Joystick *pjsDrive = Joystick::GetStickForPort(1);
-    Joystick *pjsArm   = Joystick::GetStickForPort(2);
+    static Joystick *pjsDrive = Joystick::GetStickForPort(1);
+    static Joystick *pjsArm   = Joystick::GetStickForPort(2);
+
+    //--- Swap joysticks on request
+    RUN_ONCE(pjsDrive, JS_IDENTIFY_ARM)
+    {
+        utils::message("swapping joysticks");
+        std::swap(pjsDrive, pjsArm);
+    }
+    RUN_ONCE(pjsArm, JS_IDENTIFY_DRIVE)
+    {
+        utils::message("swapping joysticks");
+        std::swap(pjsDrive, pjsArm);
+    }
+    
 
     //--- Get the x and y position from the joystick
     float x = pjsDrive->GetX();
@@ -71,17 +88,15 @@ void Main::TeleopPeriodic(void)
     float fLeft = (y + x);
     float fRight = (y - x);
 
-
-
     // Slow mode imposes a speed limit
     // Left thumb button on joystick enables, right thumb button disables
     static bool bSlowMode = false;
-    if (pjsDrive->GetRawButton(JS_TOP_LEFT) && !bSlowMode)
+    if (pjsDrive->GetRawButton(DRIVE_SLOW_MODE) && !bSlowMode)
     {
         bSlowMode = true;
         utils::message("slow mode");
     }
-    if (pjsDrive->GetRawButton(JS_TOP_RIGHT) && bSlowMode)
+    if (pjsDrive->GetRawButton(DRIVE_FAST_MODE) && bSlowMode)
     {
         bSlowMode = false;
         utils::message("fast mode");
@@ -96,8 +111,131 @@ void Main::TeleopPeriodic(void)
         pRobot->Drive(fLeft, fRight);
     }
 
-    RUN_ONCE(pjsDrive,11)
+    //--- LED signal lights
+    RUN_ONCE(pjsDrive, DRIVE_LED_NONE)
+    {
+        pRobot->LightLED(0);
+    }
+
+    RUN_ONCE(pjsDrive, DRIVE_LED_TRIANGLE)
+    {
+        pRobot->LightLED(1);
+    }
+
+    RUN_ONCE(pjsDrive, DRIVE_LED_CIRCLE)
+    {
+        pRobot->LightLED(2);
+    }
+
+    RUN_ONCE(pjsDrive, DRIVE_LED_SQUARE)
+    {
+        pRobot->LightLED(3);
+    }
+
+    //--- Minibot deployment
+    if(    (pjsDrive->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)
+        && (pjsDrive->GetRawAxis(XB_AXIS_RIGHT_Y) < -0.3) )
+    {
+        // Right joystick up and right trigger pressed
+        pRobot->Deploy(-0.7);
+        utils::message("deploying minibot");
+    }
+    else
+    {
+        pRobot->Deploy(0.0);
+    }
+
+    //--- Additional code on drive joystick
+    if(pjsDrive->GetRawButton(DRIVE_PRINT_LINETRACKER))
+    {
+		utils::message("Line tracker:%d", pRobot->GetLineTracker());
+    }
+
+
+
+
+    //--- Arm code
+    if(pjsArm->GetRawButton(ARM_PRINT_STATUS))
     {
         pRobot->PrintState();
+    }
+
+    static bool target_center = false;
+    static int target_position = -1;
+
+    RUN_ONCE(pjsArm, ARM_ENABLE_TARGET_CENTER)
+    {
+        target_center = true;
+        utils::message("Targeting center");
+    }
+
+    RUN_ONCE(pjsArm, ARM_DISABLE_TARGET_CENTER)
+    {
+        target_center = false;
+        utils::message("Targeting side");
+    }
+    if(pjsArm->GetRawButton(ARM_POSITION_GROUND))
+    {
+        target_position = 30;
+        utils::message("Position #3: %D", target_position);
+    }
+    else if(pjsArm->GetRawButton(ARM_POSITION_LOW))
+    {
+        target_position = target_center ? 175 : 130;
+        utils::message("Position #1: %D", target_position);
+    }
+    else if(pjsArm->GetRawButton(ARM_POSITION_MIDDLE))
+    {
+        target_position = target_center ? 300 : 285;
+        utils::message("Position #2: %D", target_position);
+    }
+    else if(pjsArm->GetRawButton(ARM_POSITION_HIGH))
+    {
+        target_position = target_center ? 465 : 430;
+        utils::message("Position #3: %D", target_position);
+    }
+    else
+    {
+        target_position = -1;
+    }
+
+    if (target_position != -1)
+    {
+        int displacement = (int)(-pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y) * 110);
+        pRobot->SetPosition(target_position + displacement);
+    }
+    else
+    {
+
+        float arm_js_speed = -pjsArm->GetY();
+
+        if (arm_js_speed > 0)
+        {
+            target_position = -1;
+            pRobot->SetArmSpeed(arm_js_speed);
+        }
+        else
+        {
+            target_position = -1;
+            pRobot->SetArmSpeed(arm_js_speed);
+        }
+
+    }
+
+    if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)
+    {
+        //open
+        pRobot->RunClaw(1.0);
+        pTimerClaw->Reset();
+    }
+    else if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)
+    {
+        //close
+        pRobot->RunClaw(-0.8);
+        pTimerClaw->Reset();
+    }
+    if (pTimerClaw->Get() > 1.0)
+    {
+        pRobot->RunClaw(0.0);
     }
 }

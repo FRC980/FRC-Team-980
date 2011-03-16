@@ -32,14 +32,25 @@ Robot980::Robot980()
 
       //--- Victors
     , m_pscShoulder(new Victor(DSC_SLOT, CHAN_PWM_SHOULDER))
+
+      //--- Lights
+    , m_pdoLightTriangle(new DigitalOutput(DSC_SLOT, CHAN_LIGHT_TRIANGLE))
+    , m_pdoLightCircle(new DigitalOutput(DSC_SLOT, CHAN_LIGHT_CIRCLE))
+    , m_pdoLightSquare(new DigitalOutput(DSC_SLOT, CHAN_LIGHT_SQUARE))
+
       //--- Sensors
     , m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
     , m_pdiLineLeft(new DigitalInput(DSC_SLOT, CHAN_LINE_LEFT))
     , m_pdiLineCenter(new DigitalInput(DSC_SLOT, CHAN_LINE_CENTER))
     , m_pdiLineRight(new DigitalInput(DSC_SLOT, CHAN_LINE_RIGHT))
+    , m_pacAutonSwitch(new AnalogChannel(ANALOG_SLOT, CHAN_AUTO_MODE))
+    , m_pacArmPosition(new AnalogChannel(ANALOG_SLOT, CHAN_ARM_POTENTIOMETER))
+
       //--- Timers
     , m_pTimerDrive(new Timer)
 
+      //--- PIDs
+    , m_pidArm(new PIDController(0.2/30.0,0.0,0.0,m_pacArmPosition, m_pscShoulder))
       //--- State variables
       //--- Camera
     //, m_pVideoServer(NULL)
@@ -54,15 +65,31 @@ Robot980::Robot980()
     //m_pscRight1->SetPID( kp,  ki,  kd);
     //m_pscRight2->SetPID( kp,  ki,  kd);
 
-    //--- Encoder setup for Left CIM
-    //m_pscLeft->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-    //m_pscLeft->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-    //m_pscLeft->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+    //--- Encoder setup for Left CIMs
+    m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+    m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
+    m_pscLeft1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+    m_pscLeft1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+    
+    m_pscLeft2->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+    m_pscLeft2->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
+    m_pscLeft2->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+    m_pscLeft2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
-    //--- Encoder setup for Right CIM
-    //m_pscRight->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-    //m_pscRight->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-    //m_pscRight->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
+    //--- Encoder setup for Right CIMs
+    m_pscRight1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+    m_pscRight1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
+    m_pscRight1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+    m_pscRight1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+
+    m_pscRight2->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+    m_pscRight2->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
+    m_pscRight2->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+    m_pscRight2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+    
+    //--- Set up PID loops
+    m_pidArm->SetInputRange(40.0,700);
+    m_pidArm->SetTolerance(4.0 /*%*/);
 
     //--- Define Drive Timer
     m_pTimerDrive->Reset();
@@ -169,24 +196,103 @@ void Robot980::Drive(float left, float right)
 }
 
 //==========================================================================
+void Robot980::SetPosition(int target) {
+    if(!m_pidArm->IsEnabled())
+    {
+        m_pidArm->Enable();
+        utils::message("enabling PID");
+    }
+
+    m_pidArm->SetSetpoint(target);
+}
+
+//==========================================================================
+
+void Robot980::SetArmSpeed(float speed) {
+    if(m_pidArm->IsEnabled())
+    {
+        m_pidArm->Disable();
+        utils::message("disabling PID");
+        return;
+    }
+
+    if ((m_pacArmPosition->GetValue() > 510) && (speed > 0))
+        m_pscShoulder->Set(0.0);
+    m_pscShoulder->Set(speed);
+}
+
+//==========================================================================
+
+int Robot980::GetPosition() {
+    return m_pidArm->Get();
+
+}
+
+//==========================================================================
 char Robot980::GetLineTracker(bool invert /* = false */)
 {
     int leftValue   = m_pdiLineLeft->Get()   ? 1 : 0;
     int centerValue = m_pdiLineCenter->Get() ? 1 : 0;
     int rightValue  = m_pdiLineRight->Get()  ? 1 : 0;
     if(invert)
-    	return leftValue + centerValue * 2 + rightValue * 4;
+        return leftValue + centerValue * 2 + rightValue * 4;
     else
-    	return leftValue * 4 + centerValue * 2 + rightValue;
+        return leftValue * 4 + centerValue * 2 + rightValue;
+}
+
+//==========================================================================
+void Robot980::LightLED(int num)
+{
+    switch(num)
+    {
+    case 0:
+        m_pdoLightTriangle->Set(0);
+        m_pdoLightCircle->Set(0);
+        m_pdoLightSquare->Set(0);
+        break;
+    case 1:
+        m_pdoLightTriangle->Set(1);
+        m_pdoLightCircle->Set(0);
+        m_pdoLightSquare->Set(0);
+        break;
+    case 2:
+        m_pdoLightTriangle->Set(0);
+        m_pdoLightCircle->Set(1);
+        m_pdoLightSquare->Set(0);
+        break;
+    case 3:
+        m_pdoLightTriangle->Set(0);
+        m_pdoLightCircle->Set(0);
+        m_pdoLightSquare->Set(1);
+        break;
+    }
+}
+
+//==========================================================================
+float Robot980::GetRightEncoder()
+{
+    return m_pscRight1->GetPosition() * 21.8;//3.14159 * WHEEL_DIAMETER;
 }
 
 //==========================================================================
 void Robot980::PrintState(void)
 {
-    utils::message("");
+    int i = m_pacArmPosition->GetValue();
+
+    utils::message("potentiometer: %d\n", i);
 }
 
 //==========================================================================
+void Robot980::RunClaw(float speed)
+{
+    m_pscClaw->Set(speed);
+}
+
+void Robot980::Deploy(float speed)
+{
+    m_pscMiniDeploy->Set(speed);
+}
+
 //==========================================================================
 //float Robot980::GetAngle(void)
 //{
