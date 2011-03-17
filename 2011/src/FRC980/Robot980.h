@@ -301,7 +301,8 @@ private:
     /*! \brief Run the deployment motor
      */
     void Deploy(float speed);
-
+    
+    void GetCurrent();
 };
 
 #endif  // ROBOT980_H

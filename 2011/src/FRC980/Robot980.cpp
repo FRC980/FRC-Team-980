@@ -294,6 +294,12 @@ void Robot980::Deploy(float speed)
 }
 
 //==========================================================================
+void Robot980::GetCurrent()
+{
+    utils::message("current of claw when closed on tube: %d", m_pscClaw->GetOutputCurrent());
+}
+
+//==========================================================================
 //float Robot980::GetAngle(void)
 //{
 //   return 1.0;
