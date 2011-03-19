@@ -210,6 +210,10 @@ private:
 
     //--- Timers
     Timer *m_pTimerDrive; /*!< The Timer used for debugging (calc & print speeds) */
+    Timer *m_pTimerClaw;
+
+    //--- Notifiers
+    Notifier *m_pNotifierClaw;
 
   private:
     // PCVideoServer* m_pVideoServer;
@@ -294,15 +298,21 @@ private:
      */
     float GetAngle(void);
 
-    /*! \brief Send command to jaguar for claw
+    /*! \brief Send command to jaguar to open claw
      */
-    void RunClaw(float speed);
+    void OpenClaw(float speed = 1.0);
+
+    /*! \brief Send command to jaguar to close claw
+     */
+    void CloseClaw(float speed = 0.8);
+
+    /*! \brief Stop the claw if needed (called by notifier)
+     */
+    static void CheckClaw(void* pvRobot);
 
     /*! \brief Run the deployment motor
      */
     void Deploy(float speed);
-    
-    float GetCurrent();
 };
 
 #endif  // ROBOT980_H

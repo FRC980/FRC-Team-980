@@ -48,6 +48,10 @@ Robot980::Robot980()
 
       //--- Timers
     , m_pTimerDrive(new Timer)
+    , m_pTimerClaw(new Timer)
+
+      //--- Notifiers
+    , m_pNotifierClaw(new Notifier(Robot980::CheckClaw, this))
 
       //--- PIDs
     , m_pidArm(new PIDController(0.2/30.0,0.0,0.0,m_pacArmPosition, m_pscShoulder))
@@ -94,6 +98,10 @@ Robot980::Robot980()
     //--- Define Drive Timer
     m_pTimerDrive->Reset();
     m_pTimerDrive->Start();
+
+    //--- Start Claw Timer
+    m_pTimerClaw->Reset();
+    m_pTimerClaw->Start();
 
     //--- Tell SensorBase about us
     AddToSingletonList();
@@ -283,20 +291,58 @@ void Robot980::PrintState(void)
 }
 
 //==========================================================================
-void Robot980::RunClaw(float speed)
+void Robot980::OpenClaw(float speed)
 {
+    m_pNotifierClaw->Stop(); 
+    
     m_pscClaw->Set(speed);
+    m_pTimerClaw->Reset();
+    m_pNotifierClaw->StartPeriodic(0.1);
 }
+
+void Robot980::CloseClaw(float speed)
+{
+    m_pNotifierClaw->Stop();
+    
+    m_pscClaw->Set(-speed);
+    m_pTimerClaw->Reset();
+    m_pNotifierClaw->StartPeriodic(0.1);
+}
+
+/*static*/
+void Robot980::CheckClaw(void* pvRobot)
+{
+    Robot980* pRobot=static_cast<Robot980*>(pvRobot);
+
+    float t = pRobot->m_pTimerClaw->Get();
+
+    if (t < 0.25)
+    {
+        // do nothing: Let claw run for 0.25 seconds
+    }
+    else if (t < 1.0)
+    {
+        // From 0.25 seconds to 1 second,
+        //     Stop the claw if current exceeds the limit
+        if (pRobot->m_pscClaw->GetOutputCurrent() > 15.0)
+        {
+            pRobot->m_pscClaw->Set(0.0);
+            pRobot->m_pNotifierClaw->Stop();
+        }
+    }
+    else
+    {
+        // After 1 second, stop the claw
+        pRobot->m_pscClaw->Set(0.0);
+        pRobot->m_pNotifierClaw->Stop();
+    }
+}
+
+//==========================================================================
 
 void Robot980::Deploy(float speed)
 {
     m_pscMiniDeploy->Set(speed);
-}
-
-//==========================================================================
-float Robot980::GetCurrent()
-{
-    return m_pscClaw->GetOutputCurrent();
 }
 
 //==========================================================================

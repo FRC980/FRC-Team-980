@@ -7,14 +7,10 @@
 #include "jsbuttons.h"
 #include "utils.h"
 
-static Timer *pTimerClaw = new Timer;
-
 void Main::TeleopInit(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     pRobot->SetBrakes(false);
-    pTimerClaw->Start();
-    pTimerClaw->Reset();
 }
 
 void Main::TeleopContinuous(void)
@@ -222,27 +218,28 @@ void Main::TeleopPeriodic(void)
 
     }
 
-    if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)
+    static bool close_pressed = false;
+    static bool open_pressed = false;
+
+    if( !open_pressed
+       && (pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)  )
     {
-        //open
-        pRobot->RunClaw(1.0);
-        pTimerClaw->Reset();
+        pRobot->OpenClaw();
+
+        open_pressed=true;
+        close_pressed=false;
     }
-    else if(pjsArm->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)
+    else if( !close_pressed
+            && (pjsArm->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)  )
     {
-        //close
-        pRobot->RunClaw(-0.8);
-        pTimerClaw->Reset();
+        pRobot->CloseClaw();
+
+        open_pressed=false;
+        close_pressed=true;
     }
-    if (pTimerClaw->Get() > 0.3)
+    else
     {
-        if(pRobot->GetCurrent() > 15.0)
-        {
-            pRobot->RunClaw(0.0);
-        }
-    }
-    if (pTimerClaw->Get() > 1.0)
-    {
-        pRobot->RunClaw(0.0);
+        open_pressed=false;
+        close_pressed=false;
     }
 }
