@@ -205,17 +205,8 @@ void Main::TeleopPeriodic(void)
 
         float arm_js_speed = -pjsArm->GetY();
 
-        if (arm_js_speed > 0)
-        {
-            target_position = -1;
-            pRobot->SetArmSpeed(arm_js_speed);
-        }
-        else
-        {
-            target_position = -1;
-            pRobot->SetArmSpeed(arm_js_speed);
-        }
-
+        target_position = -1;
+        pRobot->SetArmSpeed(arm_js_speed);
     }
 
     static bool close_pressed = false;
