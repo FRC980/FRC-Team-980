@@ -203,15 +203,13 @@ void Main::TeleopPeriodic(void)
 
     if (target_position != -1)
     {
-        int displacement = (int)(-pjsArm->GetRawAxis(XB_AXIS_RIGHT_Y) * 110);
+        int displacement = (int)(-pjsArm->GetY() * 110);
         pRobot->SetPosition(target_position + displacement);
     }
     else
     {
 
         float arm_js_speed = -pjsArm->GetY();
-
-        target_position = -1;
         pRobot->SetArmSpeed(arm_js_speed);
     }
 
