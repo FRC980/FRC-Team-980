@@ -166,6 +166,17 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #endif  // NULL
 
 //==========================================================================
+typedef enum {
+    LED_OFF = 0,
+    LED_RED = 1,
+    LED_TRIANGLE = 1,
+    LED_WHITE = 2,
+    LED_CIRCLE = 2,
+    LED_BLUE = 3,
+    LED_SQUARE = 3
+} LED_t;
+
+//==========================================================================
 //! Code specific to the Team 980 Robot
 /*!\class Robot980
  *
@@ -280,7 +291,7 @@ private:
 
     //! \briefSet the LED color
     // 0=none, 1=triangle, 2=circle, 3=square \todo use enum
-    void LightLED(int num);
+    void LightLED(LED_t led);
 
     //! \brief Get right encoder value
     float GetRightEncoder();

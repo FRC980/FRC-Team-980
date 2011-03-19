@@ -59,6 +59,7 @@
 #define ARM_POSITION_LOW            XB_BUTTON_A
 #define ARM_POSITION_MIDDLE         XB_BUTTON_B
 #define ARM_POSITION_HIGH           XB_BUTTON_Y
+#define ARM_POSITION_MOVING         XB_BUTTON_X + 30
 
 //-- Aliases - controller identification
 #define JS_IDENTIFY_DRIVE           XB_BUTTON_START

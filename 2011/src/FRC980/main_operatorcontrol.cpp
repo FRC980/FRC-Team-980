@@ -108,29 +108,30 @@ void Main::TeleopPeriodic(void)
     }
 
     //--- LED signal lights
-    RUN_ONCE(pjsDrive, DRIVE_LED_NONE)
+
+    if(pjsDrive->GetRawButton(DRIVE_LED_TRIANGLE))
     {
-        pRobot->LightLED(0);
+        pRobot->LightLED(LED_TRIANGLE);
+    }
+    
+    if(pjsDrive->GetRawButton(DRIVE_LED_CIRCLE))
+    {
+        pRobot->LightLED(LED_CIRCLE);
+    }
+    
+    if(pjsDrive->GetRawButton(DRIVE_LED_SQUARE))
+    {
+        pRobot->LightLED(LED_SQUARE);
     }
 
-    RUN_ONCE(pjsDrive, DRIVE_LED_TRIANGLE)
+    if(pjsDrive->GetRawButton(DRIVE_LED_NONE))
     {
-        pRobot->LightLED(1);
-    }
-
-    RUN_ONCE(pjsDrive, DRIVE_LED_CIRCLE)
-    {
-        pRobot->LightLED(2);
-    }
-
-    RUN_ONCE(pjsDrive, DRIVE_LED_SQUARE)
-    {
-        pRobot->LightLED(3);
+        pRobot->LightLED(LED_OFF);
     }
 
     //--- Minibot deployment
-    if(    (pjsDrive->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)
-        && (pjsDrive->GetRawAxis(XB_AXIS_RIGHT_Y) < -0.3) )
+    if(    (pjsArm->GetRawButton(XB_BUTTON_BACK)  )
+        && (pjsArm->GetRawButton(XB_BUTTON_START) ))
     {
         // Right joystick up and right trigger pressed
         pRobot->Deploy(-0.7);
@@ -173,7 +174,7 @@ void Main::TeleopPeriodic(void)
     if(pjsArm->GetRawButton(ARM_POSITION_GROUND))
     {
         target_position = 30;
-        utils::message("Position #3: %D", target_position);
+        utils::message("Ground position: %D", target_position);
     }
     else if(pjsArm->GetRawButton(ARM_POSITION_LOW))
     {
@@ -189,6 +190,11 @@ void Main::TeleopPeriodic(void)
     {
         target_position = target_center ? 465 : 430;
         utils::message("Position #3: %D", target_position);
+    }
+    else if(pjsArm->GetRawButton(ARM_POSITION_MOVING))
+    {
+        target_position = 500;
+        utils::message("Position for moving around: %D", target_position);
     }
     else
     {
