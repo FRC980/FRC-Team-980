@@ -302,7 +302,7 @@ private:
      */
     void Deploy(float speed);
     
-    void GetCurrent();
+    float GetCurrent();
 };
 
 #endif  // ROBOT980_H

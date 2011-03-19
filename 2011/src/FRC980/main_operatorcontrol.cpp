@@ -234,9 +234,15 @@ void Main::TeleopPeriodic(void)
         pRobot->RunClaw(-0.8);
         pTimerClaw->Reset();
     }
+    if (pTimerClaw->Get() > 0.3)
+    {
+        if(pRobot->GetCurrent() > 15.0)
+        {
+            pRobot->RunClaw(0.0);
+        }
+    }
     if (pTimerClaw->Get() > 1.0)
     {
-        utils::message("current on claw when closed on tube: %f", pRobot->GetCurrent());
         pRobot->RunClaw(0.0);
     }
 }
