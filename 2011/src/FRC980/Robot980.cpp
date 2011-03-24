@@ -294,6 +294,7 @@ void Robot980::PrintState(void)
 //==========================================================================
 void Robot980::OpenClaw(float speed)
 {
+    utils::message("Robot980::OpenClaw");
     m_pNotifierClaw->Stop(); 
     
     m_pscClaw->Set(speed);
@@ -303,6 +304,7 @@ void Robot980::OpenClaw(float speed)
 
 void Robot980::CloseClaw(float speed)
 {
+    utils::message("Robot980::CloseClaw");
     m_pNotifierClaw->Stop();
     
     m_pscClaw->Set(-speed);
@@ -313,26 +315,31 @@ void Robot980::CloseClaw(float speed)
 /*static*/
 void Robot980::CheckClaw(void* pvRobot)
 {
+    utils::message("CheckClaw");
     Robot980* pRobot=static_cast<Robot980*>(pvRobot);
 
     float t = pRobot->m_pTimerClaw->Get();
 
     if (t < 0.25)
     {
+        utils::message("Do nothing");
         // do nothing: Let claw run for 0.25 seconds
     }
     else if (t < 1.0)
     {
+        utils::message("Less than one second");
         // From 0.25 seconds to 1 second,
         //     Stop the claw if current exceeds the limit
         if (pRobot->m_pscClaw->GetOutputCurrent() > 15.0)
         {
+            utils::message("Stopped");
             pRobot->m_pscClaw->Set(0.0);
             pRobot->m_pNotifierClaw->Stop();
         }
     }
     else
     {
+        utils::message("More than one second");
         // After 1 second, stop the claw
         pRobot->m_pscClaw->Set(0.0);
         pRobot->m_pNotifierClaw->Stop();
