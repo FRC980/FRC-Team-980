@@ -133,7 +133,7 @@ float GetSpeedStraight(void)
 
 float GetSteeringGainStraight(void)
 {
-    static float gain_array[] = [
+    static float gain_array[] = {
          /* 0.05*/   0.025
         ,/* 0.10*/   0.05
         ,/* 0.15*/   0.075
@@ -144,7 +144,7 @@ float GetSteeringGainStraight(void)
         ,/* 0.40*/   0.20
         ,/* 0.45*/   0.225
         ,/* 0.50*/   0.25
-        ];
+    };
     float speed = GetSpeedStraight(); 
     int speed_index = (int) (speed/0.05);
     
