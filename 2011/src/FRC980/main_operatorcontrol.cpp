@@ -55,20 +55,7 @@ void Main::TeleopPeriodic(void)
 
     //--- Set a pointer to the joystick(s)
     static Joystick *pjsDrive = Joystick::GetStickForPort(1);
-    static Joystick *pjsArm   = Joystick::GetStickForPort(2);
-
-    //--- Swap joysticks on request
-    RUN_ONCE(pjsDrive, JS_IDENTIFY_ARM)
-    {
-        utils::message("swapping joysticks");
-        std::swap(pjsDrive, pjsArm);
-    }
-    RUN_ONCE(pjsArm, JS_IDENTIFY_DRIVE)
-    {
-        utils::message("swapping joysticks");
-        std::swap(pjsDrive, pjsArm);
-    }
-    
+    static Joystick *pjsArm   = Joystick::GetStickForPort(2);    
 
     //--- Get the x and y position from the joystick
     float x = pjsDrive->GetX();
