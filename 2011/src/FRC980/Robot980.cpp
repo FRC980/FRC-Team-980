@@ -51,7 +51,6 @@ Robot980::Robot980()
     , m_pTimerClaw(new Timer)
 
       //--- Notifiers
-    , m_pNotifierClaw(new Notifier(Robot980::CheckClaw, this))
 
       //--- PIDs
     , m_pidArm(new PIDController(POT_PID_P,POT_PID_I,POT_PID_D,m_pacArmPosition, m_pscShoulder))
@@ -317,6 +316,12 @@ void Robot980::CheckClaw(void* pvRobot)
 {
     utils::message("CheckClaw");
     Robot980* pRobot=static_cast<Robot980*>(pvRobot);
+
+    if (!pRobot)
+    {
+        utils::message("No robot!");
+        return;
+    }
 
     float t = pRobot->m_pTimerClaw->Get();
 
