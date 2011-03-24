@@ -228,7 +228,7 @@ void Main::TeleopPeriodic(void)
         close_pressed=false;
     }
 
-    if (pRobot->GetClawTimer() > 0.3 && pRobot->GetClawCurrent() > 15.0)
+    if (pRobot->GetClawTimer() > 0.3 && pRobot->GetClawCurrent() > 18.0)
     {
         pRobot->RunClaw(0.0);
     }
