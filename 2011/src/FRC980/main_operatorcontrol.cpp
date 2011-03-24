@@ -160,27 +160,27 @@ void Main::TeleopPeriodic(void)
     }
     if(pjsArm->GetRawButton(ARM_POSITION_GROUND))
     {
-        target_position = 30;
+        target_position = POT_GROUND;
         utils::message("Ground position: %D", target_position);
     }
     else if(pjsArm->GetRawButton(ARM_POSITION_LOW))
     {
-        target_position = target_center ? 175 : 130;
+        target_position = target_center ? POT_CENTER_LOW : POT_SIDE_LOW;
         utils::message("Position #1: %D", target_position);
     }
     else if(pjsArm->GetRawButton(ARM_POSITION_MIDDLE))
     {
-        target_position = target_center ? 300 : 285;
+        target_position = target_center ? POT_CENTER_MIDDLE : POT_SIDE_MIDDLE;
         utils::message("Position #2: %D", target_position);
     }
     else if(pjsArm->GetRawButton(ARM_POSITION_HIGH))
     {
-        target_position = target_center ? 465 : 430;
+        target_position = target_center ? POT_CENTER_HIGH : POT_SIDE_HIGH;
         utils::message("Position #3: %D", target_position);
     }
     else if(pjsArm->GetRawButton(ARM_POSITION_MOVING))
     {
-        target_position = 500;
+        target_position = POT_CARRY;
         utils::message("Position for moving around: %D", target_position);
     }
     else

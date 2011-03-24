@@ -92,7 +92,7 @@ Robot980::Robot980()
     m_pscRight2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
     
     //--- Set up PID loops
-    m_pidArm->SetInputRange(POT_INPUT_LOWER,POT_INPUT_UPPER);
+    m_pidArm->SetInputRange(POT_LOWER_LIMIT,POT_UPPER_LIMIT);
     m_pidArm->SetTolerance(POT_TOLERANCE /*%*/);
 
     //--- Define Drive Timer
@@ -224,7 +224,7 @@ void Robot980::SetArmSpeed(float speed) {
         return;
     }
 
-    if ((m_pacArmPosition->GetValue() > POT_INPUT_VERTICAL) && (speed > 0))
+    if ((m_pacArmPosition->GetValue() > POT_VERTICAL) && (speed > 0))
         m_pscShoulder->Set(0.0);
     else
         m_pscShoulder->Set(speed);
