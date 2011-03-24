@@ -347,6 +347,7 @@ private:
     void RunClaw(float speed);
 
     float GetClawTimer();
+    float GetClawCurrent();
 
     /*! \brief Stop the claw if needed (called by notifier)
      */
