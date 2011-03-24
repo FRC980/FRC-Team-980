@@ -192,12 +192,14 @@ void Main::TeleopPeriodic(void)
     {
         int displacement = (int)(-pjsArm->GetY() * 110);
         pRobot->SetPosition(target_position + displacement);
+        utils::message("Running PID");
     }
     else
     {
 
         float arm_js_speed = -pjsArm->GetY();
         pRobot->SetArmSpeed(arm_js_speed);
+        utils::message("Running manually");
     }
 
     static bool close_pressed = false;
