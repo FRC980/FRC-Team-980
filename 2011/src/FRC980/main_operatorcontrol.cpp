@@ -144,11 +144,6 @@ void Main::TeleopPeriodic(void)
         pRobot->PrintState();
     }
 
-    if(pjsArm->GetRawButton(ARM_PRINT_STATUS))
-    {
-        utils::message("Potentiometer: %D", pRobot->GetPosition());
-    }
-
     static bool target_center = false;
     static int target_position = -1;
 
