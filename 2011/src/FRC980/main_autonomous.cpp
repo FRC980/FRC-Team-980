@@ -120,7 +120,7 @@ float GetSpeedStraight(void)
     if (distance < 50.0)
         return 0.5;
     else if (distance < 200.0)
-        return LINEAR_RAMP(distance,50.0,200.0,0.5,0);
+        return LINEAR_RAMP(distance,50.0,200.0,0.5,0.1);
     else
         return 0.0;
 }
