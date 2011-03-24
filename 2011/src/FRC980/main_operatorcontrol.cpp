@@ -192,6 +192,7 @@ void Main::TeleopPeriodic(void)
     {
         int displacement = (int)(-pjsArm->GetY() * 110);
         pRobot->SetPosition(target_position + displacement);
+        utils::message("Target %d + disp %d = %d", target_position, displacement, target_position+displacement);
     }
     else
     {
