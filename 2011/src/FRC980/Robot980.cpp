@@ -308,8 +308,6 @@ void Robot980::OpenClaw(float speed)
 
 void Robot980::CloseClaw(float speed)
 {
-    utils::message("Robot980::CloseClaw");
-    
     m_pscClaw->Set(-speed);
     m_pTimerClaw->Reset();
 #ifdef USE_NOTIFIER
@@ -319,9 +317,7 @@ void Robot980::CloseClaw(float speed)
 }
 
 void Robot980::RunClaw(float speed)
-{
-    utils::message("Robot980::CloseClaw");
-    
+{    
     m_pscClaw->Set(speed);
 }
 
