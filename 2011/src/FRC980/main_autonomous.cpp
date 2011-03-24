@@ -127,7 +127,7 @@ float GetSpeedStraight(void)
 
 float GetSteeringGainStraight(void)
 {
-    return GetSpeedStraight() * 0.5;
+    return GetSpeedStraight() / 3.0;
 }
 
 float GetSpeedTurn(void)
