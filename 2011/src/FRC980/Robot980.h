@@ -296,6 +296,9 @@ private:
     //! \brief Get right encoder value
     float GetRightEncoder();
 
+    //! \brief Get right encoder value
+    float GetLeftEncoder();
+
     /*! \brief Print a debug message displaying the current status
      */
     void PrintState(void);

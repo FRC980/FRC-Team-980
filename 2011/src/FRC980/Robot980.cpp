@@ -278,6 +278,12 @@ float Robot980::GetRightEncoder()
 }
 
 //==========================================================================
+float Robot980::GetLeftEncoder()
+{
+    return m_pscLeft1->GetPosition() * 21.8;//3.14159 * WHEEL_DIAMETER;
+}
+
+//==========================================================================
 void Robot980::PrintState(void)
 {
     int i = m_pacArmPosition->GetValue();
