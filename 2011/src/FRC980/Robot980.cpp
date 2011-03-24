@@ -311,17 +311,18 @@ void Robot980::CloseClaw(float speed)
     m_pNotifierClaw->StartPeriodic(0.1);
 }
 
+void Robot980::RunClaw(float speed)
+{
+    utils::message("Robot980::CloseClaw");
+    
+    m_pscClaw->Set(speed);
+}
+
 /*static*/
 void Robot980::CheckClaw(void* pvRobot)
 {
     utils::message("CheckClaw");
     Robot980* pRobot=static_cast<Robot980*>(pvRobot);
-
-    if (!pRobot)
-    {
-        utils::message("No robot!");
-        return;
-    }
 
     float t = pRobot->m_pTimerClaw->Get();
 
@@ -339,7 +340,7 @@ void Robot980::CheckClaw(void* pvRobot)
         {
             utils::message("Stopped");
             pRobot->m_pscClaw->Set(0.0);
-            pRobot->m_pNotifierClaw->Stop();
+//            pRobot->m_pNotifierClaw->Stop();
         }
     }
     else
@@ -347,7 +348,7 @@ void Robot980::CheckClaw(void* pvRobot)
         utils::message("More than one second");
         // After 1 second, stop the claw
         pRobot->m_pscClaw->Set(0.0);
-        pRobot->m_pNotifierClaw->Stop();
+//        pRobot->m_pNotifierClaw->Stop();
     }
 }
 

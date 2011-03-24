@@ -344,6 +344,8 @@ private:
      */
     void CloseClaw(float speed = 0.8);
 
+    void RunClaw(float speed);
+
     /*! \brief Stop the claw if needed (called by notifier)
      */
     static void CheckClaw(void* pvRobot);
