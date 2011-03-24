@@ -117,17 +117,38 @@ float GetSpeedStraight(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     float distance = pRobot->GetRightEncoder() - encoder_initial;
-    if (distance < 50.0)
-        return 0.5;
-    else if (distance < 200.0)
-        return LINEAR_RAMP(distance,50.0,200.0,0.5,0.2);
+
+    static const float initial_speed = 0.5;
+    static const float final_speed = 0.2;
+    static const float start_ramp_distance = 200.0; //50.0;
+    static const float final_distance = 200.0;
+
+    if (distance < start_ramp_distance)
+        return initial_speed;
+    else if (distance < final_distance)
+        return LINEAR_RAMP(distance,start_ramp_distance,final_distance,initial_speed,final_speed);
     else
         return 0.0;
 }
 
 float GetSteeringGainStraight(void)
 {
-    return GetSpeedStraight() / 2.0;
+    static float[] gain_array = [
+         /* 0.05*/   0.025
+        ,/* 0.10*/   0.05
+        ,/* 0.15*/   0.075
+        ,/* 0.20*/   0.10
+        ,/* 0.25*/   0.125
+        ,/* 0.30*/   0.15
+        ,/* 0.35*/   0.175
+        ,/* 0.40*/   0.20
+        ,/* 0.45*/   0.225
+        ,/* 0.50*/   0.25
+        ];
+    float speed = GetSpeedStraight(); 
+    int speed_index = (int) (speed/0.05);
+    
+    return gain_array[speed_index];
 }
 
 float GetSpeedTurn(void)
