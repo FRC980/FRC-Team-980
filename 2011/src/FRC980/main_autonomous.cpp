@@ -117,10 +117,10 @@ float GetSpeedStraight(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     float distance = pRobot->GetRightEncoder() - encoder_initial;
-    if (distance < 90.0)
-        return 0.25;
-    else if (distance < 100.0)
-        return LINEAR_RAMP(distance,90.0,100.0,0.25,0);
+    if (distance < 100.0)
+        return 0.5;
+    else if (distance < 200.0)
+        return LINEAR_RAMP(distance,100.0,200.0,0.5,0);
     else
         return 0.0;
 }
