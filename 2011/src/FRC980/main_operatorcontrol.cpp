@@ -144,6 +144,11 @@ void Main::TeleopPeriodic(void)
         pRobot->PrintState();
     }
 
+    if(pjsArm->GetRawButton(ARM_PRINT_STATUS))
+    {
+        utils::message("Potentiometer: %D", pRobot->GetPosition());
+    }
+
     static bool target_center = false;
     static int target_position = -1;
 
@@ -192,14 +197,12 @@ void Main::TeleopPeriodic(void)
     {
         int displacement = (int)(-pjsArm->GetY() * 110);
         pRobot->SetPosition(target_position + displacement);
-        utils::message("Running PID");
     }
     else
     {
 
         float arm_js_speed = -pjsArm->GetY();
         pRobot->SetArmSpeed(arm_js_speed);
-        utils::message("Running manually");
     }
 
     static bool close_pressed = false;
