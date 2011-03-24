@@ -321,7 +321,7 @@ void Robot980::RunClaw(float speed)
 
 float Robot980::GetClawTimer()
 {
-    return pRobot->m_pTimerClaw->Get();
+    return m_pTimerClaw->Get();
 }
 
 /*static*/
