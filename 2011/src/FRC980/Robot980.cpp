@@ -51,6 +51,7 @@ Robot980::Robot980()
     , m_pTimerClaw(new Timer)
 
       //--- Notifiers
+    , m_pNotifierClaw(new Notifier(Robot980::CheckClaw, this))
 
       //--- PIDs
     , m_pidArm(new PIDController(POT_PID_P,POT_PID_I,POT_PID_D,m_pacArmPosition, m_pscShoulder))
@@ -316,6 +317,11 @@ void Robot980::RunClaw(float speed)
     utils::message("Robot980::CloseClaw");
     
     m_pscClaw->Set(speed);
+}
+
+float Robot980::GetClawTimer()
+{
+    return pRobot->m_pTimerClaw->Get();
 }
 
 /*static*/
