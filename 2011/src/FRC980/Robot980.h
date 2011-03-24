@@ -158,7 +158,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define POT_PID_D                   0.0
 
 #define POT_INPUT_LOWER             40
-#define POT_INPUT_VERTICAL          510
+#define POT_INPUT_VERTICAL          10000
 #define POT_INPUT_UPPER             700
 #define POT_TOLERANCE               4.0 /* % */
 
