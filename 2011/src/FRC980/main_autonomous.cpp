@@ -47,7 +47,6 @@ void Main::AutonomousInit(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     iMode = pRobot->GetAutonMode();
-    iMode = 6;
 
     pRobot->SetBrakes(false);
 
@@ -128,7 +127,7 @@ float GetSpeedStraight(void)
 
 float GetSteeringGainStraight(void)
 {
-    return GetSpeedStraight() * 1.0;
+    return GetSpeedStraight() / 0.5;
 }
 
 float GetSpeedTurn(void)
