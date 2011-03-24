@@ -159,20 +159,20 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define POT_TOLERANCE               4.0 /* % */
 
 
-#define POT_LOWER_LIMIT             40
+#define POT_LOWER_LIMIT             95
 
-#define POT_GROUND                  40
+#define POT_GROUND                  95
 
-#define POT_SIDE_LOW                130
-#define POT_SIDE_MIDDLE             285
-#define POT_SIDE_HIGH               430
+#define POT_SIDE_LOW                245
+#define POT_SIDE_MIDDLE             380
+#define POT_SIDE_HIGH               530
 
-#define POT_CENTER_LOW              175
-#define POT_CENTER_MIDDLE           300
-#define POT_CENTER_HIGH             475
+#define POT_CENTER_LOW              277
+#define POT_CENTER_MIDDLE           415
+#define POT_CENTER_HIGH             580
 
-#define POT_CARRY                   500
-#define POT_VERTICAL                10000
+#define POT_CARRY                   600
+#define POT_VERTICAL                670
 
 #define POT_UPPER_LIMIT             700
 
