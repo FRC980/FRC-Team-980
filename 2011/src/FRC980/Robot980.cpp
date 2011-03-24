@@ -51,7 +51,9 @@ Robot980::Robot980()
     , m_pTimerClaw(new Timer)
 
       //--- Notifiers
+#ifdef USE_NOTIFIER
     , m_pNotifierClaw(new Notifier(Robot980::CheckClaw, this))
+#endif
 
       //--- PIDs
     , m_pidArm(new PIDController(POT_PID_P,POT_PID_I,POT_PID_D,m_pacArmPosition, m_pscShoulder))
@@ -299,7 +301,9 @@ void Robot980::OpenClaw(float speed)
     
     m_pscClaw->Set(speed);
     m_pTimerClaw->Reset();
+#ifdef USE_NOTIFIER
     m_pNotifierClaw->StartPeriodic(0.1);
+#endif
 }
 
 void Robot980::CloseClaw(float speed)
@@ -309,7 +313,9 @@ void Robot980::CloseClaw(float speed)
     
     m_pscClaw->Set(-speed);
     m_pTimerClaw->Reset();
+#ifdef USE_NOTIFIER
     m_pNotifierClaw->StartPeriodic(0.1);
+#endif
 }
 
 void Robot980::RunClaw(float speed)
@@ -322,6 +328,11 @@ void Robot980::RunClaw(float speed)
 float Robot980::GetClawTimer()
 {
     return m_pTimerClaw->Get();
+}
+
+float Robot980::GetClawCurrent()
+{
+    return m_pscClaw->GetOutputCurrent();
 }
 
 /*static*/
