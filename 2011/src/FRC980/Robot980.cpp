@@ -54,7 +54,7 @@ Robot980::Robot980()
     , m_pNotifierClaw(new Notifier(Robot980::CheckClaw, this))
 
       //--- PIDs
-    , m_pidArm(new PIDController(0.2/30.0,0.0,0.0,m_pacArmPosition, m_pscShoulder))
+    , m_pidArm(new PIDController(POT_PID_P,POT_PID_I,POT_PID_D,m_pacArmPosition, m_pscShoulder))
       //--- State variables
       //--- Camera
     //, m_pVideoServer(NULL)
@@ -92,8 +92,8 @@ Robot980::Robot980()
     m_pscRight2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
     
     //--- Set up PID loops
-    m_pidArm->SetInputRange(40.0,700);
-    m_pidArm->SetTolerance(4.0 /*%*/);
+    m_pidArm->SetInputRange(POT_INPUT_LOWER,POT_INPUT_UPPER);
+    m_pidArm->SetTolerance(POT_TOLERANCE /*%*/);
 
     //--- Define Drive Timer
     m_pTimerDrive->Reset();
@@ -224,7 +224,7 @@ void Robot980::SetArmSpeed(float speed) {
         return;
     }
 
-    if ((m_pacArmPosition->GetValue() > 510) && (speed > 0))
+    if ((m_pacArmPosition->GetValue() > POT_INPUT_VERTICAL) && (speed > 0))
         m_pscShoulder->Set(0.0);
     else
         m_pscShoulder->Set(speed);
