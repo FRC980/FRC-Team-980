@@ -209,6 +209,7 @@ void Main::TeleopPeriodic(void)
     {
         pRobot->OpenClaw();
 
+        utils::message("Opening claw");
         open_pressed=true;
         close_pressed=false;
     }
@@ -217,6 +218,7 @@ void Main::TeleopPeriodic(void)
     {
         pRobot->CloseClaw();
 
+        utils::message("Closing claw");
         open_pressed=false;
         close_pressed=true;
     }
