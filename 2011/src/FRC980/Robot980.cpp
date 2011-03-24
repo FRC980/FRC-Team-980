@@ -297,11 +297,11 @@ void Robot980::PrintState(void)
 void Robot980::OpenClaw(float speed)
 {
     utils::message("Robot980::OpenClaw");
-    m_pNotifierClaw->Stop(); 
     
     m_pscClaw->Set(speed);
     m_pTimerClaw->Reset();
 #ifdef USE_NOTIFIER
+    m_pNotifierClaw->Stop(); 
     m_pNotifierClaw->StartPeriodic(0.1);
 #endif
 }
@@ -309,11 +309,11 @@ void Robot980::OpenClaw(float speed)
 void Robot980::CloseClaw(float speed)
 {
     utils::message("Robot980::CloseClaw");
-    m_pNotifierClaw->Stop();
     
     m_pscClaw->Set(-speed);
     m_pTimerClaw->Reset();
 #ifdef USE_NOTIFIER
+    m_pNotifierClaw->Stop();
     m_pNotifierClaw->StartPeriodic(0.1);
 #endif
 }
