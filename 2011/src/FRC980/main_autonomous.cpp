@@ -52,6 +52,7 @@ void Main::AutonomousInit(void)
 
     switch (iMode)
     {
+/*
     case 1:
         goLeft = true;
         bStraightLine = false;
@@ -65,6 +66,16 @@ void Main::AutonomousInit(void)
     case 3:
         goLeft = false;
         bStraightLine = false;
+        bLineTrackModeInitialized = false;
+        break;
+*/
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+        goLeft = true;
+        bStraightLine = true;
         bLineTrackModeInitialized = false;
         break;
 	case 6:
@@ -98,10 +109,10 @@ void Main::AutonomousPeriodic(void)
     case 1:
     case 2:
     case 3:
+    case 4:
+    case 5:
         AutonLineTrack();
         break;
-    case 4:  Auton4();  break;
-    case 5:  Auton5();  break;
     default:
     case 6:  Auton6();  break;
     }
@@ -115,6 +126,19 @@ void Main::AutonomousPeriodic(void)
 
 float GetSpeedStraight(void)
 {
+    switch (iMode)
+    {
+    case 1:
+        return 0.1;
+    case 2:
+        return 0.2;
+    case 3:
+        return 0.3;
+    case 4:
+        return 0.4;
+    case 5:
+        return 0.5;
+    }
     Robot980 *pRobot = Robot980::GetInstance();
     float distance = pRobot->GetRightEncoder() - encoder_initial;
 
