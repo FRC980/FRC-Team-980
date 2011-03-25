@@ -228,6 +228,7 @@ void Main::TeleopPeriodic(void)
 
     if (pRobot->GetClawTimer() > 0.3 && pRobot->GetClawCurrent() > 30.0)
     {
+        utils::message("Claw disabled at current=%f", pRobot->GetClawCurrent());
         pRobot->RunClaw(0.0);
     }
 
