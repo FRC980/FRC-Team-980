@@ -94,6 +94,7 @@ Robot980::Robot980()
     m_pscRight2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
     
     //--- Set up PID loops
+
     m_pidArm->SetInputRange(POT_LOWER_LIMIT,POT_UPPER_LIMIT);
     m_pidArm->SetTolerance(POT_TOLERANCE /*%*/);
 
