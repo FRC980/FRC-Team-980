@@ -272,11 +272,11 @@ void Main::TeleopPeriodic(void)
     {
         if (pjsDebug->GetRawButton(XB_BUTTON_BUMPER_RIGHT))
         {
-            f_i += 0.00005;
+            f_i += 0.000005;
         }
         else
         {
-            f_i += 0.000005;
+            f_i += 0.0000005;
         }
         utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
         pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
@@ -285,11 +285,11 @@ void Main::TeleopPeriodic(void)
     {
         if (pjsDebug->GetRawButton(XB_BUTTON_BUMPER_RIGHT))
         {
-            f_i -= 0.00005;
+            f_i -= 0.000005;
         }
         else
         {
-            f_i -= 0.000005;
+            f_i -= 0.0000005;
         }
         utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
         pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
