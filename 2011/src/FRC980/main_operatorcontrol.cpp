@@ -225,14 +225,18 @@ void Main::TeleopPeriodic(void)
         open_pressed=false;
         close_pressed=false;
     }
-
+/*
     if (pRobot->GetClawTimer() > 0.3 && pRobot->GetClawCurrent() > 35.0)
     {
         pRobot->RunClaw(0.0);
     }
-
+*/
     if (pRobot->GetClawTimer() > 1.0 )
     {
         pRobot->RunClaw(0.0);
+    }
+    else
+    {
+        utils::message("[%f] Claw current=%f", pRobot->GetClawTimer(), pRobot->GetClawCurrent());
     }
 }
