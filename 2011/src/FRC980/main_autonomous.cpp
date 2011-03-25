@@ -61,7 +61,7 @@ void Main::AutonomousInit(void)
         goLeft = true;
         bStraightLine = true;
         bLineTrackModeInitialized = false;
-        break;*/
+        break;
 #else
     case 1:
         goLeft = true;
