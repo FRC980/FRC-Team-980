@@ -42,6 +42,8 @@ void Auton4(void);
 void Auton5(void);
 void Auton6(void);
 
+#define DEBUG_AUTON
+
 //==========================================================================
 void Main::AutonomousInit(void)
 {
