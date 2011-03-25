@@ -236,4 +236,5 @@ void Main::TeleopPeriodic(void)
     {
         pRobot->RunClaw(0.0);
     }
+    utils::message("Encoders L:%f R:%f",pRobot->GetLeftEncoder()/21.8,pRobot->GetRightEncoder()/21.8);
 }
