@@ -321,7 +321,6 @@ void Robot980::RunClaw(float speed)
 
 float Robot980::GetClawTimer()
 {
-    utils::message("Claw timer %f at current %f", m_pTimerClaw->Get(), GetClawCurrent());
     return m_pTimerClaw->Get();
 }
 
