@@ -336,16 +336,16 @@ void Robot980::CheckStopClaw()
 {
     if (    GetClawTimer() > 0.3
          && GetClawCurrent() > 30.0
-         && GetOutputVoltage() < 0.0 // closing claw
+         && m_pscClaw->GetOutputVoltage() < 0.0 //closing claw
         )
     {
         utils::message("Claw disabled at current=%f", GetClawCurrent());
-        pRobot->RunClaw(0.0);
+        RunClaw(0.0);
     }
 
     if (GetClawTimer() > 1.5 )
     {
-        pRobot->RunClaw(0.0);
+        RunClaw(0.0);
     }
 }
 
