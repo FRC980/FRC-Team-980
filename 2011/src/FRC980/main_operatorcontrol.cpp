@@ -252,7 +252,7 @@ void Main::TeleopPeriodic(void)
         {
             f_p += 0.0005;
         }
-        utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
+        utils::message("P=%f I=%1.9f D=%f", f_p, f_i, f_d);
         pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
     }
     RUN_ONCE(pjsDebug, XB_BUTTON_B)
@@ -265,7 +265,7 @@ void Main::TeleopPeriodic(void)
         {
             f_p -= 0.0005;
         }
-        utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
+        utils::message("P=%f I=%1.9f D=%f", f_p, f_i, f_d);
         pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
     }
     RUN_ONCE(pjsDebug, XB_BUTTON_X)
@@ -278,7 +278,7 @@ void Main::TeleopPeriodic(void)
         {
             f_i += 0.0000005;
         }
-        utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
+        utils::message("P=%f I=%1.9f D=%f", f_p, f_i, f_d);
         pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
     }
     RUN_ONCE(pjsDebug, XB_BUTTON_Y)
@@ -291,7 +291,7 @@ void Main::TeleopPeriodic(void)
         {
             f_i -= 0.0000005;
         }
-        utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
+        utils::message("P=%f I=%1.9f D=%f", f_p, f_i, f_d);
         pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
     }
 }
