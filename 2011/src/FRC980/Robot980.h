@@ -153,8 +153,8 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define ANALOG_SLOT      1
 #define CHAN_ARM_POTENTIOMETER      4
 
-#define POT_PID_P                   0.07
-#define POT_PID_I                   0.000
+#define POT_PID_P                   0.012
+#define POT_PID_I                   0.000008
 #define POT_PID_D                   0.0
 #define POT_TOLERANCE               1.0 /* % */
 
@@ -236,10 +236,10 @@ class Robot980 : public SensorBase
     DigitalInput *m_pdiLineRight;  /*!< Line Sensor Right */
     AnalogChannel* m_pacAutonSwitch;
     AnalogChannel* m_pacArmPosition;
-public:    
+
     //--- PIDs
     PIDController* m_pidArm;
-private:
+
     // more sensors TBD
 
     //--- Timers
