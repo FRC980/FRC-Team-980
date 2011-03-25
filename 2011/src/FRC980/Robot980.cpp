@@ -295,9 +295,7 @@ void Robot980::PrintState(void)
 
 //==========================================================================
 void Robot980::OpenClaw(float speed)
-{
-    utils::message("Robot980::OpenClaw");
-    
+{    
     m_pscClaw->Set(speed);
     m_pTimerClaw->Reset();
 #ifdef USE_NOTIFIER
