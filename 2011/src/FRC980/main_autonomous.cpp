@@ -168,13 +168,13 @@ float GetSteeringGainStraight(void)
     case 1:
         return 0.15;
     case 2:
-        return 0.15-distance*0.01/200.0
+        return 0.15-distance*0.01/200.0;
     case 3:
-        return 0.15-distance*0.03/200.0
+        return 0.15-distance*0.03/200.0;
     case 4:
-        return 0.15-distance*0.05/200.0
+        return 0.15-distance*0.05/200.0;
     case 5:
-        return 0.15-distance*0.10/200.0
+        return 0.15-distance*0.10/200.0;
     }
 }
 
