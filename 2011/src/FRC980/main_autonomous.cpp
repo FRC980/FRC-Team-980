@@ -325,6 +325,7 @@ void Auton6(void)
         pRobot->CloseClaw();
         if (t > 1.0)
         {
+            pRobot->RunClaw(0.0);
             auton_state = AUTON_RELEASE_CLAW;
             initial_state_time = t;
         }
