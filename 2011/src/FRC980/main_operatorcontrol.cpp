@@ -243,6 +243,6 @@ void Main::TeleopPeriodic(void)
     {
         float claw_current = pRobot->GetClawCurrent();
         current_spike = (current_spike > claw_current) ? current_spike : claw_current;
-        utils::message("[%f] Claw current=%f", pRobot->GetClawTimer(), claw_current);
+        utils::message("[%f] Claw current=%f Max=%f", pRobot->GetClawTimer(), claw_current, current_spike);
     }
 }
