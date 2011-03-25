@@ -238,9 +238,9 @@ void Main::TeleopPeriodic(void)
 
     static Joystick *pjsDebug = Joystick::GetStickForPort(1);
     //PID debugging
-    static float f_p = pRobot->m_pidArm->GetP();
-    static float f_i = pRobot->m_pidArm->GetI();
-    static float f_d = pRobot->m_pidArm->GetD();
+    static float f_p = 0.012;
+    static float f_i = 0.0;
+    static float f_d = 0.0;
 
     RUN_ONCE(pjsDebug, XB_BUTTON_A)
     {
@@ -272,11 +272,11 @@ void Main::TeleopPeriodic(void)
     {
         if (pjsDebug->GetRawButton(XB_BUTTON_BUMPER_RIGHT))
         {
-            f_i += 0.005;
+            f_i += 0.00005;
         }
         else
         {
-            f_i += 0.0005;
+            f_i += 0.000005;
         }
         utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
         pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
@@ -285,11 +285,11 @@ void Main::TeleopPeriodic(void)
     {
         if (pjsDebug->GetRawButton(XB_BUTTON_BUMPER_RIGHT))
         {
-            f_i -= 0.005;
+            f_i -= 0.00005;
         }
         else
         {
-            f_i -= 0.0005;
+            f_i -= 0.000005;
         }
         utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
         pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
