@@ -247,8 +247,10 @@ private:
     Timer *m_pTimerDrive; /*!< The Timer used for debugging (calc & print speeds) */
     Timer *m_pTimerClaw;
 
+#ifdef USE_NOTIFIER
     //--- Notifiers
     Notifier *m_pNotifierClaw;
+#endif
 
   private:
     // PCVideoServer* m_pVideoServer;
