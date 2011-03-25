@@ -46,6 +46,9 @@ Robot980::Robot980()
     , m_pacAutonSwitch(new AnalogChannel(ANALOG_SLOT, CHAN_AUTO_MODE))
     , m_pacArmPosition(new AnalogChannel(ANALOG_SLOT, CHAN_ARM_POTENTIOMETER))
 
+      //--- PIDs
+    , m_pidArm(new PIDController(POT_PID_P,POT_PID_I,POT_PID_D,m_pacArmPosition, m_pscShoulder))
+
       //--- Timers
     , m_pTimerDrive(new Timer)
     , m_pTimerClaw(new Timer)
@@ -55,8 +58,6 @@ Robot980::Robot980()
     , m_pNotifierClaw(new Notifier(Robot980::CheckClaw, this))
 #endif
 
-      //--- PIDs
-    , m_pidArm(new PIDController(POT_PID_P,POT_PID_I,POT_PID_D,m_pacArmPosition, m_pscShoulder))
       //--- State variables
       //--- Camera
     //, m_pVideoServer(NULL)
