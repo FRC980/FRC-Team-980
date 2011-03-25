@@ -239,8 +239,8 @@ void Main::TeleopPeriodic(void)
     static Joystick *pjsDebug = Joystick::GetStickForPort(1);
     //PID debugging
     static float f_p = pRobot->m_pidArm->GetP();
-    static float f_i = pRobot->m_pidArm->GetP();
-    static float f_d = pRobot->m_pidArm->GetP();
+    static float f_i = pRobot->m_pidArm->GetI();
+    static float f_d = pRobot->m_pidArm->GetD();
 
     RUN_ONCE(pjsDebug, XB_BUTTON_A)
     {
