@@ -153,8 +153,8 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define ANALOG_SLOT      1
 #define CHAN_ARM_POTENTIOMETER      4
 
-#define POT_PID_P                   0.2/30.0
-#define POT_PID_I                   0.005
+#define POT_PID_P                   0.07
+#define POT_PID_I                   0.000
 #define POT_PID_D                   0.0
 #define POT_TOLERANCE               1.0 /* % */
 
@@ -222,9 +222,8 @@ class Robot980 : public SensorBase
     CANJaguar *m_pscClaw;    /*!< The arm's claw motor speed controller */
 
     //--- Victors
-public:
     Victor *m_pscShoulder; /*!< The shoulder motor speed controller */
-private:
+
     //--- Digital Outputs (Lights)
     DigitalOutput* m_pdoLightTriangle;
     DigitalOutput* m_pdoLightCircle;
@@ -237,10 +236,10 @@ private:
     DigitalInput *m_pdiLineRight;  /*!< Line Sensor Right */
     AnalogChannel* m_pacAutonSwitch;
     AnalogChannel* m_pacArmPosition;
-    
+public:    
     //--- PIDs
     PIDController* m_pidArm;
-
+private:
     // more sensors TBD
 
     //--- Timers

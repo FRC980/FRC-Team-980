@@ -54,8 +54,8 @@ void Main::TeleopPeriodic(void)
     GetWatchdog().Feed();
 
     //--- Set a pointer to the joystick(s)
-    static Joystick *pjsDrive = Joystick::GetStickForPort(1);
-    static Joystick *pjsArm   = Joystick::GetStickForPort(2);    
+    static Joystick *pjsDrive = Joystick::GetStickForPort(3);
+    static Joystick *pjsArm   = Joystick::GetStickForPort(2);
 
     //--- Get the x and y position from the joystick
     float x = pjsDrive->GetX();
@@ -236,4 +236,62 @@ void Main::TeleopPeriodic(void)
         pRobot->RunClaw(0.0);
     }
 
+    static Joystick *pjsDebug = Joystick::GetStickForPort(1);
+    //PID debugging
+    static float f_p = pRobot->m_pidArm->GetP();
+    static float f_i = pRobot->m_pidArm->GetP();
+    static float f_d = pRobot->m_pidArm->GetP();
+
+    RUN_ONCE(pjsDebug, XB_BUTTON_A)
+    {
+        if (pjsDebug->GetRawButton(XB_BUTTON_BUMPER_RIGHT))
+        {
+            f_p += 0.005;
+        }
+        else
+        {
+            f_p += 0.0005;
+        }
+        utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
+        pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
+    }
+    RUN_ONCE(pjsDebug, XB_BUTTON_B)
+    {
+        if (pjsDebug->GetRawButton(XB_BUTTON_BUMPER_RIGHT))
+        {
+            f_p -= 0.005;
+        }
+        else
+        {
+            f_p -= 0.0005;
+        }
+        utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
+        pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
+    }
+    RUN_ONCE(pjsDebug, XB_BUTTON_X)
+    {
+        if (pjsDebug->GetRawButton(XB_BUTTON_BUMPER_RIGHT))
+        {
+            f_i += 0.005;
+        }
+        else
+        {
+            f_i += 0.0005;
+        }
+        utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
+        pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
+    }
+    RUN_ONCE(pjsDebug, XB_BUTTON_Y)
+    {
+        if (pjsDebug->GetRawButton(XB_BUTTON_BUMPER_RIGHT))
+        {
+            f_i -= 0.005;
+        }
+        else
+        {
+            f_i -= 0.0005;
+        }
+        utils::message("P=%f I=%f D=%f", f_p, f_i, f_d);
+        pRobot->m_pidArm->SetPID(f_p, f_i, f_d);
+    }
 }
