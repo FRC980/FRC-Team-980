@@ -28,7 +28,7 @@ static Timer *pTimerAuton = new Timer;
 static bool goLeft = false;
 static bool bStraightLine = true;
 static bool bLineTrackModeInitialized = false;
-static float encoder_initial = -9999;
+static float encoder_initial;
 
 float GetSpeedStraight(void);
 float GetSpeedTurn(void);
@@ -86,7 +86,7 @@ void Main::AutonomousInit(void)
         break;
     }
 
-    encoder_initial = -9999;
+    encoder_initial = pRobot->GetRightEncoder();
     auton_state = AUTON_INIT;
 
     utils::message("Running autonomous mode %d\n", iMode);
@@ -335,9 +335,6 @@ void Auton6(void)
     Robot980 *pRobot = Robot980::GetInstance();
     float t = pTimerAuton->Get();
 
-    if (encoder_initial == -9999)
-        encoder_initial = pRobot->GetRightEncoder();
-
     float distance = pRobot->GetRightEncoder() - encoder_initial;
 
     float target_arm_height = POT_CENTER_HIGH;
@@ -431,7 +428,6 @@ void Auton6(void)
         {
             pRobot->Drive(0.0, 0.0);
             auton_state = AUTON_DONE;
-            encoder_initial=-9999;
             initial_state_time = t;
         }
         else
