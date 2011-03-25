@@ -202,10 +202,13 @@ void Main::TeleopPeriodic(void)
     static bool close_pressed = false;
     static bool open_pressed = false;
 
+    static float current_spike = 0.0;
+
     if( !open_pressed
        && (pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)  )
     {
         pRobot->OpenClaw();
+        current_spike = 0.0;
 
         utils::message("Opening claw");
         open_pressed=true;
@@ -215,6 +218,7 @@ void Main::TeleopPeriodic(void)
             && (pjsArm->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)  )
     {
         pRobot->CloseClaw();
+        current_spike = 0.0;
 
         utils::message("Closing claw");
         open_pressed=false;
@@ -237,6 +241,8 @@ void Main::TeleopPeriodic(void)
     }
     else
     {
-        utils::message("[%f] Claw current=%f", pRobot->GetClawTimer(), pRobot->GetClawCurrent());
+        float claw_current = pRobot->GetClawCurrent();
+        current_spike = (current_spike > claw_current) ? current_spike : claw_current;
+        utils::message("[%f] Claw current=%f", pRobot->GetClawTimer(), claw_current);
     }
 }
