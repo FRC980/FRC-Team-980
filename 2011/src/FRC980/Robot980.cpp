@@ -39,7 +39,9 @@ Robot980::Robot980()
     , m_pdoLightSquare(new DigitalOutput(DSC_SLOT, CHAN_LIGHT_SQUARE))
 
       //--- Sensors
+#ifdef USE_GYRO
     , m_pGyro(new Gyro(SLOT_GYRO, CHAN_GYRO))
+#endif
     , m_pdiLineLeft(new DigitalInput(DSC_SLOT, CHAN_LINE_LEFT))
     , m_pdiLineCenter(new DigitalInput(DSC_SLOT, CHAN_LINE_CENTER))
     , m_pdiLineRight(new DigitalInput(DSC_SLOT, CHAN_LINE_RIGHT))
