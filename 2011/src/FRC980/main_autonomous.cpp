@@ -349,7 +349,7 @@ void Auton6(void)
     float distance = pRobot->GetRightEncoder() - encoder_initial;
 
     float target_arm_height = POT_CENTER_HIGH;
-    float target_distance = 110;
+    float target_distance = 195;
 
     static float initial_state_time = pTimerAuton->Get();
 
