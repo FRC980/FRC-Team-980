@@ -153,7 +153,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define ANALOG_SLOT      1
 #define CHAN_ARM_POTENTIOMETER      4
 
-#define POT_PID_P                   0.4/30.0
+#define POT_PID_P                   0.2/30.0
 #define POT_PID_I                   0.005
 #define POT_PID_D                   0.0
 #define POT_TOLERANCE               1.0 /* % */
