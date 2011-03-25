@@ -347,6 +347,9 @@ class Robot980 : public SensorBase
 
     void RunClaw(float speed);
 
+    // \brief Stop the claw, if needed
+    void CheckStopClaw();
+
     float GetClawTimer();
     float GetClawCurrent();
 

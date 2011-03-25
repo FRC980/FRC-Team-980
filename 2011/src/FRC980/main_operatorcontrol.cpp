@@ -226,14 +226,7 @@ void Main::TeleopPeriodic(void)
         close_pressed=false;
     }
 
-    if (pRobot->GetClawTimer() > 0.3 && pRobot->GetClawCurrent() > 30.0)
-    {
-        utils::message("Claw disabled at current=%f", pRobot->GetClawCurrent());
-        pRobot->RunClaw(0.0);
-    }
+    // Stop the claw, if necessary
+    pRobot->CheckStopClaw();
 
-    if (pRobot->GetClawTimer() > 1.5 )
-    {
-        pRobot->RunClaw(0.0);
-    }
 }
