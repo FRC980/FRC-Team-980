@@ -379,6 +379,7 @@ void Auton6(void)
         else
         {
             auton_state = AUTON_DRIVE_FORWARD;
+            initial_state_time = t;
         }
         break;
     case AUTON_DRIVE_FORWARD:
@@ -394,6 +395,7 @@ void Auton6(void)
             pRobot->Drive(0.0,0.0);
             utils::message("Distance_final = %f\n", distance);
             auton_state = AUTON_RAISE_ARM;
+            initial_state_time = t;
         }
         break;
     case AUTON_RAISE_ARM:
@@ -436,6 +438,7 @@ void Auton6(void)
         {
             pRobot->Drive(0.0, 0.0);
             auton_state = AUTON_DONE;
+            initial_state_time = t;
         }
         else
         {
