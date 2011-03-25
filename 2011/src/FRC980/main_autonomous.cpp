@@ -389,7 +389,7 @@ void Auton6(void)
         pRobot->SetPosition(target_arm_height);
         if (distance < target_distance)
         {
-            float speed = 0.40;
+            float speed = 0.20;
             pRobot->Drive(speed,speed);
             utils::message("Distance = %f\n", distance);
         }
