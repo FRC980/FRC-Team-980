@@ -139,21 +139,7 @@ void Main::AutonomousPeriodic(void)
 
 float GetSpeedStraight(void)
 {
-#ifdef DEBUG_AUTON
-    switch (iMode)
-    {
-    case 1:
-        return 0.1;
-    case 2:
-        return 0.2;
-    case 3:
-        return 0.3;
-    case 4:
-        return 0.4;
-    case 5:
-        return 0.5;
-    }
-#endif
+/*
     Robot980 *pRobot = Robot980::GetInstance();
     float distance = pRobot->GetRightEncoder() - encoder_initial;
 
@@ -168,27 +154,28 @@ float GetSpeedStraight(void)
         return LINEAR_RAMP(distance,start_ramp_distance,final_distance,initial_speed,final_speed);
     else
         return 0.0;
+*/
+    return 0.3;
 }
 
 float GetSteeringGainStraight(void)
 {
-    static float gain_array[] = {
-           /* 0.00*/   0.0
-          ,/* 0.05*/   0.025
-          ,/* 0.10*/   0.05
-          ,/* 0.15*/   0.075
-          ,/* 0.20*/   0.10
-          ,/* 0.25*/   0.125
-          ,/* 0.30*/   0.15
-          ,/* 0.35*/   0.175
-          ,/* 0.40*/   0.20
-          ,/* 0.45*/   0.225
-          ,/* 0.50*/   0.25
-    };
-    float speed = GetSpeedStraight(); 
-    int speed_index = (int) (speed/0.05);
-    
-    return gain_array[speed_index];
+    Robot980 *pRobot = Robot980::GetInstance();
+    float distance = pRobot->GetRightEncoder() - encoder_initial;
+
+    switch (iMode)
+    {
+    case 1:
+        return 0.15;
+    case 2:
+        return 0.15-distance*0.01/200.0
+    case 3:
+        return 0.15-distance*0.03/200.0
+    case 4:
+        return 0.15-distance*0.05/200.0
+    case 5:
+        return 0.15-distance*0.10/200.0
+    }
 }
 
 float GetSpeedTurn(void)
