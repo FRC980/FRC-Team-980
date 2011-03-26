@@ -121,7 +121,7 @@ void Main::TeleopPeriodic(void)
         && (pjsArm->GetRawButton(XB_BUTTON_START) ))
     {
         // Right joystick up and right trigger pressed
-        pRobot->Deploy(-0.7);
+        pRobot->Deploy(-1.0);
         utils::message("deploying minibot");
     }
     else
