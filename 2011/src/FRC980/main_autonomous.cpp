@@ -81,7 +81,7 @@ void Main::AutonomousInit(void)
         bLineTrackModeInitialized = false;
         break;
     case 4:
-        bGoLeft = false;
+        bGoLeft = true;
         bStraightLine = true;
         bLineTrackModeInitialized = false;
 #endif
@@ -378,7 +378,10 @@ void Auton4(void)
     switch (auton_state)
     {
     case AUTON_INIT:
-        auton_state = AUTON_CLOSE_CLAW;
+//        auton_state = AUTON_CLOSE_CLAW;
+        auton_state = AUTON_DRIVE_FORWARD;
+        initial_state_time = t;
+        break;
         //fall through
     case AUTON_CLOSE_CLAW:
         pRobot->CloseClaw();
