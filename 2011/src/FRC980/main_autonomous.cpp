@@ -409,7 +409,7 @@ void Auton4(void)
         //return to where we started
         if ( distance < 5 )
         {
-            float speed = 0.20;
+            float speed = 0.40;
             pRobot->Drive(speed,speed);
             utils::message("Nudging forward d=%f", distance);
         }
