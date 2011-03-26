@@ -90,7 +90,7 @@ void Main::AutonomousInit(void)
         break;
     }
 
-    encoder_initial = pRobot->GetRightEncoder();
+    encoder_initial = pRobot->GetLeftEncoder();
     auton_state = AUTON_INIT;
 
     utils::message("Running autonomous mode %d\n", iMode);
@@ -149,7 +149,7 @@ float GetSpeedStraight(void)
 float GetSteeringGainStraight(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
-    float distance = pRobot->GetRightEncoder() - encoder_initial;
+    float distance = pRobot->GetLeftEncoder() - encoder_initial;
 
     return 0.15-distance*0.12/200.0;
 }
@@ -157,7 +157,7 @@ float GetSteeringGainStraight(void)
 float GetSpeedTurn(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
-    float distance = pRobot->GetRightEncoder() - encoder_initial;
+    float distance = pRobot->GetLeftEncoder() - encoder_initial;
 
     if (distance < 100.0)
         return 0.25;
@@ -171,7 +171,7 @@ float GetSpeedTurn(void)
 float GetSteeringGainTurn(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
-    float distance = pRobot->GetRightEncoder() - encoder_initial;
+    float distance = pRobot->GetLeftEncoder() - encoder_initial;
     if (distance < 100.0)
         return 0.25;
     else if (distance < 131.4)
@@ -244,7 +244,7 @@ bool LineTrack(float t /*time*/, float stopTime, float speed, float gain, bool g
         turn = -steeringGain;
     }
     
-    utils::message("t=%2.2f sensor=%d speed=%1.2f turn=%1.2f distance=%f\n", t, binaryValue, speed, turn, pRobot->GetRightEncoder() - encoder_initial);
+    utils::message("t=%2.2f sensor=%d speed=%1.2f turn=%1.2f distance=%f\n", t, binaryValue, speed, turn, pRobot->GetLeftEncoder() - encoder_initial);
     
     // move the robot forward
     pRobot->Drive(speed+turn, speed-turn);
@@ -258,7 +258,7 @@ void AutonLineTrack(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     float t = pTimerAuton->Get();
-    float distance = pRobot->GetRightEncoder() - encoder_initial;
+    float distance = pRobot->GetLeftEncoder() - encoder_initial;
 
     static double stopTime;
     static bool atCross = false;    // true when robot has reached end
@@ -303,7 +303,7 @@ void AutonLineTrack(void)
         break;
     case 7:
         // all sensors - maybe at the "T"
-        if (t > stopTime || (pRobot->GetRightEncoder() - encoder_initial > 160.0) ) {
+        if (t > stopTime || (pRobot->GetLeftEncoder() - encoder_initial > 160.0) ) {
             atCross = true;
             speed = 0;
         }
@@ -368,7 +368,7 @@ void Auton4(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     float t = pTimerAuton->Get();
-    float distance = pRobot->GetRightEncoder() - encoder_initial;
+    float distance = pRobot->GetLeftEncoder() - encoder_initial;
 
     float target_arm_height = POT_CENTER_HIGH;
     float target_distance = 190;
@@ -510,7 +510,7 @@ void Auton6(void)
     Robot980 *pRobot = Robot980::GetInstance();
     float t = pTimerAuton->Get();
 
-    float distance = pRobot->GetRightEncoder() - encoder_initial;
+    float distance = pRobot->GetLeftEncoder() - encoder_initial;
 
     float target_arm_height = POT_CENTER_HIGH;
     float target_distance = 195;
