@@ -410,7 +410,6 @@ void Auton4(void)
         {
             float speed = 0.20;
             pRobot->Drive(speed,speed);
-            utils::message("Distance = %f\n", distance);
         }
         else
         {
@@ -445,6 +444,7 @@ void Auton4(void)
             auton_state = AUTON_RAISE_ARM;
             initial_state_time = t;
         }
+        break;
     case AUTON_RAISE_ARM:
         if (
             ((pRobot->GetPosition() - target_arm_height) < 10)
