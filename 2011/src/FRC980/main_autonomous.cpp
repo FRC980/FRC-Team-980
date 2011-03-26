@@ -378,9 +378,7 @@ void Auton4(void)
     switch (auton_state)
     {
     case AUTON_INIT:
-//        auton_state = AUTON_CLOSE_CLAW;
-        auton_state = AUTON_DRIVE_FORWARD;
-        initial_state_time = t;
+        auton_state = AUTON_CLOSE_CLAW;
         break;
         //fall through
     case AUTON_CLOSE_CLAW:
@@ -413,6 +411,7 @@ void Auton4(void)
         {
             float speed = 0.20;
             pRobot->Drive(speed,speed);
+            utils::message("Nudging forward d=%f", distance);
         }
         else
         {
