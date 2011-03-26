@@ -270,7 +270,7 @@ void AutonLineTrack(void)
         // line tracking mode we chose
         utils::message("Line tracker auton mode");
         utils::message("StraightLine: %d\n", bStraightLine);
-        utils::message("GoingLeft: %d\n", goLeft);
+        utils::message("GoingLeft: %d\n", bGoLeft);
 
         stopTime = bStraightLine ? 2.0 : 4.0;
         atCross = false;
@@ -288,10 +288,10 @@ void AutonLineTrack(void)
         return;
     }
 
-    char binaryValue = pRobot->GetLineTracker(! goLeft);    
+    char binaryValue = pRobot->GetLineTracker(! bGoLeft);    
     double speed = bStraightLine ? GetSpeedStraight() : GetSpeedTurn();
     double steeringGain = bStraightLine ? GetSteeringGainStraight() : GetSteeringGainTurn();
-    if (! goLeft) steeringGain *= -1.0;
+    if (! bGoLeft) steeringGain *= -1.0;
         // If going left, steer to the right, and vice versa
     double turn = 0;
 
