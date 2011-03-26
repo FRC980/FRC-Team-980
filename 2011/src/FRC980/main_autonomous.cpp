@@ -35,7 +35,7 @@ float GetSpeedStraight(void);
 float GetSpeedTurn(void);
 float GetSteeringGainStraight(void);
 float GetSteeringGainTurn(void);
-bool LineTrack(float t /*time*/, float stopTime, float speed, float gain, bool goLeft)
+bool LineTrack(float t /*time*/, float stopTime, float speed, float gain, bool goLeft);
 void AutonLineTrack(void);
 void Auton1(void);
 void Auton2(void);
@@ -82,7 +82,7 @@ void Main::AutonomousInit(void)
         break;
     case 4:
         bGoLeft = false;
-        bStraightLine = false;
+        bStraightLine = true;
         bLineTrackModeInitialized = false;
 #endif
 	case 6:
