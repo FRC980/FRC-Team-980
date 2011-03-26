@@ -54,17 +54,6 @@ void Main::AutonomousInit(void)
 
     switch (iMode)
     {
-#ifdef DEBUG_AUTON
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-        bGoLeft = true;
-        bStraightLine = true;
-        bLineTrackModeInitialized = false;
-        break;
-#else
     case 1:
         bGoLeft = true;
         bStraightLine = false;
@@ -84,7 +73,6 @@ void Main::AutonomousInit(void)
         bGoLeft = true;
         bStraightLine = true;
         bLineTrackModeInitialized = false;
-#endif
 	case 6:
 	    pRobot->SetBrakes(true);
         break;
@@ -159,25 +147,19 @@ float GetSpeedTurn(void)
     Robot980 *pRobot = Robot980::GetInstance();
     float distance = pRobot->GetLeftEncoder() - encoder_initial;
 
-    if (distance < 100.0)
-        return 0.25;
-    else if (distance < 131.4)
-        return LINEAR_RAMP(distance,100.0,131.4,0.25,0.15);
-    else
-        return 0.15;
-
+    return 0.3;
 }
 
 float GetSteeringGainTurn(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     float distance = pRobot->GetLeftEncoder() - encoder_initial;
-    if (distance < 100.0)
-        return 0.25;
-    else if (distance < 131.4)
-        return GetSpeedTurn() * LINEAR_RAMP(distance,100,131.4,1.0,1.5);
+    if (distance < 160.0)
+        return 0.15-distance*0.12/200.0;
+    else if (distance < 175)
+        return 0.054+(distance-160.0)*0.12/15.0;
     else
-        return 0.20;
+        return 0.15-(distance-175.0)*0.12/50;
 }
 
 bool LineTrack(float t /*time*/, float stopTime, float speed, float gain, bool goLeft)
@@ -347,6 +329,134 @@ void Auton1(void)
 {
     Robot980 *pRobot = Robot980::GetInstance();
     float t = pTimerAuton->Get();
+    float distance = pRobot->GetLeftEncoder() - encoder_initial;
+
+    float target_arm_height = POT_CENTER_HIGH;
+    float target_distance = 200;
+
+    static float initial_state_time = pTimerAuton->Get();
+
+    switch (auton_state)
+    {
+    case AUTON_INIT:
+        auton_state = AUTON_CLOSE_CLAW;
+        break;
+        //fall through
+    case AUTON_CLOSE_CLAW:
+        pRobot->CloseClaw();
+        if (t > 1.0)
+        {
+            pRobot->RunClaw(0.0);
+            auton_state = AUTON_RELEASE_CLAW;
+            initial_state_time = t;
+        }
+        break;
+    case AUTON_RELEASE_CLAW:
+        if ( (t - initial_state_time) < 0.2)
+        {
+            pRobot->Drive(-1.0,-1.0);
+        }
+        else if ( (t - initial_state_time) < 0.4)
+        {
+            pRobot->Drive(0.0,0.0);
+        }
+        else
+        {
+            auton_state = AUTON_NUDGE_FORWARD;
+            initial_state_time = t;
+        }
+        break;
+    case AUTON_NUDGE_FORWARD:
+        //return to where we started
+        if ( distance < 5 )
+        {
+            float speed = 0.40;
+            pRobot->Drive(speed,speed);
+            utils::message("Nudging forward d=%f", distance);
+        }
+        else
+        {
+            pRobot->Drive(0.0,0.0);
+            auton_state = AUTON_DRIVE_FORWARD;
+            initial_state_time = t;
+        }
+        break;
+    case AUTON_DRIVE_FORWARD:
+        pRobot->SetPosition(target_arm_height);
+        if (   (distance < target_distance) 
+            && (t  < 11.0 )                   )
+        {
+            float stopTime,speed,gain;
+            speed = bStraightLine ? GetSpeedStraight() : GetSpeedTurn();
+            gain = bStraightLine ? GetSteeringGainStraight() : GetSteeringGainTurn();
+            stopTime = bStraightLine ? 5.0 : 5.0;
+
+            bool atCross = LineTrack(t - initial_state_time, stopTime, speed, gain, bGoLeft);
+            if (atCross)
+            {
+                pRobot->Drive(0.0,0.0);
+                utils::message("Distance_final = %f (at cross)\n", distance);
+                auton_state = AUTON_RAISE_ARM;
+                initial_state_time = t;
+            }
+        }
+        else
+        {
+            pRobot->Drive(0.0,0.0);
+            utils::message("Distance_final = %f\n", distance);
+            auton_state = AUTON_RAISE_ARM;
+            initial_state_time = t;
+        }
+        break;
+    case AUTON_RAISE_ARM:
+        if (
+            ((pRobot->GetPosition() - target_arm_height) < 10)
+            || ((pRobot->GetPosition() - target_arm_height) > -10)
+            )
+        {
+            pRobot->SetArmSpeed(0.0);
+            auton_state=AUTON_OPEN_CLAW;
+            initial_state_time = t;
+        }
+        else
+        {
+            utils::message("Arm at %f", pRobot->GetPosition());
+        }
+        break;
+    case AUTON_OPEN_CLAW:
+        if ( (t - initial_state_time) > 2.0)
+        {
+            auton_state = AUTON_LOWER_ARM;
+            initial_state_time = t;
+        }
+        else
+        {
+            pRobot->OpenClaw();
+        }
+        break;
+    case AUTON_LOWER_ARM:
+        //let gravity do the work
+        if ( (t - initial_state_time) > 2.0)
+        {
+            auton_state = AUTON_DRIVE_REVERSE;
+            initial_state_time = t;
+            utils::message("driving back");
+        }
+        break;
+    case AUTON_DRIVE_REVERSE:
+        if ( (t - initial_state_time) > 2.0)
+        {
+            pRobot->Drive(0.0, 0.0);
+            auton_state = AUTON_DONE;
+            initial_state_time = t;
+        }
+        else
+        {
+            pRobot->Drive(-0.25, -0.25);
+        }
+        break;
+    }
+
 }
 
 //==========================================================================
