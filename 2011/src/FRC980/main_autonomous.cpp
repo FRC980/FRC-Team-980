@@ -428,7 +428,7 @@ void Auton4(void)
             float stopTime,speed,gain;
             speed = bStraightLine ? GetSpeedStraight() : GetSpeedTurn();
             gain = bStraightLine ? GetSteeringGainStraight() : GetSteeringGainTurn();
-            stopTime = bStraightLine ? 2.0 : 4.0;
+            stopTime = bStraightLine ? 5.0 : 5.0;
 
             bool atCross = LineTrack(t - initial_state_time, stopTime, speed, gain, bGoLeft);
             if (atCross)
