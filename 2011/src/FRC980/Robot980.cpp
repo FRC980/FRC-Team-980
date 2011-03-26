@@ -335,7 +335,7 @@ float Robot980::GetClawCurrent()
 void Robot980::CheckStopClaw()
 {
     if (    GetClawTimer() > 0.3
-         && GetClawCurrent() > 30.0
+         && GetClawCurrent() > 35.0
          && m_pscClaw->GetOutputVoltage() < 0.0 //closing claw
         )
     {
