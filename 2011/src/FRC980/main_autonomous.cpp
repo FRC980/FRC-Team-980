@@ -339,8 +339,6 @@ void AutonLineTrack(void)
     pRobot->Drive(speed+turn, speed-turn);
     
     if (binaryValue != 0) previousValue = binaryValue;
-
-    return false;
 }
 
 
