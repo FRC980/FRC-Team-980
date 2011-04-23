@@ -57,6 +57,11 @@ void Main::TeleopPeriodic(void)
     static Joystick *pjsDrive = Joystick::GetStickForPort(1);
     static Joystick *pjsArm   = Joystick::GetStickForPort(2);
 
+#define DEBUG_JOYSTICK
+#ifdef DEBUG_JOYSTICK
+    static Joystick *pjsDebug   = Joystick::GetStickForPort(3);
+#endif
+
     //--- Get the x and y position from the joystick
     float x = pjsDrive->GetX();
     x = (x > 0) ? x * x : x * x * -1;
@@ -116,69 +121,61 @@ void Main::TeleopPeriodic(void)
         pRobot->LightLED(LED_OFF);
     }
 
+
     //--- Minibot deployment
-    if(    (pjsArm->GetRawButton(XB_BUTTON_BACK)  )
-        && (pjsArm->GetRawButton(XB_BUTTON_START) ))
-    {
-        // Right joystick up and right trigger pressed
+	if (pjsArm->GetRawButton(ARM_DEPLOY))
+	{
         pRobot->Deploy(-1.0);
         utils::message("deploying minibot");
-    }
+	}
     else
     {
         pRobot->Deploy(0.0);
     }
 
-    //--- Additional code on drive joystick
-    if(pjsDrive->GetRawButton(DRIVE_PRINT_LINETRACKER))
-    {
-		utils::message("Line tracker:%d", pRobot->GetLineTracker());
-    }
-
-
-
 
     //--- Arm code
-    if(pjsArm->GetRawButton(ARM_PRINT_STATUS))
-    {
-        pRobot->PrintState();
-    }
-
-    static bool target_center = false;
     static int target_position = -1;
 
-    RUN_ONCE(pjsArm, ARM_ENABLE_TARGET_CENTER)
-    {
-        target_center = true;
-        utils::message("Targeting center");
-    }
-
-    RUN_ONCE(pjsArm, ARM_DISABLE_TARGET_CENTER)
-    {
-        target_center = false;
-        utils::message("Targeting side");
-    }
-    if(pjsArm->GetRawButton(ARM_POSITION_GROUND))
-    {
+	if(pjsArm->GetRawButton(ARM_POSITION_GROUND))
+	{
         target_position = POT_GROUND;
         utils::message("Ground position: %D", target_position);
-    }
-    else if(pjsArm->GetRawButton(ARM_POSITION_LOW))
-    {
-        target_position = target_center ? POT_CENTER_LOW : POT_SIDE_LOW;
-        utils::message("Position #1: %D", target_position);
-    }
-    else if(pjsArm->GetRawButton(ARM_POSITION_MIDDLE))
-    {
-        target_position = target_center ? POT_CENTER_MIDDLE : POT_SIDE_MIDDLE;
-        utils::message("Position #2: %D", target_position);
-    }
-    else if(pjsArm->GetRawButton(ARM_POSITION_HIGH))
-    {
-        target_position = target_center ? POT_CENTER_HIGH : POT_SIDE_HIGH;
-        utils::message("Position #3: %D", target_position);
-    }
-    else if(pjsArm->GetRawButton(ARM_POSITION_MOVING))
+	}
+
+	else if(pjsArm->GetRawButton(ARM_POSITION_SIDE_LOW))
+	{
+        target_position = POT_SIDE_LOW;
+        utils::message("Side low position: %D", target_position);
+	}
+	else if(pjsArm->GetRawButton(ARM_POSITION_SIDE_MIDDLE))
+	{
+        target_position = POT_SIDE_MIDDLE;
+        utils::message("Side middle position: %D", target_position);
+	}
+	else if(pjsArm->GetRawButton(ARM_POSITION_SIDE_HIGH))
+	{
+        target_position = POT_SIDE_HIGH;
+        utils::message("Side high position: %D", target_position);
+	}
+
+	else if(pjsArm->GetRawButton(ARM_POSITION_CENTER_LOW))
+	{
+        target_position = POT_CENTER_LOW;
+        utils::message("Center low position: %D", target_position);
+	}
+	else if(pjsArm->GetRawButton(ARM_POSITION_CENTER_MIDDLE))
+	{
+        target_position = POT_CENTER_MIDDLE;
+        utils::message("Center middle position: %D", target_position);
+	}
+	else if(pjsArm->GetRawButton(ARM_POSITION_CENTER_HIGH))
+	{
+        target_position = POT_CENTER_HIGH;
+        utils::message("Center high position: %D", target_position);
+	}
+
+    else if(pjsArm->GetRawButton(ARM_POSITION_CARRY))
     {
         target_position = POT_CARRY;
         utils::message("Position for moving around: %D", target_position);
@@ -190,43 +187,62 @@ void Main::TeleopPeriodic(void)
 
     if (target_position != -1)
     {
-        int displacement = (int)(-pjsArm->GetY() * 110);
+        int displacement = (int)(-pjsArm->GetX() * 110);
         pRobot->SetPosition(target_position + displacement);
     }
     else
     {
-        float arm_js_speed = -pjsArm->GetY();
+#ifdef DEBUG_JOYSTICK
+        float arm_js_speed = -pjsDebug->GetY();
         pRobot->SetArmSpeed(arm_js_speed);
+#else
+        pRobot->SetArmSpeed(0);
+#endif
     }
 
-    static bool close_pressed = false;
-    static bool open_pressed = false;
 
-    if( !open_pressed
-       && (pjsArm->GetRawAxis(XB_AXIS_TRIGGER) > 0.3)  )
-    {
-        pRobot->OpenClaw();
 
-        utils::message("Opening claw");
-        open_pressed=true;
-        close_pressed=false;
-    }
-    else if( !close_pressed
-            && (pjsArm->GetRawAxis(XB_AXIS_TRIGGER) < -0.3)  )
-    {
-        pRobot->CloseClaw();
+	static bool claw_open = false;
 
-        utils::message("Closing claw");
-        open_pressed=false;
-        close_pressed=true;
-    }
-    else
-    {
-        open_pressed=false;
-        close_pressed=false;
-    }
+	if(pjsArm->GetRawButton(ARM_CLAW) && !claw_open)
+	{
+		// If claw is closed and switch is flipped
+		pRobot->OpenClaw();
+		claw_open = true;
+	}
+	else if(!pjsArm->GetRawButton(ARM_CLAW) && claw_open)
+	{
+		// If claw is open and switch is flipped
+		pRobot->CloseClaw();
+		claw_open = false;
+	}
 
     // Stop the claw, if necessary
     pRobot->CheckStopClaw();
 
+
+#ifdef DEBUG_JOYSTICK
+    //--- Debug joystick code
+    if(pjsDebug->GetRawButton(DEBUG_PRINT_LINETRACKER))
+    {
+		utils::message("Line tracker:%d", pRobot->GetLineTracker());
+    }
+
+    if(pjsDebug->GetRawButton(DEBUG_PRINT_ARM_STATE))
+    {
+		pRobot->PrintState();
+    }
+
+    if(pjsDebug->GetRawButton(DEBUG_AUTON_INIT))
+    {
+		utils::message("Manually initializing autonomous");
+		AutonomousInit();
+    }
+
+    if(pjsDebug->GetRawButton(DEBUG_RUN_AUTON_MODE))
+    {
+		AutonomousPeriodic();
+    }
+
+#endif
 }
