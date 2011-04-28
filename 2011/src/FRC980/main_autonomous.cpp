@@ -573,7 +573,7 @@ void Auton4(void)
         }
         break;
     case AUTON_OPEN_CLAW:
-        if ( (t - initial_state_time) > 2.0)
+        if ( (t - initial_state_time) > 1.0)
         {
             auton_state = AUTON_LOWER_ARM;
             initial_state_time = t;
