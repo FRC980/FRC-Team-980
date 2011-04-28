@@ -208,6 +208,8 @@ void Main::TeleopPeriodic(void)
 			pRobot->SetArmSpeed(arm_js_speed - 0.2);
 		else if (arm_js_speed < -0.2)
 			pRobot->SetArmSpeed((arm_js_speed + 0.2)/4.0);
+		else
+			pRobot->SetArmSpeed(0.0);
     }
 
 
