@@ -202,17 +202,12 @@ void Main::TeleopPeriodic(void)
     }
     else
     {
-#ifdef DEBUG_JOYSTICK
-        pRobot->SetArmSpeed(-pjsDebug->GetY());
-#else
 		float arm_js_speed = pjsArm->GetX();
 
-		if (arm_js_speed > 0.3)
-			pRobot->SetArmSpeed(arm_js_speed - 0.3);
-		else if (arm_js_speed < -0.3)
-			pRobot->SetArmSpeed(arm_js_speed + 0.3);
-#endif
-
+		if (arm_js_speed > 0.2)
+			pRobot->SetArmSpeed(arm_js_speed - 0.2);
+		else if (arm_js_speed < -0.2)
+			pRobot->SetArmSpeed(arm_js_speed + 0.2);
     }
 
 
