@@ -111,7 +111,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define CAN_LEFT_DRIVE2             12  /*!< \def CAN_LEFT_DRIVE2 The CAN Jaguar device number for the Left Drive Motor */
 #define CAN_RIGHT_DRIVE1            13  /*!< \def CAN_RIGHT_DRIVE1 The CAN Jaguar device number for the Right Drive Motor */
 #define CAN_RIGHT_DRIVE2            14  /*!< \def CAN_RIGHT_DRIVE2 The CAN Jaguar device number for the Right Drive Motor */
-#define CAN_MINIDEPLOY              15  /*!< \def CAN_MINIDEPLOY The CAN Jaguar device number for the minibot deployment */
+#define CAN_MINIALIGN               15  /*!< \def CAN_MINIDEPLOY The CAN Jaguar device number for the minibot deployment */
 #define CAN_ARM_CLAW                20  /*!< \def CAN_ARM_CLAW The CAN Jaguar device number for the claw on the arm */
 
 // Jaguar Outputs
@@ -127,6 +127,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 
 // PWM outputs
 #define CHAN_PWM_SHOULDER           1   /*!< \def CHAN_PWM_SHOULDER The Digital Side Car PWM Channel for both of the Shoulder Motors */
+#define CHAN_MINIDEPLOY             2   /*!< \def CHAN_PWM_SHOULDER The Digital Side Car PWM Channel for minibot deployment */
 
 
 //==============================================================================
@@ -218,11 +219,12 @@ class Robot980 : public SensorBase
     CANJaguar *m_pscLeft2;   /*!< The 2nd Left Drive motor speed controller */
     CANJaguar *m_pscRight1;  /*!< The 1st Right Drive motor speed controller */
     CANJaguar *m_pscRight2;  /*!< The 2nd Right Drive motor speed controller */
-    CANJaguar *m_pscMiniDeploy; /*!< The minibot deploy motor speed controller */
+    CANJaguar *m_pscMiniAlign; /*!< The minibot alignment motor speed controller */
     CANJaguar *m_pscClaw;    /*!< The arm's claw motor speed controller */
 
     //--- Victors
     Victor *m_pscShoulder; /*!< The shoulder motor speed controller */
+    Victor *m_pscMiniDeploy; /*!< The minibot deploy motor speed controller */
 
     //--- Digital Outputs (Lights)
     DigitalOutput* m_pdoLightTriangle;
@@ -360,6 +362,11 @@ class Robot980 : public SensorBase
     /*! \brief Run the deployment motor
      */
     void Deploy(float speed);
+
+    /*! \brief Run the alignment motor
+     */
+    void Align(float speed);
+
 };
 
 #endif  // ROBOT980_H

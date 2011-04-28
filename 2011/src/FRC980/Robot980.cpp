@@ -27,11 +27,12 @@ Robot980::Robot980()
     , m_pscRight1(new CANJaguar(CAN_RIGHT_DRIVE1)) //, CANJaguar::kSpeed))
     , m_pscRight2(new CANJaguar(CAN_RIGHT_DRIVE2)) //, CANJaguar::kSpeed))
 
-    , m_pscMiniDeploy(new CANJaguar(CAN_MINIDEPLOY))
+    , m_pscMiniAlign(new CANJaguar(CAN_MINIALIGN))
     , m_pscClaw(new CANJaguar(CAN_ARM_CLAW))
 
       //--- Victors
     , m_pscShoulder(new Victor(DSC_SLOT, CHAN_PWM_SHOULDER))
+    , m_pscMiniDeploy(new Victor(DSC_SLOT, CHAN_MINIDEPLOY))
 
       //--- Lights
     , m_pdoLightTriangle(new DigitalOutput(DSC_SLOT, CHAN_LIGHT_TRIANGLE))
@@ -135,6 +136,7 @@ Robot980::~Robot980()
     delete m_pscRight1;
     delete m_pscRight2;
     delete m_pscClaw;
+    delete m_pscMiniAlign;
     delete m_pscMiniDeploy;
     delete m_pscShoulder;
 
@@ -388,6 +390,11 @@ void Robot980::CheckClaw(void* pvRobot)
 void Robot980::Deploy(float speed)
 {
     m_pscMiniDeploy->Set(speed);
+}
+
+void Robot980::Align(float speed)
+{
+    m_pscMiniAlign->Set(speed);
 }
 
 //==========================================================================
