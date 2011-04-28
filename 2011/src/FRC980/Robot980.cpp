@@ -225,6 +225,7 @@ void Robot980::SetPosition(int target) {
 //==========================================================================
 
 void Robot980::SetArmSpeed(float speed) {
+	utils::message("setting arm speed to %f", speed);
     if(m_pidArm->IsEnabled())
     {
         m_pidArm->Disable();
