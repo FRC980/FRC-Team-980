@@ -100,7 +100,7 @@ Robot980::Robot980()
     //--- Set up PID loops
     m_pidArm->SetInputRange(POT_LOWER_LIMIT,POT_UPPER_LIMIT);
     m_pidArm->SetTolerance(POT_TOLERANCE /*%*/);
-    m_pidArm->SetOutputRange(-0.1,1.0);
+    m_pidArm->SetOutputRange(-0.09,1.0);
 
     //--- Define Drive Timer
     m_pTimerDrive->Reset();
