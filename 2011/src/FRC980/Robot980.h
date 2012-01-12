@@ -111,7 +111,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 #define CAN_LEFT_DRIVE2             12  /*!< \def CAN_LEFT_DRIVE2 The CAN Jaguar device number for the Left Drive Motor */
 #define CAN_RIGHT_DRIVE1            13  /*!< \def CAN_RIGHT_DRIVE1 The CAN Jaguar device number for the Right Drive Motor */
 #define CAN_RIGHT_DRIVE2            14  /*!< \def CAN_RIGHT_DRIVE2 The CAN Jaguar device number for the Right Drive Motor */
-#define CAN_MINIDEPLOY              15  /*!< \def CAN_MINIDEPLOY The CAN Jaguar device number for the minibot deployment */
+#define CAN_MINIALIGN               15  /*!< \def CAN_MINIDEPLOY The CAN Jaguar device number for the minibot deployment */
 #define CAN_ARM_CLAW                20  /*!< \def CAN_ARM_CLAW The CAN Jaguar device number for the claw on the arm */
 
 // Jaguar Outputs
@@ -127,6 +127,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 
 // PWM outputs
 #define CHAN_PWM_SHOULDER           1   /*!< \def CHAN_PWM_SHOULDER The Digital Side Car PWM Channel for both of the Shoulder Motors */
+#define CHAN_MINIDEPLOY             2   /*!< \def CHAN_PWM_SHOULDER The Digital Side Car PWM Channel for minibot deployment */
 
 
 //==============================================================================
@@ -152,6 +153,30 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 
 #define ANALOG_SLOT      1
 #define CHAN_ARM_POTENTIOMETER      4
+
+#define POT_PID_P                   0.012
+#define POT_PID_I                   0.000008
+#define POT_PID_D                   0.0
+#define POT_TOLERANCE               1.0 /* % */
+
+
+#define POT_LOWER_LIMIT             95
+
+#define POT_GROUND                  95
+
+#define POT_SIDE_LOW                250
+#define POT_SIDE_MIDDLE             380
+#define POT_SIDE_HIGH               520
+
+#define POT_CENTER_LOW              300
+#define POT_CENTER_MIDDLE           415
+#define POT_CENTER_HIGH             550
+
+#define POT_CARRY                   600
+#define POT_VERTICAL                670
+
+#define POT_UPPER_LIMIT             700
+
 //==============================================================================
 // Define Additional Values
 
@@ -194,13 +219,13 @@ class Robot980 : public SensorBase
     CANJaguar *m_pscLeft2;   /*!< The 2nd Left Drive motor speed controller */
     CANJaguar *m_pscRight1;  /*!< The 1st Right Drive motor speed controller */
     CANJaguar *m_pscRight2;  /*!< The 2nd Right Drive motor speed controller */
-    CANJaguar *m_pscMiniDeploy; /*!< The minibot deploy motor speed controller */
+    CANJaguar *m_pscMiniAlign; /*!< The minibot alignment motor speed controller */
     CANJaguar *m_pscClaw;    /*!< The arm's claw motor speed controller */
 
     //--- Victors
-public:
     Victor *m_pscShoulder; /*!< The shoulder motor speed controller */
-private:
+    Victor *m_pscMiniDeploy; /*!< The minibot deploy motor speed controller */
+
     //--- Digital Outputs (Lights)
     DigitalOutput* m_pdoLightTriangle;
     DigitalOutput* m_pdoLightCircle;
@@ -213,7 +238,7 @@ private:
     DigitalInput *m_pdiLineRight;  /*!< Line Sensor Right */
     AnalogChannel* m_pacAutonSwitch;
     AnalogChannel* m_pacArmPosition;
-    
+
     //--- PIDs
     PIDController* m_pidArm;
 
@@ -223,8 +248,10 @@ private:
     Timer *m_pTimerDrive; /*!< The Timer used for debugging (calc & print speeds) */
     Timer *m_pTimerClaw;
 
+#ifdef USE_NOTIFIER
     //--- Notifiers
     Notifier *m_pNotifierClaw;
+#endif
 
   private:
     // PCVideoServer* m_pVideoServer;
@@ -296,6 +323,9 @@ private:
     //! \brief Get right encoder value
     float GetRightEncoder();
 
+    //! \brief Get right encoder value
+    float GetLeftEncoder();
+
     /*! \brief Print a debug message displaying the current status
      */
     void PrintState(void);
@@ -317,6 +347,14 @@ private:
      */
     void CloseClaw(float speed = 0.8);
 
+    void RunClaw(float speed);
+
+    // \brief Stop the claw, if needed
+    void CheckStopClaw();
+
+    float GetClawTimer();
+    float GetClawCurrent();
+
     /*! \brief Stop the claw if needed (called by notifier)
      */
     static void CheckClaw(void* pvRobot);
@@ -324,6 +362,11 @@ private:
     /*! \brief Run the deployment motor
      */
     void Deploy(float speed);
+
+    /*! \brief Run the alignment motor
+     */
+    void Align(float speed);
+
 };
 
 #endif  // ROBOT980_H

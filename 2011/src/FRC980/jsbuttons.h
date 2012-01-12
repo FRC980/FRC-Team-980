@@ -32,16 +32,12 @@
 //-- Aliases - drive controller
 #define DRIVE_SLOW_MODE         XB_BUTTON_BUMPER_LEFT
 #define DRIVE_FAST_MODE         XB_BUTTON_BUMPER_RIGHT
-#define DRIVE_LED_NONE          XB_BUTTON_A
-#define DRIVE_LED_TRIANGLE      XB_BUTTON_B
-#define DRIVE_LED_CIRCLE        XB_BUTTON_Y
-#define DRIVE_LED_SQUARE        XB_BUTTON_X
+#define DRIVE_LED_NONE          XB_BUTTON_A +20
+#define DRIVE_LED_TRIANGLE      XB_BUTTON_B +20
+#define DRIVE_LED_CIRCLE        XB_BUTTON_Y +20
+#define DRIVE_LED_SQUARE        XB_BUTTON_X +20
 
-//-- Aliases - drive controller for debugging
-#define DRIVE_PRINT_LINETRACKER XB_BUTTON_Y +20
-
-#define DRIVE_AUTON_INIT        XB_BUTTON_A +20
-#define DRIVE_RUN_AUTON_MODE    XB_BUTTON_B +20
+#define DRIVE_ALIGN_MINIBOT     XB_BUTTON_Y
 
 //-- Aliases- set variables from controller
 //            to diable, make all values different and out of range
@@ -52,18 +48,25 @@
 
 
 //-- Aliases - arm controller
-#define ARM_PRINT_STATUS            XB_BUTTON_X
-#define ARM_ENABLE_TARGET_CENTER    XB_BUTTON_BUMPER_RIGHT
-#define ARM_DISABLE_TARGET_CENTER   XB_BUTTON_BUMPER_LEFT
-#define ARM_POSITION_GROUND         XB_BUTTON_X + 20
-#define ARM_POSITION_LOW            XB_BUTTON_A
-#define ARM_POSITION_MIDDLE         XB_BUTTON_B
-#define ARM_POSITION_HIGH           XB_BUTTON_Y
-#define ARM_POSITION_MOVING         XB_BUTTON_X + 30
+#define ARM_POSITION_GROUND         8
+#define ARM_POSITION_SIDE_LOW       7
+#define ARM_POSITION_SIDE_MIDDLE    5
+#define ARM_POSITION_SIDE_HIGH      3
+#define ARM_POSITION_CENTER_LOW     6
+#define ARM_POSITION_CENTER_MIDDLE  4
+#define ARM_POSITION_CENTER_HIGH    2
+#define ARM_POSITION_CARRY          1
 
-//-- Aliases - controller identification
-#define JS_IDENTIFY_DRIVE           XB_BUTTON_START
-#define JS_IDENTIFY_ARM             XB_BUTTON_BACK 
+#define ARM_DEPLOY                  11
+#define ARM_CLAW                    9
+
+
+//-- Aliases - debug controller
+#define DEBUG_PRINT_LINETRACKER XB_BUTTON_Y
+#define DEBUG_PRINT_ARM_STATE   XB_BUTTON_X
+
+#define DEBUG_AUTON_INIT        XB_BUTTON_A +20
+#define DEBUG_RUN_AUTON_MODE    XB_BUTTON_B +20
 
 // This buttons is on the joystick handle
 #define JS_TRIGGER  	1       /*!< joystick trigger */
