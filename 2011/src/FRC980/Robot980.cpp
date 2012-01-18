@@ -32,7 +32,7 @@ Robot980::Robot980()
 
       //--- Victors
     , m_pscShoulder(new Victor(DSC_SLOT, CHAN_PWM_SHOULDER))
-    , m_pscMiniDeploy(new Victor(DSC_SLOT, CHAN_MINIDEPLOY))
+//    , m_pscMiniDeploy(new Victor(DSC_SLOT, CHAN_MINIDEPLOY))
 
       //--- Lights
     , m_pdoLightTriangle(new DigitalOutput(DSC_SLOT, CHAN_LIGHT_TRIANGLE))
@@ -388,12 +388,12 @@ void Robot980::CheckClaw(void* pvRobot)
 }
 
 //==========================================================================
-
+/*
 void Robot980::Deploy(float speed)
 {
     m_pscMiniDeploy->Set(speed);
 }
-
+*/
 void Robot980::Align(float speed)
 {
     m_pscMiniAlign->Set(speed);

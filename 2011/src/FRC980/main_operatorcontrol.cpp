@@ -123,11 +123,11 @@ void Main::TeleopPeriodic(void)
 
 
     //--- Minibot deployment
-	if (pjsDrive->GetRawButton(DRIVE_ALIGN_MINIBOT))
-	{
+    if (pjsDrive->GetRawButton(DRIVE_ALIGN_MINIBOT))
+    {
         pRobot->Align(-1.0);
         utils::message("aligning minibot");
-	}
+    }
     else
     {
         pRobot->Align(0.0);
