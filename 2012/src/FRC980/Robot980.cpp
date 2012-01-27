@@ -22,13 +22,13 @@ Robot980::Robot980()
     //--- Jaguars (Encoders attached directly to Jaguars)
     // NOTE: CANNOT RUN IN kSpeed MODE UNLESS ENCODERS ATTACHED
     // left and right drive motors
-    : m_pscLeft1(new CANJaguar(CAN_LEFT_DRIVE1)) 
+    //: m_pscLeft1(new CANJaguar(CAN_LEFT_DRIVE1)) 
 {
     //--- Encoder setup for Left CIMs
-    m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-    m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
-    m_pscLeft1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-    m_pscLeft1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+    //m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
+    //m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
+    //m_pscLeft1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
+    //m_pscLeft1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
     //--- Define Drive Timer
     m_pTimerDrive->Reset();
@@ -41,7 +41,7 @@ Robot980::Robot980()
 //==========================================================================
 Robot980::~Robot980()
 {
-    delete m_pscLeft1;
+    //delete m_pscLeft1;
     delete m_pTimerDrive;
 }
 
@@ -84,7 +84,7 @@ void Robot980::SetBrakes(bool brakeOnStop)
     CANJaguar::NeutralMode mode = brakeOnStop
         ? CANJaguar::kNeutralMode_Brake : CANJaguar::kNeutralMode_Coast;
 
-    m_pscLeft1->ConfigNeutralMode(mode);
+    //m_pscLeft1->ConfigNeutralMode(mode);
 }
 
 //==========================================================================
@@ -92,13 +92,13 @@ void Robot980::Drive(float num)
 {
     //--- Reset the Timer Drive
     m_pTimerDrive->Reset();
-
     //--- Set the speed of the left motors
-    m_pscLeft1->Set(utils::limit(num));
+    //m_pscLeft1->Set(utils::limit(num));
 }
 
 //==========================================================================
 float Robot980::GetEncoder()
 {
-    return m_pscLeft1->GetPosition() * 21.8;//3.14159 * WHEEL_DIAMETER;
+   return 0;
+   // return m_pscLeft1->GetPosition() * 21.8;//3.14159 * WHEEL_DIAMETER;
 }

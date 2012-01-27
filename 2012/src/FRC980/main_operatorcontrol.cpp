@@ -6,6 +6,7 @@
 #include "Robot980.h"
 #include "jsbuttons.h"
 #include "utils.h"
+#include "CANJaguar.h"
 
 void Main::TeleopInit(void)
 {
@@ -55,9 +56,21 @@ void Main::TeleopPeriodic(void)
 
     //--- Set a pointer to the joystick(s)
     static Joystick *pjsDrive = Joystick::GetStickForPort(1);
-
+    static CANJaguar *jag1 = new CANJaguar(1);
+    static bool init = false;
+    if(init == false)
+    {
+    	jag1->SetSpeedReference(CANJaguar::kSpeedRef_QuadEncoder);
+    	jag1->SetPID(10.0, 0.0, 0.0);
+    	jag1->EnableControl();
+	init = true;
+    }
     float y = pjsDrive->GetY();
-    y = (y > 0) ? y * y : y * y * -1;
-    pRobot->Drive(y);
-
+    float x = pjsDrive->GetX();
+    printf("\nx: %f", x);
+    printf("\ny: %f", y);
+    if(pjsDrive->GetRawButton(1))
+    {
+	printf("\nbutton");
+    }
 }

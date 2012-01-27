@@ -107,7 +107,7 @@ const double TOP_SPEED = ((double)5500 / (double)60 / (GEARBOX_RATIO) * (GEAR_RA
 
 //==============================================================================
 // CAN Jaguar Outputs
-#define CAN_LEFT_DRIVE1             11  /*!< \def CAN_LEFT_DRIVE1 The CAN Jaguar device number for the Left Drive Motor */
+#define CAN_LEFT_DRIVE1               3   /*!< \def CAN_LEFT_DRIVE1 The CAN Jaguar device number for the Left Drive Motor */
 //#define CAN_LEFT_DRIVE2             12  /*!< \def CAN_LEFT_DRIVE2 The CAN Jaguar device number for the Left Drive Motor */
 //#define CAN_RIGHT_DRIVE1            13  /*!< \def CAN_RIGHT_DRIVE1 The CAN Jaguar device number for the Right Drive Motor */
 //#define CAN_RIGHT_DRIVE2            14  /*!< \def CAN_RIGHT_DRIVE2 The CAN Jaguar device number for the Right Drive Motor */
@@ -158,7 +158,7 @@ class Robot980 : public SensorBase
     //--- Instance Variables -----------------------------------------------
     //--- Jaguars
     // left and right drive motors
-    CANJaguar *m_pscLeft1;   /*!< The 1st Left Drive motor speed controller */
+    //CANJaguar *m_pscLeft1;   /*!< The 1st Left Drive motor speed controller */
     //CANJaguar *m_pscLeft2;   /*!< The 2nd Left Drive motor speed controller */
     //CANJaguar *m_pscRight1;  /*!< The 1st Right Drive motor speed controller */
     //CANJaguar *m_pscRight2;  /*!< The 2nd Right Drive motor speed controller */
