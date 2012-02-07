@@ -30,6 +30,11 @@ MyRobot::MyRobot(void)
 {
     jag1 = new CANJaguar(1);
     joystick1 = new Joystick(1);
+    jag1->ConfigEncoderCodesPerRev(250);
+    jag1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
+    jag1->ConfigMaxOutputVoltage(12);
+    jag1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
+
     ds = DriverStation::GetInstance();
     GetWatchdog().SetExpiration(0.1);
 }
@@ -47,28 +52,17 @@ void MyRobot::Autonomous(void)
 
 void MyRobot::OperatorControl(void)
 {
-    float maxcurrent = 0;
-
     GetWatchdog().SetEnabled(true);
-    GetWatchdog().Feed();
 
     while(IsOperatorControl())
     {
-        float x, y;
-        x = joystick1->GetX();
+        GetWatchdog().Feed();
+
+        float y;
         y = joystick1->GetY();
         if(joystick1->GetTrigger())
         {
             Drive(y);
-            if(joystick1->GetRawButton(3))
-            {
-                float current = jag1->GetOutputCurrent();
-                message("Current: %f", current);
-                if(current >= maxcurrent)
-                {
-                    maxcurrent = current;
-                }
-            }
         }
         else
         {
@@ -77,10 +71,10 @@ void MyRobot::OperatorControl(void)
 
         if(joystick1->GetRawButton(2))
         {
-            message("Max Current: %f", maxcurrent);
+            message("Encoder: %f", jag1->GetPosition());
         }
         
-        GetWatchdog().Feed();
+        Wait(0.05);
     }
 
 }
