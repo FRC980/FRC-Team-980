@@ -56,13 +56,10 @@ void MyRobot::OperatorControl(void)
 
     while(IsOperatorControl())
     {
-        GetWatchdog().Feed();
-
         float y;
-        y = joystick1->GetY();
         if(joystick1->GetTrigger())
         {
-            Drive(y);
+            Drive(1.0);
         }
         else
         {
@@ -73,8 +70,7 @@ void MyRobot::OperatorControl(void)
         {
             message("Encoder: %f", jag1->GetPosition());
         }
-        
-        Wait(0.05);
+        GetWatchdog().Feed();
     }
 
 }
