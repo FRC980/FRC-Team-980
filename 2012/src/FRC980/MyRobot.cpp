@@ -61,6 +61,10 @@ void MyRobot::OperatorControl(void)
         {
             Drive(1.0);
         }
+	else if(joystick1->GetRawButton(3))
+	{
+	    Drive(.5);	
+	}
         else
         {
             Drive(0);
@@ -70,6 +74,7 @@ void MyRobot::OperatorControl(void)
         {
             message("Encoder: %f", jag1->GetPosition());
         }
+
         GetWatchdog().Feed();
     }
 
