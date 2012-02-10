@@ -82,9 +82,18 @@ void MyRobot::OperatorControl(void)
         {
             Drive(0.0);
         }
+        if(joystick1->GetRawButton(4))
+        {
+            printf("%f \n", GetRPM());
+        }
 
         GetWatchdog().Feed();
     }
+}
+
+float MyRobot::GetRPM(void)
+{
+    return jag1->GetSpeed();
 }
 
 void MyRobot::Drive(float speed)

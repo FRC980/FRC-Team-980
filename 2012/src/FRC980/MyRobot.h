@@ -17,6 +17,7 @@ public:
     ~MyRobot(void);
     void Autonomous(void);
     void OperatorControl(void);
+    float GetRPM(void);
     void Drive(float); 
 };
 
