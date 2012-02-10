@@ -72,6 +72,10 @@ void MyRobot::OperatorControl(void)
         {
             Drive(0.35);
         }
+	else if(joystick1->GetRawButton(3))
+	{
+	    Drive(.5);	
+	}
         else
         {
             Drive(0.0);
@@ -94,30 +98,6 @@ void MyRobot::OperatorControl(void)
             jag1->EnableControl();
             printf("p: %f", p);
         }
-        
-        RUN_ONCE(joystick1, 6)
-        {
-            p-=0.0001;
-            jag1->DisableControl();
-            jag1->SetPID(p,i,d);
-            jag1->EnableControl();
-            printf("p: %f", p);
-        }
-
-        RUN_ONCE(joystick1, 7)
-        {
-            i-=0.01;
-            jag1->DisableControl();
-            jag1->SetPID(p,i,d);
-            jag1->EnableControl();
-            printf("i: %f", i);
-        }
-
-        if(joystick1->GetRawButton(3))
-        {
-            printf("%f, %f, %f \n", jag1->GetSpeed(), jag1->GetOutputCurrent(), jag1->GetOutputVoltage());
-        }
-
         GetWatchdog().Feed();
     }
 }
