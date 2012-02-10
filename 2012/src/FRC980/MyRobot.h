@@ -7,6 +7,7 @@
 
 class MyRobot : public SimpleRobot
 {
+private:
     CANJaguar *jag1;
     Joystick *joystick1;
     DriverStation *ds;

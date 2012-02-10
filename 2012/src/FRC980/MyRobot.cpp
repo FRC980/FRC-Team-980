@@ -27,15 +27,22 @@ void message(char *fmt, ...)
 }
 
 MyRobot::MyRobot(void)
+    : jag1(new CANJaguar(1, CANJaguar::kSpeed))
+    , joystick1(new Joystick(1))
+    , ds(DriverStation::GetInstance())
 {
-    jag1 = new CANJaguar(1, CANJaguar::kSpeed);
     jag1->ConfigEncoderCodesPerRev(250);
     jag1->SetSpeedReference(CANJaguar::kSpeedRef_Encoder);
     jag1->ConfigMaxOutputVoltage(12);
+    
+    float p, i, d;
+    p = 0.001;
+    i = 0.9;
+    d = 0.0;
 
-    joystick1 = new Joystick(1);
+    jag1->SetPID(p,i,d);
+    jag1->EnableControl();
 
-    ds = DriverStation::GetInstance();
     GetWatchdog().SetExpiration(0.1);
 }
 
@@ -53,12 +60,7 @@ void MyRobot::Autonomous(void)
 void MyRobot::OperatorControl(void)
 {
     GetWatchdog().SetEnabled(true);
-    float p, i, d;
-    p = 0.001;
-    i = 0.9;
-    d = 0.0;
-    jag1->SetPID(p,i,d);
-    jag1->EnableControl();
+
     while(IsOperatorControl())
     {
         bool recording = false;
@@ -66,45 +68,28 @@ void MyRobot::OperatorControl(void)
         y = joystick1->GetY();
         if(joystick1->GetRawButton(2))
         {
-            jag1->Set(y*4500);
+            Drive(y);
         }
         else if(joystick1->GetTrigger())
         {
             Drive(0.35);
         }
-	else if(joystick1->GetRawButton(3))
-	{
-	    Drive(.5);	
-	}
+	    else if(joystick1->GetRawButton(3))
+	    {
+	        Drive(.5);	
+	    }
         else
         {
             Drive(0.0);
         }
 
-        RUN_ONCE(joystick1, 4)
-        {
-            i+=0.01;
-            jag1->DisableControl();
-            jag1->SetPID(p,i,d);
-            jag1->EnableControl();
-            printf("i: %f", i);
-        }
-
-        RUN_ONCE(joystick1, 5)
-        {
-            p+=0.0001;
-            jag1->DisableControl();
-            jag1->SetPID(p,i,d);
-            jag1->EnableControl();
-            printf("p: %f", p);
-        }
         GetWatchdog().Feed();
     }
 }
 
 void MyRobot::Drive(float speed)
 {
-    jag1->Set(speed);
+    jag1->Set(speed*4500);
 }
 
 START_ROBOT_CLASS(MyRobot);
