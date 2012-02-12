@@ -15,7 +15,7 @@ private:
     CANJaguar *m_pscRight1;
     CANJaguar *m_pscRight2;
 
-    Joystick *joystick2;
+    Joystick *joystick1;
     Joystick *steeringwheel;
 
     DriverStation *ds;
