@@ -42,9 +42,9 @@ MyRobot::MyRobot(void)
     , m_pscLeft2(new CANJaguar(12))
     , m_pscRight1(new CANJaguar(13))
     , m_pscRight2(new CANJaguar(14))
-    , joystick1(new Joystick(1))
+    , joystick2(new Joystick(2))
     , ds(DriverStation::GetInstance())
-    , SteeringWheel2(new SteeringWheel(2)) 
+    , steeringwheel(new Joystick(1)) 
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(250);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -88,8 +88,8 @@ MyRobot::~MyRobot(void)
     delete m_pscLeft1;
     delete m_pscLeft2;
     delete m_pscShooter;
-    delete joystick1;
-    delete SteeringWheel2;
+    delete joystick2;
+    delete steeringwheel;
     delete ds;
 }
 
@@ -104,8 +104,8 @@ void MyRobot::OperatorControl(void)
     while(IsOperatorControl())
     {
         float x, y;
-        x = SteeringWheel2->GetX();
-        y = joystick1->GetY();
+        x = steeringwheel->GetX();
+        y = joystick2->GetY();
         bool recording = false;
         
         x = (x > 0) ? x * x : x * x * -1;
@@ -140,4 +140,4 @@ void MyRobot::Drive(float left, float right)
     m_pscRight2->Set(limit(-right));
 }
 
-START_ROBOT_CLASS(MyRobottcd)
+START_ROBOT_CLASS(MyRobot)
