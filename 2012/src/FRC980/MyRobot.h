@@ -9,6 +9,7 @@ class MyRobot : public SimpleRobot
 {
     Jaguar *jag1;
     Joystick *joystick1;
+    SteeringWheel *SteeringWheel2;
     DriverStation *ds;
 
 public:
