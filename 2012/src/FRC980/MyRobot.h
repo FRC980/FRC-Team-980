@@ -8,8 +8,15 @@
 class MyRobot : public SimpleRobot
 {
 private:
-    CANJaguar *jag1;
+    CANJaguar *m_pscShooter;
+
+    CANJaguar *m_pscLeft1;
+    CANJaguar *m_pscLeft2;
+    CANJaguar *m_pscRight1;
+    CANJaguar *m_pscRight2;
+
     Joystick *joystick1;
+
     DriverStation *ds;
 
 public:
@@ -18,7 +25,7 @@ public:
     void Autonomous(void);
     void OperatorControl(void);
     float GetRPM(void);
-    void Drive(float); 
+    void Drive(float, float); 
 };
 
 #endif
