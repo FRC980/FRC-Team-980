@@ -104,8 +104,8 @@ void MyRobot::OperatorControl(void)
     while(IsOperatorControl())
     {
         float x, y;
-        x = steeringwheel->GetX();
-        y = joystick1->GetY();
+        x = joystick1->GetX();
+        y = steeringwheel->GetY();
         bool recording = false;
         
         x = (x > 0) ? x * x : x * x * -1;
