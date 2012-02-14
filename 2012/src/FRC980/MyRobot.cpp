@@ -105,11 +105,12 @@ void MyRobot::OperatorControl(void)
     {
         float x, y;
         x = steeringwheel->GetX();
+	x = (x > 0) ? x + 0.25 : x - 0.25;
         y = joystick1->GetY();
         bool recording = false;
         
         x = (x > 0) ? x * x : x * x * -1;
-        y = (y > 0) ? y * y * - 1: y * y;
+        y = (y > 0) ? y * y * -1 : y * y;
 
         float fLeft = (y+x);
         float fRight = (y-x);
