@@ -43,8 +43,8 @@ MyRobot::MyRobot(void)
     , m_pscRight1(new CANJaguar(13))
     , m_pscRight2(new CANJaguar(14))
     , joystick1(new Joystick(1))
-    , ds(DriverStation::GetInstance())
     , steeringwheel(new Joystick(2)) 
+    , ds(DriverStation::GetInstance())
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(250);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -102,18 +102,33 @@ void MyRobot::OperatorControl(void)
     GetWatchdog().SetEnabled(true);
 
     while(IsOperatorControl())
-    {
-        float x, y;
-        x = steeringwheel->GetX();
-	x = (x > 0) ? x + 0.25 : x - 0.25;
-        y = joystick1->GetY();
-        bool recording = false;
+    {   //initialize gain and throttle varaibles
+        float gain, throttle;
+        gain = steeringwheel->GetX();
+        throttle = joystick1->GetY();
         
-        x = (x > 0) ? x * x : x * x * -1;
-        y = (y > 0) ? y * y * -1 : y * y;
-
-        float fLeft = (y+x);
-        float fRight = (y-x);
+        gain = (gain > 0) ? gain * gain : gain * gain * -1;
+        throttle = (throttle > 0) ? throttle * throttle * -1 : throttle * throttle;
+	//set default fLeft and fRight to throttle
+        float fLeft = throttle;
+        float fRight = throttle;
+	
+//if statements for distributing power to left and right depending on gain value
+	message("%f\n", gain);
+	if(gain>0.05)
+	{
+	    fLeft = throttle+gain*2.0;
+	    fRight = throttle-gain*2.0;
+	    //print statment for fLeft,fRight
+	    message("%f,%f \n", fLeft, fRight);
+	}
+	else if(gain<-0.05)
+	{
+	    fLeft = throttle-gain*2.0;
+	    fRight = throttle+gain*2.0;
+	    //print staement for fLeft,fRight
+	    message("%f,%f \n", fLeft, fRight);
+	}
 
         Drive(fLeft, fRight);
 
