@@ -37,11 +37,11 @@ double limit(double val, double min = -1, double max = 1)
 }
 
 MyRobot::MyRobot(void)
-    : m_pscShooter(new CANJaguar(20, CANJaguar::kSpeed))
-    , m_pscLeft1(new CANJaguar(11))
-    , m_pscLeft2(new CANJaguar(12))
-    , m_pscRight1(new CANJaguar(13))
-    , m_pscRight2(new CANJaguar(14))
+    : //m_pscShooter(new CANJaguar(20, CANJaguar::kSpeed))
+     m_pscLeft1(new CANJaguar(14))
+    , m_pscLeft2(new CANJaguar(13))
+    , m_pscRight1(new CANJaguar(12))
+    , m_pscRight2(new CANJaguar(11))
     , joystick1(new Joystick(1))
     , steeringwheel(new Joystick(2)) 
     , ds(DriverStation::GetInstance())
@@ -66,17 +66,17 @@ MyRobot::MyRobot(void)
     m_pscRight2->ConfigMaxOutputVoltage(12.0);
     m_pscRight2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);   
 
-    m_pscShooter->ConfigEncoderCodesPerRev(250);
-    m_pscShooter->SetSpeedReference(CANJaguar::kSpeedRef_Encoder);
-    m_pscShooter->ConfigMaxOutputVoltage(12);
+    //m_pscShooter->ConfigEncoderCodesPerRev(250);
+    //m_pscShooter->SetSpeedReference(CANJaguar::kSpeedRef_Encoder);
+    //m_pscShooter->ConfigMaxOutputVoltage(12);
     
     float p, i, d;
     p = 0.001;
     i = 0.9;
     d = 0.0;
 
-    m_pscShooter->SetPID(p,i,d);
-    m_pscShooter->EnableControl();
+    //m_pscShooter->SetPID(p,i,d);
+    //m_pscShooter->EnableControl();
 
     GetWatchdog().SetExpiration(0.1);
 }
@@ -87,7 +87,7 @@ MyRobot::~MyRobot(void)
     delete m_pscRight2;
     delete m_pscLeft1;
     delete m_pscLeft2;
-    delete m_pscShooter;
+    //delete m_pscShooter;
     delete joystick1;
     delete steeringwheel;
     delete ds;
@@ -143,7 +143,8 @@ void MyRobot::OperatorControl(void)
 
 float MyRobot::GetRPM(void)
 {
-    return m_pscShooter->GetSpeed();
+    //return m_pscShooter->GetSpeed();
+    return NULL;
 }
 
 void MyRobot::Drive(float left, float right)
