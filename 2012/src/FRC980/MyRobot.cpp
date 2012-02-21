@@ -167,11 +167,11 @@ void MyRobot::OperatorControl(void)
 
         if(joystick1->GetRawButton(6))
         {
-            m_pscTurret->Set(0.5);
+            m_pscTurret->Set(0.15);
         }
         else if(joystick1->GetRawButton(7))
         {
-            m_pscTurret->Set(-0.5);
+            m_pscTurret->Set(-0.15);
         }
         else
         {
