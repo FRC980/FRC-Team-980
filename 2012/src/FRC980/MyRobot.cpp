@@ -119,41 +119,51 @@ void MyRobot::OperatorControl(void)
 
         gain = (gain > 0) ? gain * gain : gain * gain * -1;
         throttle = (throttle > 0) ? throttle * throttle * -1 : throttle * throttle;
-	//set default fLeft and fRight to throttle
+	    //set default fLeft and fRight to throttle
         float fLeft = throttle;
         float fRight = throttle;
 	
-//if statements for distributing power to left and right depending on gain value
-	//message("%f\n", gain);
-	if(gain>0.05)
-	{
-	    fLeft = throttle+gain*2.0;
-	    fRight = throttle-gain*2.0;
-	    //print statment for fLeft,fRight
-	   // message("%f,%f \n", fLeft, fRight);
-	}
-	else if(gain<-0.05)
-	{
-	    fLeft = throttle-gain*2.0;
-	    fRight = throttle+gain*2.0;
-	    //print staement for fLeft,fRight
-	   // message("%f,%f \n", fLeft, fRight);
-	}
+        //if statements for distributing power to left and right depending on gain value
+	    if(gain>0.05)
+	    {
+	        fLeft = throttle+gain*2.0;
+	        fRight = throttle-gain*2.0;
+	    }
+	    else if(gain<-0.05)
+	    {
+	        fLeft = throttle-gain*2.0;
+	        fRight = throttle+gain*2.0;
+	    }
 
-       // Drive(fLeft, fRight);
-	message("pickup");
+        //Drive(fLeft, fRight);
+
         if(joystick1->GetRawButton(5))
-	{
-	   message("pickup");
-	   m_pscBallPickup->Set(0.5);
-	}
+	    {
+	        m_pscBallPickup->Set(1.0);
+	    }
+	    else if(joystick1->GetRawButton(4))
+	    {
+	        m_pscBallPickup->Set(-1.0);
+	    }
+        else
+        {
+            m_pscBallPickup->Set(0.0);
+        }
 
-	if(joystick1->GetRawButton(4))
-	{
-	   message("pickup");
-	   m_pscBallPickup->Set(-0.5);
-	}
-
+        if(joystick1->GetRawButton(3))
+        {
+            m_pscBallFeeder->Set(1.0);
+        }
+        else if(joystick1->GetRawButton(2))
+        {
+            m_pscBallFeeder->Set(-1.0);
+        }
+        else
+        {
+            m_pscBallFeeder->Set(0.0);
+        }
+        
+        Wait(0.05);
     }
 }
 
