@@ -47,6 +47,7 @@ MyRobot::MyRobot(void)
     , m_pscRight2(new CANJaguar(11))
     , m_pscBallPickup(new Victor(1))
     , m_pscBallFeeder(new Victor(2))
+    , m_pscTurret(new Victor(3))
     , joystick1(new Joystick(1))
     , steeringwheel(new Joystick(2)) 
     , ds(DriverStation::GetInstance())
@@ -95,6 +96,7 @@ MyRobot::~MyRobot(void)
     delete m_pscShooterSlave3;
     delete m_pscBallPickup;
     delete m_pscBallFeeder;
+    delete m_pscTurret;
     delete joystick1;
     delete steeringwheel;
     delete ds;
@@ -161,6 +163,19 @@ void MyRobot::OperatorControl(void)
         else
         {
             m_pscBallFeeder->Set(0.0);
+        }
+
+        if(joystick1->GetRawButton(6))
+        {
+            m_pscTurret->Set(0.5);
+        }
+        else if(joystick1->GetRawButton(7))
+        {
+            m_pscTurret->Set(-0.5);
+        }
+        else
+        {
+            m_pscTurret->Set(0.0);
         }
         
         Wait(0.05);

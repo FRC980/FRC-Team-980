@@ -20,6 +20,7 @@ private:
 
     Victor *m_pscBallPickup;
     Victor *m_pscBallFeeder;
+    Victor *m_pscTurret;
 
     Joystick *joystick1;
     Joystick *steeringwheel;
