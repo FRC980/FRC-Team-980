@@ -35,6 +35,8 @@ public:
     float GetRPM(void);
     void Drive(float, float); 
     void SetShooterSpeed(float);
+    float GetRightEncoder(void);
+    float GetLeftEncoder(void);
 };
 
 #endif

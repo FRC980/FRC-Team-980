@@ -14,6 +14,13 @@
 #define RUN_ONCE(joystick,button)                      \
     RUN_ONCE_VAR(joystick,button,joystick##_##button##_pressed)
 
+typedef enum 
+{
+    AUTON_DRIVE,
+    AUTON_LOWER_ARM
+} auton_state_t;
+
+
 void message(char *fmt, ...)
 {
     char message[256];
@@ -52,7 +59,7 @@ MyRobot::MyRobot(void)
     , steeringwheel(new Joystick(2)) 
     , ds(DriverStation::GetInstance())
 {
-    m_pscLeft1->ConfigEncoderCodesPerRev(250);
+    m_pscLeft1->ConfigEncoderCodesPerRev(360);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscLeft1->ConfigMaxOutputVoltage(12.0);
     m_pscLeft1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
@@ -60,7 +67,7 @@ MyRobot::MyRobot(void)
     m_pscLeft2->ConfigMaxOutputVoltage(12.0);
     m_pscLeft2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
-    m_pscRight1->ConfigEncoderCodesPerRev(250);
+    m_pscRight1->ConfigEncoderCodesPerRev(360);
     m_pscRight1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscRight1->ConfigMaxOutputVoltage(12.0);
     m_pscRight1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
@@ -81,7 +88,7 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->EnableControl();
 
     //increaded the SetExpiration(float) from 0.1 to 0.25 to attemt to fix watchdog not fed      error
-    GetWatchdog().SetExpiration(0.1);
+    GetWatchdog().SetExpiration(0.25);
 }
 
 MyRobot::~MyRobot(void)
@@ -104,6 +111,23 @@ MyRobot::~MyRobot(void)
 
 void MyRobot::Autonomous(void)
 {
+    GetWatchdog().SetEnabled(false);
+
+    auton_state_t auton_state = AUTON_DRIVE;
+
+    float posLeft = GetLeftEncoder();
+    float posRight = GetRightEncoder();
+    float targetLeft = posLeft+1;
+    float targetRight = posRight+1;
+    
+    while(auton_state == AUTON_DRIVE)
+    {
+        posLeft = GetLeftEncoder();
+        if(posLeft < targetLeft)
+        {
+            Drive(0.35,0.35);
+        }
+    }
 }
 
 void MyRobot::OperatorControl(void)
@@ -133,11 +157,11 @@ void MyRobot::OperatorControl(void)
 	    }
 	    else if(gain<-0.05)
 	    {
-	        fLeft = throttle-gain*2.0;
-	        fRight = throttle+gain*2.0;
+	        fLeft = throttle+gain*2.0;
+	        fRight = throttle-gain*2.0;
 	    }
 
-        //Drive(fLeft, fRight);
+        Drive(fLeft, fRight);
 
         if(joystick1->GetRawButton(5))
 	    {
@@ -177,6 +201,16 @@ void MyRobot::OperatorControl(void)
         {
             m_pscTurret->Set(0.0);
         }
+
+        RUN_ONCE(joystick1, 8)
+        {
+            message("left encoder: %f", GetLeftEncoder());
+        }
+
+        RUN_ONCE(joystick1, 9)
+        {
+            message("right encoder: %f", GetRightEncoder());
+        } 
         
         Wait(0.05);
     }
@@ -203,6 +237,16 @@ void MyRobot::SetShooterSpeed(float speed)
     m_pscShooterSlave1->Set(voltage);
     m_pscShooterSlave2->Set(voltage);
     m_pscShooterSlave3->Set(voltage);
+}
+
+float MyRobot::GetRightEncoder(void)
+{
+    return m_pscRight1->GetPosition();
+}   
+
+float MyRobot::GetLeftEncoder(void)
+{
+    return m_pscLeft1->GetPosition();
 }
 
 START_ROBOT_CLASS(MyRobot)
