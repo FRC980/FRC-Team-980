@@ -50,10 +50,10 @@ MyRobot::MyRobot(void)
     , m_pscShooterSlave1(new CANJaguar(16, CANJaguar::kVoltage))
     , m_pscShooterSlave2(new CANJaguar(17, CANJaguar::kVoltage))
     , m_pscShooterSlave3(new CANJaguar(18, CANJaguar::kVoltage))
-    , m_pscLeft1(new CANJaguar(14))
-    , m_pscLeft2(new CANJaguar(13))
-    , m_pscRight1(new CANJaguar(12))
-    , m_pscRight2(new CANJaguar(11))
+    , m_pscLeft1(new CANJaguar(11))
+    , m_pscLeft2(new CANJaguar(12))
+    , m_pscRight1(new CANJaguar(13))
+    , m_pscRight2(new CANJaguar(14))
     , m_pscBallPickup(new Victor(1))
     , m_pscBallFeeder(new Victor(2))
     , m_pscTurret(new Victor(3))
@@ -196,7 +196,7 @@ void MyRobot::OperatorControl(void)
                 message("no fresh image");
             }
         }
-/*
+
 	    if(gain>0.05)
 	    {
 	        fLeft = throttle+gain*2.0;
@@ -209,7 +209,7 @@ void MyRobot::OperatorControl(void)
 	    }
 
         Drive(fLeft, fRight);
-*/
+/*
         if(joystick1->GetRawButton(5))
 	    {
 	        m_pscBallPickup->Set(1.0);
@@ -258,7 +258,7 @@ void MyRobot::OperatorControl(void)
         {
             message("right encoder: %f", GetRightEncoder());
         } 
-        
+*/        
         Wait(0.05);
     }
 }
