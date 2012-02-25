@@ -1,5 +1,7 @@
 #include "WPILib.h"
 #include "MyRobot.h"
+#include "Vision/RGBImage.h"
+#include "Vision/BinaryImage.h"
 
 
 #define RUN_ONCE_VAR(joystick,button,var)              \
@@ -87,6 +89,7 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->SetPID(p,i,d);
     m_pscShooterMaster->EnableControl();
 
+
     //increaded the SetExpiration(float) from 0.1 to 0.25 to attemt to fix watchdog not fed      error
     GetWatchdog().SetExpiration(0.25);
 }
@@ -150,6 +153,54 @@ void MyRobot::OperatorControl(void)
         float fRight = throttle;
 	
         //if statements for distributing power to left and right depending on gain value
+
+        if(joystick1->GetTrigger())
+        {
+            AxisCamera &camera = AxisCamera::GetInstance("10.9.80.11");
+            camera.WriteResolution(AxisCamera::kResolution_320x240);
+            camera.WriteBrightness(30);
+            camera.WriteRotation(AxisCamera::kRotation_180);
+            if(camera.IsFreshImage())
+            {
+                ParticleFilterCriteria2 criteria[] = {
+                    {IMAQ_MT_BOUNDING_RECT_WIDTH, 0, 400, false, false},
+                    {IMAQ_MT_BOUNDING_RECT_HEIGHT, 0, 400, false, false}
+                };
+                Threshold threshold(0,0,0,0,0,0);
+                ColorImage *image = camera.GetImage();
+                message("width %d", image->GetWidth());
+                BinaryImage *thresholdImage = image->ThresholdRGB(threshold);
+                BinaryImage *bigObjectsImage = thresholdImage->RemoveSmallObjects(false, 2);
+                BinaryImage *convexHullImage = bigObjectsImage->ConvexHull(false);
+                BinaryImage *filteredImage = convexHullImage->ParticleFilter(criteria, 2);
+                vector<ParticleAnalysisReport> *reports = filteredImage->GetOrderedParticleAnalysisReports();
+
+                if(reports->size() == 0)
+                {
+                    message("No targets");
+                }
+                else
+                {
+                    for(unsigned i = 0; i < reports->size(); i++)
+                    {
+                        ParticleAnalysisReport *r = &(reports->at(i));
+                        message("particle: %d center_mass_x: %d center_mass_y: %d\n", i, r->center_mass_x, r->center_mass_y);
+                    }
+                    message("\n");
+                }
+
+                delete reports;
+                delete filteredImage;
+                delete bigObjectsImage;
+                delete thresholdImage;
+                delete image;
+            }
+            else
+            {
+                message("no fresh image");
+            }
+        }
+/*
 	    if(gain>0.05)
 	    {
 	        fLeft = throttle+gain*2.0;
@@ -162,7 +213,7 @@ void MyRobot::OperatorControl(void)
 	    }
 
         Drive(fLeft, fRight);
-
+*/
         if(joystick1->GetRawButton(5))
 	    {
 	        m_pscBallPickup->Set(1.0);
