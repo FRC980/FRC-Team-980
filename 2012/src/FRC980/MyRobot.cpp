@@ -35,9 +35,9 @@ void message(char *fmt, ...)
 
 double limit(double val, double min = -1, double max = 1)
 {
-    if(val > max)
+    if (val > max)
         return max;
-    if(val < min)
+    if (val < min)
         return min;
 
     return val;
@@ -87,8 +87,9 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->SetPID(p,i,d);
     m_pscShooterMaster->EnableControl();
 
-    //increaded the SetExpiration(float) from 0.1 to 0.25 to attemt to fix watchdog not fed      error
-    GetWatchdog().SetExpiration(0.25);
+    //increased the SetExpiration(float) from 0.1 to 0.25 
+    //to attemt to fix watchdog not fed error
+    GetWatchdog();
 }
 
 MyRobot::~MyRobot(void)
@@ -120,10 +121,10 @@ void MyRobot::Autonomous(void)
     float targetLeft = posLeft+1;
     float targetRight = posRight+1;
     
-    while(auton_state == AUTON_DRIVE)
+    while (auton_state == AUTON_DRIVE)
     {
         posLeft = GetLeftEncoder();
-        if(posLeft < targetLeft)
+        if (posLeft < targetLeft)
         {
             Drive(0.35,0.35);
         }
@@ -134,7 +135,7 @@ void MyRobot::OperatorControl(void)
 {
     GetWatchdog().SetEnabled(true);
 
-    while(IsOperatorControl())
+    while (IsOperatorControl())
     {   
         GetWatchdog().Feed();
 
@@ -145,42 +146,43 @@ void MyRobot::OperatorControl(void)
 
         gain = (gain > 0) ? gain * gain : gain * gain * -1;
         throttle = (throttle > 0) ? throttle * throttle * -1 : throttle * throttle;
-	    //set default fLeft and fRight to throttle
+	//set default fLeft and fRight to throttle
         float fLeft = throttle;
         float fRight = throttle;
 	
-        //if statements for distributing power to left and right depending on gain value
-	    if(gain>0.05)
-	    {
-	        fLeft = throttle+gain*2.0;
-	        fRight = throttle-gain*2.0;
-	    }
-	    else if(gain<-0.05)
-	    {
-	        fLeft = throttle+gain*2.0;
-	        fRight = throttle-gain*2.0;
-	    }
+        //if statements for distributing power to 
+	//left and right depending on gain value
+	if (gain>0.05)
+	{
+	    fLeft = throttle+gain*2.0;
+	    fRight = throttle-gain*2.0;
+	}
+	else if (gain<-0.05)
+	{
+	    fLeft = throttle+gain*2.0;
+	    fRight = throttle-gain*2.0;
+	}
 
         Drive(fLeft, fRight);
 
-        if(joystick1->GetRawButton(5))
-	    {
-	        m_pscBallPickup->Set(1.0);
-	    }
-	    else if(joystick1->GetRawButton(4))
-	    {
-	        m_pscBallPickup->Set(-1.0);
-	    }
-        else
-        {
+        if (joystick1->GetRawButton(5))
+	{
+	    m_pscBallPickup->Set(1.0);
+	}
+        else if (joystick1->GetRawButton(4))
+	{
+	    m_pscBallPickup->Set(-1.0);
+	}
+        else 
+	{
             m_pscBallPickup->Set(0.0);
         }
 
-        if(joystick1->GetRawButton(3))
+        if (joystick1->GetRawButton(3))
         {
             m_pscBallFeeder->Set(1.0);
         }
-        else if(joystick1->GetRawButton(2))
+        else if (joystick1->GetRawButton(2))
         {
             m_pscBallFeeder->Set(-1.0);
         }
@@ -189,11 +191,11 @@ void MyRobot::OperatorControl(void)
             m_pscBallFeeder->Set(0.0);
         }
 
-        if(joystick1->GetRawButton(6))
+        if (joystick1->GetRawButton(6))
         {
             m_pscTurret->Set(0.15);
         }
-        else if(joystick1->GetRawButton(7))
+        else if (joystick1->GetRawButton(7))
         {
             m_pscTurret->Set(-0.15);
         }
