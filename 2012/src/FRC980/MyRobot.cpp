@@ -162,8 +162,9 @@ void MyRobot::OperatorControl(void)
                     {IMAQ_MT_BOUNDING_RECT_WIDTH, 0, 400, false, false},
                     {IMAQ_MT_BOUNDING_RECT_HEIGHT, 0, 400, false, false}
                 };
-                Threshold threshold(0,0,0,0,0,0);
+                Threshold threshold(136,182,45,255,168,255);
                 ColorImage *image = camera.GetImage();
+
                 message("width %d", image->GetWidth());
                 BinaryImage *thresholdImage = image->ThresholdRGB(threshold);
                 BinaryImage *bigObjectsImage = thresholdImage->RemoveSmallObjects(false, 2);
