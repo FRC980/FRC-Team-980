@@ -154,19 +154,18 @@ void MyRobot::OperatorControl(void)
         {
             AxisCamera &camera = AxisCamera::GetInstance("10.9.80.11");
             camera.WriteResolution(AxisCamera::kResolution_320x240);
-            camera.WriteBrightness(30);
+            camera.WriteBrightness(25);
             camera.WriteRotation(AxisCamera::kRotation_180);
+            
             if(camera.IsFreshImage())
             {
+                Threshold threshold(92,139,76,255,90,255);
                 ParticleFilterCriteria2 criteria[] = {
                     {IMAQ_MT_BOUNDING_RECT_WIDTH, 0, 400, false, false},
-                    {IMAQ_MT_BOUNDING_RECT_HEIGHT, 0, 400, false, false}
+                    {IMAQ_MT_BOUNDING_RECT_HEIGHT, 40, 400, false, false}
                 };
-                Threshold threshold(136,182,45,255,168,255);
                 ColorImage *image = camera.GetImage();
-
-                message("width %d", image->GetWidth());
-                BinaryImage *thresholdImage = image->ThresholdRGB(threshold);
+                BinaryImage *thresholdImage = image->ThresholdHSL(threshold);
                 BinaryImage *bigObjectsImage = thresholdImage->RemoveSmallObjects(false, 2);
                 BinaryImage *convexHullImage = bigObjectsImage->ConvexHull(false);
                 BinaryImage *filteredImage = convexHullImage->ParticleFilter(criteria, 2);
@@ -181,7 +180,7 @@ void MyRobot::OperatorControl(void)
                     for(unsigned i = 0; i < reports->size(); i++)
                     {
                         ParticleAnalysisReport *r = &(reports->at(i));
-                        message("particle: %d center_mass_x: %d center_mass_y: %d\n", i, r->center_mass_x, r->center_mass_y);
+                        message("particle: %d center_mass_x: %d center_mass_y: %d\n", i, (320-r->center_mass_x), (240-r->center_mass_y));
                     }
                     message("\n");
                 }
