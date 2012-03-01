@@ -1,4 +1,6 @@
 #include "WPILib.h"
+#include "Vision/RGBImage.h"
+#include "Vision/BinaryImage.h"
 
 #ifndef _MyRobot_h_
 #define _MyRobot_h_
@@ -37,6 +39,7 @@ public:
     void SetShooterSpeed(float);
     float GetRightEncoder(void);
     float GetLeftEncoder(void);
+    vector<vector<int> > GetTargetCenters(void);
 };
 
 #endif

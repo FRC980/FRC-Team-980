@@ -115,9 +115,9 @@ void MyRobot::Autonomous(void)
     auton_state_t auton_state = AUTON_DRIVE;
 
     float posLeft = GetLeftEncoder();
-    float posRight = GetRightEncoder();
+    //float posRight = GetRightEncoder();
     float targetLeft = posLeft+1;
-    float targetRight = posRight+1;
+    //float targetRight = posRight+1;
     
     while (auton_state == AUTON_DRIVE)
     {
@@ -152,48 +152,17 @@ void MyRobot::OperatorControl(void)
 
         if(joystick1->GetTrigger())
         {
-            AxisCamera &camera = AxisCamera::GetInstance("10.9.80.11");
-            camera.WriteResolution(AxisCamera::kResolution_320x240);
-            camera.WriteBrightness(25);
-            camera.WriteRotation(AxisCamera::kRotation_180);
+            vector<vector<int> > points = GetTargetCenters();
             
-            if(camera.IsFreshImage())
+            for(unsigned i = 0; i < points.size(); i++)
             {
-                Threshold threshold(92,139,76,255,90,255);
-                ParticleFilterCriteria2 criteria[] = {
-                    {IMAQ_MT_BOUNDING_RECT_WIDTH, 0, 400, false, false},
-                    {IMAQ_MT_BOUNDING_RECT_HEIGHT, 40, 400, false, false}
-                };
-                ColorImage *image = camera.GetImage();
-                BinaryImage *thresholdImage = image->ThresholdHSL(threshold);
-                BinaryImage *bigObjectsImage = thresholdImage->RemoveSmallObjects(false, 2);
-                BinaryImage *convexHullImage = bigObjectsImage->ConvexHull(false);
-                BinaryImage *filteredImage = convexHullImage->ParticleFilter(criteria, 2);
-                vector<ParticleAnalysisReport> *reports = filteredImage->GetOrderedParticleAnalysisReports();
-
-                if(reports->size() == 0)
-                {
-                    message("No targets");
-                }
-                else
-                {
-                    for(unsigned i = 0; i < reports->size(); i++)
-                    {
-                        ParticleAnalysisReport *r = &(reports->at(i));
-                        message("particle: %d center_mass_x: %d center_mass_y: %d\n", i, (320-r->center_mass_x), (240-r->center_mass_y));
-                    }
-                    message("\n");
-                }
-
-                delete reports;
-                delete filteredImage;
-                delete bigObjectsImage;
-                delete thresholdImage;
-                delete image;
-            }
-            else
-            {
-                message("no fresh image");
+                int x = points.at(i).at(0);
+                int y = points.at(i).at(1);
+                message("particle: %d center_mass_x: %d center_mass_y: %d\n",i,x,y);
+                int virtical = y-120;
+                int horizontal = x-160;
+                message("virtical distance from center: %d", virtical);
+                message("horizontal distance from center: %d", horizontal);
             }
         }
 
@@ -294,6 +263,49 @@ float MyRobot::GetRightEncoder(void)
 float MyRobot::GetLeftEncoder(void)
 {
     return m_pscLeft1->GetPosition();
+}
+
+vector<vector<int> > MyRobot::GetTargetCenters(void)
+{
+    AxisCamera &camera = AxisCamera::GetInstance("10.9.80.11");
+            
+    vector<vector<int> > points;
+    if(camera.IsFreshImage())
+    {
+        Threshold threshold(92,139,35,255,90,255);
+        ParticleFilterCriteria2 criteria[] = {
+            {IMAQ_MT_BOUNDING_RECT_WIDTH, 0, 400, false, false},
+            {IMAQ_MT_BOUNDING_RECT_HEIGHT, 40, 400, false, false}
+        };
+        ColorImage *image = camera.GetImage();
+        BinaryImage *thresholdImage = image->ThresholdHSL(threshold);
+        BinaryImage *bigObjectsImage = thresholdImage->RemoveSmallObjects(false, 1);
+        BinaryImage *convexHullImage = bigObjectsImage->ConvexHull(false);
+        BinaryImage *filteredImage = convexHullImage->ParticleFilter(criteria, 2);
+        vector<ParticleAnalysisReport> *reports = filteredImage->GetOrderedParticleAnalysisReports();
+
+        if(reports->size() == 0)
+        {
+            message("No targets");
+        }
+        else
+        {
+            for(unsigned i = 0; i < reports->size(); i++)
+            {
+                ParticleAnalysisReport *r = &(reports->at(i));
+                vector<int> temp;
+                temp.push_back(r->center_mass_x);
+                temp.push_back(r->center_mass_y);
+                points.push_back(temp);
+            }
+        }
+        delete filteredImage;
+        delete bigObjectsImage;
+        delete thresholdImage;
+        delete image;
+        delete reports;
+    }
+    return points;
 }
 
 START_ROBOT_CLASS(MyRobot)
