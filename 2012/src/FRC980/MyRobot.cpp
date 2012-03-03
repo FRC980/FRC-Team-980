@@ -166,7 +166,7 @@ void MyRobot::OperatorControl(void)
                 message("virtical distance from center: %d", virtical);
                 message("horizontal distance from center: %d", horizontal);
                 message("width of target: %d", width);
-                message("distance from target: %f", distance);
+                message("distance from target: %g", distance);
             }
         }
 
