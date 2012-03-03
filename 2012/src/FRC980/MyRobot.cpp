@@ -160,19 +160,12 @@ void MyRobot::OperatorControl(void)
                 int x = points.at(i).at(0);
                 int y = points.at(i).at(1);
                 int width = points.at(i).at(2);
-                const float tft = 2.0;
-                const float FOVp = 320.0;
-                const float theta = 27.0;
-                float FOVft = ((tft/width) * FOVp)/2.0;
-                float distance = FOVft/tan((3.14*theta/180));
+                float distance = GetDistanceToTarget(width);
                 int virtical = y-120;
                 int horizontal = x-160;
                 message("virtical distance from center: %d", virtical);
                 message("horizontal distance from center: %d", horizontal);
                 message("width of target: %d", width);
-                message("tft: %f", tft);
-                message("FOVft: %f", FOVft);
-                message("theta: %f", theta);
                 message("distance from target: %f", distance);
             }
         }
@@ -320,4 +313,16 @@ vector<vector<int> > MyRobot::GetTargetCenters(void)
     return points;
 }
 
+float GetDistanceToTarget(float width)
+{
+    const float tft = 2.0;
+    const float FOVp = 320.0;
+    const float theta = 27.0;
+    float FOVft = ((tft/width) * FOVp)/2.0;
+    message("tft: %f", tft);
+    message("FOVft: %f", FOVft);
+    message("theta: %f", theta);
+    float distance = FOVft/tan((3.14*theta/180));
+    return distance;
+}
 START_ROBOT_CLASS(MyRobot)

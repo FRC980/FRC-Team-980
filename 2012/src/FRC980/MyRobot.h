@@ -40,6 +40,7 @@ public:
     float GetRightEncoder(void);
     float GetLeftEncoder(void);
     vector<vector<int> > GetTargetCenters(void);
+    float GetDistanceToTarget(float);
 };
 
 #endif
