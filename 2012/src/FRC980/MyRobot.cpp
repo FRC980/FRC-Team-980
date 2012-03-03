@@ -313,11 +313,11 @@ vector<vector<int> > MyRobot::GetTargetCenters(void)
     return points;
 }
 
-float GetDistanceToTarget(float width)
+float MyRobot::GetDistanceToTarget(float width)
 {
-    const float tft = 2.0;
-    const float FOVp = 320.0;
-    const float theta = 27.0;
+    float tft = 2.0;
+    float FOVp = 320.0;
+    float theta = 27.0;
     float FOVft = ((tft/width) * FOVp)/2.0;
     message("tft: %f", tft);
     message("FOVft: %f", FOVft);
