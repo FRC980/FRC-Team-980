@@ -150,8 +150,8 @@ void MyRobot::OperatorControl(void)
         float fRight = throttle;
 	
         //if statements for distributing power to left and right depending on gain value
-
-        if(joystick1->GetTrigger())
+        static int w = 46;
+        RUN_ONCE(joystick1, 1)
         {
             vector<vector<int> > points = GetTargetCenters();
             
@@ -160,14 +160,24 @@ void MyRobot::OperatorControl(void)
                 int x = points.at(i).at(0);
                 int y = points.at(i).at(1);
                 int width = points.at(i).at(2);
-                float distance = GetDistanceToTarget(width);
+                float distance = GetDistanceToTarget(w);
                 int virtical = y-120;
                 int horizontal = x-160;
-                message("virtical distance from center: %d", virtical);
-                message("horizontal distance from center: %d", horizontal);
                 message("width of target: %d", width);
-                message("distance from target: %g", distance);
+                message("distance from target: %f", distance);
             }
+        }
+
+        RUN_ONCE(joystick1, 4)
+        {
+            w++;
+            message("width: %d", w);
+        }
+
+        RUN_ONCE(joystick1, 5)
+        {
+            w--;
+            message("width: %d", w);
         }
 
 	    if(gain>0.05)
@@ -276,7 +286,7 @@ vector<vector<int> > MyRobot::GetTargetCenters(void)
     vector<vector<int> > points;
     if(camera.IsFreshImage())
     {
-        Threshold threshold(92,139,35,255,90,255);
+        Threshold threshold(92,139,76,255,90,255);
         ParticleFilterCriteria2 criteria[] = {
             {IMAQ_MT_BOUNDING_RECT_WIDTH, 0, 400, false, false},
             {IMAQ_MT_BOUNDING_RECT_HEIGHT, 40, 400, false, false}
@@ -316,13 +326,11 @@ vector<vector<int> > MyRobot::GetTargetCenters(void)
 float MyRobot::GetDistanceToTarget(float width)
 {
     float tft = 2.0;
-    float FOVp = 320.0;
+    float FOVp = 640.0;
     float theta = 27.0;
     float FOVft = ((tft/width) * FOVp)/2.0;
-    message("tft: %f", tft);
     message("FOVft: %f", FOVft);
-    message("theta: %f", theta);
-    float distance = FOVft/tan((3.14*theta/180));
+    float distance = FOVft/tan((3.14159*theta/180.0));
     return distance;
 }
 START_ROBOT_CLASS(MyRobot)
