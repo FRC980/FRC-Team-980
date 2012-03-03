@@ -2,6 +2,7 @@
 #include "MyRobot.h"
 #include "Vision/RGBImage.h"
 #include "Vision/BinaryImage.h"
+#include <math.h>
 
 
 #define RUN_ONCE_VAR(joystick,button,var)              \
@@ -158,11 +159,21 @@ void MyRobot::OperatorControl(void)
             {
                 int x = points.at(i).at(0);
                 int y = points.at(i).at(1);
-                message("particle: %d center_mass_x: %d center_mass_y: %d\n",i,x,y);
+                int width = points.at(i).at(2);
+                const float tft = 2.0;
+                const float FOVp = 320.0;
+                const float theta = 27.0;
+                float FOVft = ((tft/width) * FOVp)/2.0;
+                float distance = FOVft/tan((3.14*theta/180));
                 int virtical = y-120;
                 int horizontal = x-160;
                 message("virtical distance from center: %d", virtical);
                 message("horizontal distance from center: %d", horizontal);
+                message("width of target: %d", width);
+                message("tft: %f", tft);
+                message("FOVft: %f", FOVft);
+                message("theta: %f", theta);
+                message("distance from target: %f", distance);
             }
         }
 
@@ -296,6 +307,7 @@ vector<vector<int> > MyRobot::GetTargetCenters(void)
                 vector<int> temp;
                 temp.push_back(r->center_mass_x);
                 temp.push_back(r->center_mass_y);
+                temp.push_back(r->boundingRect.width);
                 points.push_back(temp);
             }
         }
