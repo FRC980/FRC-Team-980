@@ -41,6 +41,7 @@ public:
     float GetLeftEncoder(void);
     vector<vector<int> > GetTargetCenters(void);
     float GetDistanceToTarget(float);
+    void SetBrakes(bool);
 };
 
 #endif

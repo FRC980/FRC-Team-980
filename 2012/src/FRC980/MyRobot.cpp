@@ -89,6 +89,7 @@ MyRobot::MyRobot(void)
 
     m_pscShooterMaster->SetPID(p,i,d);
     m_pscShooterMaster->EnableControl();
+
 }
 
 MyRobot::~MyRobot(void)
@@ -134,6 +135,8 @@ void MyRobot::OperatorControl(void)
 {
     GetWatchdog().SetEnabled(true);
 
+    SetBrakes(false);
+
     while (IsOperatorControl())
     {   
         GetWatchdog().Feed();
@@ -150,34 +153,32 @@ void MyRobot::OperatorControl(void)
         float fRight = throttle;
 	
         //if statements for distributing power to left and right depending on gain value
-        static int w = 46;
         RUN_ONCE(joystick1, 1)
         {
+            message("finding targets");
             vector<vector<int> > points = GetTargetCenters();
             
             for(unsigned i = 0; i < points.size(); i++)
             {
                 int x = points.at(i).at(0);
-                int y = points.at(i).at(1);
-                int width = points.at(i).at(2);
-                float distance = GetDistanceToTarget(w);
-                int virtical = y-120;
                 int horizontal = x-160;
-                message("width of target: %d", width);
+                int width = points.at(i).at(2);
+                float distance = GetDistanceToTarget(width);
                 message("distance from target: %f", distance);
+                if(horizontal > 0)
+                {
+                    message("you are %d pixels off to the left", horizontal);
+                }
+                else if(horizontal < 0)
+                {
+                    message("you are %d pixels off to the right", horizontal);
+                }
+                else 
+                {
+                    message("you are on target");
+                }
             }
-        }
-
-        RUN_ONCE(joystick1, 4)
-        {
-            w++;
-            message("width: %d", w);
-        }
-
-        RUN_ONCE(joystick1, 5)
-        {
-            w--;
-            message("width: %d", w);
+            message("done");
         }
 
 	    if(gain>0.05)
@@ -192,7 +193,20 @@ void MyRobot::OperatorControl(void)
 	    }
 
         Drive(fLeft, fRight);
-/*
+
+        RUN_ONCE(joystick1, 4)
+        {
+            SetBrakes(true);
+            message("brakes set: on");
+        }
+
+        RUN_ONCE(joystick1, 5)
+        {
+            SetBrakes(false);
+            message("brakes set: off");
+        }
+        
+        /*
         if(joystick1->GetRawButton(5))
 	    {
 	        m_pscBallPickup->Set(1.0);
@@ -288,7 +302,7 @@ vector<vector<int> > MyRobot::GetTargetCenters(void)
     {
         Threshold threshold(92,139,76,255,90,255);
         ParticleFilterCriteria2 criteria[] = {
-            {IMAQ_MT_BOUNDING_RECT_WIDTH, 0, 400, false, false},
+            {IMAQ_MT_BOUNDING_RECT_WIDTH, 20, 400, false, false},
             {IMAQ_MT_BOUNDING_RECT_HEIGHT, 40, 400, false, false}
         };
         ColorImage *image = camera.GetImage();
@@ -320,17 +334,32 @@ vector<vector<int> > MyRobot::GetTargetCenters(void)
         delete image;
         delete reports;
     }
+    else
+    {
+        message("No fresh image");
+    }
     return points;
 }
 
 float MyRobot::GetDistanceToTarget(float width)
 {
     float tft = 2.0;
-    float FOVp = 640.0;
-    float theta = 27.0;
+    float FOVp = 320.0;
+    float theta = 24.0;
     float FOVft = ((tft/width) * FOVp)/2.0;
-    message("FOVft: %f", FOVft);
     float distance = FOVft/tan((3.14159*theta/180.0));
     return distance;
+}
+
+void MyRobot::SetBrakes(bool brakeOnStop)
+{
+    CANJaguar::NeutralMode mode = brakeOnStop
+        ? CANJaguar::kNeutralMode_Brake : CANJaguar::kNeutralMode_Coast;
+
+    m_pscLeft1->ConfigNeutralMode(mode);
+    m_pscRight1->ConfigNeutralMode(mode);
+    m_pscRight2->ConfigNeutralMode(mode);
+    m_pscLeft2->ConfigNeutralMode(mode);
+
 }
 START_ROBOT_CLASS(MyRobot)
