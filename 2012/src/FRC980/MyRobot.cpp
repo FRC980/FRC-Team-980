@@ -146,13 +146,17 @@ void MyRobot::OperatorControl(void)
         gain = steeringwheel->GetX();
         throttle = joystick1->GetY();
 
-        gain = (gain > 0) ? gain * gain : gain * gain * -1;
-        throttle = (throttle > 0) ? throttle * throttle * -1 : throttle * throttle;
+	float eGain = pow(2.71828183, (gain-3));
+	float eThrottle = pow(2.71828183, (throttle-3));
+
+        gain = (gain > 0.003) ? -0.05+eGain : (-0.05 + eGain)*-1;
+        throttle = (throttle > 0.003) ? (-0.05+eThrottle)*-1 : (-0.05+eThrottle);
+	
 	//set default fLeft and fRight to throttle
         float fLeft = throttle;
         float fRight = throttle;
-	
-        //if statements for distributing power to left and right depending on gain value
+
+	//target finder
         RUN_ONCE(joystick1, 1)
         {
             message("finding targets");
@@ -181,16 +185,17 @@ void MyRobot::OperatorControl(void)
             message("done");
         }
 
-	    if(gain>0.05)
-	    {
-	        fLeft = throttle+gain*2.0;
-	        fRight = throttle-gain*2.0;
-	    }
-	    else if(gain<-0.05)
-	    {
-	        fLeft = throttle+gain*2.0;
-	        fRight = throttle-gain*2.0;
-	    }
+//if statements for distributing power to left and right depending on gain value 
+	if(gain>0.05)
+	{
+	    fLeft = throttle+gain*2.0;
+	    fRight = throttle-gain*2.0;
+	}
+	else if(gain<-0.05)
+	{
+	    fLeft = throttle+gain*2.0;
+	    fRight = throttle-gain*2.0;
+	}
 
         Drive(fLeft, fRight);
 
