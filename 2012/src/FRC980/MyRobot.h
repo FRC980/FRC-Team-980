@@ -39,7 +39,7 @@ public:
     void SetShooterSpeed(float);
     float GetRightEncoder(void);
     float GetLeftEncoder(void);
-    vector<vector<int> > GetTargetCenters(void);
+    vector<vector<int> > GetTargetCenters(AxisCamera &);
     float GetDistanceToTarget(float);
     void SetBrakes(bool);
 };

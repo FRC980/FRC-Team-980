@@ -133,6 +133,7 @@ void MyRobot::Autonomous(void)
 
 void MyRobot::OperatorControl(void)
 {
+    AxisCamera &camera = AxisCamera::GetInstance("10.9.80.11");
     GetWatchdog().SetEnabled(true);
 
     SetBrakes(false);
@@ -160,7 +161,7 @@ void MyRobot::OperatorControl(void)
         RUN_ONCE(joystick1, 1)
         {
             message("finding targets");
-            vector<vector<int> > points = GetTargetCenters();
+            vector<vector<int> > points = GetTargetCenters(camera);
             
             for(unsigned i = 0; i < points.size(); i++)
             {
@@ -298,17 +299,15 @@ float MyRobot::GetLeftEncoder(void)
     return m_pscLeft1->GetPosition();
 }
 
-vector<vector<int> > MyRobot::GetTargetCenters(void)
+vector<vector<int> > MyRobot::GetTargetCenters(AxisCamera &camera)
 {
-    AxisCamera &camera = AxisCamera::GetInstance("10.9.80.11");
-            
     vector<vector<int> > points;
     if(camera.IsFreshImage())
     {
         Threshold threshold(92,139,76,255,90,255);
         ParticleFilterCriteria2 criteria[] = {
             {IMAQ_MT_BOUNDING_RECT_WIDTH, 20, 400, false, false},
-            {IMAQ_MT_BOUNDING_RECT_HEIGHT, 40, 400, false, false}
+            {IMAQ_MT_BOUNDING_RECT_HEIGHT, 18, 400, false, false}
         };
         ColorImage *image = camera.GetImage();
         BinaryImage *thresholdImage = image->ThresholdHSL(threshold);
