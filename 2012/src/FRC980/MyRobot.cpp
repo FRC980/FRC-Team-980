@@ -1,3 +1,5 @@
+#include "iostream"
+#include "fstream"
 #include "WPILib.h"
 #include "MyRobot.h"
 #include "Vision/RGBImage.h"
@@ -47,14 +49,14 @@ double limit(double val, double min = -1, double max = 1)
 }
 
 MyRobot::MyRobot(void)
-    : m_pscShooterMaster(new CANJaguar(15, CANJaguar::kSpeed))
-    , m_pscShooterSlave1(new CANJaguar(16, CANJaguar::kVoltage))
-    , m_pscShooterSlave2(new CANJaguar(17, CANJaguar::kVoltage))
-    , m_pscShooterSlave3(new CANJaguar(18, CANJaguar::kVoltage))
-    , m_pscLeft1(new CANJaguar(11))
-    , m_pscLeft2(new CANJaguar(12))
-    , m_pscRight1(new CANJaguar(13))
-    , m_pscRight2(new CANJaguar(14))
+    : m_pscShooterMaster(new CANJaguar(11, CANJaguar::kSpeed))
+    , m_pscShooterSlave1(new CANJaguar(12, CANJaguar::kVoltage))
+    , m_pscShooterSlave2(new CANJaguar(13, CANJaguar::kVoltage))
+    , m_pscShooterSlave3(new CANJaguar(14, CANJaguar::kVoltage))
+    , m_pscLeft1(new CANJaguar(15))
+    , m_pscLeft2(new CANJaguar(16))
+    , m_pscRight1(new CANJaguar(16))
+    , m_pscRight2(new CANJaguar(18))
     , m_pscBallPickup(new Victor(1))
     , m_pscBallFeeder(new Victor(2))
     , m_pscTurret(new Victor(3))
@@ -83,8 +85,8 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->ConfigMaxOutputVoltage(12);
     
     float p, i, d;
-    p = 0.001;
-    i = 0.9;
+    p = 0.029;
+    i = 0.0;
     d = 0.0;
 
     m_pscShooterMaster->SetPID(p,i,d);
@@ -133,8 +135,22 @@ void MyRobot::Autonomous(void)
 
 void MyRobot::OperatorControl(void)
 {
+    ofstream myfile;
+    myfile.open("example.txt");
+    Timer timer;
+    timer.Reset();
+    timer.Start();
     AxisCamera &camera = AxisCamera::GetInstance("10.9.80.11");
     GetWatchdog().SetEnabled(true);
+
+    float p, i, d;
+    p = 0.029;
+    i = 0.0;
+    d = 0.0;
+
+    const float targetspeed = 3000.0;
+    float setspeed = 2*targetspeed;
+    float speed = 0.0;
 
     SetBrakes(false);
 
@@ -147,17 +163,17 @@ void MyRobot::OperatorControl(void)
         gain = steeringwheel->GetX();
         throttle = joystick1->GetY();
 
-	float eGain = pow(2.71828183, (gain-3));
-	float eThrottle = pow(2.71828183, (throttle-3));
+	    float eGain = pow(2.71828183, (gain-3));
+	    float eThrottle = pow(2.71828183, (throttle-3));
 
         gain = (gain > 0.003) ? -0.05+eGain : (-0.05 + eGain)*-1;
         throttle = (throttle > 0.003) ? (-0.05+eThrottle)*-1 : (-0.05+eThrottle);
 	
-	//set default fLeft and fRight to throttle
+	    //set default fLeft and fRight to throttle
         float fLeft = throttle;
         float fRight = throttle;
 
-	//target finder
+	    //target finder
         RUN_ONCE(joystick1, 1)
         {
             message("finding targets");
@@ -186,19 +202,40 @@ void MyRobot::OperatorControl(void)
             message("done");
         }
 
-//if statements for distributing power to left and right depending on gain value 
-	if(gain>0.05)
-	{
-	    fLeft = throttle+gain*2.0;
-	    fRight = throttle-gain*2.0;
-	}
-	else if(gain<-0.05)
-	{
-	    fLeft = throttle+gain*2.0;
-	    fRight = throttle-gain*2.0;
-	}
+        //if statements for distributing power to left and right depending on gain value 
+	    if(gain>0.05)
+	    {
+	        fLeft = throttle+gain*2.0;
+	        fRight = throttle-gain*2.0;
+	    }
+	    else if(gain<-0.05)
+    	{
+	        fLeft = throttle+gain*2.0;
+	        fRight = throttle-gain*2.0;
+	    }
 
-        Drive(fLeft, fRight);
+        //Drive(fLeft, fRight);
+        float y = joystick1->GetY();
+        y = (y > 0) ? y : y * -1;
+        
+        if(joystick1->GetRawButton(3))
+        {
+            SetShooterSpeed(speed);
+            if(speed <= setspeed)
+                speed+=setspeed/20.0;
+        }
+        else
+        {
+            SetShooterSpeed(0);
+            speed = 0.0;
+        }
+
+        if(joystick1->GetRawButton(2))
+        {
+            if(myfile.is_open())
+                myfile << "speed: " << GetRPM() << ", target: 2000, p: " << p << ", i: " << i << ", d: " << d << ", timer: " << timer.Get() << endl;
+            message("speed: %f", GetRPM());
+        }
 
         RUN_ONCE(joystick1, 4)
         {
@@ -211,7 +248,43 @@ void MyRobot::OperatorControl(void)
             SetBrakes(false);
             message("brakes set: off");
         }
-        
+
+        RUN_ONCE(joystick1, 11)
+        {
+            m_pscShooterMaster->DisableControl();
+            i += 0.0001;
+            message("i: %f", i);
+            m_pscShooterMaster->SetPID(p,i,d);
+            m_pscShooterMaster->EnableControl();
+        }
+
+        RUN_ONCE(joystick1, 10)
+        {
+            m_pscShooterMaster->DisableControl();
+            i -= 0.0001;
+            message("i: %f", i);
+            m_pscShooterMaster->SetPID(p,i,d);
+            m_pscShooterMaster->EnableControl();
+        }
+
+        RUN_ONCE(joystick1,6)
+        {
+            m_pscShooterMaster->DisableControl();
+            p += 0.001;
+            message("p: %f", p);
+            m_pscShooterMaster->SetPID(p,i,d);
+            m_pscShooterMaster->EnableControl();
+        }
+
+        RUN_ONCE(joystick1,7)
+        {
+            m_pscShooterMaster->DisableControl();
+            p -= 0.001;
+            message("p: %f", p);
+            m_pscShooterMaster->SetPID(p,i,d);
+            m_pscShooterMaster->EnableControl();
+        }
+
         /*
         if(joystick1->GetRawButton(5))
 	    {
