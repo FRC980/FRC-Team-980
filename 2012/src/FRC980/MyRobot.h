@@ -25,6 +25,7 @@ private:
     Victor *m_pscTurret;
 
     Joystick *joystick1;
+    Joystick *joystick2;
     Joystick *steeringwheel;
 
     DriverStation *ds;

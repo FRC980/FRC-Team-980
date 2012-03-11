@@ -61,6 +61,7 @@ MyRobot::MyRobot(void)
     , m_pscBallFeeder(new Victor(2))
     , m_pscTurret(new Victor(3))
     , joystick1(new Joystick(1))
+    , joystick2(new Joystick(3))
     , steeringwheel(new Joystick(2)) 
     , ds(DriverStation::GetInstance())
 {
@@ -169,11 +170,11 @@ void MyRobot::OperatorControl(void)
         gain = (gain > 0.003) ? -0.05+eGain : (-0.05 + eGain)*-1;
         throttle = (throttle > 0.003) ? (-0.05+eThrottle)*-1 : (-0.05+eThrottle);
 	
-	    //set default fLeft and fRight to throttle
+	//set default fLeft and fRight to throttle
         float fLeft = throttle;
         float fRight = throttle;
 
-	    //target finder
+	//target finder
         RUN_ONCE(joystick1, 1)
         {
             message("finding targets");
@@ -203,16 +204,16 @@ void MyRobot::OperatorControl(void)
         }
 
         //if statements for distributing power to left and right depending on gain value 
-	    if(gain>0.05)
-	    {
-	        fLeft = throttle+gain*2.0;
-	        fRight = throttle-gain*2.0;
-	    }
-	    else if(gain<-0.05)
+	if(gain>0.05)
+	{
+	    fLeft = throttle+gain*2.0;
+	    fRight = throttle-gain*2.0;
+	}
+	else if(gain<-0.05)
     	{
-	        fLeft = throttle+gain*2.0;
-	        fRight = throttle-gain*2.0;
-	    }
+	    fLeft = throttle+gain*2.0;
+	    fRight = throttle-gain*2.0;
+	}
 
         //Drive(fLeft, fRight);
         float y = joystick1->GetY();
@@ -229,6 +230,14 @@ void MyRobot::OperatorControl(void)
             SetShooterSpeed(0);
             speed = 0.0;
         }
+	
+	//to get x and y from joystick2 via button press on joystick1
+	if(joystick1->GetRawButton(8))
+	{ 
+	    message("joystick2 X: %f", joystick2->GetX());
+	    message("joystick2 Y: %f", joystick2->GetY());
+	    message("joystick2 Z: %f", joystick2->GetZ());
+	}
 
         if(joystick1->GetRawButton(2))
         {
