@@ -49,14 +49,14 @@ double limit(double val, double min = -1, double max = 1)
 }
 
 MyRobot::MyRobot(void)
-    : m_pscShooterMaster(new CANJaguar(11, CANJaguar::kSpeed))
-    , m_pscShooterSlave1(new CANJaguar(12, CANJaguar::kVoltage))
-    , m_pscShooterSlave2(new CANJaguar(13, CANJaguar::kVoltage))
-    , m_pscShooterSlave3(new CANJaguar(14, CANJaguar::kVoltage))
-    , m_pscLeft1(new CANJaguar(15))
-    , m_pscLeft2(new CANJaguar(16))
-    , m_pscRight1(new CANJaguar(16))
-    , m_pscRight2(new CANJaguar(18))
+    : m_pscShooterMaster(new CANJaguar(15, CANJaguar::kSpeed))
+    , m_pscShooterSlave1(new CANJaguar(16, CANJaguar::kVoltage))
+    , m_pscShooterSlave2(new CANJaguar(17, CANJaguar::kVoltage))
+    , m_pscShooterSlave3(new CANJaguar(18, CANJaguar::kVoltage))
+    , m_pscLeft1(new CANJaguar(11))
+    , m_pscLeft2(new CANJaguar(12))
+    , m_pscRight1(new CANJaguar(13))
+    , m_pscRight2(new CANJaguar(14))
     , m_pscBallPickup(new Victor(1))
     , m_pscBallFeeder(new Victor(2))
     , m_pscTurret(new Victor(3))
@@ -218,7 +218,7 @@ void MyRobot::OperatorControl(void)
         //Drive(fLeft, fRight);
         float y = joystick1->GetY();
         y = (y > 0) ? y : y * -1;
-        
+       	/* 
         if(joystick1->GetRawButton(3))
         {
             SetShooterSpeed(speed);
@@ -230,14 +230,14 @@ void MyRobot::OperatorControl(void)
             SetShooterSpeed(0);
             speed = 0.0;
         }
-	
+	*/
 	//to get x and y from joystick2 via button press on joystick1
-	if(joystick1->GetRawButton(8))
-	{ 
+	
+	 
 	    message("joystick2 X: %f", joystick2->GetX());
 	    message("joystick2 Y: %f", joystick2->GetY());
 	    message("joystick2 Z: %f", joystick2->GetZ());
-	}
+	
 
         if(joystick1->GetRawButton(2))
         {
@@ -364,11 +364,11 @@ void MyRobot::Drive(float left, float right)
 
 void MyRobot::SetShooterSpeed(float speed)
 {
-    m_pscShooterMaster->Set(speed);
     float voltage = m_pscShooterMaster->GetOutputVoltage();
     m_pscShooterSlave1->Set(voltage);
     m_pscShooterSlave2->Set(voltage);
     m_pscShooterSlave3->Set(voltage);
+    m_pscShooterMaster->Set(speed);
 }
 
 float MyRobot::GetRightEncoder(void)
