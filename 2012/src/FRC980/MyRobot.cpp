@@ -177,9 +177,12 @@ void MyRobot::OperatorControl(void)
 
         gain = (gain > 0) ? eGain : (eGain)* -1;
         throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
-	
+	if(throttle < 0.07 && throttle > -0.07)
+	{
+	    throttle = 0.0;
+	}
 	//set default fLeft and fRight to throttle
-        float fLeft = (throttle > 0.07 || throttle < -0.07) ? throttle : 0.0;
+	float fLeft = throttle;
         float fRight = fLeft;
 
         //if statements for distributing power to left and right depending on gain value 
