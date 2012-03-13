@@ -318,7 +318,7 @@ void MyRobot::OperatorControl(void)
              * unused.  Feel free to move whereever the driver would
              * like this.
 	     */
-	    PerformBalanceTrick(joystick2);
+	    PerformBalanceTrick(joystick1);
         }
 
         /*
