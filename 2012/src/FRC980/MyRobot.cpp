@@ -64,6 +64,7 @@ MyRobot::MyRobot(void)
     , joystick2(new Joystick(3))
     , steeringwheel(new Joystick(2)) 
     , ds(DriverStation::GetInstance())
+    , m_pAccelerometer(7)
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(360);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -177,7 +178,7 @@ void MyRobot::OperatorControl(void)
 
         gain = (gain > 0) ? eGain : (eGain)* -1;
         throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
-	if(throttle < 0.08 && throttle > -0.08)
+	if (throttle < 0.08 && throttle > -0.08)
 	{
 	    throttle = 0.0;
 	}
@@ -185,10 +186,9 @@ void MyRobot::OperatorControl(void)
 	float fLeft = throttle;
         float fRight = fLeft;
 
-        //if statements for distributing power to left and right depending on gain value 
-	if(gain>0.05 || gain<-0.05)
+    //if statements for distributing power to left and right depending on gain value 
+	if (gain>0.05 || gain<-0.05)
 	{
-	    message("throttle: %f", throttle);
 	    fLeft = throttle+(gain);
 	    fRight = throttle-(gain);
 	}
@@ -201,18 +201,18 @@ void MyRobot::OperatorControl(void)
             message("finding targets");
             vector<vector<int> > points = GetTargetCenters(camera);
             
-            for(unsigned i = 0; i < points.size(); i++)
+            for (unsigned i = 0; i < points.size(); i++)
             {
                 int x = points.at(i).at(0);
                 int horizontal = x-160;
                 int width = points.at(i).at(2);
                 float distance = GetDistanceToTarget(width);
                 message("distance from target: %f", distance);
-                if(horizontal > 0)
+                if (horizontal > 0)
                 {
                     message("you are %d pixels off to the left", horizontal);
                 }
-                else if(horizontal < 0)
+                else if (horizontal < 0)
                 {
                     message("you are %d pixels off to the right", horizontal);
                 }
@@ -239,9 +239,9 @@ void MyRobot::OperatorControl(void)
 	*/
 	//to get x and y from joystick2 via button press on joystick1
 	
-        if(joystick1->GetRawButton(2))
+        if (joystick1->GetRawButton(2))
         {
-            if(myfile.is_open())
+            if (myfile.is_open())
                 myfile << "speed: " << GetRPM() << ", target: 2000, p: " << p << ", i: " << i << ", d: " << d << ", timer: " << timer.Get() << endl;
             message("speed: %f", GetRPM());
         }
@@ -294,12 +294,17 @@ void MyRobot::OperatorControl(void)
             m_pscShooterMaster->EnableControl();
         }
 
+        RUN_ONCE(joystick1, 3)
+        {
+            DoBalace();
+        }
+
         /*
-        if(joystick1->GetRawButton(5))
+        if(joystick2->GetRawButton(5))
 	    {
 	        m_pscBallPickup->Set(1.0);
 	    }
-	    else if(joystick1->GetRawButton(4))
+	    else if(joystick2->GetRawButton(4))
 	    {
 	        m_pscBallPickup->Set(-1.0);
 	    }
@@ -308,11 +313,11 @@ void MyRobot::OperatorControl(void)
             m_pscBallPickup->Set(0.0);
         }
 
-        if (joystick1->GetRawButton(3))
+        if (joystick2->GetRawButton(3))
         {
             m_pscBallFeeder->Set(1.0);
         }
-        else if (joystick1->GetRawButton(2))
+        else if (joystick2->GetRawButton(2))
         {
             m_pscBallFeeder->Set(-1.0);
         }
@@ -321,11 +326,11 @@ void MyRobot::OperatorControl(void)
             m_pscBallFeeder->Set(0.0);
         }
 
-        if (joystick1->GetRawButton(6))
+        if (joystick2->GetRawButton(6))
         {
             m_pscTurret->Set(0.15);
         }
-        else if (joystick1->GetRawButton(7))
+        else if (joystick2->GetRawButton(7))
         {
             m_pscTurret->Set(-0.15);
         }
@@ -334,73 +339,73 @@ void MyRobot::OperatorControl(void)
             m_pscTurret->Set(0.0);
         }
 
-        RUN_ONCE(joystick1, 8)
+        RUN_ONCE(joystick2, 8)
         {
             message("left encoder: %f", GetLeftEncoder());
         }
 
-        RUN_ONCE(joystick1, 9)
+        RUN_ONCE(joystick2, 9)
         {
             message("right encoder: %f", GetRightEncoder());
         } 
 */       
 ///////////////////this if for joystick2 button test/////////////////////
 
-	RUN_ONCE(joystick2, 1)
-	{
-	    message("joystick2: Button 1");
-	}
+        if (joystick2->GetRawButton(1))
+        {
+            message("joystick2: Button 1");
+        }
 	
-	RUN_ONCE(joystick2, 2)
-	{
-	    message("joystick2: Button 2");
-	}
-	
-	RUN_ONCE(joystick2, 3)
-	{
-	    message("joystick2: Button 3");
-	}
-	
-	RUN_ONCE(joystick2, 4)
-	{
-	    message("joystick2: Button 4");
-	}
-	
-	RUN_ONCE(joystick2, 5)
-	{
-	    message("joystick2: Button 5");
-	}
-	
-	RUN_ONCE(joystick2, 6)
-	{
-	    message("joystick2: Button 6");
-	}
-	
-	RUN_ONCE(joystick2, 7)
-	{
-	    message("joystick2: Button 7");
-	}
-	
-	RUN_ONCE(joystick2, 8)
-	{
-	    message("joystick2: Button 8");
-	}
-	
-	RUN_ONCE(joystick2, 9)
-	{
-	    message("joystick2: Button 9");
-	}
-	
-	RUN_ONCE(joystick2, 10)
-	{
-	    message("joystick2: Button 10");
-	}
-	
-	RUN_ONCE(joystick2, 11)
-	{
-	    message("joystick2: Button 11");
-	}
+        if (joystick2->GetRawButton(2))
+        {
+            message("joystick2: Button 2");
+        }
 
+        if (joystick2->GetRawButton(3))
+        {
+            message("joystick2: Button 3");
+        }
+
+        if (joystick2->GetRawButton(4))
+        {
+            message("joystick2: Button 4");
+        }
+        
+        RUN_ONCE(joystick2, 5)
+        {
+            message("joystick2: Button 5");
+        }
+	
+        RUN_ONCE(joystick2, 6)
+        {
+            message("joystick2: Button 6");
+        }
+        
+        RUN_ONCE(joystick2, 7)
+        {
+            message("joystick2: Button 7");
+        }
+        
+        RUN_ONCE(joystick2, 8)
+        {
+            message("joystick2: Button 8");
+        }
+        
+        RUN_ONCE(joystick2, 9)
+        {
+            message("joystick2: Button 9");
+        }
+        
+        RUN_ONCE(joystick2, 10)
+        {
+            message("joystick2: Button 10");
+        }
+        
+        RUN_ONCE(joystick2, 11)
+        {
+            message("joystick2: Button 11");
+        }
+        
         Wait(0.05);
     }
 }
@@ -441,7 +446,7 @@ float MyRobot::GetLeftEncoder(void)
 vector<vector<int> > MyRobot::GetTargetCenters(AxisCamera &camera)
 {
     vector<vector<int> > points;
-    if(camera.IsFreshImage())
+    if (camera.IsFreshImage())
     {
         Threshold threshold(92,139,76,255,90,255);
         ParticleFilterCriteria2 criteria[] = {
@@ -455,13 +460,13 @@ vector<vector<int> > MyRobot::GetTargetCenters(AxisCamera &camera)
         BinaryImage *filteredImage = convexHullImage->ParticleFilter(criteria, 2);
         vector<ParticleAnalysisReport> *reports = filteredImage->GetOrderedParticleAnalysisReports();
 
-        if(reports->size() == 0)
+        if (reports->size() == 0)
         {
             message("No targets");
         }
         else
         {
-            for(unsigned i = 0; i < reports->size(); i++)
+            for (unsigned i = 0; i < reports->size(); i++)
             {
                 ParticleAnalysisReport *r = &(reports->at(i));
                 vector<int> temp;
@@ -505,4 +510,15 @@ void MyRobot::SetBrakes(bool brakeOnStop)
     m_pscLeft2->ConfigNeutralMode(mode);
 
 }
+
+void MyRobot::DoBalance()
+{
+    boolean done = false;
+    
+    while (!done)
+    {
+        //do something
+    }
+}
+
 START_ROBOT_CLASS(MyRobot)

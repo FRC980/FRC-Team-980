@@ -1,6 +1,7 @@
 #include "WPILib.h"
 #include "Vision/RGBImage.h"
 #include "Vision/BinaryImage.h"
+#include "Accelerometer.h"
 
 #ifndef _MyRobot_h_
 #define _MyRobot_h_
@@ -29,6 +30,8 @@ private:
     Joystick *steeringwheel;
 
     DriverStation *ds;
+
+    Accelerometer *m_pAccelerometer;
 
 public:
     MyRobot(void);
