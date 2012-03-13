@@ -177,7 +177,7 @@ void MyRobot::OperatorControl(void)
 
         gain = (gain > 0) ? eGain : (eGain)* -1;
         throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
-	if(throttle < 0.07 && throttle > -0.07)
+	if(throttle < 0.08 && throttle > -0.08)
 	{
 	    throttle = 0.0;
 	}
@@ -189,8 +189,8 @@ void MyRobot::OperatorControl(void)
 	if(gain>0.05 || gain<-0.05)
 	{
 	    message("throttle: %f", throttle);
-	    fLeft = throttle-(gain);
-	    fRight = throttle+(gain);
+	    fLeft = throttle+(gain);
+	    fRight = throttle-(gain);
 	}
 
         Drive(fLeft, fRight);
