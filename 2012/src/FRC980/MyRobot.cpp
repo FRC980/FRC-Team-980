@@ -7,6 +7,15 @@
 #include "Cyclops.h"
 #include <math.h>
 
+/*
+ * TODO: The sensitivity and zero values vary by accelerometer model. 
+ *       There are constants defined for various models.
+ * Set the CORRECT values, Craig 3/13.
+ */
+#define ACCEL_SENSITIVITY 0.0
+#define ACCEL_ZERO	  0.0
+
+#define ANALOG_CHANNEL_ACCEL 0
 
 #define RUN_ONCE_VAR(joystick,button,var)              \
     static bool var = false;                           \
@@ -61,10 +70,11 @@ MyRobot::MyRobot(void)
     , m_pscBallPickup(new Victor(1))
     , m_pscBallFeeder(new Victor(2))
     , m_pscTurret(new Victor(3))
-    , joystick1(new Joystick(1))
-    , joystick2(new Joystick(3))
-    , steeringwheel(new Joystick(2)) 
+    , joystick1(new MyJoystick(1))
+    , joystick2(new MyJoystick(3))
+    , steeringwheel(new MyJoystick(2)) 
     , ds(DriverStation::GetInstance())
+    , accelerometer(new Accelerometer((UINT32)ANALOG_CHANNEL_ACCEL))
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(360);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -94,6 +104,8 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->SetPID(p,i,d);
     m_pscShooterMaster->EnableControl();
 
+    accelerometer->SetSensitivity(ACCEL_SENSITIVITY);
+    accelerometer->SetZero(ACCEL_ZERO);
 }
 
 MyRobot::~MyRobot(void)
@@ -110,6 +122,7 @@ MyRobot::~MyRobot(void)
     delete m_pscBallFeeder;
     delete m_pscTurret;
     delete joystick1;
+    delete joystick2;
     delete steeringwheel;
     delete ds;
 }
@@ -353,6 +366,12 @@ void MyRobot::OperatorControl(void)
 	RUN_ONCE(joystick2, 1)
 	{
 	    message("joystick2: Button 1");
+	    /*
+	     * Putting on joystick2 button 1 because it's currently
+             * unused.  Feel free to move whereever the driver would
+             * like this.
+	     */
+	    PerformBalanceTrick(joystick2);
 	}
 	
 	RUN_ONCE(joystick2, 2)
@@ -456,4 +475,33 @@ void MyRobot::SetBrakes(bool brakeOnStop)
     m_pscLeft2->ConfigNeutralMode(mode);
 
 }
+
+void MyRobot::PerformBalanceTrick(MyJoystick *joy)
+{
+    float acceleration;
+
+    /*
+     * If the driver touches the joystick, fall out and
+     * return control to the driver.
+     */
+    while (joy->Dead()) 
+    {
+	/*
+	 * Do the balancing trick.
+	 * 
+	 * - Read the accelerometer
+	 *
+	 * - Slowly engage motor to always move uphill
+	 */
+
+	acceleration = accelerometer->GetAcceleration();
+
+	/*
+	 * Do something here with the motors.
+	 */
+
+	Wait(0.1);
+    }
+}
+
 START_ROBOT_CLASS(MyRobot)

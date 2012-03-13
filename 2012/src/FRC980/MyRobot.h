@@ -1,6 +1,8 @@
 #include "WPILib.h"
 #include "Vision/RGBImage.h"
 #include "Vision/BinaryImage.h"
+#include "Accelerometer.h"
+#include "MyJoystick.h"
 
 #ifndef _MyRobot_h_
 #define _MyRobot_h_
@@ -24,11 +26,13 @@ private:
     Victor *m_pscBallFeeder;
     Victor *m_pscTurret;
 
-    Joystick *joystick1;
-    Joystick *joystick2;
-    Joystick *steeringwheel;
+    MyJoystick *joystick1;
+    MyJoystick *joystick2;
+    MyJoystick *steeringwheel;
 
     DriverStation *ds;
+
+    Accelerometer *accelerometer;
 
 public:
     MyRobot(void);
@@ -41,6 +45,7 @@ public:
     float GetRightEncoder(void);
     float GetLeftEncoder(void);
     void SetBrakes(bool);
+    void PerformBalanceTrick(MyJoystick *joy);
 };
 
 #endif
