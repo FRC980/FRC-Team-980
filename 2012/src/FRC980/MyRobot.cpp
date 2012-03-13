@@ -136,12 +136,6 @@ void MyRobot::Autonomous(void)
 
 void MyRobot::OperatorControl(void)
 {
-    ofstream myfile;
-    myfile.open("example.txt");
-    Timer timer;
-    timer.Reset();
-    timer.Start();
-    AxisCamera &camera = AxisCamera::GetInstance("10.9.80.11");
     GetWatchdog().SetEnabled(true);
 
     float p, i, d;
@@ -154,25 +148,52 @@ void MyRobot::OperatorControl(void)
     float speed = 0.0;
 
     SetBrakes(false);
+    
+    ofstream myfile;
+    myfile.open("example.txt");
 
+    Timer timer;
+    timer.Reset();
+    timer.Start();
+
+    AxisCamera &camera = AxisCamera::GetInstance("10.9.80.11");
+    
     while (IsOperatorControl())
     {   
         GetWatchdog().Feed();
 
+	//Drive
     	//initialize gain and throttle varaibles
         float gain, throttle;
+
         gain = steeringwheel->GetX();
         throttle = joystick1->GetY();
 
-	    float eGain = pow(2.71828183, (gain-3));
-	    float eThrottle = pow(2.71828183, (throttle-3));
+	float eGain = (gain > 0) ? gain : gain * -1;
+	float eThrottle = (throttle > 0) ? throttle : throttle * -1;
 
-        gain = (gain > 0.003) ? -0.05+eGain : (-0.05 + eGain)*-1;
-        throttle = (throttle > 0.003) ? (-0.05+eThrottle)*-1 : (-0.05+eThrottle);
-	
+	eGain = pow(2.71828183, (2.4*eGain-3));
+	eThrottle = pow(2.71828183, (3*eThrottle-3));
+
+        gain = (gain > 0) ? eGain : (eGain)* -1;
+        throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
+	if(throttle < 0.08 && throttle > -0.08)
+	{
+	    throttle = 0.0;
+	}
 	//set default fLeft and fRight to throttle
-        float fLeft = throttle;
-        float fRight = throttle;
+	float fLeft = throttle;
+        float fRight = fLeft;
+
+        //if statements for distributing power to left and right depending on gain value 
+	if(gain>0.05 || gain<-0.05)
+	{
+	    message("throttle: %f", throttle);
+	    fLeft = throttle+(gain);
+	    fRight = throttle-(gain);
+	}
+
+        Drive(fLeft, fRight);
 
 	//target finder
         RUN_ONCE(joystick1, 1)
@@ -203,21 +224,6 @@ void MyRobot::OperatorControl(void)
             message("done");
         }
 
-        //if statements for distributing power to left and right depending on gain value 
-	if(gain>0.05)
-	{
-	    fLeft = throttle+gain*2.0;
-	    fRight = throttle-gain*2.0;
-	}
-	else if(gain<-0.05)
-    	{
-	    fLeft = throttle+gain*2.0;
-	    fRight = throttle-gain*2.0;
-	}
-
-        //Drive(fLeft, fRight);
-        float y = joystick1->GetY();
-        y = (y > 0) ? y : y * -1;
        	/* 
         if(joystick1->GetRawButton(3))
         {
@@ -233,12 +239,6 @@ void MyRobot::OperatorControl(void)
 	*/
 	//to get x and y from joystick2 via button press on joystick1
 	
-	 
-	    message("joystick2 X: %f", joystick2->GetX());
-	    message("joystick2 Y: %f", joystick2->GetY());
-	    message("joystick2 Z: %f", joystick2->GetZ());
-	
-
         if(joystick1->GetRawButton(2))
         {
             if(myfile.is_open())
