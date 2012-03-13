@@ -343,7 +343,64 @@ void MyRobot::OperatorControl(void)
         {
             message("right encoder: %f", GetRightEncoder());
         } 
-*/        
+*/       
+///////////////////this if for joystick2 button test/////////////////////
+
+	RUN_ONCE(joystick2, 1)
+	{
+	    message("joystick2: Button 1");
+	}
+	
+	RUN_ONCE(joystick2, 2)
+	{
+	    message("joystick2: Button 2");
+	}
+	
+	RUN_ONCE(joystick2, 3)
+	{
+	    message("joystick2: Button 3");
+	}
+	
+	RUN_ONCE(joystick2, 4)
+	{
+	    message("joystick2: Button 4");
+	}
+	
+	RUN_ONCE(joystick2, 5)
+	{
+	    message("joystick2: Button 5");
+	}
+	
+	RUN_ONCE(joystick2, 6)
+	{
+	    message("joystick2: Button 6");
+	}
+	
+	RUN_ONCE(joystick2, 7)
+	{
+	    message("joystick2: Button 7");
+	}
+	
+	RUN_ONCE(joystick2, 8)
+	{
+	    message("joystick2: Button 8");
+	}
+	
+	RUN_ONCE(joystick2, 9)
+	{
+	    message("joystick2: Button 9");
+	}
+	
+	RUN_ONCE(joystick2, 10)
+	{
+	    message("joystick2: Button 10");
+	}
+	
+	RUN_ONCE(joystick2, 11)
+	{
+	    message("joystick2: Button 11");
+	}
+
         Wait(0.05);
     }
 }
