@@ -32,7 +32,7 @@ private:
 
     DriverStation *ds;
 
-    Accelerometer *accelerometer;
+    Accelerometer *m_pAccelerometer;
 
 public:
     MyRobot(void);

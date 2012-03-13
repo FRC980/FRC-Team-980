@@ -15,7 +15,7 @@
 #define ACCEL_SENSITIVITY 0.0
 #define ACCEL_ZERO	  0.0
 
-#define ANALOG_CHANNEL_ACCEL 0
+#define ANALOG_CHANNEL_ACCEL 7
 
 #define RUN_ONCE_VAR(joystick,button,var)              \
     static bool var = false;                           \
@@ -74,7 +74,7 @@ MyRobot::MyRobot(void)
     , joystick2(new MyJoystick(3))
     , steeringwheel(new MyJoystick(2)) 
     , ds(DriverStation::GetInstance())
-    , accelerometer(new Accelerometer((UINT32)ANALOG_CHANNEL_ACCEL))
+    , m_pAccelerometer(new Accelerometer((UINT32)ANALOG_CHANNEL_ACCEL))
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(360);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -104,8 +104,8 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->SetPID(p,i,d);
     m_pscShooterMaster->EnableControl();
 
-    accelerometer->SetSensitivity(ACCEL_SENSITIVITY);
-    accelerometer->SetZero(ACCEL_ZERO);
+    m_pAccelerometer->SetSensitivity(ACCEL_SENSITIVITY);
+    m_pAccelerometer->SetZero(ACCEL_ZERO);
 }
 
 MyRobot::~MyRobot(void)
@@ -197,7 +197,7 @@ void MyRobot::OperatorControl(void)
 
         gain = (gain > 0) ? eGain : (eGain)* -1;
         throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
-	if(throttle < 0.08 && throttle > -0.08)
+	if (throttle < 0.08 && throttle > -0.08)
 	{
 	    throttle = 0.0;
 	}
@@ -205,10 +205,9 @@ void MyRobot::OperatorControl(void)
 	float fLeft = throttle;
         float fRight = fLeft;
 
-        //if statements for distributing power to left and right depending on gain value 
-	if(gain>0.05 || gain<-0.05)
+    //if statements for distributing power to left and right depending on gain value 
+	if (gain>0.05 || gain<-0.05)
 	{
-	    message("throttle: %f", throttle);
 	    fLeft = throttle+(gain);
 	    fRight = throttle-(gain);
 	}
@@ -219,24 +218,23 @@ void MyRobot::OperatorControl(void)
         RUN_ONCE(joystick1, 1)
         {
             message("finding targets");
+	        distance = cyclops->GetDistanceToTarget();
+	        alignment = cyclops->IsTargetAligned();
 
-	    distance = cyclops->GetDistanceToTarget();
-	    alignment = cyclops->IsTargetAligned();
-
-	    message("distance from target: %f", distance);
-	    switch (alignment) {
-		case TARGET_LEFT:
-		    message("you are off to the left");
-		    break;
-		case TARGET_RIGHT:
-		    message("you are off to the right");
-		    break;
-		case TARGET_ALIGNED:
-		    message("you are on target");
-		    break;
-		case TARGET_UNKNOWN:
-		    message("Not all targets visible");
-		    break;
+	        message("distance from target: %f", distance);
+	        switch (alignment) {
+		    case TARGET_LEFT:
+		        message("you are off to the left");
+		        break;
+		    case TARGET_RIGHT:
+		        message("you are off to the right");
+		        break;
+		    case TARGET_ALIGNED:
+		        message("you are on target");
+		        break;
+		    case TARGET_UNKNOWN:
+		        message("Not all targets visible");
+		        break;
             }
             message("done");
         }
@@ -256,9 +254,9 @@ void MyRobot::OperatorControl(void)
 	*/
 	//to get x and y from joystick2 via button press on joystick1
 	
-        if(joystick1->GetRawButton(2))
+        if (joystick1->GetRawButton(2))
         {
-            if(myfile.is_open())
+            if (myfile.is_open())
                 myfile << "speed: " << GetRPM() << ", target: 2000, p: " << p << ", i: " << i << ", d: " << d << ", timer: " << timer.Get() << endl;
             message("speed: %f", GetRPM());
         }
@@ -311,12 +309,24 @@ void MyRobot::OperatorControl(void)
             m_pscShooterMaster->EnableControl();
         }
 
+        RUN_ONCE(joystick1, 3)
+        {
+	    message("Starting balancing trick");
+
+	    /*
+	     * Putting on joystick2 button 1 because it's currently
+             * unused.  Feel free to move whereever the driver would
+             * like this.
+	     */
+	    PerformBalanceTrick(joystick2);
+        }
+
         /*
-        if(joystick1->GetRawButton(5))
+        if(joystick2->GetRawButton(5))
 	    {
 	        m_pscBallPickup->Set(1.0);
 	    }
-	    else if(joystick1->GetRawButton(4))
+	    else if(joystick2->GetRawButton(4))
 	    {
 	        m_pscBallPickup->Set(-1.0);
 	    }
@@ -325,11 +335,11 @@ void MyRobot::OperatorControl(void)
             m_pscBallPickup->Set(0.0);
         }
 
-        if (joystick1->GetRawButton(3))
+        if (joystick2->GetRawButton(3))
         {
             m_pscBallFeeder->Set(1.0);
         }
-        else if (joystick1->GetRawButton(2))
+        else if (joystick2->GetRawButton(2))
         {
             m_pscBallFeeder->Set(-1.0);
         }
@@ -338,11 +348,11 @@ void MyRobot::OperatorControl(void)
             m_pscBallFeeder->Set(0.0);
         }
 
-        if (joystick1->GetRawButton(6))
+        if (joystick2->GetRawButton(6))
         {
             m_pscTurret->Set(0.15);
         }
-        else if (joystick1->GetRawButton(7))
+        else if (joystick2->GetRawButton(7))
         {
             m_pscTurret->Set(-0.15);
         }
@@ -351,79 +361,73 @@ void MyRobot::OperatorControl(void)
             m_pscTurret->Set(0.0);
         }
 
-        RUN_ONCE(joystick1, 8)
+        RUN_ONCE(joystick2, 8)
         {
             message("left encoder: %f", GetLeftEncoder());
         }
 
-        RUN_ONCE(joystick1, 9)
+        RUN_ONCE(joystick2, 9)
         {
             message("right encoder: %f", GetRightEncoder());
         } 
 */       
 ///////////////////this if for joystick2 button test/////////////////////
 
-	RUN_ONCE(joystick2, 1)
-	{
-	    message("joystick2: Button 1");
-	    /*
-	     * Putting on joystick2 button 1 because it's currently
-             * unused.  Feel free to move whereever the driver would
-             * like this.
-	     */
-	    PerformBalanceTrick(joystick2);
-	}
+        if (joystick2->GetRawButton(1))
+        {
+            message("joystick2: Button 1");
+        }
 	
-	RUN_ONCE(joystick2, 2)
-	{
-	    message("joystick2: Button 2");
-	}
-	
-	RUN_ONCE(joystick2, 3)
-	{
-	    message("joystick2: Button 3");
-	}
-	
-	RUN_ONCE(joystick2, 4)
-	{
-	    message("joystick2: Button 4");
-	}
-	
-	RUN_ONCE(joystick2, 5)
-	{
-	    message("joystick2: Button 5");
-	}
-	
-	RUN_ONCE(joystick2, 6)
-	{
-	    message("joystick2: Button 6");
-	}
-	
-	RUN_ONCE(joystick2, 7)
-	{
-	    message("joystick2: Button 7");
-	}
-	
-	RUN_ONCE(joystick2, 8)
-	{
-	    message("joystick2: Button 8");
-	}
-	
-	RUN_ONCE(joystick2, 9)
-	{
-	    message("joystick2: Button 9");
-	}
-	
-	RUN_ONCE(joystick2, 10)
-	{
-	    message("joystick2: Button 10");
-	}
-	
-	RUN_ONCE(joystick2, 11)
-	{
-	    message("joystick2: Button 11");
-	}
+        if (joystick2->GetRawButton(2))
+        {
+            message("joystick2: Button 2");
+        }
 
+        if (joystick2->GetRawButton(3))
+        {
+            message("joystick2: Button 3");
+        }
+
+        if (joystick2->GetRawButton(4))
+        {
+            message("joystick2: Button 4");
+        }
+        
+        RUN_ONCE(joystick2, 5)
+        {
+            message("joystick2: Button 5");
+        }
+	
+        RUN_ONCE(joystick2, 6)
+        {
+            message("joystick2: Button 6");
+        }
+        
+        RUN_ONCE(joystick2, 7)
+        {
+            message("joystick2: Button 7");
+        }
+        
+        RUN_ONCE(joystick2, 8)
+        {
+            message("joystick2: Button 8");
+        }
+        
+        RUN_ONCE(joystick2, 9)
+        {
+            message("joystick2: Button 9");
+        }
+        
+        RUN_ONCE(joystick2, 10)
+        {
+            message("joystick2: Button 10");
+        }
+        
+        RUN_ONCE(joystick2, 11)
+        {
+            message("joystick2: Button 11");
+        }
+        
         Wait(0.05);
     }
 
@@ -494,7 +498,7 @@ void MyRobot::PerformBalanceTrick(MyJoystick *joy)
 	 * - Slowly engage motor to always move uphill
 	 */
 
-	acceleration = accelerometer->GetAcceleration();
+	acceleration = m_pAccelerometer->GetAcceleration();
 
 	/*
 	 * Do something here with the motors.
