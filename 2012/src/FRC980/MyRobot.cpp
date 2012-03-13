@@ -4,6 +4,7 @@
 #include "MyRobot.h"
 #include "Vision/RGBImage.h"
 #include "Vision/BinaryImage.h"
+#include "Cyclops.h"
 #include <math.h>
 
 
@@ -136,16 +137,24 @@ void MyRobot::Autonomous(void)
 
 void MyRobot::OperatorControl(void)
 {
-    GetWatchdog().SetEnabled(true);
-
+    Cyclops *cyclops;
     float p, i, d;
+    TargetAlignment alignment;
+    unsigned int distance;
+
+    // Commented out to get rid of unused compile warning.
+    // const float targetspeed = 3000.0;
+    // float setspeed = 2*targetspeed;
+    // float speed = 0.0;
+
     p = 0.029;
     i = 0.0;
     d = 0.0;
 
-    const float targetspeed = 3000.0;
-    float setspeed = 2*targetspeed;
-    float speed = 0.0;
+    GetWatchdog().SetEnabled(true);
+
+    cyclops = new Cyclops();
+    cyclops->Start();
 
     SetBrakes(false);
     
@@ -156,8 +165,6 @@ void MyRobot::OperatorControl(void)
     timer.Reset();
     timer.Start();
 
-    AxisCamera &camera = AxisCamera::GetInstance("10.9.80.11");
-    
     while (IsOperatorControl())
     {   
         GetWatchdog().Feed();
@@ -199,27 +206,24 @@ void MyRobot::OperatorControl(void)
         RUN_ONCE(joystick1, 1)
         {
             message("finding targets");
-            vector<vector<int> > points = GetTargetCenters(camera);
-            
-            for(unsigned i = 0; i < points.size(); i++)
-            {
-                int x = points.at(i).at(0);
-                int horizontal = x-160;
-                int width = points.at(i).at(2);
-                float distance = GetDistanceToTarget(width);
-                message("distance from target: %f", distance);
-                if(horizontal > 0)
-                {
-                    message("you are %d pixels off to the left", horizontal);
-                }
-                else if(horizontal < 0)
-                {
-                    message("you are %d pixels off to the right", horizontal);
-                }
-                else 
-                {
-                    message("you are on target");
-                }
+
+	    distance = cyclops->GetDistanceToTarget();
+	    alignment = cyclops->IsTargetAligned();
+
+	    message("distance from target: %f", distance);
+	    switch (alignment) {
+		case TARGET_LEFT:
+		    message("you are off to the left");
+		    break;
+		case TARGET_RIGHT:
+		    message("you are off to the right");
+		    break;
+		case TARGET_ALIGNED:
+		    message("you are on target");
+		    break;
+		case TARGET_UNKNOWN:
+		    message("Not all targets visible");
+		    break;
             }
             message("done");
         }
@@ -403,6 +407,9 @@ void MyRobot::OperatorControl(void)
 
         Wait(0.05);
     }
+
+    cyclops->Stop();
+    delete cyclops;
 }
 
 float MyRobot::GetRPM(void)
@@ -436,62 +443,6 @@ float MyRobot::GetRightEncoder(void)
 float MyRobot::GetLeftEncoder(void)
 {
     return m_pscLeft1->GetPosition();
-}
-
-vector<vector<int> > MyRobot::GetTargetCenters(AxisCamera &camera)
-{
-    vector<vector<int> > points;
-    if(camera.IsFreshImage())
-    {
-        Threshold threshold(92,139,76,255,90,255);
-        ParticleFilterCriteria2 criteria[] = {
-            {IMAQ_MT_BOUNDING_RECT_WIDTH, 20, 400, false, false},
-            {IMAQ_MT_BOUNDING_RECT_HEIGHT, 18, 400, false, false}
-        };
-        ColorImage *image = camera.GetImage();
-        BinaryImage *thresholdImage = image->ThresholdHSL(threshold);
-        BinaryImage *bigObjectsImage = thresholdImage->RemoveSmallObjects(false, 1);
-        BinaryImage *convexHullImage = bigObjectsImage->ConvexHull(false);
-        BinaryImage *filteredImage = convexHullImage->ParticleFilter(criteria, 2);
-        vector<ParticleAnalysisReport> *reports = filteredImage->GetOrderedParticleAnalysisReports();
-
-        if(reports->size() == 0)
-        {
-            message("No targets");
-        }
-        else
-        {
-            for(unsigned i = 0; i < reports->size(); i++)
-            {
-                ParticleAnalysisReport *r = &(reports->at(i));
-                vector<int> temp;
-                temp.push_back(r->center_mass_x);
-                temp.push_back(r->center_mass_y);
-                temp.push_back(r->boundingRect.width);
-                points.push_back(temp);
-            }
-        }
-        delete filteredImage;
-        delete bigObjectsImage;
-        delete thresholdImage;
-        delete image;
-        delete reports;
-    }
-    else
-    {
-        message("No fresh image");
-    }
-    return points;
-}
-
-float MyRobot::GetDistanceToTarget(float width)
-{
-    float tft = 2.0;
-    float FOVp = 320.0;
-    float theta = 24.0;
-    float FOVft = ((tft/width) * FOVp)/2.0;
-    float distance = FOVft/tan((3.14159*theta/180.0));
-    return distance;
 }
 
 void MyRobot::SetBrakes(bool brakeOnStop)
