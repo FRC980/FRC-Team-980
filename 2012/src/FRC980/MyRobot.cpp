@@ -499,6 +499,19 @@ void MyRobot::PerformBalanceTrick(MyJoystick *joy)
 	 */
 
 	acceleration = m_pAccelerometer->GetAcceleration();
+	if (acceleration < 0) {
+	    /*
+	     * Move motor forward
+	     */
+	} else if (acceleration > 0) {
+	    /*
+	     * Move motor backward
+	     */
+	} else {
+	    /*
+	     * Stop motor entirely
+	     */
+	}
 
 	/*
 	 * Do something here with the motors.
