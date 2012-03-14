@@ -16,7 +16,8 @@ MyJoystick::~MyJoystick()
 
 bool MyJoystick::Dead(void)
 {
-    if ((GetX() > 0.02) && (GetX() < -0.02))
+    if ((GetX() > 0.02) && (GetX() < -0.02) &&
+        (GetY() > 0.02) && (GetY() < -0.02)) 
     {
 	return false;
     } 
