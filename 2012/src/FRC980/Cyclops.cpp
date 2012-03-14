@@ -147,12 +147,22 @@ void Cyclops::SendDistance(void)
 	uint8_t upper_nibble;
 	uint8_t lower_nibble;
 	
-	upper_nibble = (m_latestDistance & 0xF0) >> 4;
-	lower_nibble = (m_latestDistance & 0x0F);
+	upper_nibble = m_latestDistance / 10;
+	lower_nibble = m_latestDistance % 10;
 	
-	for (int i = 0; i < GPIO_DISPLAY_PIN_NUM; i++) {
-	    printf("Setting port %d to %d", i, m_latestDistance & (1 << i)); 
-    	    m_Out[i]->Set(m_latestDistance & (1 << i));
+	for (int i = 0; i < GPIO_DISPLAY_PIN_NUM / 2; i++) {
+	    printf("Setting port %d to %d", i, upper_nibble & (1 << i)); 
+	    if (upper_nibble & (1 << i)) {
+		m_Out[i + GPIO_DISPLAY_PIN_NUM / 2]->Set(1);
+	    } else {
+		m_Out[i + GPIO_DISPLAY_PIN_NUM / 2]->Set(0);
+	    }
+    	    
+	    if (lower_nibble & (1 << i)) {
+		m_Out[i]->Set(1);
+	    } else {
+		m_Out[i]->Set(0);
+	    }
 	}	
 }
 

@@ -7,6 +7,15 @@
 #include "Cyclops.h"
 #include <math.h>
 
+/*
+ * TODO: The sensitivity and zero values vary by accelerometer model. 
+ *       There are constants defined for various models.
+ * Set the CORRECT values, Craig 3/13.
+ */
+#define ACCEL_SENSITIVITY 0.0
+#define ACCEL_ZERO	  0.0
+
+#define ANALOG_CHANNEL_ACCEL 7
 
 #define RUN_ONCE_VAR(joystick,button,var)              \
     static bool var = false;                           \
@@ -61,9 +70,9 @@ MyRobot::MyRobot(void)
     , m_pscBallPickup(new Victor(1))
     , m_pscBallFeeder(new Victor(2))
     , m_pscTurret(new Victor(3))
-    , joystick1(new Joystick(1))
-    , joystick2(new Joystick(3))
-    , steeringwheel(new Joystick(2)) 
+    , joystick1(new MyJoystick(1))
+    , joystick2(new MyJoystick(3))
+    , steeringwheel(new MyJoystick(2)) 
     , ds(DriverStation::GetInstance())
     , m_pAccelerometer(new ADXL345_I2C(7))
 {
@@ -94,7 +103,6 @@ MyRobot::MyRobot(void)
 
     m_pscShooterMaster->SetPID(p,i,d);
     m_pscShooterMaster->EnableControl();
-
 }
 
 MyRobot::~MyRobot(void)
@@ -111,6 +119,7 @@ MyRobot::~MyRobot(void)
     delete m_pscBallFeeder;
     delete m_pscTurret;
     delete joystick1;
+    delete joystick2;
     delete steeringwheel;
     delete ds;
 }
@@ -299,7 +308,14 @@ void MyRobot::OperatorControl(void)
 
         RUN_ONCE(joystick1, 3)
         {
-            DoBalance();
+	        message("Starting balancing trick");
+
+	        /*
+	            * Putting on joystick2 button 1 because it's currently
+                * unused.  Feel free to move whereever the driver would
+                * like this.
+	        */
+	        PerformBalanceTrick(joystick1);
         }
 
         /*
@@ -472,9 +488,8 @@ void MyRobot::SetBrakes(bool brakeOnStop)
 
 }
 
-void MyRobot::DoBalance()
+void MyRobot::PerformBalanceTrick(MyJoystick *joy)
 {
-    bool done = false;
     DriveControlMode(true);
     
     float initial_position_right = GetRightEncoder();
@@ -482,18 +497,11 @@ void MyRobot::DoBalance()
     float target_position_right = initial_position_right;
     float target_position_left = initial_position_left;
 
-    while (!done)
+    while (joy->Dead())
     {
         GetWatchdog().Feed();
 
         DriveControl(target_position_right, target_position_left);
-
-        float x = joystick1->GetX();
-        float y = joystick1->GetY();
-        if (x > 0.02 || x < -0.02 || y > 0.02 || y < -0.02)
-        {
-            done = true;
-        }
 
         RUN_ONCE(joystick1, 2)
         {
