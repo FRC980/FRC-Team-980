@@ -65,7 +65,7 @@ MyRobot::MyRobot(void)
     , joystick2(new Joystick(3))
     , steeringwheel(new Joystick(2)) 
     , ds(DriverStation::GetInstance())
-    , m_pAccelerometer(7)
+    , m_pAccelerometer(new ADXL345_I2C(7))
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(360);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -166,7 +166,7 @@ void MyRobot::OperatorControl(void)
     timer.Reset();
     timer.Start();
 
-    while (IsOperatorControl())
+    while (IsOperatorControl() && IsEnabled())
     {   
         GetWatchdog().Feed();
 
@@ -299,7 +299,7 @@ void MyRobot::OperatorControl(void)
 
         RUN_ONCE(joystick1, 3)
         {
-            DoBalace();
+            DoBalance();
         }
 
         /*
@@ -430,13 +430,24 @@ void MyRobot::Drive(float left, float right)
     m_pscRight2->Set(limit(-right));
 }
 
+void MyRobot::DriveControl(float position_right, float position_left)
+{
+    m_pscLeft1->Set(position_left);
+    float voltage_left = m_pscLeft1->GetOutputVoltage();
+    m_pscLeft2->Set(voltage_left);
+    
+    m_pscRight1->Set(position_right);
+    float voltage_right = m_pscRight1->GetOutputVoltage();
+    m_pscRight2->Set(voltage_right);
+}
+
 void MyRobot::SetShooterSpeed(float speed)
 {
+    m_pscShooterMaster->Set(speed);
     float voltage = m_pscShooterMaster->GetOutputVoltage();
     m_pscShooterSlave1->Set(voltage);
     m_pscShooterSlave2->Set(voltage);
     m_pscShooterSlave3->Set(voltage);
-    m_pscShooterMaster->Set(speed);
 }
 
 float MyRobot::GetRightEncoder(void)
@@ -463,11 +474,70 @@ void MyRobot::SetBrakes(bool brakeOnStop)
 
 void MyRobot::DoBalance()
 {
-    boolean done = false;
+    bool done = false;
+    DriveControlMode(true);
     
+    float initial_position_right = GetRightEncoder();
+    float initial_position_left = GetLeftEncoder();
+    float target_position_right = initial_position_right;
+    float target_position_left = initial_position_left;
+
     while (!done)
     {
-        //do something
+        GetWatchdog().Feed();
+
+        DriveControl(target_position_right, target_position_left);
+
+        float x = joystick1->GetX();
+        float y = joystick1->GetY();
+        if (x > 0.02 || x < -0.02 || y > 0.02 || y < -0.02)
+        {
+            done = true;
+        }
+
+        RUN_ONCE(joystick1, 2)
+        {
+            double acceleration = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
+            if (acceleration > 0)
+            {
+                target_position_right+=0.08;
+                target_position_left+=0.08;
+            }
+            else if (acceleration < 0)
+            {
+                target_position_right-=0.08;
+                target_position_left-=0.08;
+            }
+        }
+    }
+    
+    DriveControlMode(false);
+}
+
+void MyRobot::DriveControlMode(bool control)
+{
+    if (control)
+    {
+        m_pscLeft1->ChangeControlMode(CANJaguar::kPosition);
+        m_pscLeft2->ChangeControlMode(CANJaguar::kVoltage);
+        m_pscRight1->ChangeControlMode(CANJaguar::kPosition);
+        m_pscRight2->ChangeControlMode(CANJaguar::kVoltage);
+        float p, i, d;
+        p = i = d = 0.0;
+
+        m_pscLeft1->SetPID(p,i,d);
+        m_pscRight1->SetPID(p,i,d);
+        m_pscLeft1->EnableControl();
+        m_pscLeft1->EnableControl();
+    }
+    else
+    {
+        m_pscLeft1->DisableControl();
+        m_pscRight1->DisableControl();
+        m_pscLeft1->ChangeControlMode(CANJaguar::kPercentVbus);
+        m_pscLeft2->ChangeControlMode(CANJaguar::kPercentVbus);
+        m_pscRight1->ChangeControlMode(CANJaguar::kPercentVbus);
+        m_pscRight2->ChangeControlMode(CANJaguar::kPercentVbus);
     }
 }
 

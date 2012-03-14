@@ -31,7 +31,7 @@ private:
 
     DriverStation *ds;
 
-    Accelerometer *m_pAccelerometer;
+    ADXL345_I2C *m_pAccelerometer;
 
 public:
     MyRobot(void);
@@ -40,10 +40,13 @@ public:
     void OperatorControl(void);
     float GetRPM(void);
     void Drive(float, float); 
+    void DriveControl(float, float);
     void SetShooterSpeed(float);
     float GetRightEncoder(void);
     float GetLeftEncoder(void);
     void SetBrakes(bool);
+    void DoBalance(void);
+    void DriveControlMode(bool);
 };
 
 #endif
