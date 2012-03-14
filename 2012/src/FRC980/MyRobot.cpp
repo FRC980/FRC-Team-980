@@ -74,7 +74,7 @@ MyRobot::MyRobot(void)
     , joystick2(new MyJoystick(3))
     , steeringwheel(new MyJoystick(2)) 
     , ds(DriverStation::GetInstance())
-    , m_pAccelerometer(new Accelerometer((UINT32)ANALOG_CHANNEL_ACCEL))
+    , m_pAccelerometer(new ADXL345_I2C(7))
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(360);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -103,9 +103,6 @@ MyRobot::MyRobot(void)
 
     m_pscShooterMaster->SetPID(p,i,d);
     m_pscShooterMaster->EnableControl();
-
-    m_pAccelerometer->SetSensitivity(ACCEL_SENSITIVITY);
-    m_pAccelerometer->SetZero(ACCEL_ZERO);
 }
 
 MyRobot::~MyRobot(void)
@@ -178,7 +175,7 @@ void MyRobot::OperatorControl(void)
     timer.Reset();
     timer.Start();
 
-    while (IsOperatorControl())
+    while (IsOperatorControl() && IsEnabled())
     {   
         GetWatchdog().Feed();
 
@@ -311,14 +308,14 @@ void MyRobot::OperatorControl(void)
 
         RUN_ONCE(joystick1, 3)
         {
-	    message("Starting balancing trick");
+	        message("Starting balancing trick");
 
-	    /*
-	     * Putting on joystick2 button 1 because it's currently
-             * unused.  Feel free to move whereever the driver would
-             * like this.
-	     */
-	    PerformBalanceTrick(joystick1);
+	        /*
+	            * Putting on joystick2 button 1 because it's currently
+                * unused.  Feel free to move whereever the driver would
+                * like this.
+	        */
+	        PerformBalanceTrick(joystick1);
         }
 
         /*
@@ -449,13 +446,24 @@ void MyRobot::Drive(float left, float right)
     m_pscRight2->Set(limit(-right));
 }
 
+void MyRobot::DriveControl(float position_right, float position_left)
+{
+    m_pscLeft1->Set(position_left);
+    float voltage_left = m_pscLeft1->GetOutputVoltage();
+    m_pscLeft2->Set(voltage_left);
+    
+    m_pscRight1->Set(position_right);
+    float voltage_right = m_pscRight1->GetOutputVoltage();
+    m_pscRight2->Set(voltage_right);
+}
+
 void MyRobot::SetShooterSpeed(float speed)
 {
+    m_pscShooterMaster->Set(speed);
     float voltage = m_pscShooterMaster->GetOutputVoltage();
     m_pscShooterSlave1->Set(voltage);
     m_pscShooterSlave2->Set(voltage);
     m_pscShooterSlave3->Set(voltage);
-    m_pscShooterMaster->Set(speed);
 }
 
 float MyRobot::GetRightEncoder(void)
@@ -482,42 +490,62 @@ void MyRobot::SetBrakes(bool brakeOnStop)
 
 void MyRobot::PerformBalanceTrick(MyJoystick *joy)
 {
-    float acceleration;
+    DriveControlMode(true);
+    
+    float initial_position_right = GetRightEncoder();
+    float initial_position_left = GetLeftEncoder();
+    float target_position_right = initial_position_right;
+    float target_position_left = initial_position_left;
 
-    /*
-     * If the driver touches the joystick, fall out and
-     * return control to the driver.
-     */
-    while (joy->Dead()) 
+    while (joy->Dead())
     {
-	/*
-	 * Do the balancing trick.
-	 * 
-	 * - Read the accelerometer
-	 *
-	 * - Slowly engage motor to always move uphill
-	 */
+        GetWatchdog().Feed();
 
-	acceleration = m_pAccelerometer->GetAcceleration();
-	if (acceleration < 0) {
-	    /*
-	     * Move motor forward
-	     */
-	} else if (acceleration > 0) {
-	    /*
-	     * Move motor backward
-	     */
-	} else {
-	    /*
-	     * Stop motor entirely
-	     */
-	}
+        DriveControl(target_position_right, target_position_left);
 
-	/*
-	 * Do something here with the motors.
-	 */
+        RUN_ONCE(joystick1, 2)
+        {
+            double acceleration = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
+            if (acceleration > 0)
+            {
+                target_position_right+=0.08;
+                target_position_left+=0.08;
+            }
+            else if (acceleration < 0)
+            {
+                target_position_right-=0.08;
+                target_position_left-=0.08;
+            }
+        }
+    }
+    
+    DriveControlMode(false);
+}
 
-	Wait(0.1);
+void MyRobot::DriveControlMode(bool control)
+{
+    if (control)
+    {
+        m_pscLeft1->ChangeControlMode(CANJaguar::kPosition);
+        m_pscLeft2->ChangeControlMode(CANJaguar::kVoltage);
+        m_pscRight1->ChangeControlMode(CANJaguar::kPosition);
+        m_pscRight2->ChangeControlMode(CANJaguar::kVoltage);
+        float p, i, d;
+        p = i = d = 0.0;
+
+        m_pscLeft1->SetPID(p,i,d);
+        m_pscRight1->SetPID(p,i,d);
+        m_pscLeft1->EnableControl();
+        m_pscLeft1->EnableControl();
+    }
+    else
+    {
+        m_pscLeft1->DisableControl();
+        m_pscRight1->DisableControl();
+        m_pscLeft1->ChangeControlMode(CANJaguar::kPercentVbus);
+        m_pscLeft2->ChangeControlMode(CANJaguar::kPercentVbus);
+        m_pscRight1->ChangeControlMode(CANJaguar::kPercentVbus);
+        m_pscRight2->ChangeControlMode(CANJaguar::kPercentVbus);
     }
 }
 
