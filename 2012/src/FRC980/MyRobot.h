@@ -15,16 +15,13 @@ private:
     CANJaguar *m_pscShooterMaster;
     CANJaguar *m_pscShooterSlave1;
     CANJaguar *m_pscShooterSlave2;
-    CANJaguar *m_pscShooterSlave3;
 
     CANJaguar *m_pscLeft1;
-    CANJaguar *m_pscLeft2;
     CANJaguar *m_pscRight1;
-    CANJaguar *m_pscRight2;
 
     Victor *m_pscBallPickup;
     Victor *m_pscBallFeeder;
-    Victor *m_pscTurret;
+    Victor *m_pscBridge;
 
     MyJoystick *joystick1;
     MyJoystick *joystick2;
@@ -32,13 +29,15 @@ private:
 
     DriverStation *ds;
 
-    ADXL345_I2C *m_pAccelerometer;
+    Timer m_bridge_timer;
 
 public:
     MyRobot(void);
     ~MyRobot(void);
     void Autonomous(void);
     void OperatorControl(void);
+    void RunBridge(bool);
+    void CheckStopBridge(void);
     float GetRPM(void);
     void Drive(float, float); 
     void DriveControl(float, float);
