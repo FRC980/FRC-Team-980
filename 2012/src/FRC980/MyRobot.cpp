@@ -61,7 +61,6 @@ double limit(double val, double min = -1, double max = 1)
 MyRobot::MyRobot(void)
     : m_pscShooterMaster(new CANJaguar(15, CANJaguar::kSpeed))
     , m_pscShooterSlave1(new CANJaguar(17, CANJaguar::kVoltage))
-    , m_pscShooterSlave2(new CANJaguar(18, CANJaguar::kVoltage))
     , m_pscLeft1(new CANJaguar(14))
     , m_pscRight1(new CANJaguar(12))
     , m_pscBallPickup(new Victor(1))
@@ -94,8 +93,8 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->SetPID(p,i,d);
     m_pscShooterMaster->EnableControl();
 
-    m_bridge_timer.Reset();
-    m_bridge_timer.Start();
+    m_bridge_timer->Reset();
+    m_bridge_timer->Start();
 }
 
 MyRobot::~MyRobot(void)
@@ -104,7 +103,6 @@ MyRobot::~MyRobot(void)
     delete m_pscLeft1;
     delete m_pscShooterMaster;
     delete m_pscShooterSlave1;
-    delete m_pscShooterSlave2;
     delete m_pscBallPickup;
     delete m_pscBallFeeder;
     delete m_pscBridge;
@@ -112,6 +110,7 @@ MyRobot::~MyRobot(void)
     delete joystick2;
     delete steeringwheel;
     delete ds;
+    delete m_bridge_timer;
 }
 
 void MyRobot::Autonomous(void)
@@ -396,7 +395,7 @@ void MyRobot::OperatorControl(void)
 
 void MyRobot::CheckStopBridge(void)
 {
-    if(m_bridge_timer.Get() > 0.5)
+    if(m_bridge_timer->Get() > 0.5)
     {
         m_pscBridge->Set(0.0);
     }
@@ -404,7 +403,7 @@ void MyRobot::CheckStopBridge(void)
 
 void MyRobot::RunBridge(bool up)
 {
-   m_bridge_timer.Reset();
+   m_bridge_timer->Reset();
    if(up)
    {
        m_pscBridge->Set(-0.3);
@@ -430,11 +429,7 @@ void MyRobot::DriveControl(float position_right, float position_left)
 {
     m_pscLeft1->Set(position_left);
     
-    /* 
     m_pscRight1->Set(position_right);
-    float voltage_right = m_pscRight1->GetOutputVoltage();
-    m_pscRight2->Set(voltage_right);
-    */
 }
 
 void MyRobot::SetShooterSpeed(float speed)
@@ -442,7 +437,6 @@ void MyRobot::SetShooterSpeed(float speed)
     m_pscShooterMaster->Set(speed);
     float voltage = m_pscShooterMaster->GetOutputVoltage();
     m_pscShooterSlave1->Set(voltage);
-    m_pscShooterSlave2->Set(voltage);
 }
 
 float MyRobot::GetRightEncoder(void)

@@ -14,7 +14,6 @@ class MyRobot : public SimpleRobot
 private:
     CANJaguar *m_pscShooterMaster;
     CANJaguar *m_pscShooterSlave1;
-    CANJaguar *m_pscShooterSlave2;
 
     CANJaguar *m_pscLeft1;
     CANJaguar *m_pscRight1;
@@ -29,7 +28,8 @@ private:
 
     DriverStation *ds;
 
-    Timer m_bridge_timer;
+    Timer *m_bridge_timer;
+    Timer *m_shooter_timer;
 
 public:
     MyRobot(void);
