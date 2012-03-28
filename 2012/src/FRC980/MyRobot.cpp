@@ -71,13 +71,14 @@ MyRobot::MyRobot(void)
     , steeringwheel(new MyJoystick(2)) 
     , ds(DriverStation::GetInstance())
     , m_bridge_timer(new Timer())
+    //, m_pAccelerometer(new ADXL345_I2C(1)) 
 {
-    m_pscLeft1->ConfigEncoderCodesPerRev(360);
+    m_pscLeft1->ConfigEncoderCodesPerRev(1);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscLeft1->ConfigMaxOutputVoltage(12.0);
     m_pscLeft1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
-    m_pscRight1->ConfigEncoderCodesPerRev(360);
+    m_pscRight1->ConfigEncoderCodesPerRev(1);
     m_pscRight1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscRight1->ConfigMaxOutputVoltage(12.0);
     m_pscRight1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
@@ -111,6 +112,7 @@ MyRobot::~MyRobot(void)
     delete joystick2;
     delete steeringwheel;
     delete ds;
+    //delete m_pAccelerometer;
     delete m_bridge_timer;
 }
 
@@ -231,12 +233,19 @@ void MyRobot::OperatorControl(void)
         float setspeed = 2*targetspeed;
         GetWatchdog().Feed();
         
-        //double acceleration_x, acceleration_y, acceleration_z;
-        //acceleration_x = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_X);
-        //acceleration_y = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Y);
-        //acceleration_z = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
+        /*
+        double acceleration_x, acceleration_y, acceleration_z;
+        acceleration_x = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_X);
+        acceleration_y = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Y);
+        acceleration_z = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
 
-       // message("x: %f, y: %f, z: %f", acceleration_x, acceleration_y, acceleration_z);
+        message("x: %f, y: %f, z: %f", acceleration_x, acceleration_y, acceleration_z);
+        */
+
+        RUN_ONCE(joystick1, 1)
+        {
+            PerformBalanceTrick(joystick1);
+        }
 
 	 //Drive
     	//initialize gain and throttle varaibles
@@ -309,8 +318,6 @@ void MyRobot::OperatorControl(void)
         else
             speed = setspeed + (2000*x2);
 
-	    //to get x and y from joystick2 via button press on joystick1
-	
         RUN_ONCE(joystick1, 4)
         {
             SetBrakes(true);
@@ -385,7 +392,7 @@ void MyRobot::OperatorControl(void)
         RUN_ONCE(joystick1, 9)
         {
             message("right encoder: %f", GetRightEncoder());
-    	}
+        } 
 
         Wait(0.05);
     }
@@ -430,7 +437,7 @@ void MyRobot::DriveControl(float position_right, float position_left)
 {
     m_pscLeft1->Set(position_left);
     
-    m_pscRight1->Set(position_right);
+    //m_pscRight1->Set(position_right);
 }
 
 void MyRobot::SetShooterSpeed(float speed)
@@ -466,8 +473,8 @@ void MyRobot::PerformBalanceTrick(MyJoystick *joy)
     
     float initial_position_right = GetRightEncoder();
     float initial_position_left = GetLeftEncoder();
-    float target_position_right = initial_position_right+360;
-    float target_position_left = initial_position_left-360;
+    float target_position_right = initial_position_right+250;
+    float target_position_left = initial_position_left-500;
 
     while (IsOperatorControl() && IsEnabled())
     {
@@ -484,12 +491,12 @@ void MyRobot::PerformBalanceTrick(MyJoystick *joy)
         {
             message("right encoder: %f", GetRightEncoder());
         }
-        
+
         RUN_ONCE(joystick1, 2)
         {
-           
+            break;
         }
-    }
+    }     
     
     DriveControlMode(false);
 }
@@ -502,7 +509,7 @@ void MyRobot::DriveControlMode(bool control)
         m_pscRight1->ChangeControlMode(CANJaguar::kPosition);
         float p, i, d;
         p = -0.2;
-        i = 0.0;
+        i = -0.00217;
         d = 0;
 
         m_pscLeft1->SetPID(p,i,d);
