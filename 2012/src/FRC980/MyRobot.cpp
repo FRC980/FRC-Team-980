@@ -59,10 +59,10 @@ double limit(double val, double min = -1, double max = 1)
 }
 
 MyRobot::MyRobot(void)
-    : m_pscShooterMaster(new CANJaguar(15, CANJaguar::kSpeed))
-    , m_pscShooterSlave1(new CANJaguar(17, CANJaguar::kVoltage))
-    , m_pscLeft1(new CANJaguar(14))
-    , m_pscRight1(new CANJaguar(12))
+    : m_pscShooterMaster(new CANJaguar(12, CANJaguar::kSpeed))
+    , m_pscShooterSlave1(new CANJaguar(14, CANJaguar::kVoltage))
+    , m_pscLeft1(new CANJaguar(11))
+    , m_pscRight1(new CANJaguar(13))
     , m_pscBallPickup(new Victor(1))
     , m_pscBallFeeder(new Victor(2))
     , m_pscBridge(new Victor(3))
@@ -70,6 +70,7 @@ MyRobot::MyRobot(void)
     , joystick2(new MyJoystick(3))
     , steeringwheel(new MyJoystick(2)) 
     , ds(DriverStation::GetInstance())
+    , m_bridge_timer(new Timer())
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(360);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -237,7 +238,7 @@ void MyRobot::OperatorControl(void)
 
        // message("x: %f, y: %f, z: %f", acceleration_x, acceleration_y, acceleration_z);
 
-	    //Drive
+	 //Drive
     	//initialize gain and throttle varaibles
         float gain, throttle;
 
@@ -375,7 +376,7 @@ void MyRobot::OperatorControl(void)
                 m_pscBallFeeder->Set(0.0);
             }
         }
-        /* 
+
         RUN_ONCE(joystick1, 8)
         {
             message("left encoder: %f", GetLeftEncoder());
@@ -384,8 +385,8 @@ void MyRobot::OperatorControl(void)
         RUN_ONCE(joystick1, 9)
         {
             message("right encoder: %f", GetRightEncoder());
-        } 
-        */
+    	}
+
         Wait(0.05);
     }
 
