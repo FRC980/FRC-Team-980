@@ -28,8 +28,9 @@ private:
 
     DriverStation *ds;
 
+    //ADXL345_I2C *m_pAccelerometer;
+
     Timer *m_bridge_timer;
-    Timer *m_shooter_timer;
 
 public:
     MyRobot(void);
