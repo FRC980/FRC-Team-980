@@ -40,14 +40,17 @@ public:
     void RunBridge(bool);
     void CheckStopBridge(void);
     float GetRPM(void);
-    void Drive(float, float); 
+    void Drive(float, float);
+    void DriveControlPosition(float, float);
+    void DriveControlSpeed(float, float);
     void DriveControl(float, float);
     void SetShooterSpeed(float);
     float GetRightEncoder(void);
     float GetLeftEncoder(void);
     void SetBrakes(bool);
     void PerformBalanceTrick(MyJoystick *joy);
-    void DriveControlMode(bool);
+    void PerformBalanceTrickSpeed(MyJoystick *joy);
+    void DriveControlMode(CANJaguar::ControlMode);
 };
 
 #endif

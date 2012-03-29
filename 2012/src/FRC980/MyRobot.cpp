@@ -219,7 +219,7 @@ void MyRobot::OperatorControl(void)
     //cyclops->Start();
 
     SetBrakes(false);
-    DriveControlMode(false);
+    DriveControlMode(CANJaguar::kPercentVbus);
 
     ofstream myfile;
     myfile.open("example.txt");
@@ -246,7 +246,7 @@ void MyRobot::OperatorControl(void)
         {
             PerformBalanceTrick(joystick1);
         }
-
+	
 	 //Drive
     	//initialize gain and throttle varaibles
         float gain, throttle;
@@ -433,11 +433,18 @@ void MyRobot::Drive(float left, float right)
     m_pscRight1->Set(limit(-right));
 }
 
-void MyRobot::DriveControl(float position_right, float position_left)
+void MyRobot::DriveControlPosition(float position_right, float position_left)
 {
     m_pscLeft1->Set(position_left);
     
-    //m_pscRight1->Set(position_right);
+    m_pscRight1->Set(position_right);
+}
+
+void MyRobot::DriveControlSpeed(float speed_right, float speed_left)
+{
+    m_pscLeft1->Set(speed_left);
+    
+    m_pscRight1->Set(speed_right);
 }
 
 void MyRobot::SetShooterSpeed(float speed)
@@ -469,18 +476,18 @@ void MyRobot::SetBrakes(bool brakeOnStop)
 
 void MyRobot::PerformBalanceTrick(MyJoystick *joy)
 {
-    DriveControlMode(true);
+    DriveControlMode(CANJaguar::kPosition);
     
     float initial_position_right = GetRightEncoder();
     float initial_position_left = GetLeftEncoder();
-    float target_position_right = initial_position_right+250;
-    float target_position_left = initial_position_left-500;
+    float target_position_right = initial_position_right+750;
+    float target_position_left = initial_position_left-750;
 
     while (IsOperatorControl() && IsEnabled())
     {
         GetWatchdog().Feed();
 
-        DriveControl(target_position_right, target_position_left);
+        DriveControlPosition(target_position_right, target_position_left);
         
         RUN_ONCE(joystick1, 8)
         {
@@ -498,16 +505,48 @@ void MyRobot::PerformBalanceTrick(MyJoystick *joy)
         }
     }     
     
-    DriveControlMode(false);
+    DriveControlMode(CANJaguar::kPercentVbus);
 }
 
-void MyRobot::DriveControlMode(bool control)
+void MyRobot::PerformBalanceTrickSpeed(MyJoystick *joy)
 {
-    if (control)
+    DriveControlMode(CANJaguar::kSpeed);
+
+    while (IsOperatorControl() && IsEnabled())
     {
+        GetWatchdog().Feed();
+
+        DriveControlSpeed(25,25);
+        
+        RUN_ONCE(joystick1, 8)
+        {
+            message("left encoder: %f", GetLeftEncoder());
+        }
+
+        RUN_ONCE(joystick1, 9)
+        {
+            message("right encoder: %f", GetRightEncoder());
+        }
+
+        RUN_ONCE(joystick1, 2)
+        {
+            break;
+        }
+    }     
+    
+    DriveControlMode(CANJaguar::kPercentVbus);
+}
+
+void MyRobot::DriveControlMode(CANJaguar::ControlMode control)
+{
+    float p, i, d;
+
+    switch (control) {
+    case CANJaguar::kPosition:
+    	m_pscLeft1->ConfigEncoderCodesPerRev(1);
         m_pscLeft1->ChangeControlMode(CANJaguar::kPosition);
+    	m_pscRight1->ConfigEncoderCodesPerRev(1);
         m_pscRight1->ChangeControlMode(CANJaguar::kPosition);
-        float p, i, d;
         p = -0.2;
         i = -0.00217;
         d = 0;
@@ -517,14 +556,38 @@ void MyRobot::DriveControlMode(bool control)
         m_pscLeft1->EnableControl();
         m_pscRight1->EnableControl();
         message("drive control enabled");
-    }
-    else
-    {
+	break;
+    
+    case CANJaguar::kSpeed:
+    	m_pscLeft1->ConfigEncoderCodesPerRev(250);
+    	m_pscLeft1->ChangeControlMode(CANJaguar::kSpeed);
+    	m_pscRight1->ConfigEncoderCodesPerRev(250);
+        m_pscRight1->ChangeControlMode(CANJaguar::kSpeed);
+        p = 0.0;
+        i = 0.0;
+        d = 0.0;
+
+        m_pscLeft1->SetPID(p,i,d);
+        m_pscRight1->SetPID(p,i,d);
+        m_pscLeft1->EnableControl();
+        m_pscRight1->EnableControl();
+        message("drive control enabled");
+        break;
+
+    case CANJaguar::kPercentVbus:
         m_pscLeft1->DisableControl();
         m_pscRight1->DisableControl();
+    	m_pscLeft1->ConfigEncoderCodesPerRev(250);
         m_pscLeft1->ChangeControlMode(CANJaguar::kPercentVbus);
+    	m_pscRight1->ConfigEncoderCodesPerRev(250);
         m_pscRight1->ChangeControlMode(CANJaguar::kPercentVbus);
         message("drive control disabled");
+        break;
+
+    case CANJaguar::kVoltage:
+    case CANJaguar::kCurrent:
+    default:
+    	break;
     }
 }
 
