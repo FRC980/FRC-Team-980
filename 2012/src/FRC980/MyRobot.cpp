@@ -6,6 +6,7 @@
 #include "Vision/BinaryImage.h"
 #include "Cyclops.h"
 #include <math.h>
+#include "jsbuttons.h"
 
 /*
  * TODO: The sensitivity and zero values vary by accelerometer model. 
@@ -359,9 +360,9 @@ void MyRobot::OperatorControl(void)
 
 
         if(joystick2->GetRawButton(4))
-	    {
-	        m_pscBallPickup->Set(-1.0);
-	    }
+	{
+	    m_pscBallPickup->Set(-1.0);
+	}
         else
         {
             m_pscBallPickup->Set(0.0);
