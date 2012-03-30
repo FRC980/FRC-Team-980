@@ -88,7 +88,7 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->ConfigMaxOutputVoltage(12);
     
     float p, i, d;
-    p = 0.027;
+    p = 0.033;
     i = 0.0;
     d = 0.0;
 
@@ -210,7 +210,7 @@ void MyRobot::OperatorControl(void)
     unsigned int distance;
 
     // Commented out to get rid of unused compile warning.
-    const float targetspeed = 2300.0;
+    const float targetspeed = 2*2300.0;
     float speed = 0.0;
 
     GetWatchdog().SetEnabled(true);
@@ -230,7 +230,7 @@ void MyRobot::OperatorControl(void)
 
     while (IsOperatorControl() && IsEnabled())
     {   
-        float setspeed = 2*targetspeed;
+        float setspeed = targetspeed;
         GetWatchdog().Feed();
         
         /*
@@ -329,6 +329,9 @@ void MyRobot::OperatorControl(void)
             SetBrakes(false);
             message("brakes set: off");
         }
+
+        myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
+        message("RPM: %f", GetRPM());
 
         if(joystick2->GetRawButton(9))
         {
