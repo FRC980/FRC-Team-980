@@ -31,6 +31,8 @@ private:
 
     Timer m_bridge_timer;
 
+    void Rotate(float degrees);
+
 public:
     MyRobot(void);
     ~MyRobot(void);

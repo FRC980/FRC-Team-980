@@ -22,36 +22,42 @@ class Cyclops {
 
     public:
 
-	Cyclops(void);
-	~Cyclops(void);
+        Cyclops(void);
+        ~Cyclops(void);
 
-	void Start(void);
-	void Stop(void);
-	
-	/*
-	 * Warning: public functions that access member data
-	 *          must be read only.  If this restriction is
-	 *          broken semaphores must be added to cyclops so
-	 *          that he doesn't poke himself in the eye and
-	 *          go blind.
-	 */
-	unsigned int GetDistanceToTarget(void);
-	TargetAlignment IsTargetAligned(void);
+        void Start(void);
+        void Stop(void);
+        
+        /*
+         * Warning: public functions that access member data
+         *          must be read only.  If this restriction is
+         *          broken semaphores must be added to cyclops so
+         *          that he doesn't poke himself in the eye and
+         *          go blind.
+         */
+        float GetDistanceToTarget(void);
+        float GetAngleOffCenter(void);
+        TargetAlignment IsTargetAligned(void);
 
     private:
 
-	vector<vector<int> > GetTargetCenters(void);
-	void UpdateDistance(int width);
-	void UpdateTargetAligned(vector<vector<int> > &points);
-	void SendDistance(void);
+        vector<vector<int> > GetTargetCenters(void);
+        void UpdateDistance(float width);
+        void UpdateAngleOffCenter(ParticleAnalysisReport &rect);
+        void UpdateTargetAligned(void);
+        void SendDistance(void);
+        void ProcessImage(void);
+        ParticleAnalysisReport GetHighestTarget(
+                                    vector<ParticleAnalysisReport> *rects);
 
-	AxisCamera& m_camera;
-	unsigned int m_latestDistance;
-	TargetAlignment m_targetAligned;
-	Task *m_cyclopsTask;
-	DigitalOutput *m_Out[GPIO_DISPLAY_PIN_NUM];
+        AxisCamera& m_camera;
+        float m_latestDistance;
+        TargetAlignment m_targetAligned;
+        float m_angleOffCenter;
+        Task *m_cyclopsTask;
+        DigitalOutput *m_Out[GPIO_DISPLAY_PIN_NUM];
 
-	friend int targetDiskTask(UINT32 arg);
+        friend int targetDiskTask(UINT32 arg);
 };
 
 #endif

@@ -14,8 +14,13 @@
  */
 #define ACCEL_SENSITIVITY 0.0
 #define ACCEL_ZERO	  0.0
-
 #define ANALOG_CHANNEL_ACCEL 7
+
+/*
+ * Values in feet
+ */
+#define TIRE_DIAMETER 0.5208
+#define DISTANCE_BETWEEN_WHEELS 1.7916
 
 #define RUN_ONCE_VAR(joystick,button,var)              \
     static bool var = false;                           \
@@ -59,11 +64,10 @@ double limit(double val, double min = -1, double max = 1)
 }
 
 MyRobot::MyRobot(void)
-    : m_pscShooterMaster(new CANJaguar(15, CANJaguar::kSpeed))
-    , m_pscShooterSlave1(new CANJaguar(17, CANJaguar::kVoltage))
-    , m_pscShooterSlave2(new CANJaguar(18, CANJaguar::kVoltage))
-    , m_pscLeft1(new CANJaguar(14))
-    , m_pscRight1(new CANJaguar(12))
+    : m_pscShooterMaster(new CANJaguar(12, CANJaguar::kSpeed))
+    , m_pscShooterSlave1(new CANJaguar(14, CANJaguar::kVoltage))
+    , m_pscLeft1(new CANJaguar(11))
+    , m_pscRight1(new CANJaguar(13))
     , m_pscBallPickup(new Victor(1))
     , m_pscBallFeeder(new Victor(2))
     , m_pscBridge(new Victor(3))
@@ -203,9 +207,9 @@ void MyRobot::Autonomous(void)
 
 void MyRobot::OperatorControl(void)
 {
-    //Cyclops *cyclops;
-    TargetAlignment alignment;
-    unsigned int distance;
+    Cyclops *cyclops;
+    float distance;
+    float angle;
 
     // Commented out to get rid of unused compile warning.
     const float targetspeed = 2300.0;
@@ -213,8 +217,8 @@ void MyRobot::OperatorControl(void)
 
     GetWatchdog().SetEnabled(true);
 
-    //cyclops = new Cyclops();
-    //cyclops->Start();
+    cyclops = new Cyclops();
+    cyclops->Start();
 
     SetBrakes(false);
     DriveControlMode(false);
@@ -273,38 +277,22 @@ void MyRobot::OperatorControl(void)
 
         Drive(fLeft, fRight);
 
-        /*
 	    //target finder
         RUN_ONCE(joystick1, 1)
         {
-            message("finding targets");
-	        distance = cyclops->GetDistanceToTarget();
-	        alignment = cyclops->IsTargetAligned();
+            cyclops->Stop();
 
-	        message("distance from target: %f", distance);
-	        switch (alignment) {
-		    case TARGET_LEFT:
-		        message("you are off to the left");
-		        break;
-		    case TARGET_RIGHT:
-		        message("you are off to the right");
-		        break;
-		    case TARGET_ALIGNED:
-		        message("you are on target");
-		        break;
-		    case TARGET_UNKNOWN:
-		        message("Not all targets visible");
-		        break;
-            }
-            message("done");
+            message("Finding targets");
+	        distance = cyclops->GetDistanceToTarget();
+	        angle = cyclops->GetAngleOffCenter();
+            Rotate(angle);
         }
-        */
 
         float x2 = joystick2->GetX();
-        float y2 = joystick2->GetY();
+        // float y2 = joystick2->GetY();
 
         SetShooterSpeed(speed);
-        if(speed <= setspeed)
+        if (speed <= setspeed)
             speed+=setspeed/20.0;
         else
             speed = setspeed + (2000*x2);
@@ -347,6 +335,17 @@ void MyRobot::OperatorControl(void)
         
         CheckStopBridge(); 
 
+        RUN_ONCE(joystick1, 3)
+        {
+	       message("Starting balancing trick");
+
+	       /*
+	        * Putting on joystick2 button 1 because it's currently
+                * unused.  Feel free to move whereever the driver would
+                * like this.
+	        */
+	       PerformBalanceTrick(joystick1);
+        }
 
         if(joystick2->GetRawButton(4))
 	    {
@@ -426,15 +425,30 @@ void MyRobot::Drive(float left, float right)
     m_pscRight1->Set(limit(-right));
 }
 
+/*
+ * Negative degrees rotates left, positive degrees rotates right
+ */
+void MyRobot::Rotate(float degrees)
+{
+    float tireCircumference;
+    float robotCircleDiameter;
+    float robotCircleCircumference;
+    float distanceOfTravel;
+    float rotations;
+
+    tireCircumference = 3.14 * TIRE_DIAMETER;
+    robotCircleDiameter = DISTANCE_BETWEEN_WHEELS;
+    robotCircleCircumference = 3.14 * robotCircleDiameter;
+    distanceOfTravel = robotCircleCircumference / (360 / degrees);
+    rotations = distanceOfTravel / TIRE_DIAMETER;
+    
+    DriveControl(-rotations, rotations);
+}
+
 void MyRobot::DriveControl(float position_right, float position_left)
 {
     m_pscLeft1->Set(position_left);
-    
-    /* 
     m_pscRight1->Set(position_right);
-    float voltage_right = m_pscRight1->GetOutputVoltage();
-    m_pscRight2->Set(voltage_right);
-    */
 }
 
 void MyRobot::SetShooterSpeed(float speed)
