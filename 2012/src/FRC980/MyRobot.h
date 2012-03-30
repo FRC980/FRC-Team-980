@@ -14,7 +14,6 @@ class MyRobot : public SimpleRobot
 private:
     CANJaguar *m_pscShooterMaster;
     CANJaguar *m_pscShooterSlave1;
-    CANJaguar *m_pscShooterSlave2;
 
     CANJaguar *m_pscLeft1;
     CANJaguar *m_pscRight1;
@@ -29,7 +28,9 @@ private:
 
     DriverStation *ds;
 
-    Timer m_bridge_timer;
+    //ADXL345_I2C *m_pAccelerometer;
+
+    Timer *m_bridge_timer;
 
     void Rotate(float degrees);
 
@@ -41,14 +42,17 @@ public:
     void RunBridge(bool);
     void CheckStopBridge(void);
     float GetRPM(void);
-    void Drive(float, float); 
+    void Drive(float, float);
+    void DriveControlPosition(float, float);
+    void DriveControlSpeed(float, float);
     void DriveControl(float, float);
     void SetShooterSpeed(float);
     float GetRightEncoder(void);
     float GetLeftEncoder(void);
     void SetBrakes(bool);
     void PerformBalanceTrick(MyJoystick *joy);
-    void DriveControlMode(bool);
+    void PerformBalanceTrickSpeed(MyJoystick *joy);
+    void DriveControlMode(CANJaguar::ControlMode);
 };
 
 #endif

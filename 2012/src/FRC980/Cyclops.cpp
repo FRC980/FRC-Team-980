@@ -26,7 +26,7 @@ void cmessage(char *fmt, ...)
     vsnprintf(message, 256, fmt, args);
     va_end(args);
 
-    setErrorData(message, strlen(message), 100);
+    // setUserDsLcdData(message, strlen(message), 100);
 }
 
 
