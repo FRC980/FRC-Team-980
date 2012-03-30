@@ -243,7 +243,7 @@ void MyRobot::OperatorControl(void)
         message("x: %f, y: %f, z: %f", acceleration_x, acceleration_y, acceleration_z);
         */
 
-        RUN_ONCE(joystick1, 1)
+        RUN_ONCE(joystick1, PERFORM_BALANCE_TRICK)
         {
             PerformBalanceTrick(joystick1);
         }
@@ -271,7 +271,7 @@ void MyRobot::OperatorControl(void)
             eThrottle = 0;
         throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
         	    	    //set default fLeft and fRight to throttle
-	    float fLeft = throttle;
+	float fLeft = throttle;
         float fRight = fLeft;
 
         //if statements for distributing power to left and right depending on gain value 
@@ -319,35 +319,35 @@ void MyRobot::OperatorControl(void)
         else
             speed = setspeed + (2000*x2);
 
-        RUN_ONCE(joystick1, 4)
+        RUN_ONCE(joystick1, DRIVE_SET_BRAKES_ON)
         {
             SetBrakes(true);
             message("brakes set: on");
         }
 
-        RUN_ONCE(joystick1, 5)
+        RUN_ONCE(joystick1, DRIVE_SET_BRAKES_OFF)
         {
             SetBrakes(false);
             message("brakes set: off");
         }
 
-        if(joystick2->GetRawButton(9))
+        if(joystick2->GetRawButton(SET_SHOOTER_SPEED_MEDIUM))
         {
             setspeed = 2300; 
         }
-        if(joystick2->GetRawButton(11))
+        if(joystick2->GetRawButton(SET_SHOOTER_SPEED_FAR))
         {
             setspeed = 2500;
         }
 
         static bool bridgeup = true;
         
-        if(joystick2->GetRawButton(2) && bridgeup)
+        if(joystick2->GetRawButton(BRIDGE) && bridgeup)
         {
             bridgeup = false;
             RunBridge(true); 
         }
-        else if(!joystick2->GetRawButton(2) && !bridgeup)
+        else if(!joystick2->GetRawButton(BRIDGE) && !bridgeup)
         {
             bridgeup = true;
             RunBridge(false);
@@ -356,7 +356,7 @@ void MyRobot::OperatorControl(void)
         CheckStopBridge(); 
 
 
-        if(joystick2->GetRawButton(4))
+        if(joystick2->GetRawButton(BALL_PICKUP))
 	{
 	    m_pscBallPickup->Set(-1.0);
 	}
@@ -365,17 +365,17 @@ void MyRobot::OperatorControl(void)
             m_pscBallPickup->Set(0.0);
         }
 
-        if(joystick2->GetRawButton(8))
+        if(joystick2->GetRawButton(SHOOTER_SHOOT))
         {
            m_pscBallFeeder->Set(-1.0); 
         }
         else
         {
-            if (joystick2->GetRawButton(3))
+            if (joystick2->GetRawButton(BALL_FEEDER))
             {
                 m_pscBallFeeder->Set(.77);
             }
-            else if (joystick2->GetRawButton(5))
+            else if (joystick2->GetRawButton(BALL_FEEDER_UP))
             {
                 m_pscBallFeeder->Set(-1.0);
             }
@@ -385,12 +385,12 @@ void MyRobot::OperatorControl(void)
             }
         }
 
-        RUN_ONCE(joystick1, 8)
+        RUN_ONCE(joystick1, GET_LEFT_ENCODER)
         {
             message("left encoder: %f", GetLeftEncoder());
         }
 
-        RUN_ONCE(joystick1, 9)
+        RUN_ONCE(joystick1, GET_RIGHT_ENCODER)
         {
             message("right encoder: %f", GetRightEncoder());
         } 
