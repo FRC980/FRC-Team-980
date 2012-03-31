@@ -4,27 +4,29 @@
 #define PERFORM_BALANCE_TRICK		1
 
 //set brakes
-#define DRIVE_SET_BRAKES_ON		4
+#define DRIVE_SET_BRAKES_ON		    4
 #define DRIVE_SET_BRAKES_OFF		5
 
 //get encoder values 
-#define GET_LEFT_ENCODER		8
-#define GET_RIGHT_ENCODER		9
+#define GET_LEFT_ENCODER		    8
+#define GET_RIGHT_ENCODER		    9
 
 ///////joystick2
 //bridge up/down
-#define BRIDGE				2	
+#define BRIDGE				        2	
 
 //ball feeder/up/down
-#define BALL_FEEDER			3
-#define BALL_PICKUP			4
-#define BALL_FEEDER_UP			5
+#define BALL_FEEDER			        3
+#define BALL_PICKUP			        4
+#define BALL_FEEDER_UP			    5
 
 //shoot
-#define	SHOOTER_SHOOT			8
+#define	SHOOTER_SHOOT			    8
 
 //set shooter speed
 #define SET_SHOOTER_SPEED_MEDIUM	9
 #define SET_SHOOTER_SPEED_FAR		11
 
-
+//////Shooter speeds
+#define FENDER_HIGH                 2300
+#define FENDER_MEDIUM               1800

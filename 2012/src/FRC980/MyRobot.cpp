@@ -210,9 +210,13 @@ void MyRobot::OperatorControl(void)
     TargetAlignment alignment;
     unsigned int distance;
 
+    //high-goal fender speed = 2300
+    //medium-goal fender speed = 1800
+
     // Commented out to get rid of unused compile warning.
-    const float targetspeed = 2500.0;
+    float targetspeed = FENDER_HIGH;
     float speed = 0.0;
+    bool windup = true;
 
     GetWatchdog().SetEnabled(true);
 
@@ -235,7 +239,6 @@ void MyRobot::OperatorControl(void)
         GetWatchdog().Feed();
 
         //myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
-        message("RPM: %f", GetRPM());
 
 	    //Drive ---------------------------------------------------------------------
     	//initialize gain and throttle varaibles
@@ -336,25 +339,52 @@ void MyRobot::OperatorControl(void)
             message("right encoder: %f", GetRightEncoder());
         }
 
-        //Joystick 2 ----------------------------------------------------------------
         float x2 = joystick2->GetX();
         float y2 = joystick2->GetY();
 
-        SetShooterSpeed(speed);
-        if(speed <= setspeed)
-            speed+=setspeed/20.0;
+        //Shooter -------------------------------------------------------------------
+        if(GetRPM() == 0)
+        {
+            windup = true;
+        }
+
+        if(windup)
+        {
+            if(speed < setspeed)
+            {
+                speed+=100;
+            }
+            else
+            {
+                message("windup done");
+                windup = false;
+            }
+        }
         else
-            speed = setspeed + (2000*x2);
+        {
+            if(speed < setspeed)
+            {
+                speed+=100;
+            }
+            else if(speed > setspeed)
+            {
+                speed-=100;
+            }
+        }
 
+        SetShooterSpeed(speed);
 
+        //Joystick 2 ----------------------------------------------------------------
         RUN_ONCE(joystick2, SET_SHOOTER_SPEED_MEDIUM)
         {
-            setspeed = 2300; 
+            message("set speed fender medium");
+            targetspeed = FENDER_MEDIUM; 
         }
 
         RUN_ONCE(joystick2, SET_SHOOTER_SPEED_FAR)
         {
-            setspeed = 2500;
+            message("set speed fender high");
+            targetspeed = FENDER_HIGH;
         }
 
         static bool bridgeup = true;
