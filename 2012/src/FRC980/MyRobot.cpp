@@ -89,7 +89,7 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->ConfigMaxOutputVoltage(12);
     
     float p, i, d;
-    p = 0.033;
+    p = 0.030;
     i = 0.0;
     d = 0.0;
 
@@ -211,7 +211,7 @@ void MyRobot::OperatorControl(void)
     unsigned int distance;
 
     // Commented out to get rid of unused compile warning.
-    const float targetspeed = 2*2300.0;
+    const float targetspeed = 2500.0;
     float speed = 0.0;
 
     GetWatchdog().SetEnabled(true);
@@ -231,13 +231,11 @@ void MyRobot::OperatorControl(void)
 
     while (IsOperatorControl() && IsEnabled())
     {   
-        float setspeed = targetspeed;
+        float setspeed = 2*targetspeed;
         GetWatchdog().Feed();
 
-        /* record rpm
-        myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
+        //myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
         message("RPM: %f", GetRPM());
-        */
 
 	    //Drive ---------------------------------------------------------------------
     	//initialize gain and throttle varaibles
@@ -275,19 +273,19 @@ void MyRobot::OperatorControl(void)
         Drive(fLeft, fRight);
         
         //Joystick 1 ----------------------------------------------------------------
+        /*
         //position
         RUN_ONCE(joystick1, PERFORM_BALANCE_TRICK)
         {
             PerformBalanceTrick(joystick1);
         }
+        */
         
-        /*
         //speed
         RUN_ONCE(joystick1, PERFORM_BALANCE_TRICK)
         {
-            PerformBalanceTrick(joystick1);
+            PerformBalanceTrickSpeed(joystick1);
         }
-	    */
 
         /*
 	    //target finder
@@ -530,12 +528,12 @@ void MyRobot::PerformBalanceTrickSpeed(MyJoystick *joy)
         
         RUN_ONCE(joystick1, 8)
         {
-            message("left encoder: %f", GetLeftEncoder());
+            message("left rpm: %f", m_pscLeft1->GetSpeed());
         }
 
         RUN_ONCE(joystick1, 9)
         {
-            message("right encoder: %f", GetRightEncoder());
+            message("right rpm: %f", m_pscRight1->GetSpeed());
         }
 
         RUN_ONCE(joystick1, 2)
@@ -566,14 +564,14 @@ void MyRobot::DriveControlMode(CANJaguar::ControlMode control)
         m_pscLeft1->EnableControl();
         m_pscRight1->EnableControl();
         message("drive control enabled");
-	break;
+	    break;
     
     case CANJaguar::kSpeed:
     	m_pscLeft1->ConfigEncoderCodesPerRev(250);
     	m_pscLeft1->ChangeControlMode(CANJaguar::kSpeed);
     	m_pscRight1->ConfigEncoderCodesPerRev(250);
         m_pscRight1->ChangeControlMode(CANJaguar::kSpeed);
-        p = 0.0;
+        p = 0.2;
         i = 0.0;
         d = 0.0;
 
