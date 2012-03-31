@@ -233,22 +233,13 @@ void MyRobot::OperatorControl(void)
     {   
         float setspeed = targetspeed;
         GetWatchdog().Feed();
-        
-        /*
-        double acceleration_x, acceleration_y, acceleration_z;
-        acceleration_x = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_X);
-        acceleration_y = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Y);
-        acceleration_z = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
 
-        message("x: %f, y: %f, z: %f", acceleration_x, acceleration_y, acceleration_z);
+        /* record rpm
+        myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
+        message("RPM: %f", GetRPM());
         */
 
-        RUN_ONCE(joystick1, PERFORM_BALANCE_TRICK)
-        {
-            PerformBalanceTrick(joystick1);
-        }
-	
-	 //Drive
+	    //Drive ---------------------------------------------------------------------
     	//initialize gain and throttle varaibles
         float gain, throttle;
 
@@ -271,7 +262,7 @@ void MyRobot::OperatorControl(void)
             eThrottle = 0;
         throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
         	    	    //set default fLeft and fRight to throttle
-	float fLeft = throttle;
+	    float fLeft = throttle;
         float fRight = fLeft;
 
         //if statements for distributing power to left and right depending on gain value 
@@ -282,6 +273,21 @@ void MyRobot::OperatorControl(void)
 	    }
 
         Drive(fLeft, fRight);
+        
+        //Joystick 1 ----------------------------------------------------------------
+        //position
+        RUN_ONCE(joystick1, PERFORM_BALANCE_TRICK)
+        {
+            PerformBalanceTrick(joystick1);
+        }
+        
+        /*
+        //speed
+        RUN_ONCE(joystick1, PERFORM_BALANCE_TRICK)
+        {
+            PerformBalanceTrick(joystick1);
+        }
+	    */
 
         /*
 	    //target finder
@@ -310,15 +316,6 @@ void MyRobot::OperatorControl(void)
         }
         */
 
-        float x2 = joystick2->GetX();
-        float y2 = joystick2->GetY();
-
-        SetShooterSpeed(speed);
-        if(speed <= setspeed)
-            speed+=setspeed/20.0;
-        else
-            speed = setspeed + (2000*x2);
-
         RUN_ONCE(joystick1, DRIVE_SET_BRAKES_ON)
         {
             SetBrakes(true);
@@ -331,14 +328,33 @@ void MyRobot::OperatorControl(void)
             message("brakes set: off");
         }
 
-        myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
-        message("RPM: %f", GetRPM());
+        RUN_ONCE(joystick1, GET_LEFT_ENCODER)
+        {
+            message("left encoder: %f", GetLeftEncoder());
+        }
 
-        if(joystick2->GetRawButton(SET_SHOOTER_SPEED_MEDIUM))
+        RUN_ONCE(joystick1, GET_RIGHT_ENCODER)
+        {
+            message("right encoder: %f", GetRightEncoder());
+        }
+
+        //Joystick 2 ----------------------------------------------------------------
+        float x2 = joystick2->GetX();
+        float y2 = joystick2->GetY();
+
+        SetShooterSpeed(speed);
+        if(speed <= setspeed)
+            speed+=setspeed/20.0;
+        else
+            speed = setspeed + (2000*x2);
+
+
+        RUN_ONCE(joystick2, SET_SHOOTER_SPEED_MEDIUM)
         {
             setspeed = 2300; 
         }
-        if(joystick2->GetRawButton(SET_SHOOTER_SPEED_FAR))
+
+        RUN_ONCE(joystick2, SET_SHOOTER_SPEED_FAR)
         {
             setspeed = 2500;
         }
@@ -360,9 +376,9 @@ void MyRobot::OperatorControl(void)
 
 
         if(joystick2->GetRawButton(BALL_PICKUP))
-	{
-	    m_pscBallPickup->Set(-1.0);
-	}
+	    {
+	        m_pscBallPickup->Set(-1.0);
+	    }
         else
         {
             m_pscBallPickup->Set(0.0);
@@ -387,17 +403,7 @@ void MyRobot::OperatorControl(void)
                 m_pscBallFeeder->Set(0.0);
             }
         }
-
-        RUN_ONCE(joystick1, GET_LEFT_ENCODER)
-        {
-            message("left encoder: %f", GetLeftEncoder());
-        }
-
-        RUN_ONCE(joystick1, GET_RIGHT_ENCODER)
-        {
-            message("right encoder: %f", GetRightEncoder());
-        } 
-
+ 
         Wait(0.05);
     }
 
