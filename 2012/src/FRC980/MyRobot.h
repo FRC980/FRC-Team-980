@@ -32,7 +32,7 @@ private:
 
     Timer *m_bridge_timer;
 
-    void Rotate(float degrees);
+    // void Rotate(float degrees);
 
 public:
     MyRobot(void);

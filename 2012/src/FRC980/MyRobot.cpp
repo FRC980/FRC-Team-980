@@ -291,8 +291,6 @@ void MyRobot::OperatorControl(void)
 	    //target finder
         RUN_ONCE(joystick1, 2)
         {
-            cyclops->Stop();
-
             message("Finding targets");
 	        distance = cyclops->GetDistanceToTarget();
 	        angle = cyclops->GetAngleOffCenter();
@@ -439,7 +437,6 @@ void MyRobot::Drive(float left, float right)
 
 /*
  * Negative degrees rotates left, positive degrees rotates right
- */
 void MyRobot::Rotate(float degrees)
 {
     float tireCircumference;
@@ -457,6 +454,7 @@ void MyRobot::Rotate(float degrees)
     DriveControl(-rotations, rotations);
 }
 
+ */
 void MyRobot::DriveControlPosition(float position_right, float position_left)
 {
     m_pscLeft1->Set(position_left);

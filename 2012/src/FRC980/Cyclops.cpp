@@ -4,11 +4,13 @@
 #include "DigitalOutput.h"
 
 #define CAMERA_IP_ADDR   "10.9.80.11"
-#define THETA		 24.0
-#define TARGET_FT	 2.0
+#define THETA		     24.0
+#define TARGET_FT	     2.0
 #define FIELD_OF_VIEW_PX 320.0
-#define MIDPOINT 	 FIELD_OF_VIEW_PX / 2
+#define MIDPOINT 	     FIELD_OF_VIEW_PX / 2
 #define FIELD_OFFSET	 MIDPOINT * 0.05
+#define ARBITRARILY_LARGE_Y 640
+
 
 typedef struct rect_ {
     int x;
@@ -114,8 +116,6 @@ TargetAlignment Cyclops::IsTargetAligned(void)
     return m_targetAligned;
 }
 
-#define ARBITRARILY_LARGE_Y 640
-
 ParticleAnalysisReport Cyclops::GetHighestTarget(
                                     vector<ParticleAnalysisReport> *rects)
 {
@@ -136,11 +136,6 @@ ParticleAnalysisReport Cyclops::GetHighestTarget(
     return rect;
 }
 
-/*
- * We should see four baskets, and the middle two
- * should be in the center of the field of view 
- * plus or minus a 10 degree angle off center.
- */
 void Cyclops::UpdateTargetAligned(void)
 {
     if (m_angleOffCenter < 2) {
@@ -235,7 +230,7 @@ int targetDiskTask(UINT32 arg)
     	cyclops->ProcessImage();
         cyclops->SendDistance();
 
-        Wait(2);
+        Wait(1);
     }
 
     return 0;
