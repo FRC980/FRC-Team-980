@@ -74,12 +74,12 @@ MyRobot::MyRobot(void)
     , m_bridge_timer(new Timer())
     //, m_pAccelerometer(new ADXL345_I2C(1)) 
 {
-    m_pscLeft1->ConfigEncoderCodesPerRev(1);
+    m_pscLeft1->ConfigEncoderCodesPerRev(250);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscLeft1->ConfigMaxOutputVoltage(12.0);
     m_pscLeft1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
-    m_pscRight1->ConfigEncoderCodesPerRev(1);
+    m_pscRight1->ConfigEncoderCodesPerRev(250);
     m_pscRight1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscRight1->ConfigMaxOutputVoltage(12.0);
     m_pscRight1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
@@ -120,86 +120,95 @@ MyRobot::~MyRobot(void)
 void MyRobot::Autonomous(void)
 {
     GetWatchdog().SetEnabled(false);
+    DriveControlMode(CANJaguar::kPercentVbus);
     
     Timer timer;
     timer.Reset();
     timer.Start();
 
-    int auton_state = 4;
-    float target_distance = GetLeftEncoder()-5;
+    int auton_state = 1;
     float distance = GetLeftEncoder();
 
     float speed = 0.0;
     float setspeed = 2*2300;
 
+    float target_distance;
+
     switch(auton_state)
     {
-        case 1:
-            while (timer.Get() < 0.2)
-            {
-                Drive(.50, .50);
-            }
-            while (timer.Get() < 0.4)
-            {
-                Drive(-.30, -.30);
-            }
-            Drive(0.0,0.0);
-            break;
+        case 1: //High shots from fender
+            setspeed = 2*FENDER_HIGH;
+            target_distance = GetLeftEncoder()-6.5;
 
-        case 2:
-            setspeed = 2*2300;
             timer.Reset();
             timer.Start();
-            while (timer.Get() < 4)
+
+            while(GetLeftEncoder() > target_distance)
             {
                 Drive(0.35, 0.35);
-                distance = GetLeftEncoder();
-                SetShooterSpeed(speed);
-                if(speed <= setspeed)
-                    speed+=setspeed/20.0;
-
+                message("encoder: %f", GetLeftEncoder());
+                message("target: %f", target_distance);
             }
-            Drive(0.0, 0.0);
+
+            Drive(0.0,0.0);
+
             while(timer.Get() < 8)
             {
+                if(speed < setspeed)
+                {
+                    speed+=100;
+                }
+
                 SetShooterSpeed(speed);
                 m_pscBallPickup->Set(-1.0);
                 m_pscBallFeeder->Set(-1.0);
             }
             break;
         
-        case 3:
-            while (distance > target_distance)
-            {
-                Drive(0.35, 0.35);
-                distance = GetLeftEncoder();
-            }
-            Drive(0.0,0.0);
-            break;
-        case 4:
-            setspeed = 2*1900;
+        case 2: //Medium shots from fender
+            setspeed = 2*FENDER_MEDIUM;
+            target_distance = GetLeftEncoder()-6.5;
+
             timer.Reset();
             timer.Start();
-            while (timer.Get() < 1)
-            {
 
-            }
-            while (timer.Get() < 5)
+            while(GetLeftEncoder() > target_distance)
             {
                 Drive(0.35, 0.35);
-                distance = GetLeftEncoder();
-                SetShooterSpeed(speed);
-                if(speed <= setspeed)
-                    speed+=setspeed/20.0;
-
+                message("encoder: %f", GetLeftEncoder());
+                message("target: %f", target_distance);
             }
+
             Drive(0.0, 0.0);
+
             while(timer.Get() < 9)
             {
+                if(speed < setspeed)
+                {
+                    speed+=100;
+                }
+
                 SetShooterSpeed(speed);
                 m_pscBallPickup->Set(-1.0);
                 m_pscBallFeeder->Set(-1.0);
             }
+            break;
+        case 3: //Back up/Bridge
+            target_distance = GetLeftEncoder()+6;
+
+            timer.Reset();
+            timer.Start();
+
+            while(GetLeftEncoder() < target_distance)
+            {
+                Drive(0.35, 0.35);
+                message("encoder: %f", GetLeftEncoder());
+                message("target: %f", target_distance);
+                //lowerbridge
+            }
+
+            Drive(0.0, 0.0);
+            
             break;
     }
 }
@@ -375,16 +384,22 @@ void MyRobot::OperatorControl(void)
         SetShooterSpeed(speed);
 
         //Joystick 2 ----------------------------------------------------------------
-        RUN_ONCE(joystick2, SET_SHOOTER_SPEED_MEDIUM)
+        RUN_ONCE(joystick2, SET_SPEED_FENDER_MEDIUM)
         {
             message("set speed fender medium");
             targetspeed = FENDER_MEDIUM; 
         }
 
-        RUN_ONCE(joystick2, SET_SHOOTER_SPEED_FAR)
+        RUN_ONCE(joystick2, SET_SPEED_FENDER_HIGH)
         {
             message("set speed fender high");
             targetspeed = FENDER_HIGH;
+        }
+
+        RUN_ONCE(joystick2, SET_SPEED_KEY)
+        {
+            message("set speed key");
+            targetspeed = KEY;
         }
 
         static bool bridgeup = true;
@@ -412,24 +427,17 @@ void MyRobot::OperatorControl(void)
             m_pscBallPickup->Set(0.0);
         }
 
-        if(joystick2->GetRawButton(SHOOTER_SHOOT))
+        if (joystick2->GetRawButton(BALL_FEEDER))
         {
-           m_pscBallFeeder->Set(-1.0); 
+            m_pscBallFeeder->Set(.77);
+        }
+        else if (joystick2->GetRawButton(BALL_FEEDER_UP))
+        {
+            m_pscBallFeeder->Set(-1.0);
         }
         else
         {
-            if (joystick2->GetRawButton(BALL_FEEDER))
-            {
-                m_pscBallFeeder->Set(.77);
-            }
-            else if (joystick2->GetRawButton(BALL_FEEDER_UP))
-            {
-                m_pscBallFeeder->Set(-1.0);
-            }
-            else
-            {
-                m_pscBallFeeder->Set(0.0);
-            }
+            m_pscBallFeeder->Set(0.0);
         }
  
         Wait(0.05);

@@ -24,9 +24,11 @@
 #define	SHOOTER_SHOOT			    8
 
 //set shooter speed
-#define SET_SHOOTER_SPEED_MEDIUM	9
-#define SET_SHOOTER_SPEED_FAR		11
+#define SET_SPEED_FENDER_HIGH	    9
+#define SET_SPEED_FENDER_MEDIUM		11
+#define SET_SPEED_KEY               8 
 
 //////Shooter speeds
 #define FENDER_HIGH                 2300
 #define FENDER_MEDIUM               1800
+#define KEY                         2500
