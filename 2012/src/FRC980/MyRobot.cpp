@@ -126,7 +126,7 @@ void MyRobot::Autonomous(void)
     timer.Reset();
     timer.Start();
 
-    int auton_state = 1;
+    int auton_state = GetAutonMode();
     float distance = GetLeftEncoder();
 
     float speed = 0.0;
@@ -635,6 +635,25 @@ void MyRobot::DriveControlMode(CANJaguar::ControlMode control)
     default:
     	break;
     }
+}
+
+int MyRobot::GetAutonMode(void)
+{
+    AnalogModule *pAM = AnalogModule::GetInstance(1);
+    int i = pAM->GetValue(7);
+
+    if (i > 900)
+        return 6;
+    if (i > 700)
+        return 5;
+    if (i > 500)
+        return 4;
+    if (i > 300)
+        return 3;
+    if (i > 100)
+        return 2;
+
+    return 1;
 }
 
 START_ROBOT_CLASS(MyRobot)

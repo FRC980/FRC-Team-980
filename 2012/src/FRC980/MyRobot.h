@@ -51,6 +51,7 @@ public:
     void PerformBalanceTrick(MyJoystick *joy);
     void PerformBalanceTrickSpeed(MyJoystick *joy);
     void DriveControlMode(CANJaguar::ControlMode);
+    int GetAutonMode(void);
 };
 
 #endif
