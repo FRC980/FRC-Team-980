@@ -244,7 +244,7 @@ void MyRobot::OperatorControl(void)
 
     while (IsOperatorControl() && IsEnabled())
     {   
-        float setspeed = 2*targetspeed;
+        float setspeed = 2*targetspeed+(joystick2->GetY()*700);
         GetWatchdog().Feed();
 
         //myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
