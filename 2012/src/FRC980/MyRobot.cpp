@@ -483,6 +483,9 @@ void MyRobot::Rotate(float degrees)
     float distanceOfTravel;
     float rotations;
     float ticks;
+    float ticks_right;
+    float ticks_left;
+    bool rotate = true;
 
     tireCircumference = 3.14 * TIRE_DIAMETER;
     robotCircleDiameter = DISTANCE_BETWEEN_WHEELS;
@@ -490,8 +493,33 @@ void MyRobot::Rotate(float degrees)
     distanceOfTravel = robotCircleCircumference / (360 / degrees);
     rotations = distanceOfTravel / TIRE_DIAMETER;
     ticks = rotations * 250;
+
+    DriveControlMode(CANJaguar::kPosition);
+
+    if(degrees > 0)
+    {
+        ticks_left = GetLeftEncoder() - ticks;
+        ticks_right = GetRightEncoder() + ticks;
+    }
+    else if(degrees < 0)
+    {
+        ticks_left = GetLeftEncoder() + ticks;
+        ticks_right = GetRightEncoder() - ticks;
+    }
+
+    while(rotate)
+    {
+        GetWatchdog().Feed();
+
+        DriveControlPosition(ticks_right, ticks_left);
+        
+        if(joystick2->GetRawButton(SHOOTER_SHOOT))
+        {
+            rotate = false;
+        }
+    }
     
-    DriveControlPosition(-ticks, ticks);
+    DriveControlMode(CANJaguar::kPercentVbus);
 }
 
 void MyRobot::DriveControlPosition(float position_right, float position_left)
