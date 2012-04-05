@@ -79,12 +79,12 @@ MyRobot::MyRobot(void)
     , m_bridge_timer(new Timer())
     //, m_pAccelerometer(new ADXL345_I2C(1)) 
 {
-    m_pscLeft1->ConfigEncoderCodesPerRev(1);
+    m_pscLeft1->ConfigEncoderCodesPerRev(250);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscLeft1->ConfigMaxOutputVoltage(12.0);
     m_pscLeft1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
-    m_pscRight1->ConfigEncoderCodesPerRev(1);
+    m_pscRight1->ConfigEncoderCodesPerRev(250);
     m_pscRight1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
     m_pscRight1->ConfigMaxOutputVoltage(12.0);
     m_pscRight1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
@@ -94,7 +94,7 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->ConfigMaxOutputVoltage(12);
     
     float p, i, d;
-    p = 0.033;
+    p = 0.030;
     i = 0.0;
     d = 0.0;
 
@@ -125,86 +125,95 @@ MyRobot::~MyRobot(void)
 void MyRobot::Autonomous(void)
 {
     GetWatchdog().SetEnabled(false);
+    DriveControlMode(CANJaguar::kPercentVbus);
     
     Timer timer;
     timer.Reset();
     timer.Start();
 
-    int auton_state = 4;
-    float target_distance = GetLeftEncoder()-5;
+    int auton_state = GetAutonMode();
     float distance = GetLeftEncoder();
 
     float speed = 0.0;
     float setspeed = 2*2300;
 
+    float target_distance;
+
     switch(auton_state)
     {
-        case 1:
-            while (timer.Get() < 0.2)
-            {
-                Drive(.50, .50);
-            }
-            while (timer.Get() < 0.4)
-            {
-                Drive(-.30, -.30);
-            }
-            Drive(0.0,0.0);
-            break;
+        case 1: //High shots from fender
+            setspeed = 2*FENDER_HIGH;
+            target_distance = GetLeftEncoder()-6.5;
 
-        case 2:
-            setspeed = 2*2300;
             timer.Reset();
             timer.Start();
-            while (timer.Get() < 4)
+
+            while(GetLeftEncoder() > target_distance)
             {
                 Drive(0.35, 0.35);
-                distance = GetLeftEncoder();
-                SetShooterSpeed(speed);
-                if(speed <= setspeed)
-                    speed+=setspeed/20.0;
-
+                message("encoder: %f", GetLeftEncoder());
+                message("target: %f", target_distance);
             }
-            Drive(0.0, 0.0);
+
+            Drive(0.0,0.0);
+
             while(timer.Get() < 8)
             {
+                if(speed < setspeed)
+                {
+                    speed+=100;
+                }
+
                 SetShooterSpeed(speed);
                 m_pscBallPickup->Set(-1.0);
                 m_pscBallFeeder->Set(-1.0);
             }
             break;
         
-        case 3:
-            while (distance > target_distance)
-            {
-                Drive(0.35, 0.35);
-                distance = GetLeftEncoder();
-            }
-            Drive(0.0,0.0);
-            break;
-        case 4:
-            setspeed = 2*1900;
+        case 2: //Medium shots from fender
+            setspeed = 2*FENDER_MEDIUM;
+            target_distance = GetLeftEncoder()-6.5;
+
             timer.Reset();
             timer.Start();
-            while (timer.Get() < 1)
-            {
 
-            }
-            while (timer.Get() < 5)
+            while(GetLeftEncoder() > target_distance)
             {
                 Drive(0.35, 0.35);
-                distance = GetLeftEncoder();
-                SetShooterSpeed(speed);
-                if(speed <= setspeed)
-                    speed+=setspeed/20.0;
-
+                message("encoder: %f", GetLeftEncoder());
+                message("target: %f", target_distance);
             }
+
             Drive(0.0, 0.0);
+
             while(timer.Get() < 9)
             {
+                if(speed < setspeed)
+                {
+                    speed+=100;
+                }
+
                 SetShooterSpeed(speed);
                 m_pscBallPickup->Set(-1.0);
                 m_pscBallFeeder->Set(-1.0);
             }
+            break;
+        case 3: //Back up/Bridge
+            target_distance = GetLeftEncoder()+6;
+
+            timer.Reset();
+            timer.Start();
+
+            while(GetLeftEncoder() < target_distance)
+            {
+                Drive(0.35, 0.35);
+                message("encoder: %f", GetLeftEncoder());
+                message("target: %f", target_distance);
+                //lowerbridge
+            }
+
+            Drive(0.0, 0.0);
+            
             break;
     }
 }
@@ -215,9 +224,13 @@ void MyRobot::OperatorControl(void)
     float distance;
     float angle;
 
+    //high-goal fender speed = 2300
+    //medium-goal fender speed = 1800
+
     // Commented out to get rid of unused compile warning.
-    const float targetspeed = 2*2300.0;
+    float targetspeed = FENDER_HIGH;
     float speed = 0.0;
+    bool windup = true;
 
     GetWatchdog().SetEnabled(true);
 
@@ -236,24 +249,12 @@ void MyRobot::OperatorControl(void)
 
     while (IsOperatorControl() && IsEnabled())
     {   
-        float setspeed = targetspeed;
+        float setspeed = 2*targetspeed+(joystick2->GetX()*700);
         GetWatchdog().Feed();
-        
-        /*
-        double acceleration_x, acceleration_y, acceleration_z;
-        acceleration_x = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_X);
-        acceleration_y = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Y);
-        acceleration_z = m_pAccelerometer->GetAcceleration(ADXL345_I2C::kAxis_Z);
 
-        message("x: %f, y: %f, z: %f", acceleration_x, acceleration_y, acceleration_z);
-        */
+        //myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
 
-        RUN_ONCE(joystick1, PERFORM_BALANCE_TRICK)
-        {
-            PerformBalanceTrick(joystick1);
-        }
-	
-	 //Drive
+	    //Drive ---------------------------------------------------------------------
     	//initialize gain and throttle varaibles
         float gain, throttle;
 
@@ -276,7 +277,7 @@ void MyRobot::OperatorControl(void)
             eThrottle = 0;
         throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
         	    	    //set default fLeft and fRight to throttle
-	float fLeft = throttle;
+	    float fLeft = throttle;
         float fRight = fLeft;
 
         //if statements for distributing power to left and right depending on gain value 
@@ -287,6 +288,21 @@ void MyRobot::OperatorControl(void)
 	    }
 
         Drive(fLeft, fRight);
+        
+        //Joystick 1 ----------------------------------------------------------------
+        /*
+        //position
+        RUN_ONCE(joystick1, PERFORM_BALANCE_TRICK)
+        {
+            PerformBalanceTrick(joystick1);
+        }
+        
+        //speed
+        RUN_ONCE(joystick1, PERFORM_BALANCE_TRICK)
+        {
+            PerformBalanceTrickSpeed(joystick1);
+        }
+        */
 
 	    //target finder
         RUN_ONCE(joystick1, 2)
@@ -296,15 +312,6 @@ void MyRobot::OperatorControl(void)
 	        angle = cyclops->GetAngleOffCenter();
             Rotate(angle);
         }
-
-        float x2 = joystick2->GetX();
-        // float y2 = joystick2->GetY();
-
-        SetShooterSpeed(speed);
-        if (speed <= setspeed)
-            speed+=setspeed/20.0;
-        else
-            speed = setspeed + (2000*x2);
 
         RUN_ONCE(joystick1, DRIVE_SET_BRAKES_ON)
         {
@@ -318,16 +325,65 @@ void MyRobot::OperatorControl(void)
             message("brakes set: off");
         }
 
-        myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
-        message("RPM: %f", GetRPM());
-
-        if(joystick2->GetRawButton(SET_SHOOTER_SPEED_MEDIUM))
+        RUN_ONCE(joystick1, GET_LEFT_ENCODER)
         {
-            setspeed = 2300; 
+            message("left encoder: %f", GetLeftEncoder());
         }
-        if(joystick2->GetRawButton(SET_SHOOTER_SPEED_FAR))
+
+        RUN_ONCE(joystick1, GET_RIGHT_ENCODER)
         {
-            setspeed = 2500;
+            message("right encoder: %f", GetRightEncoder());
+        }
+
+        //Shooter -------------------------------------------------------------------
+        if(GetRPM() == 0)
+        {
+            windup = true;
+        }
+
+        if(windup)
+        {
+            if(speed < setspeed)
+            {
+                speed+=100;
+            }
+            else
+            {
+                message("windup done");
+                windup = false;
+            }
+        }
+        else
+        {
+            if(speed < setspeed)
+            {
+                speed+=100;
+            }
+            else if(speed > setspeed)
+            {
+                speed-=100;
+            }
+        }
+
+        SetShooterSpeed(speed);
+
+        //Joystick 2 ----------------------------------------------------------------
+        RUN_ONCE(joystick2, SET_SPEED_FENDER_MEDIUM)
+        {
+            message("set speed fender medium");
+            targetspeed = FENDER_MEDIUM; 
+        }
+
+        RUN_ONCE(joystick2, SET_SPEED_FENDER_HIGH)
+        {
+            message("set speed fender high");
+            targetspeed = FENDER_HIGH;
+        }
+
+        RUN_ONCE(joystick2, SET_SPEED_KEY)
+        {
+            message("set speed key");
+            targetspeed = KEY;
         }
 
         static bool bridgeup = true;
@@ -358,44 +414,27 @@ void MyRobot::OperatorControl(void)
         }
 
         if(joystick2->GetRawButton(BALL_PICKUP))
-	{
-	    m_pscBallPickup->Set(-1.0);
-	}
+	    {
+	        m_pscBallPickup->Set(-1.0);
+	    }
         else
         {
             m_pscBallPickup->Set(0.0);
         }
 
-        if(joystick2->GetRawButton(SHOOTER_SHOOT))
+        if (joystick2->GetRawButton(BALL_FEEDER))
         {
-           m_pscBallFeeder->Set(-1.0); 
+            m_pscBallFeeder->Set(.77);
+        }
+        else if (joystick2->GetRawButton(BALL_FEEDER_UP))
+        {
+            m_pscBallFeeder->Set(-1.0);
         }
         else
         {
-            if (joystick2->GetRawButton(BALL_FEEDER))
-            {
-                m_pscBallFeeder->Set(.77);
-            }
-            else if (joystick2->GetRawButton(BALL_FEEDER_UP))
-            {
-                m_pscBallFeeder->Set(-1.0);
-            }
-            else
-            {
-                m_pscBallFeeder->Set(0.0);
-            }
+            m_pscBallFeeder->Set(0.0);
         }
-
-        RUN_ONCE(joystick1, GET_LEFT_ENCODER)
-        {
-            message("left encoder: %f", GetLeftEncoder());
-        }
-
-        RUN_ONCE(joystick1, GET_RIGHT_ENCODER)
-        {
-            message("right encoder: %f", GetRightEncoder());
-        } 
-
+ 
         Wait(0.05);
     }
 
@@ -540,12 +579,12 @@ void MyRobot::PerformBalanceTrickSpeed(MyJoystick *joy)
         
         RUN_ONCE(joystick1, 8)
         {
-            message("left encoder: %f", GetLeftEncoder());
+            message("left rpm: %f", m_pscLeft1->GetSpeed());
         }
 
         RUN_ONCE(joystick1, 9)
         {
-            message("right encoder: %f", GetRightEncoder());
+            message("right rpm: %f", m_pscRight1->GetSpeed());
         }
 
         RUN_ONCE(joystick1, 2)
@@ -583,7 +622,7 @@ void MyRobot::DriveControlMode(CANJaguar::ControlMode control)
     	m_pscLeft1->ChangeControlMode(CANJaguar::kSpeed);
     	m_pscRight1->ConfigEncoderCodesPerRev(250);
         m_pscRight1->ChangeControlMode(CANJaguar::kSpeed);
-        p = 0.0;
+        p = 0.2;
         i = 0.0;
         d = 0.0;
 
@@ -609,6 +648,25 @@ void MyRobot::DriveControlMode(CANJaguar::ControlMode control)
     default:
     	break;
     }
+}
+
+int MyRobot::GetAutonMode(void)
+{
+    AnalogModule *pAM = AnalogModule::GetInstance(1);
+    int i = pAM->GetValue(7);
+
+    if (i > 900)
+        return 6;
+    if (i > 700)
+        return 5;
+    if (i > 500)
+        return 4;
+    if (i > 300)
+        return 3;
+    if (i > 100)
+        return 2;
+
+    return 1;
 }
 
 START_ROBOT_CLASS(MyRobot)
