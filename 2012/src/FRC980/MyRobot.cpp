@@ -399,8 +399,8 @@ void MyRobot::OperatorControl(void)
         Wait(0.05);
     }
 
-    //cyclops->Stop();
-    //delete cyclops;
+    cyclops->Stop();
+    delete cyclops;
 }
 
 void MyRobot::CheckStopBridge(void)
@@ -435,8 +435,7 @@ void MyRobot::Drive(float left, float right)
     m_pscRight1->Set(limit(-right));
 }
 
-/*
- * Negative degrees rotates left, positive degrees rotates right
+// * Negative degrees rotates left, positive degrees rotates right
 void MyRobot::Rotate(float degrees)
 {
     float tireCircumference;
@@ -454,7 +453,6 @@ void MyRobot::Rotate(float degrees)
     DriveControl(-rotations, rotations);
 }
 
- */
 void MyRobot::DriveControlPosition(float position_right, float position_left)
 {
     m_pscLeft1->Set(position_left);

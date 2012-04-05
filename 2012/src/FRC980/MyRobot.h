@@ -43,6 +43,7 @@ public:
     void CheckStopBridge(void);
     float GetRPM(void);
     void Drive(float, float);
+    void Rotate(float);
     void DriveControlPosition(float, float);
     void DriveControlSpeed(float, float);
     void DriveControl(float, float);
