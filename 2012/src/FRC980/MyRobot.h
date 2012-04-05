@@ -46,7 +46,6 @@ public:
     void Rotate(float);
     void DriveControlPosition(float, float);
     void DriveControlSpeed(float, float);
-    void DriveControl(float, float);
     void SetShooterSpeed(float);
     float GetRightEncoder(void);
     float GetLeftEncoder(void);

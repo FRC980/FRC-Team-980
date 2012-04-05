@@ -489,7 +489,7 @@ void MyRobot::Rotate(float degrees)
     distanceOfTravel = robotCircleCircumference / (360 / degrees);
     rotations = distanceOfTravel / TIRE_DIAMETER;
     
-    DriveControl(-rotations, rotations);
+    DriveControlPosition(-rotations, rotations);
 }
 
 void MyRobot::DriveControlPosition(float position_right, float position_left)
