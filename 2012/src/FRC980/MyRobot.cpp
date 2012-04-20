@@ -76,7 +76,7 @@ MyRobot::MyRobot(void)
     , joystick2(new MyJoystick(3))
     , steeringwheel(new MyJoystick(2)) 
     , ds(DriverStation::GetInstance())
-    , m_peShooter(new Encoder(DigitalInput(1,1), DigitalInput(1,2), false, Encoder::k4X))
+    , m_peShooter(new Encoder(new DigitalInput(1,1), new DigitalInput(1,2), true, Encoder::k4X))
     //, m_pAccelerometer(new ADXL345_I2C(1)) 
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(250);
@@ -91,8 +91,10 @@ MyRobot::MyRobot(void)
 
     m_pscBridge->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
     
+    m_peShooter->SetDistancePerPulse(1.0/250.0);
     m_peShooter->Reset();
     m_peShooter->Start();
+
 
     float p, i, d;
     p = 0.0315;
@@ -113,6 +115,7 @@ MyRobot::~MyRobot(void)
     delete joystick2;
     delete steeringwheel;
     delete ds;
+    delete m_peShooter;
     //delete m_pAccelerometer;
 }
 
@@ -251,7 +254,7 @@ void MyRobot::OperatorControl(void)
     float speed = 0.0;
     bool windup = true;
 
-    GetWatchdog().SetEnabled(true);
+    GetWatchdog().SetEnabled(false);
 
     //cyclops = new Cyclops();
     //cyclops->Start();
@@ -269,7 +272,7 @@ void MyRobot::OperatorControl(void)
     while (IsOperatorControl() && IsEnabled())
     {   
         float setspeed = 2*targetspeed+(joystick2->GetX()*700);
-        GetWatchdog().Feed();
+       // GetWatchdog().Feed();
 
         //myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
 
@@ -390,17 +393,9 @@ void MyRobot::OperatorControl(void)
         */
 
         static float pvoltage = 0.0;
-        float time = timer.Get();
-        static float last_time = 0.0;
-        float position = m_pscShooterMaster->GetPosition();
-        static float last_position = 0.0;
         float speed;
 
-        speed = (position-last_position)/(time-last_time);
-
-        last_position = position;
-        last_time = time;
-
+        speed = m_peShooter->GetRate();
 
         if(pvoltage < 1.0)
         {
