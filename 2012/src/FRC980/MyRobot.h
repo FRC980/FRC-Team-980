@@ -29,6 +29,7 @@ private:
 
     DriverStation *ds;
 
+    Encoder *m_peShooter;
     //ADXL345_I2C *m_pAccelerometer;
 
     // void Rotate(float degrees);

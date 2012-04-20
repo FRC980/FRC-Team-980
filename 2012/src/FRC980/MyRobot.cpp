@@ -65,8 +65,8 @@ double limit(double val, double min = -1, double max = 1)
 }
 
 MyRobot::MyRobot(void)
-    : m_pscShooterMaster(new CANJaguar(15, CANJaguar::kSpeed))
-    , m_pscShooterSlave1(new CANJaguar(17, CANJaguar::kVoltage))
+    : m_pscShooterMaster(new CANJaguar(15))
+    , m_pscShooterSlave1(new CANJaguar(17))
     , m_pscLeft1(new CANJaguar(14))
     , m_pscRight1(new CANJaguar(12))
     , m_pscBridge(new CANJaguar(18))
@@ -76,6 +76,7 @@ MyRobot::MyRobot(void)
     , joystick2(new MyJoystick(3))
     , steeringwheel(new MyJoystick(2)) 
     , ds(DriverStation::GetInstance())
+    , m_peShooter(new Encoder(DigitalInput(1,1), DigitalInput(1,2), false, Encoder::k4X))
     //, m_pAccelerometer(new ADXL345_I2C(1)) 
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(250);
@@ -88,19 +89,15 @@ MyRobot::MyRobot(void)
     m_pscRight1->ConfigMaxOutputVoltage(12.0);
     m_pscRight1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 
-    m_pscShooterMaster->ConfigEncoderCodesPerRev(250);
-    m_pscShooterMaster->SetSpeedReference(CANJaguar::kSpeedRef_Encoder);
-    m_pscShooterMaster->ConfigMaxOutputVoltage(12);
-
     m_pscBridge->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
     
+    m_peShooter->Reset();
+    m_peShooter->Start();
+
     float p, i, d;
     p = 0.0315;
     i = 0.0;
     d = 0.0;
-
-    m_pscShooterMaster->SetPID(p,i,d);
-    m_pscShooterMaster->EnableControl();
 }
 
 MyRobot::~MyRobot(void)
@@ -358,6 +355,7 @@ void MyRobot::OperatorControl(void)
         }
 
         //Shooter -------------------------------------------------------------------
+        /*
         if(GetRPM() == 0)
         {
             windup = true;
@@ -389,6 +387,29 @@ void MyRobot::OperatorControl(void)
 
         //message("speed: %f", GetRPM());
         SetShooterSpeed(speed);
+        */
+
+        static float pvoltage = 0.0;
+        float time = timer.Get();
+        static float last_time = 0.0;
+        float position = m_pscShooterMaster->GetPosition();
+        static float last_position = 0.0;
+        float speed;
+
+        speed = (position-last_position)/(time-last_time);
+
+        last_position = position;
+        last_time = time;
+
+
+        if(pvoltage < 1.0)
+        {
+            pvoltage+=.1;
+        }
+
+        message("rpm: %f", speed);
+
+        SetShooterSpeed(pvoltage);
 
         //Joystick 2 ----------------------------------------------------------------
         RUN_ONCE(joystick2, SET_SPEED_FENDER_MEDIUM)
@@ -543,8 +564,7 @@ void MyRobot::DriveControlSpeed(float speed_right, float speed_left)
 void MyRobot::SetShooterSpeed(float speed)
 {
     m_pscShooterMaster->Set(speed);
-    float voltage = m_pscShooterMaster->GetOutputVoltage();
-    m_pscShooterSlave1->Set(voltage);
+    m_pscShooterSlave1->Set(speed);
 }
 
 float MyRobot::GetRightEncoder(void)
