@@ -65,18 +65,17 @@ double limit(double val, double min = -1, double max = 1)
 }
 
 MyRobot::MyRobot(void)
-    : m_pscShooterMaster(new CANJaguar(12, CANJaguar::kSpeed))
-    , m_pscShooterSlave1(new CANJaguar(14, CANJaguar::kVoltage))
-    , m_pscLeft1(new CANJaguar(11))
-    , m_pscRight1(new CANJaguar(13))
+    : m_pscShooterMaster(new CANJaguar(15, CANJaguar::kSpeed))
+    , m_pscShooterSlave1(new CANJaguar(17, CANJaguar::kVoltage))
+    , m_pscLeft1(new CANJaguar(14))
+    , m_pscRight1(new CANJaguar(12))
+    , m_pscBridge(new CANJaguar(18))
     , m_pscBallPickup(new Victor(1))
     , m_pscBallFeeder(new Victor(2))
-    , m_pscBridge(new Victor(3))
     , joystick1(new MyJoystick(1))
     , joystick2(new MyJoystick(3))
     , steeringwheel(new MyJoystick(2)) 
     , ds(DriverStation::GetInstance())
-    , m_bridge_timer(new Timer())
     //, m_pAccelerometer(new ADXL345_I2C(1)) 
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(250);
@@ -92,17 +91,16 @@ MyRobot::MyRobot(void)
     m_pscShooterMaster->ConfigEncoderCodesPerRev(250);
     m_pscShooterMaster->SetSpeedReference(CANJaguar::kSpeedRef_Encoder);
     m_pscShooterMaster->ConfigMaxOutputVoltage(12);
+
+    m_pscBridge->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
     
     float p, i, d;
-    p = 0.030;
+    p = 0.0315;
     i = 0.0;
     d = 0.0;
 
     m_pscShooterMaster->SetPID(p,i,d);
     m_pscShooterMaster->EnableControl();
-
-    m_bridge_timer->Reset();
-    m_bridge_timer->Start();
 }
 
 MyRobot::~MyRobot(void)
@@ -111,15 +109,14 @@ MyRobot::~MyRobot(void)
     delete m_pscLeft1;
     delete m_pscShooterMaster;
     delete m_pscShooterSlave1;
+    delete m_pscBridge;
     delete m_pscBallPickup;
     delete m_pscBallFeeder;
-    delete m_pscBridge;
     delete joystick1;
     delete joystick2;
     delete steeringwheel;
     delete ds;
     //delete m_pAccelerometer;
-    delete m_bridge_timer;
 }
 
 void MyRobot::Autonomous(void)
@@ -148,22 +145,28 @@ void MyRobot::Autonomous(void)
             timer.Reset();
             timer.Start();
 
-            while(GetLeftEncoder() > target_distance)
+            while(GetLeftEncoder() > target_distance && timer.Get() < 5)
             {
-                Drive(0.35, 0.35);
+                Drive(0.35, 0.365);
                 message("encoder: %f", GetLeftEncoder());
                 message("target: %f", target_distance);
-            }
-
-            Drive(0.0,0.0);
-
-            while(timer.Get() < 8)
-            {
+                
                 if(speed < setspeed)
                 {
                     speed+=100;
                 }
 
+                SetShooterSpeed(speed);
+            }
+
+            Drive(0.0, 0.0);
+
+            while(timer.Get() < 12)
+            {
+                if(speed < setspeed)
+                {
+                    speed+=100;
+                }
                 SetShooterSpeed(speed);
                 m_pscBallPickup->Set(-1.0);
                 m_pscBallFeeder->Set(-1.0);
@@ -177,50 +180,69 @@ void MyRobot::Autonomous(void)
             timer.Reset();
             timer.Start();
 
-            while(GetLeftEncoder() > target_distance)
+            while(GetLeftEncoder() > target_distance && timer.Get() < 5)
             {
-                Drive(0.35, 0.35);
+                Drive(0.35, 0.365);
                 message("encoder: %f", GetLeftEncoder());
                 message("target: %f", target_distance);
+                if(speed < setspeed)
+                {
+                    speed+=100;
+                }
+                SetShooterSpeed(speed);
             }
 
             Drive(0.0, 0.0);
 
             while(timer.Get() < 9)
             {
-                if(speed < setspeed)
-                {
-                    speed+=100;
-                }
-
                 SetShooterSpeed(speed);
                 m_pscBallPickup->Set(-1.0);
                 m_pscBallFeeder->Set(-1.0);
             }
             break;
         case 3: //Back up/Bridge
-            target_distance = GetLeftEncoder()+6;
+            target_distance = GetLeftEncoder()+4;
+            
+            while(GetLeftEncoder() < target_distance)
+            {
+                Drive(-0.48, -0.48);
+                message("encoder: %f", GetLeftEncoder());
+                message("target: %f", target_distance);
+                RunBridge(true); 
+            }
 
             timer.Reset();
             timer.Start();
 
-            while(GetLeftEncoder() < target_distance)
+            Drive(0.0, 0.0);
+
+            while(timer.Get() < 3)
             {
-                Drive(0.35, 0.35);
-                message("encoder: %f", GetLeftEncoder());
-                message("target: %f", target_distance);
-                //lowerbridge
             }
 
-            Drive(0.0, 0.0);
+            while(timer.Get() < 4)
+            {
+                RunBridge(false);
+            }
             
+            break;
+        case 4:
+            timer.Reset();
+            timer.Start();
+
+            while(timer.Get() < 4)
+            {
+            }
+
+            m_pscBallPickup->Set(1.0);
             break;
     }
 }
 
 void MyRobot::OperatorControl(void)
 {
-    Cyclops *cyclops;
+    //Cyclops *cyclops;
     float distance;
     float angle;
 
@@ -234,8 +256,8 @@ void MyRobot::OperatorControl(void)
 
     GetWatchdog().SetEnabled(true);
 
-    cyclops = new Cyclops();
-    cyclops->Start();
+    //cyclops = new Cyclops();
+    //cyclops->Start();
 
     SetBrakes(false);
     DriveControlMode(CANJaguar::kPercentVbus);
@@ -303,7 +325,7 @@ void MyRobot::OperatorControl(void)
             PerformBalanceTrickSpeed(joystick1);
         }
         */
-
+/*
 	    //target finder
         RUN_ONCE(joystick1, 2)
         {
@@ -312,7 +334,7 @@ void MyRobot::OperatorControl(void)
 	        angle = cyclops->GetAngleOffCenter();
             Rotate(angle);
         }
-
+*/
         RUN_ONCE(joystick1, DRIVE_SET_BRAKES_ON)
         {
             SetBrakes(true);
@@ -365,6 +387,7 @@ void MyRobot::OperatorControl(void)
             }
         }
 
+        //message("speed: %f", GetRPM());
         SetShooterSpeed(speed);
 
         //Joystick 2 ----------------------------------------------------------------
@@ -386,33 +409,21 @@ void MyRobot::OperatorControl(void)
             targetspeed = KEY;
         }
 
-        static bool bridgeup = true;
-        
-        if(joystick2->GetRawButton(BRIDGE) && bridgeup)
+        if(joystick2->GetRawButton(BRIDGE))
         {
-            bridgeup = false;
             RunBridge(true); 
         }
-        else if(!joystick2->GetRawButton(BRIDGE) && !bridgeup)
+        else if(!joystick2->GetRawButton(BRIDGE))
         {
-            bridgeup = true;
             RunBridge(false);
         }
-        
-        CheckStopBridge(); 
-
+/*        
         RUN_ONCE(joystick1, 3)
         {
 	       message("Starting balancing trick");
-
-	       /*
-	        * Putting on joystick2 button 1 because it's currently
-                * unused.  Feel free to move whereever the driver would
-                * like this.
-	        */
 	       PerformBalanceTrick(joystick1);
         }
-
+*/
         if(joystick2->GetRawButton(BALL_PICKUP))
 	    {
 	        m_pscBallPickup->Set(-1.0);
@@ -424,7 +435,7 @@ void MyRobot::OperatorControl(void)
 
         if (joystick2->GetRawButton(BALL_FEEDER))
         {
-            m_pscBallFeeder->Set(.77);
+            m_pscBallFeeder->Set(.55);
         }
         else if (joystick2->GetRawButton(BALL_FEEDER_UP))
         {
@@ -438,27 +449,20 @@ void MyRobot::OperatorControl(void)
         Wait(0.05);
     }
 
-    cyclops->Stop();
-    delete cyclops;
-}
-
-void MyRobot::CheckStopBridge(void)
-{
-    if(m_bridge_timer->Get() > 0.5)
-    {
-        m_pscBridge->Set(0.0);
-    }
+    //cyclops->Stop();
+    //delete cyclops;
 }
 
 void MyRobot::RunBridge(bool up)
 {
-   m_bridge_timer->Reset();
    if(up)
    {
-       m_pscBridge->Set(-0.3);
+       m_pscBridge->Set(-0.5);
    }
    else
-       m_pscBridge->Set(0.3);
+   {
+       m_pscBridge->Set(0.7);
+   }
 }
 
 
@@ -644,7 +648,7 @@ void MyRobot::DriveControlMode(CANJaguar::ControlMode control)
         m_pscRight1->SetPID(p,i,d);
         m_pscLeft1->EnableControl();
         m_pscRight1->EnableControl();
-        message("drive control enabled");
+        message("drive position control enabled");
 	    break;
     
     case CANJaguar::kSpeed:
@@ -660,7 +664,7 @@ void MyRobot::DriveControlMode(CANJaguar::ControlMode control)
         m_pscRight1->SetPID(p,i,d);
         m_pscLeft1->EnableControl();
         m_pscRight1->EnableControl();
-        message("drive control enabled");
+        message("drive speed control enabled");
         break;
 
     case CANJaguar::kPercentVbus:

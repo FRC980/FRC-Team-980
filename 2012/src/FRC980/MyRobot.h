@@ -18,9 +18,10 @@ private:
     CANJaguar *m_pscLeft1;
     CANJaguar *m_pscRight1;
 
+    CANJaguar *m_pscBridge;
+
     Victor *m_pscBallPickup;
     Victor *m_pscBallFeeder;
-    Victor *m_pscBridge;
 
     MyJoystick *joystick1;
     MyJoystick *joystick2;
@@ -30,8 +31,6 @@ private:
 
     //ADXL345_I2C *m_pAccelerometer;
 
-    Timer *m_bridge_timer;
-
     // void Rotate(float degrees);
 
 public:
@@ -40,7 +39,6 @@ public:
     void Autonomous(void);
     void OperatorControl(void);
     void RunBridge(bool);
-    void CheckStopBridge(void);
     float GetRPM(void);
     void Drive(float, float);
     void Rotate(float);

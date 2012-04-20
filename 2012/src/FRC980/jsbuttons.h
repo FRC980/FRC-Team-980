@@ -31,4 +31,4 @@
 //////Shooter speeds
 #define FENDER_HIGH                 2300
 #define FENDER_MEDIUM               1800
-#define KEY                         2500
+#define KEY                         2800
