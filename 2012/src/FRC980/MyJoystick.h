@@ -1,4 +1,3 @@
-
 #include "WPILib.h"
 
 #ifndef _MYJOYSTICK_H_
