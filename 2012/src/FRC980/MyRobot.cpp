@@ -404,7 +404,7 @@ void MyRobot::OperatorControl(void)
 
         message("rpm: %f", speed);
 
-        SetShooterSpeed(pvoltage);
+        SetShooterSpeed(.1);
 
         //Joystick 2 ----------------------------------------------------------------
         RUN_ONCE(joystick2, SET_SPEED_FENDER_MEDIUM)
