@@ -76,7 +76,7 @@ MyRobot::MyRobot(void)
     , joystick2(new MyJoystick(3))
     , steeringwheel(new MyJoystick(2)) 
     , ds(DriverStation::GetInstance())
-    , m_peShooter(new Encoder(new DigitalInput(1,1), new DigitalInput(1,2), true, Encoder::k4X))
+    , m_peShooter(new Encoder(1,1,1,2, false, Encoder::k4X))
     //, m_pAccelerometer(new ADXL345_I2C(1)) 
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(250);
@@ -91,7 +91,7 @@ MyRobot::MyRobot(void)
 
     m_pscBridge->ConfigNeutralMode(CANJaguar::kNeutralMode_Brake);
     
-    m_peShooter->SetDistancePerPulse(1.0/250.0);
+    m_peShooter->SetDistancePerPulse(1.0/360.0);
     m_peShooter->Reset();
     m_peShooter->Start();
 
@@ -123,7 +123,10 @@ void MyRobot::Autonomous(void)
 {
     GetWatchdog().SetEnabled(false);
     DriveControlMode(CANJaguar::kPercentVbus);
-    
+
+    m_peShooter->Reset();
+    m_peShooter->Start();
+
     Timer timer;
     timer.Reset();
     timer.Start();
@@ -271,8 +274,8 @@ void MyRobot::OperatorControl(void)
 
     while (IsOperatorControl() && IsEnabled())
     {   
-        float setspeed = 2*targetspeed+(joystick2->GetX()*700);
-       // GetWatchdog().Feed();
+        float setspeed = targetspeed+(joystick2->GetX()*700);
+        // GetWatchdog().Feed();
 
         //myfile << "Time: " << timer.Get() << ", RPM: " << GetRPM() << endl;
 
@@ -358,17 +361,15 @@ void MyRobot::OperatorControl(void)
         }
 
         //Shooter -------------------------------------------------------------------
-        /*
-        if(GetRPM() == 0)
-        {
-            windup = true;
-        }
+        static float pvoltage = 0.0;
+        static float max_speed = 4200;
+        float percent = setspeed / max_speed;
 
         if(windup)
         {
-            if(speed < setspeed)
+            if(pvoltage < percent)
             {
-                speed+=100;
+                pvoltage+=0.01;
             }
             else
             {
@@ -378,33 +379,17 @@ void MyRobot::OperatorControl(void)
         }
         else
         {
-            if(speed < setspeed)
+            if(pvoltage < percent)
             {
-                speed+=100;
+                pvoltage+=0.01;
             }
-            else if(speed > setspeed)
+            else if(pvoltage > percent)
             {
-                speed-=100;
+                pvoltage-=0.01;
             }
         }
 
-        //message("speed: %f", GetRPM());
-        SetShooterSpeed(speed);
-        */
-
-        static float pvoltage = 0.0;
-        float speed;
-
-        speed = m_peShooter->GetRate();
-
-        if(pvoltage < 1.0)
-        {
-            pvoltage+=.1;
-        }
-
-        message("rpm: %f", speed);
-
-        SetShooterSpeed(.1);
+        SetShooterSpeed(pvoltage);
 
         //Joystick 2 ----------------------------------------------------------------
         RUN_ONCE(joystick2, SET_SPEED_FENDER_MEDIUM)
