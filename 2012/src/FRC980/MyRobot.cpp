@@ -65,8 +65,8 @@ double limit(double val, double min = -1, double max = 1)
 }
 
 MyRobot::MyRobot(void)
-    : m_pscShooterMaster(new CANJaguar(15))
-    , m_pscShooterSlave1(new CANJaguar(17))
+    : m_pscShooterMaster(new CANJaguar(15, CANJaguar::kVoltage))
+    , m_pscShooterSlave1(new CANJaguar(17, CANJaguar::kVoltage))
     , m_pscLeft1(new CANJaguar(14))
     , m_pscRight1(new CANJaguar(12))
     , m_pscBridge(new CANJaguar(18))
@@ -361,15 +361,21 @@ void MyRobot::OperatorControl(void)
         }
 
         //Shooter -------------------------------------------------------------------
-        static float pvoltage = 0.0;
+        static float voltage = 0.0;
         static float max_speed = 4200;
-        float percent = setspeed / max_speed;
+        float svoltage = setspeed / max_speed * 12;
+        float scvoltage = m_pscShooterMaster->GetOutputVoltage();
+
+        if(scvoltage == 0)
+        {
+            windup = true;
+        }       
 
         if(windup)
         {
-            if(pvoltage < percent)
+            if(voltage < svoltage)
             {
-                pvoltage+=0.01;
+                voltage+=0.1;
             }
             else
             {
@@ -379,17 +385,17 @@ void MyRobot::OperatorControl(void)
         }
         else
         {
-            if(pvoltage < percent)
+            if(voltage < svoltage)
             {
-                pvoltage+=0.01;
+                voltage+=0.5;
             }
-            else if(pvoltage > percent)
+            else if(voltage > svoltage)
             {
-                pvoltage-=0.01;
+                voltage-=0.5;
             }
         }
 
-        SetShooterSpeed(pvoltage);
+        SetShooterSpeed(voltage);
 
         //Joystick 2 ----------------------------------------------------------------
         RUN_ONCE(joystick2, SET_SPEED_FENDER_MEDIUM)
