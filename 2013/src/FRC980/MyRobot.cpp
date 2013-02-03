@@ -46,7 +46,9 @@ MyRobot::MyRobot(void)
     : m_pscLeft1(new CANJaguar(CAN_LEFT_CIM1)), 
       m_pscLeft2(new CANJaguar(CAN_LEFT_CIM2)),
       m_pscRight1(new CANJaguar(CAN_RIGHT_CIM1)),
-      m_pscRight2(new CANJaguar(CAN_RIGHT_CIM2))
+      m_pscRight2(new CANJaguar(CAN_RIGHT_CIM2)),
+      joystick1(new Joystick(1)),
+      steeringwheel(new Joystick(2))
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -92,13 +94,13 @@ void MyRobot::OperatorControl(void) {
         gain = steeringwheel->GetX();
         throttle = joystick1->GetY();
 
-	float eGain = (gain > 0) ? gain : gain * -1;
-	float eThrottle = (throttle > 0) ? throttle : throttle * -1;
+	    float eGain = (gain > 0) ? gain : gain * -1;
+    	float eThrottle = (throttle > 0) ? throttle : throttle * -1;
         //2.71828183
-	// eGain = pow(2.7, (2.4*eGain-3));
-	// eThrottle = pow(2.7, (3*eThrottle-3));
-	eGain = pow(2.71828183, (2.4*eGain-3));
-	eThrottle = pow(2.71828183, (3*eThrottle-3));
+	    // eGain = pow(2.7, (2.4*eGain-3));
+	    // eThrottle = pow(2.7, (3*eThrottle-3));
+    	eGain = pow(2.71828183, (2.4*eGain-3));
+    	eThrottle = pow(2.71828183, (3*eThrottle-3));
 
         if(gain > -0.03 && gain < 0.03)
             eGain = 0;
@@ -108,7 +110,7 @@ void MyRobot::OperatorControl(void) {
             eThrottle = 0;
         throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
         //set default fLeft and fRight to throttle
-	float fLeft = throttle;
+	    float fLeft = throttle;
         float fRight = fLeft;
 
         //if statements for distributing power to left and right depending on gain value 
@@ -130,3 +132,5 @@ void MyRobot::Drive(float right, float left) {
     m_pscRight1->Set(limit(-right));
     m_pscRight2->Set(limit(-right));
 }
+
+START_ROBOT_CLASS(MyRobot)
