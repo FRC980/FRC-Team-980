@@ -26,8 +26,14 @@ private:
     CANJaguar* m_pscRight1;    
     CANJaguar* m_pscRight2;
 
-    Joystick *joystick1;
-    Joystick *steeringwheel;
+    Joystick *m_pJoystick1;
+    Joystick *m_pSteeringwheel;
+
+    Compressor *m_pCompressor;
+    int pressureSwitchValue;
+
+    Solenoid *m_pTestValveA;
+    Solenoid *m_pTestValveB;
 
 public:
     MyRobot(void);

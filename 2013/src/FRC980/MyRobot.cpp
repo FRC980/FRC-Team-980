@@ -47,8 +47,11 @@ MyRobot::MyRobot(void)
       m_pscLeft2(new CANJaguar(CAN_LEFT_CIM2)),
       m_pscRight1(new CANJaguar(CAN_RIGHT_CIM1)),
       m_pscRight2(new CANJaguar(CAN_RIGHT_CIM2)),
-      joystick1(new Joystick(1)),
-      steeringwheel(new Joystick(2))
+      m_pJoystick1(new Joystick(1)),
+      m_pSteeringwheel(new Joystick(2)),
+      m_pCompressor(new Compressor(3, 1)),
+      m_pTestValveA(new Solenoid(1)),
+      m_pTestValveB(new Solenoid(2))
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -76,8 +79,11 @@ MyRobot::~MyRobot(void) {
     delete m_pscLeft2;
     delete m_pscRight1;
     delete m_pscRight2;
-    delete joystick1;
-    delete steeringwheel;
+    delete m_pJoystick1;
+    delete m_pSteeringwheel;
+    delete m_pCompressor;
+    delete m_pTestValveA;
+    delete m_pTestValveA;
 }
 
 void MyRobot::Autonomous(void) {
@@ -86,13 +92,16 @@ void MyRobot::Autonomous(void) {
 
 void MyRobot::OperatorControl(void) {
     GetWatchdog().SetEnabled(true);
+
+    m_pCompressor->Start();
+
     while (IsOperatorControl() && IsEnabled()) {
         GetWatchdog().Feed();
 
         float gain, throttle;
 
-        gain = steeringwheel->GetX();
-        throttle = joystick1->GetY();
+        gain = m_pSteeringwheel->GetX();
+        throttle = m_pJoystick1->GetY();
 
 	    float eGain = (gain > 0) ? gain : gain * -1;
     	float eThrottle = (throttle > 0) ? throttle : throttle * -1;
@@ -117,7 +126,7 @@ void MyRobot::OperatorControl(void) {
     	if (gain>0.05 || gain<-0.05)
         {	        
             fLeft = throttle+(gain);
-	    fRight = throttle-(gain);
+	        fRight = throttle-(gain);
         }
 
         Drive(fLeft, fRight);
