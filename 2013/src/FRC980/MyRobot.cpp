@@ -96,8 +96,10 @@ void MyRobot::OperatorControl(void) {
     m_pCompressor->Start();
 
     while (IsOperatorControl() && IsEnabled()) {
+        // feeding the watchdog
         GetWatchdog().Feed();
 
+        //******************************** DRIVE *************************************
         float gain, throttle;
 
         gain = m_pSteeringwheel->GetX();
@@ -129,7 +131,22 @@ void MyRobot::OperatorControl(void) {
 	        fRight = throttle-(gain);
         }
 
-        Drive(fLeft, fRight);
+        //Drive(fLeft, fRight);
+
+        //******************************** TEST *************************************
+        RUN_ONCE(m_pJoystick1, 2) 
+        {
+            message("close");
+            m_pTestValveA->Set(true);
+            m_pTestValveB->Set(false);
+        }
+
+        RUN_ONCE(m_pJoystick1, 3) 
+        {
+            message("open");
+            m_pTestValveB->Set(true);
+            m_pTestValveA->Set(false);
+        }
 
         Wait(0.05);
     }
