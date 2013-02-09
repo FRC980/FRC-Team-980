@@ -53,7 +53,7 @@ MyRobot::MyRobot(void)
       m_pSteeringwheel(new Joystick(2)),
       m_pCompressor(new Compressor(3, 1)),
       m_pTestValveA(new Solenoid(1,5)),
-      m_pTestValveB(new Solenoid(1,6)),
+      m_pTestValveB(new Solenoid(2,6)),
       m_pSonarTest(new AnalogChannel(1))
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
@@ -138,6 +138,15 @@ void MyRobot::OperatorControl(void) {
         }
 
         //Drive(fLeft, fRight);
+
+        RUN_ONCE(m_pJoystick1, 2) {
+            m_pTestValveA->Set(true);
+            m_pTestValveB->Set(false);
+        }
+        RUN_ONCE(m_pJoystick1, 3) {
+            m_pTestValveA->Set(false);
+            m_pTestValveB->Set(true);
+        }
 
         Wait(0.05);
     }
