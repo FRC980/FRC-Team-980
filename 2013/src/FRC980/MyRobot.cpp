@@ -47,11 +47,14 @@ MyRobot::MyRobot(void)
       m_pscLeft2(new CANJaguar(CAN_LEFT_CIM2)),
       m_pscRight1(new CANJaguar(CAN_RIGHT_CIM1)),
       m_pscRight2(new CANJaguar(CAN_RIGHT_CIM2)),
+      m_pDriveShiftA(new Solenoid(1)),
+      m_pDriveShiftB(new Solenoid(2)),
       m_pJoystick1(new Joystick(1)),
       m_pSteeringwheel(new Joystick(2)),
       m_pCompressor(new Compressor(3, 1)),
-      m_pTestValveA(new Solenoid(1)),
-      m_pTestValveB(new Solenoid(2))
+      m_pTestValveA(new Solenoid(1,5)),
+      m_pTestValveB(new Solenoid(1,6)),
+      m_pSonarTest(new AnalogChannel(1))
 {
     m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
     m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
@@ -79,11 +82,14 @@ MyRobot::~MyRobot(void) {
     delete m_pscLeft2;
     delete m_pscRight1;
     delete m_pscRight2;
+    delete m_pDriveShiftA;
+    delete m_pDriveShiftB;
     delete m_pJoystick1;
     delete m_pSteeringwheel;
     delete m_pCompressor;
     delete m_pTestValveA;
     delete m_pTestValveA;
+    delete m_pSonarTest;
 }
 
 void MyRobot::Autonomous(void) {
@@ -133,21 +139,6 @@ void MyRobot::OperatorControl(void) {
 
         //Drive(fLeft, fRight);
 
-        //******************************** TEST *************************************
-        RUN_ONCE(m_pJoystick1, 2) 
-        {
-            message("close");
-            m_pTestValveA->Set(true);
-            m_pTestValveB->Set(false);
-        }
-
-        RUN_ONCE(m_pJoystick1, 3) 
-        {
-            message("open");
-            m_pTestValveB->Set(true);
-            m_pTestValveA->Set(false);
-        }
-
         Wait(0.05);
     }
 }
@@ -158,5 +149,20 @@ void MyRobot::Drive(float right, float left) {
     m_pscRight1->Set(limit(-right));
     m_pscRight2->Set(limit(-right));
 }
+
+void MyRobot::ShiftDrive(bool high) {
+    if(high) {
+        m_pDriveShiftA->Set(true);
+        m_pDriveShiftB->Set(false);
+    } else {
+        m_pDriveShiftA->Set(false);
+        m_pDriveShiftB->Set(true);
+    }
+}
+
+float MyRobot::VoltageToDistance(float voltage) {
+    return voltage / .009766f;
+}
+
 
 START_ROBOT_CLASS(MyRobot)

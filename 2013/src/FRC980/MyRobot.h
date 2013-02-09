@@ -26,14 +26,18 @@ private:
     CANJaguar* m_pscRight1;    
     CANJaguar* m_pscRight2;
 
+    Solenoid *m_pDriveShiftA;
+    Solenoid *m_pDriveShiftB;
+
     Joystick *m_pJoystick1;
     Joystick *m_pSteeringwheel;
 
     Compressor *m_pCompressor;
-    int pressureSwitchValue;
 
     Solenoid *m_pTestValveA;
     Solenoid *m_pTestValveB;
+
+    AnalogChannel *m_pSonarTest;
 
 public:
     MyRobot(void);
@@ -41,6 +45,8 @@ public:
     void Autonomous(void);
     void OperatorControl(void);
     void Drive(float, float);
+    void ShiftDrive(bool);
+    float VoltageToDistance(float);
 };
 
 #endif
