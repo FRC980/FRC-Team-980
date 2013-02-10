@@ -43,53 +43,24 @@ double limit(double val, double min = -1, double max = 1)
 }
 
 MyRobot::MyRobot(void) 
-    : m_pscLeft1(new CANJaguar(CAN_LEFT_CIM1)), 
-      m_pscLeft2(new CANJaguar(CAN_LEFT_CIM2)),
-      m_pscRight1(new CANJaguar(CAN_RIGHT_CIM1)),
-      m_pscRight2(new CANJaguar(CAN_RIGHT_CIM2)),
-      m_pDriveShiftA(new Solenoid(1)),
-      m_pDriveShiftB(new Solenoid(2)),
+    : m_pscLeft(new Victor(CHAN_PWM_LEFT_DRIVE)), 
+      m_pscRight(new Victor(CHAN_PWM_RIGHT_DRIVE)),
+      m_pDriveShiftA(new Solenoid(1,1)),
+      m_pDriveShiftB(new Solenoid(1,2)),
       m_pJoystick1(new Joystick(1)),
       m_pSteeringwheel(new Joystick(2)),
-      m_pCompressor(new Compressor(3, 1)),
-      m_pTestValveA(new Solenoid(1,5)),
-      m_pTestValveB(new Solenoid(2,6)),
-      m_pSonarTest(new AnalogChannel(1))
+      m_pCompressor(new Compressor(CHAN_COMP_AUTO_SHUTOFF, CHAN_RLY_COMPRESSOR))
 {
-    m_pscLeft1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-    m_pscLeft1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
-    m_pscLeft1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-    m_pscLeft1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
-
-    m_pscLeft2->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-    m_pscLeft2->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
-    m_pscLeft2->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-    m_pscLeft2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
-
-    m_pscRight1->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-    m_pscRight1->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
-    m_pscRight1->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-    m_pscRight1->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
-
-    m_pscRight2->ConfigEncoderCodesPerRev(US_DIGITAL_ENC_COUNTS);
-    m_pscRight2->SetPositionReference(CANJaguar::kPosRef_QuadEncoder);
-    m_pscRight2->ConfigMaxOutputVoltage(MAX_JAGUAR_OUTPUT_VOLTAGE);
-    m_pscRight2->ConfigNeutralMode(CANJaguar::kNeutralMode_Coast);
 }
 
 MyRobot::~MyRobot(void) {
-    delete m_pscLeft1;
-    delete m_pscLeft2;
-    delete m_pscRight1;
-    delete m_pscRight2;
+    delete m_pscLeft;
+    delete m_pscRight;
     delete m_pDriveShiftA;
     delete m_pDriveShiftB;
     delete m_pJoystick1;
     delete m_pSteeringwheel;
     delete m_pCompressor;
-    delete m_pTestValveA;
-    delete m_pTestValveA;
-    delete m_pSonarTest;
 }
 
 void MyRobot::Autonomous(void) {
@@ -140,25 +111,13 @@ void MyRobot::OperatorControl(void) {
         }
 
         //Drive(fLeft, fRight);
-
-        RUN_ONCE(m_pJoystick1, 2) {
-            m_pTestValveA->Set(true);
-            m_pTestValveB->Set(false);
-        }
-        RUN_ONCE(m_pJoystick1, 3) {
-            m_pTestValveA->Set(false);
-            m_pTestValveB->Set(true);
-        }
-
         Wait(0.05);
     }
 }
 
 void MyRobot::Drive(float right, float left) {
-    m_pscLeft1->Set(limit(left));
-    m_pscLeft2->Set(limit(left));
-    m_pscRight1->Set(limit(-right));
-    m_pscRight2->Set(limit(-right));
+    m_pscLeft->Set(limit(left));
+    m_pscRight->Set(limit(-right));
 }
 
 void MyRobot::ShiftDrive(bool high) {
@@ -169,10 +128,6 @@ void MyRobot::ShiftDrive(bool high) {
         m_pDriveShiftA->Set(false);
         m_pDriveShiftB->Set(true);
     }
-}
-
-float MyRobot::VoltageToDistance(float voltage) {
-    return voltage / .009766f;
 }
 
 
