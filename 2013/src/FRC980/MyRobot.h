@@ -82,6 +82,17 @@
 #define CHAN_COMP_AUTO_SHUTOFF             1
 
 //==============================================================================
+// Solenoid Module Outputs
+
+// Solenoid Module Slots
+#define SOLENOID_SLOT1                     1
+#define SOLENOID_SLOT2                     2
+
+// Solenoid outputs
+#define CHAN_SOL_DRIVE_SHIFT_A             1
+#define CHAN_SOL_DRIVE_SHIFT_B             2
+
+//==============================================================================
 
 class MyRobot : public SimpleRobot
 {

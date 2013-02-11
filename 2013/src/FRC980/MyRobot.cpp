@@ -45,8 +45,8 @@ double limit(double val, double min = -1, double max = 1)
 MyRobot::MyRobot(void) 
     : m_pscLeft(new Victor(CHAN_PWM_LEFT_DRIVE)), 
       m_pscRight(new Victor(CHAN_PWM_RIGHT_DRIVE)),
-      m_pDriveShiftA(new Solenoid(1,1)),
-      m_pDriveShiftB(new Solenoid(1,2)),
+      m_pDriveShiftA(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_DRIVE_SHIFT_A)),
+      m_pDriveShiftB(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_DRIVE_SHIFT_B)),
       m_pJoystick1(new Joystick(1)),
       m_pSteeringwheel(new Joystick(2)),
       m_pCompressor(new Compressor(CHAN_COMP_AUTO_SHUTOFF, CHAN_RLY_COMPRESSOR))
