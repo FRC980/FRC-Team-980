@@ -47,6 +47,12 @@ MyRobot::MyRobot(void)
       m_pscRight(new Victor(CHAN_PWM_RIGHT_DRIVE)),
       m_pDriveShiftA(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_DRIVE_SHIFT_A)),
       m_pDriveShiftB(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_DRIVE_SHIFT_B)),
+	  m_pClawTopA(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_TOP_A)),
+	  m_pClawTopB(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_TOP_B)),
+	  m_pClawBottomA(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_BOTTOM_A)),
+	  m_pClawBottomB(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_BOTTOM_B)),
+      m_pscClimbTop(new Jaguar(ID_JAG_CLIMB_TOP)),
+	  m_pscClimbBottom(new Jaguar(ID_JAG_CLIMB_BOTTOM)),
       m_pJoystick1(new Joystick(1)),
       m_pSteeringwheel(new Joystick(2)),
       m_pCompressor(new Compressor(CHAN_COMP_AUTO_SHUTOFF, CHAN_RLY_COMPRESSOR))
@@ -58,6 +64,12 @@ MyRobot::~MyRobot(void) {
     delete m_pscRight;
     delete m_pDriveShiftA;
     delete m_pDriveShiftB;
+	delete m_pClawTopA;
+	delete m_pClawTopB;
+	delete m_pClawBottomA;
+	delete m_pClawBottomB;
+	delete m_pscClimbTop;
+	delete m_pscClimbBottom;
     delete m_pJoystick1;
     delete m_pSteeringwheel;
     delete m_pCompressor;
