@@ -107,10 +107,31 @@ void MyRobot::OperatorControl(void) {
         //if statements for distributing power to left and right depending on gain value 
     	if (gain>0.05 || gain<-0.05) {	        
             fLeft = throttle+(gain);
-	    fRight = throttle-(gain);
+    	    fRight = throttle-(gain);
         }
 
         //Drive(fLeft, fRight);
+
+        
+        RUN_ONCE(m_pJoystick1, 2) {
+            ShiftDrive(true);
+        }
+        RUN_ONCE(m_pJoystick1, 3) {
+            ShiftDrive(false);
+        }
+
+        /*
+        DigitalInput *magSwitch = new DigitalInput(2);
+
+        if(magSwitch->Get()) {
+            message("Piston In");
+        } else {
+            message("Piston Out");
+        }
+
+        delete magSwitch;
+        */
+
         Wait(0.05);
     }
 }

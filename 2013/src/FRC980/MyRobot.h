@@ -92,6 +92,9 @@
 #define CHAN_SOL_DRIVE_SHIFT_A             1
 #define CHAN_SOL_DRIVE_SHIFT_B             2
 
+// Number of Solenoids
+#define NUM_SOLENOIDS                      7
+
 //==============================================================================
 
 class MyRobot : public SimpleRobot
@@ -100,6 +103,8 @@ private:
     Victor* m_pscLeft;    
 
     Victor* m_pscRight;    
+
+    Solenoid m_pValves[NUM_SOLENOIDS];
 
     Solenoid *m_pDriveShiftA;
     Solenoid *m_pDriveShiftB;
