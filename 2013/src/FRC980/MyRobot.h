@@ -56,6 +56,8 @@
 
 //==============================================================================
 // CAN Jaguar Outputs
+#define ID_JAG_CLIMB_TOP			11
+#define ID_JAG_CLIMB_BOTTOM			12
 
 // Jaguar Outputs
 #define MAX_JAGUAR_OUTPUT_VOLTAGE   12.0        /*!< \def MAX_JAGUAR_OUTPUT_VOLTAGE The maximum output voltage of the CAN Jaguar */
@@ -91,6 +93,10 @@
 // Solenoid outputs
 #define CHAN_SOL_DRIVE_SHIFT_A             1
 #define CHAN_SOL_DRIVE_SHIFT_B             2
+#define CHAN_SOL_CLAW_TOP_A                3
+#define CHAN_SOL_CLAW_TOP_B                4
+#define CHAN_SOL_CLAW_BOTTOM_A             5
+#define CHAN_SOL_CLAW_BOTTOM_B             6
 
 // Number of Solenoids
 #define NUM_SOLENOIDS                      7
@@ -102,12 +108,19 @@ class MyRobot : public SimpleRobot
 private:
     Victor* m_pscLeft;    
 
-    Victor* m_pscRight;    
+    Victor* m_pscRight;   
 
     Solenoid m_pValves[NUM_SOLENOIDS];
 
     Solenoid *m_pDriveShiftA;
     Solenoid *m_pDriveShiftB;
+	Solenoid *m_pClawTopA;
+	Solenoid *m_pClawTopB;
+	Solenoid *m_pClawBottomA;
+	Solenoid *m_pClawBottomB;
+
+	Jaguar* m_pscClimbTop;
+	Jaguar* m_pscClimbBottom; 
 
     Joystick *m_pJoystick1;
     Joystick *m_pSteeringwheel;
