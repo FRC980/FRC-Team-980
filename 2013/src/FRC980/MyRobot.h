@@ -101,6 +101,11 @@
 // Number of Solenoids
 #define NUM_SOLENOIDS                      7
 
+// Valve IDs
+#define SOL_DRIVE_SHIFT                    1
+#define SOL_CLAW_TOP                       3
+#define SOL_CLAW_BOTTOM                    5
+
 //==============================================================================
 
 class MyRobot : public SimpleRobot
@@ -110,7 +115,7 @@ private:
 
     Victor* m_pscRight;   
 
-    Solenoid m_pValves[NUM_SOLENOIDS];
+    Solenoid *m_pValves[NUM_SOLENOIDS*2];
 
     Solenoid *m_pDriveShiftA;
     Solenoid *m_pDriveShiftB;
@@ -133,7 +138,8 @@ public:
     void Autonomous(void);
     void OperatorControl(void);
     void Drive(float, float);
-    void ShiftDrive(bool);
+    void OpenValve(int);
+    void CloseValve(int);
 };
 
 #endif

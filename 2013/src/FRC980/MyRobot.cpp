@@ -45,29 +45,28 @@ double limit(double val, double min = -1, double max = 1)
 MyRobot::MyRobot(void) 
     : m_pscLeft(new Victor(CHAN_PWM_LEFT_DRIVE)), 
       m_pscRight(new Victor(CHAN_PWM_RIGHT_DRIVE)),
-      m_pDriveShiftA(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_DRIVE_SHIFT_A)),
-      m_pDriveShiftB(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_DRIVE_SHIFT_B)),
-	  m_pClawTopA(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_TOP_A)),
-	  m_pClawTopB(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_TOP_B)),
-	  m_pClawBottomA(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_BOTTOM_A)),
-	  m_pClawBottomB(new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_BOTTOM_B)),
       m_pscClimbTop(new Jaguar(ID_JAG_CLIMB_TOP)),
 	  m_pscClimbBottom(new Jaguar(ID_JAG_CLIMB_BOTTOM)),
       m_pJoystick1(new Joystick(1)),
       m_pSteeringwheel(new Joystick(2)),
       m_pCompressor(new Compressor(CHAN_COMP_AUTO_SHUTOFF, CHAN_RLY_COMPRESSOR))
 {
+    m_pValves[SOL_DRIVE_SHIFT] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_DRIVE_SHIFT_A);
+    m_pValves[SOL_DRIVE_SHIFT+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_DRIVE_SHIFT_B);
+    m_pValves[SOL_CLAW_TOP] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_TOP_A);
+    m_pValves[SOL_CLAW_TOP+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_TOP_B);
+    m_pValves[SOL_CLAW_BOTTOM] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_BOTTOM_A);
+    m_pValves[SOL_CLAW_BOTTOM+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_BOTTOM_B);
 }
 
 MyRobot::~MyRobot(void) {
     delete m_pscLeft;
     delete m_pscRight;
-    delete m_pDriveShiftA;
-    delete m_pDriveShiftB;
-	delete m_pClawTopA;
-	delete m_pClawTopB;
-	delete m_pClawBottomA;
-	delete m_pClawBottomB;
+
+    for(int i = 0; i < NUM_SOLENOIDS; i++) {
+        delete m_pValves[i];
+    }
+
 	delete m_pscClimbTop;
 	delete m_pscClimbBottom;
     delete m_pJoystick1;
@@ -126,10 +125,10 @@ void MyRobot::OperatorControl(void) {
 
         
         RUN_ONCE(m_pJoystick1, 2) {
-            ShiftDrive(true);
+            OpenValve(SOL_DRIVE_SHIFT);
         }
         RUN_ONCE(m_pJoystick1, 3) {
-            ShiftDrive(false);
+            CloseValve(SOL_DRIVE_SHIFT);
         }
 
         /*
@@ -153,15 +152,15 @@ void MyRobot::Drive(float right, float left) {
     m_pscRight->Set(limit(-right));
 }
 
-void MyRobot::ShiftDrive(bool high) {
-    if(high) {
-        m_pDriveShiftA->Set(true);
-        m_pDriveShiftB->Set(false);
-    } else {
-        m_pDriveShiftA->Set(false);
-        m_pDriveShiftB->Set(true);
-    }
+void MyRobot::OpenValve(int valve) {
+    m_pValves[valve]->Set(true);
+    m_pValves[valve+1]->Set(false);
 }
 
+void MyRobot::CloseValve(int valve) { 
+    m_pValves[valve]->Set(false);
+    m_pValves[valve+1]->Set(true);
+
+}
 
 START_ROBOT_CLASS(MyRobot)
