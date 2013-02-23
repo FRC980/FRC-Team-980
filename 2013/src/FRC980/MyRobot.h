@@ -105,6 +105,7 @@
 #define SOL_DRIVE_SHIFT                    1
 #define SOL_CLAW_TOP                       3
 #define SOL_CLAW_BOTTOM                    5
+#define SOL_START_CLIMB                    7
 
 //==============================================================================
 
@@ -136,12 +137,13 @@ public:
     void Drive(float, float);
     void OpenValve(int);
     void CloseValve(int);
-    void EngageBottomWheel();
-    void DisengageBottomWheel();
-    void CheckStopBottomWheel();
-    void EngageTopWheel();
-    void DisengageTopWheel();
-    void CheckStopTopWheel();
+    void EngageBottomWheel(void);
+    void DisengageBottomWheel(void);
+    bool CheckStopBottomWheel(void);
+    void EngageTopWheel(void);
+    void DisengageTopWheel(void);
+    bool CheckStopTopWheel(void);
+    void ClimbAuto(void);
 };
 
 #endif

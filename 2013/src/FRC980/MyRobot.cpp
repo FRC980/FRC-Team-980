@@ -154,8 +154,8 @@ void MyRobot::OperatorControl(void) {
             topClawClosed = true;
         }
         RUN_ONCE(m_pJoystick1, 7) {
-                CloseValve(SOL_CLAW_TOP);
-                topClawClosed = false;
+            CloseValve(SOL_CLAW_TOP);
+            topClawClosed = false;
         }
         
         // valve for bottom claw
@@ -164,8 +164,8 @@ void MyRobot::OperatorControl(void) {
             bottomClawClosed = true;
         }
         RUN_ONCE(m_pJoystick1, 10) {
-                CloseValve(SOL_CLAW_BOTTOM);
-                bottomClawClosed = false;
+            CloseValve(SOL_CLAW_BOTTOM);
+            bottomClawClosed = false;
         }
 
         // Test controls for climb wheels
@@ -248,16 +248,19 @@ void MyRobot::DisengageBottomWheel() {
     m_pTimerBottomWheel->Reset();
 }
 
-void MyRobot::CheckStopBottomWheel() {
+bool MyRobot::CheckStopBottomWheel() {
     float t = m_pTimerBottomWheel->Get();
 
     if(t < 0.25) {
-        return;
+        return false;
     }
 
     if(m_pscClimbBottom->GetOutputCurrent() > 3.0) {
         m_pscClimbBottom->Set(0.0);
+        return true;
     }
+
+    return false;
 }
 
 void MyRobot::EngageTopWheel() {
@@ -270,15 +273,142 @@ void MyRobot::DisengageTopWheel() {
     m_pTimerTopWheel->Reset();
 }
 
-void MyRobot::CheckStopTopWheel() {
+bool MyRobot::CheckStopTopWheel() {
     float t = m_pTimerTopWheel->Get();
 
     if(t < 0.25) {
-        return;
+        return false;
     }
 
     if(m_pscClimbTop->GetOutputCurrent() > 3.0) {
         m_pscClimbTop->Set(0.0);
+        return true;
+    }
+    
+    return false;
+}
+
+void MyRobot::ClimbAuto(void) {
+#define CLIMB_AUTO_INIT         1
+#define CLOSE_BOTTOM_CLAW       2
+#define DEPLOY_BOTTOM_WHEEL     3
+#define DRIVE_TO_NEXT_LEVEL     4
+#define CLOSE_TOP_CLAW          11
+#define DEPLOY_TOP_WHEEL        5
+#define DETRACT_BOTTOM_WHEEL    6
+#define OPEN_BOTTOM_CLAW        7
+#define DRIVE_OVER_BAR          8
+#define DETRACT_TOP_WHEEL       9
+#define OPEN_TOP_CLAW           10
+
+    int state = CLIMB_AUTO_INIT;
+    int level = 1;
+    bool driveToNextLevel = true;
+    Timer timer;
+    timer.Reset();
+    bool RunOnceBool = true;
+    bool atTop = false;
+
+    while(!atTop) {
+        GetWatchdog().Feed();
+        switch(state) {
+            case CLIMB_AUTO_INIT:
+                if(RunOnceBool) {
+                    OpenValve(SOL_START_CLIMB); 
+                    CloseValve(SOL_DRIVE_SHIFT);
+                    timer.Reset();
+                    RunOnceBool = false;
+                }
+                if(timer.Get() >= 5.0) {
+                    state = CLOSE_BOTTOM_CLAW;
+                    RunOnceBool = true;
+                }
+                break;
+            case CLOSE_BOTTOM_CLAW:
+                OpenValve(SOL_CLAW_BOTTOM);
+                state = DEPLOY_BOTTOM_WHEEL;
+                break;
+            case DEPLOY_BOTTOM_WHEEL:
+                if(RunOnceBool) {
+                    EngageBottomWheel();
+                    RunOnceBool = false;
+                }
+                if(CheckStopBottomWheel()) {
+                    if(driveToNextLevel) {
+                        state = DRIVE_TO_NEXT_LEVEL;
+                        driveToNextLevel = false;
+                    } else {
+                        state = DETRACT_TOP_WHEEL;
+                        driveToNextLevel = true;
+                    }
+                    RunOnceBool = true;
+                }
+                break;
+            case DRIVE_TO_NEXT_LEVEL:
+                Drive(1.0, -1.0);
+                if(false) { // name of limit switch not known
+                    Drive(0.0, 0.0);
+                    state = CLOSE_TOP_CLAW;
+                }
+                break;
+            case CLOSE_TOP_CLAW:
+                OpenValve(SOL_CLAW_TOP);
+                state = DEPLOY_TOP_WHEEL;
+                break;
+            case DEPLOY_TOP_WHEEL:
+                if (RunOnceBool) {
+                    EngageTopWheel();
+                    RunOnceBool = false;
+                }
+                if (CheckStopTopWheel()) {
+                    state = DETRACT_BOTTOM_WHEEL;
+                    RunOnceBool = true;
+                }
+                break;
+            case DETRACT_BOTTOM_WHEEL:
+                if (RunOnceBool) {
+                    DisengageBottomWheel();
+                    RunOnceBool = false;
+                }
+                if (CheckStopBottomWheel()) { // Make sure that is correct
+                    state = OPEN_BOTTOM_CLAW;
+                    RunOnceBool = true;
+                }
+                break;
+            case OPEN_BOTTOM_CLAW:
+                CloseValve(SOL_CLAW_BOTTOM);
+                state = DRIVE_OVER_BAR;
+                break;
+            case DRIVE_OVER_BAR:
+                Drive(1.0, -1.0);
+                if (false) { // name of limit switch not known
+                    Drive(0.0, 0.0);
+                    state = CLOSE_BOTTOM_CLAW;
+                    level++;
+                    if(level >= 3) {
+                        atTop = true;
+                    }
+                }
+                break;
+            case DETRACT_TOP_WHEEL:
+                if (RunOnceBool) {
+                    DisengageTopWheel();
+                    RunOnceBool = false;
+                }
+                if (CheckStopTopWheel()) {
+                    state = OPEN_TOP_CLAW;
+                    RunOnceBool = true;
+                }
+                break;
+            case OPEN_TOP_CLAW:
+                CloseValve(SOL_CLAW_TOP);
+                state = DRIVE_TO_NEXT_LEVEL;
+                break;
+        }
+
+        RUN_ONCE(m_pJoystick1, 1) {
+            return;
+        }
     }
 }
 
