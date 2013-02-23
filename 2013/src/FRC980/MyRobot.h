@@ -56,8 +56,8 @@
 
 //==============================================================================
 // CAN Jaguar Outputs
-#define ID_JAG_CLIMB_TOP			11
-#define ID_JAG_CLIMB_BOTTOM			12
+#define ID_JAG_CLIMB_TOP			12
+#define ID_JAG_CLIMB_BOTTOM			11
 
 // Jaguar Outputs
 #define MAX_JAGUAR_OUTPUT_VOLTAGE   12.0        /*!< \def MAX_JAGUAR_OUTPUT_VOLTAGE The maximum output voltage of the CAN Jaguar */
@@ -117,20 +117,16 @@ private:
 
     Solenoid *m_pValves[NUM_SOLENOIDS*2];
 
-    Solenoid *m_pDriveShiftA;
-    Solenoid *m_pDriveShiftB;
-	Solenoid *m_pClawTopA;
-	Solenoid *m_pClawTopB;
-	Solenoid *m_pClawBottomA;
-	Solenoid *m_pClawBottomB;
-
-	Jaguar* m_pscClimbTop;
-	Jaguar* m_pscClimbBottom; 
+	CANJaguar* m_pscClimbTop;
+	CANJaguar* m_pscClimbBottom; 
 
     Joystick *m_pJoystick1;
     Joystick *m_pSteeringwheel;
 
     Compressor *m_pCompressor;
+
+    Timer *m_pTimerTopWheel;
+    Timer *m_pTimerBottomWheel;
 
 public:
     MyRobot(void);
@@ -140,6 +136,12 @@ public:
     void Drive(float, float);
     void OpenValve(int);
     void CloseValve(int);
+    void EngageBottomWheel();
+    void DisengageBottomWheel();
+    void CheckStopBottomWheel();
+    void EngageTopWheel();
+    void DisengageTopWheel();
+    void CheckStopTopWheel();
 };
 
 #endif
