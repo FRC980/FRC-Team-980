@@ -45,8 +45,9 @@ double limit(double val, double min = -1, double max = 1)
 MyRobot::MyRobot(void) 
     : m_pscLeft(new Victor(CHAN_PWM_LEFT_DRIVE)), 
       m_pscRight(new Victor(CHAN_PWM_RIGHT_DRIVE)),
+      m_pscWinch(new Victor(CHAN_PWM_WINCH)),
       m_pscClimbTop(new CANJaguar(ID_JAG_CLIMB_TOP)),
-	  m_pscClimbBottom(new CANJaguar(ID_JAG_CLIMB_BOTTOM)),
+      m_pscClimbBottom(new CANJaguar(ID_JAG_CLIMB_BOTTOM)),
       m_pJoystick1(new Joystick(1)),
       m_pSteeringwheel(new Joystick(2)),
       m_pCompressor(new Compressor(CHAN_COMP_AUTO_SHUTOFF, CHAN_RLY_COMPRESSOR)),
@@ -70,20 +71,43 @@ MyRobot::MyRobot(void)
 MyRobot::~MyRobot(void) {
     delete m_pscLeft;
     delete m_pscRight;
+    delete m_pscWinch;
 
     for(int i = 0; i < NUM_SOLENOIDS; i++) {
         delete m_pValves[i];
     }
 
-	delete m_pscClimbTop;
-	delete m_pscClimbBottom;
+    delete m_pscClimbTop;
+    delete m_pscClimbBottom;
     delete m_pJoystick1;
     delete m_pSteeringwheel;
     delete m_pCompressor;
 }
 
 void MyRobot::Autonomous(void) {
+    Timer timer;
+    timer.Reset();
+    timer.Start();
 
+    while(timer.Get() < 4.0f) {
+    	if(timer.Get() < 1.0f) {
+	    RunWinch(1.0f);
+	} else if(timer.Get() >= 1.0f && timer.Get() <= 2.0f) {
+	    RunWinch(-1.0f);
+	} else {
+	    RunWinch(0.0f);
+	}
+
+	Drive(1.0f, -1.0f);
+    }
+
+    Drive(0.0, 0.0);
+
+    
+    
+    while(timer.Get() > 5.0f && timer.Get() < 8.0f) {
+	
+    }
 }
 
 void MyRobot::OperatorControl(void) {
@@ -225,6 +249,14 @@ void MyRobot::OperatorControl(void) {
 void MyRobot::Drive(float right, float left) {
     m_pscLeft->Set(limit(left));
     m_pscRight->Set(limit(-right));
+}
+
+void MyRobot::RunWinch(float speed) {
+    m_pscWinch->Set(limit(speed));
+}
+
+void MyRobot::Fire(void) {
+    OpenValve(SOL_CATAPOLT_RELEASE);
 }
 
 void MyRobot::OpenValve(int valve) {

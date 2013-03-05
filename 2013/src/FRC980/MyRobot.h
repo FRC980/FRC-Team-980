@@ -73,6 +73,7 @@
 // PWM outputs
 #define CHAN_PWM_LEFT_DRIVE                1  /*!< \def  CHAN_PWM_LEFT_DRIVE The PWM Victor device number for the Left CIM Motor */
 #define CHAN_PWM_RIGHT_DRIVE               2  /*!< \def CHAN_PWM_RIGHT_DRIVE The PWM Victor device number for the Left CIM Motor */
+#define CHAN_PWM_WINCH			   3
 
 // Relay outputs
 #define CHAN_RLY_COMPRESSOR                1  /*!< \def CHAN_RLY_COMPRESSOR The PWM Spike device number for the compressor */
@@ -97,6 +98,9 @@
 #define CHAN_SOL_CLAW_TOP_B                4
 #define CHAN_SOL_CLAW_BOTTOM_A             5
 #define CHAN_SOL_CLAW_BOTTOM_B             6
+#define CHAN_SOL_CATAPOLT_RELEASE	   7
+#define CHAN_SOL_CLIMB_MECH_RELEASE	   9
+#define CHAN_SOL_CLIMB_MECH_DETRACT	   10
 
 // Number of Solenoids
 #define NUM_SOLENOIDS                      7
@@ -105,7 +109,8 @@
 #define SOL_DRIVE_SHIFT                    1
 #define SOL_CLAW_TOP                       3
 #define SOL_CLAW_BOTTOM                    5
-#define SOL_START_CLIMB                    7
+#define SOL_START_CLIMB                    9
+#define SOL_CATAPOLT_RELEASE		   7
 
 //==============================================================================
 
@@ -113,8 +118,8 @@ class MyRobot : public SimpleRobot
 {
 private:
     Victor* m_pscLeft;    
-
     Victor* m_pscRight;   
+    Victor* m_pscWinch;
 
     Solenoid *m_pValves[NUM_SOLENOIDS*2];
 
@@ -135,6 +140,8 @@ public:
     void Autonomous(void);
     void OperatorControl(void);
     void Drive(float, float);
+    void RunWinch(float);
+    void Fire(void);
     void OpenValve(int);
     void CloseValve(int);
     void EngageBottomWheel(void);
