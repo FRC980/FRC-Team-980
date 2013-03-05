@@ -1,5 +1,6 @@
 #include "MyRobot.h"
 #include <math.h>
+#include "jsbuttons.h"
 
 #define RUN_ONCE_VAR(joystick,button,var)              \
     static bool var = false;                           \
@@ -50,6 +51,7 @@ MyRobot::MyRobot(void)
       m_pscClimbBottom(new CANJaguar(ID_JAG_CLIMB_BOTTOM)),
       m_pJoystick1(new Joystick(1)),
       m_pSteeringwheel(new Joystick(2)),
+      m_pJoystick2(new Joystick(2)),
       m_pCompressor(new Compressor(CHAN_COMP_AUTO_SHUTOFF, CHAN_RLY_COMPRESSOR)),
       m_pTimerTopWheel(new Timer),
       m_pTimerBottomWheel(new Timer)
@@ -81,6 +83,7 @@ MyRobot::~MyRobot(void) {
     delete m_pscClimbBottom;
     delete m_pJoystick1;
     delete m_pSteeringwheel;
+    delete m_pJoystick2;
     delete m_pCompressor;
 }
 
@@ -173,58 +176,42 @@ void MyRobot::OperatorControl(void) {
         }
         
         // valve for top claw
-        RUN_ONCE(m_pJoystick1, 6) {
+        if(m_pJoystick2->GetRawButton(TOP_CLAW) && !topClawClosed) {
             OpenValve(SOL_CLAW_TOP);
             topClawClosed = true;
-        }
-        RUN_ONCE(m_pJoystick1, 7) {
+        } else if(!m_pJoystick2->GetRawButton(TOP_CLAW) && topClawClosed) {
             CloseValve(SOL_CLAW_TOP);
             topClawClosed = false;
         }
         
         // valve for bottom claw
-        RUN_ONCE(m_pJoystick1, 11) {
+        if(m_pJoystick2->GetRawButton(BOTTOM_CLAW) && !bottomClawClosed) {
             OpenValve(SOL_CLAW_BOTTOM);
             bottomClawClosed = true;
-        }
-        RUN_ONCE(m_pJoystick1, 10) {
+        } else if(!m_pJoystick2->GetRawButton(BOTTOM_CLAW) && bottomClawClosed) {
             CloseValve(SOL_CLAW_BOTTOM);
             bottomClawClosed = false;
         }
 
         // Test controls for climb wheels
         // bottom wheel
-        static bool bottom_wheel_engaged = false;
-
-        RUN_ONCE(m_pJoystick1, 8) {
-            if(!bottom_wheel_engaged) {
-                EngageBottomWheel();
-                bottom_wheel_engaged = true;
-            }
-        }
-        RUN_ONCE(m_pJoystick1, 9) {
-            if(bottom_wheel_engaged) {
-                DisengageBottomWheel();
-                bottom_wheel_engaged = false;
-            }
+        if(m_pJoystick2->GetRawButton(TOP_WHEEL) && !bottomWheelEngaged) {
+            EngageBottomWheel();
+            bottomWheelEngaged = true;
+        } else if(m_pJoystick2->GetRawButton(TOP_WHEEL) && bottomWheelEngaged) {
+            DisengageBottomWheel();
+            bottomWheelEngaged = false;
         }
 
         CheckStopBottomWheel();
         
         // top wheel
-        static bool top_wheel_engaged = false;
-
-        RUN_ONCE(m_pJoystick1, 4) {
-            if(!top_wheel_engaged) {
-                EngageTopWheel();
-                top_wheel_engaged = true;
-            }
-        }
-        RUN_ONCE(m_pJoystick1, 5) {
-            if(top_wheel_engaged) {
-                DisengageTopWheel();
-                top_wheel_engaged = false;
-            }
+        if(m_pJoystick2->GetRawButton(BOTTOM_WHEEL) && !topWheelEngaged) {
+            EngageTopWheel();
+            topWheelEngaged = true;
+        } else if(m_pJoystick2->GetRawButton(BOTTOM_WHEEL) && topWheelEngaged) {
+            DisengageTopWheel();
+            topWheelEngaged = false;
         }
 
         CheckStopTopWheel();

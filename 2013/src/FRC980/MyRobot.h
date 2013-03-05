@@ -128,6 +128,7 @@ private:
 
     Joystick *m_pJoystick1;
     Joystick *m_pSteeringwheel;
+    Joystick *m_pJoystick2;
 
     Compressor *m_pCompressor;
 
