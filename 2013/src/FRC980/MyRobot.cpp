@@ -53,6 +53,7 @@ MyRobot::MyRobot(void)
       m_pSteeringwheel(new Joystick(2)),
       m_pJoystick2(new Joystick(2)),
       m_pCompressor(new Compressor(CHAN_COMP_AUTO_SHUTOFF, CHAN_RLY_COMPRESSOR)),
+      m_pacWinchPot(new AnalogChannel(1, CHAN_WINCH_POT)),
       m_pTimerTopWheel(new Timer),
       m_pTimerBottomWheel(new Timer)
 {
@@ -68,6 +69,8 @@ MyRobot::MyRobot(void)
 
     m_pTimerBottomWheel->Reset();
     m_pTimerBottomWheel->Start();
+
+    SetCatapultState(CATAPULT_INITIALIZING);
 }
 
 MyRobot::~MyRobot(void) {
@@ -85,6 +88,7 @@ MyRobot::~MyRobot(void) {
     delete m_pSteeringwheel;
     delete m_pJoystick2;
     delete m_pCompressor;
+    delete m_pacWinchPot;
 }
 
 void MyRobot::Autonomous(void) {
@@ -92,25 +96,20 @@ void MyRobot::Autonomous(void) {
     timer.Reset();
     timer.Start();
 
-    while(timer.Get() < 4.0f) {
-    	if(timer.Get() < 1.0f) {
-	    RunWinch(1.0f);
-	} else if(timer.Get() >= 1.0f && timer.Get() <= 2.0f) {
-	    RunWinch(-1.0f);
-	} else {
-	    RunWinch(0.0f);
-	}
-
-	Drive(1.0f, -1.0f);
+    while(timer.Get() < 5.0f) {
+        Drive(1.0f, -1.0f);
+        RunCatapultState();
+        if(GetCatapultState() == CATAPULT_WOUND) {
+            SetCatapultState(CATAPULT_UNWINDING);
+        }
     }
-
-    Drive(0.0, 0.0);
-
-    
-    
-    while(timer.Get() > 5.0f && timer.Get() < 8.0f) {
-	
+    while(GetCatapultState() != CATAPULT_READY) {
+        RunCatapultState();
+        if(GetCatapultState() == CATAPULT_WOUND) {
+            SetCatapultState(CATAPULT_UNWINDING);
+        }
     }
+    Fire();
 }
 
 void MyRobot::OperatorControl(void) {
@@ -243,7 +242,8 @@ void MyRobot::RunWinch(float speed) {
 }
 
 void MyRobot::Fire(void) {
-    OpenValve(SOL_CATAPOLT_RELEASE);
+    OpenValve(SOL_CATAPULT_RELEASE);
+    SetCatapultState(CATAPULT_FIRED);
 }
 
 void MyRobot::OpenValve(int valve) {
@@ -429,6 +429,40 @@ void MyRobot::ClimbAuto(void) {
             return;
         }
     }
+}
+
+void MyRobot::RunCatapultState() {
+    switch(CATAPULT_STATE) {
+        case CATAPULT_RETRACTING:
+            RunWinch(-1.0);
+            if(m_pacWinchPot->GetValue() < POT_RETRACTED) {
+                CloseValve(SOL_CATAPULT_RELEASE);
+                RunWinch(0.0);
+                CATAPULT_STATE = CATAPULT_WOUND;
+            }
+            break;
+        case CATAPULT_UNWINDING:
+            RunWinch(1.0);
+            if (m_pacWinchPot->GetValue() > POT_UNWINDED) {
+                RunWinch(0.0);
+                CATAPULT_STATE = CATAPULT_READY;
+            }
+            break;
+        case CATAPULT_INITIALIZING:
+            RunWinch(1.0);
+            if(m_pacWinchPot->GetValue() > POT_UNWINDED) {
+                RunWinch(0.0);
+                CATAPULT_STATE = CATAPULT_RETRACTING;
+            }
+    }
+}
+
+void MyRobot::SetCatapultState(int state) {
+    CATAPULT_STATE = state;
+}
+
+int MyRobot::GetCatapultState(void) {
+    return CATAPULT_STATE;
 }
 
 START_ROBOT_CLASS(MyRobot)

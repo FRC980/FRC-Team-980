@@ -85,6 +85,12 @@
 #define CHAN_COMP_AUTO_SHUTOFF             1
 
 //==============================================================================
+// Analog Inputs
+
+// Winch Potentiometer
+#define CHAN_WINCH_POT                     1
+
+//==============================================================================
 // Solenoid Module Outputs
 
 // Solenoid Module Slots
@@ -98,9 +104,9 @@
 #define CHAN_SOL_CLAW_TOP_B                4
 #define CHAN_SOL_CLAW_BOTTOM_A             5
 #define CHAN_SOL_CLAW_BOTTOM_B             6
-#define CHAN_SOL_CATAPOLT_RELEASE	   7
-#define CHAN_SOL_CLIMB_MECH_RELEASE	   9
-#define CHAN_SOL_CLIMB_MECH_DETRACT	   10
+#define CHAN_SOL_CATAPOLT_RELEASE	       7
+#define CHAN_SOL_CLIMB_MECH_RELEASE	       9
+#define CHAN_SOL_CLIMB_MECH_DETRACT	       10
 
 // Number of Solenoids
 #define NUM_SOLENOIDS                      7
@@ -110,7 +116,22 @@
 #define SOL_CLAW_TOP                       3
 #define SOL_CLAW_BOTTOM                    5
 #define SOL_START_CLIMB                    9
-#define SOL_CATAPOLT_RELEASE		   7
+#define SOL_CATAPULT_RELEASE		       7
+
+//==============================================================================
+// Catapult Positions
+#define POT_RETRACTED                      1337
+#define POT_UNWINDED                       234
+
+// Catapult States
+#define CATAPULT_RETRACTING                1
+#define CATAPULT_UNWINDING                 2
+#define CATAPULT_WOUND                     3
+#define CATAPULT_READY                     4
+#define CATAPULT_FIRED                     5
+#define CATAPULT_INITIALIZING              6
+
+
 
 //==============================================================================
 
@@ -132,6 +153,10 @@ private:
 
     Compressor *m_pCompressor;
 
+    AnalogChannel *m_pacWinchPot;
+
+    int CATAPULT_STATE;
+
     Timer *m_pTimerTopWheel;
     Timer *m_pTimerBottomWheel;
 
@@ -152,6 +177,9 @@ public:
     void DisengageTopWheel(void);
     bool CheckStopTopWheel(void);
     void ClimbAuto(void);
+    void RunCatapultState(void);
+    void SetCatapultState(int);
+    int GetCatapultState(void);
 };
 
 #endif
