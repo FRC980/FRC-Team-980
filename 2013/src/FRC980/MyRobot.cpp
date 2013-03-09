@@ -51,7 +51,7 @@ MyRobot::MyRobot(void)
       m_pscClimbBottom(new CANJaguar(ID_JAG_CLIMB_BOTTOM)),
       m_pJoystick1(new Joystick(1)),
       m_pSteeringwheel(new Joystick(2)),
-      m_pJoystick2(new Joystick(2)),
+      m_pJoystick2(new Joystick(3)),
       m_pCompressor(new Compressor(CHAN_COMP_AUTO_SHUTOFF, CHAN_RLY_COMPRESSOR)),
       m_pacWinchPot(new AnalogChannel(1, CHAN_WINCH_POT)),
       m_pTimerTopWheel(new Timer),
@@ -63,14 +63,14 @@ MyRobot::MyRobot(void)
     m_pValves[SOL_CLAW_TOP+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_TOP_B);
     m_pValves[SOL_CLAW_BOTTOM] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_BOTTOM_A);
     m_pValves[SOL_CLAW_BOTTOM+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_BOTTOM_B);
+    m_pValves[SOL_CATAPULT_RELEASE] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CATAPULT_RELEASE_A);
+    m_pValves[SOL_CATAPULT_RELEASE+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CATAPULT_RELEASE_B);
 
     m_pTimerTopWheel->Reset();
     m_pTimerTopWheel->Start();
 
     m_pTimerBottomWheel->Reset();
     m_pTimerBottomWheel->Start();
-
-    SetCatapultState(CATAPULT_INITIALIZING);
 }
 
 MyRobot::~MyRobot(void) {
@@ -95,6 +95,7 @@ void MyRobot::Autonomous(void) {
     Timer timer;
     timer.Reset();
     timer.Start();
+    /*
 
     while(timer.Get() < 5.0f) {
         Drive(1.0f, -1.0f);
@@ -110,6 +111,13 @@ void MyRobot::Autonomous(void) {
         }
     }
     Fire();
+    */
+
+    while(timer.Get() < 5.0) {
+        Drive(-0.50, -0.50);
+    }
+
+    Drive(0.0, 0.0);
 }
 
 void MyRobot::OperatorControl(void) {
@@ -119,6 +127,9 @@ void MyRobot::OperatorControl(void) {
 
     CloseValve(SOL_CLAW_TOP);
     CloseValve(SOL_CLAW_BOTTOM);
+    OpenValve(SOL_DRIVE_SHIFT);
+
+    SetCatapultState(CATAPULT_IDLE);
 
     bool topClawClosed = false;
     bool bottomClawClosed = false;
@@ -193,28 +204,83 @@ void MyRobot::OperatorControl(void) {
         }
 
         // Test controls for climb wheels
-        // bottom wheel
-        if(m_pJoystick2->GetRawButton(TOP_WHEEL) && !bottomWheelEngaged) {
-            EngageBottomWheel();
-            bottomWheelEngaged = true;
-        } else if(m_pJoystick2->GetRawButton(TOP_WHEEL) && bottomWheelEngaged) {
-            DisengageBottomWheel();
-            bottomWheelEngaged = false;
-        }
+        float joystick2_x = m_pJoystick2->GetX();
+        float joystick2_y = m_pJoystick2->GetY();
 
-        CheckStopBottomWheel();
+        // bottom wheel
+        if(joystick2_x > -.20f || joystick2_x < .2f) {
+            if(m_pJoystick2->GetRawButton(TOP_WHEEL) && !bottomWheelEngaged) {
+                EngageBottomWheel();
+                bottomWheelEngaged = true;
+            } else if(m_pJoystick2->GetRawButton(TOP_WHEEL) && bottomWheelEngaged) {
+                DisengageBottomWheel();
+                bottomWheelEngaged = false;
+            }
+            CheckStopBottomWheel();
+        } else { 
+            m_pscClimbBottom->Set(joystick2_x);            
+        }
         
         // top wheel
-        if(m_pJoystick2->GetRawButton(BOTTOM_WHEEL) && !topWheelEngaged) {
-            EngageTopWheel();
-            topWheelEngaged = true;
-        } else if(m_pJoystick2->GetRawButton(BOTTOM_WHEEL) && topWheelEngaged) {
-            DisengageTopWheel();
-            topWheelEngaged = false;
+        if(joystick2_y > -.2f || joystick2_y < .2f) {
+            if(m_pJoystick2->GetRawButton(BOTTOM_WHEEL) && !topWheelEngaged) {
+                EngageTopWheel();
+                topWheelEngaged = true;
+            } else if(m_pJoystick2->GetRawButton(BOTTOM_WHEEL) && topWheelEngaged) {
+                DisengageTopWheel();
+                topWheelEngaged = false;
+            }
+            CheckStopTopWheel();
+        } else { 
+            m_pscClimbTop->Set(joystick2_y);            
+        }
+        
+        //message("pot: %d", m_pacWinchPot->GetValue());
+
+        if (m_pJoystick2->GetRawButton(CATAPULT_WIND)) {
+            if (GetCatapultState() != CATAPULT_WOUND &&
+               GetCatapultState() != CATAPULT_FIRED &&
+               GetCatapultState() != CATAPULT_READY) {
+                SetCatapultState(CATAPULT_WINDING);
+            }
+        } else if (m_pJoystick2->GetRawButton(CATAPULT_UNWIND)) {
+            if (GetCatapultState() != CATAPULT_FIRED &&
+               GetCatapultState() != CATAPULT_READY) {
+                if (GetCatapultState() == CATAPULT_WOUND) {
+                    SetCatapultState(CATAPULT_UNWINDING);
+                } else if (GetCatapultState() == CATAPULT_IDLE) {
+                    SetCatapultState(CATAPULT_INITIALIZING);
+                }
+            }
+        } else {
+            if (GetCatapultState() != CATAPULT_WOUND && 
+               GetCatapultState() != CATAPULT_FIRED &&
+               GetCatapultState() != CATAPULT_IDLE &&
+               GetCatapultState() != CATAPULT_READY) {
+                SetCatapultState(CATAPULT_IDLE);
+            }
         }
 
-        CheckStopTopWheel();
+        RunCatapultState();
+        
+        /*
+        if(m_pJoystick2->GetRawButton(CATAPULT_WIND)) {
+            RunWinch(0.50);
+        } else if(m_pJoystick2->GetRawButton(CATAPULT_UNWIND)) {
 
+            RunWinch(-0.50);
+        } else {
+
+            RunWinch(0.0);
+        }
+        */
+
+        RUN_ONCE(m_pJoystick1, 1) {
+            OpenValve(SOL_CATAPULT_RELEASE);
+        }
+        RUN_ONCE(m_pJoystick1, 4) {
+            CloseValve(SOL_CATAPULT_RELEASE);
+        }
 
         /*
         DigitalInput *magSwitch = new DigitalInput(2);
@@ -433,32 +499,62 @@ void MyRobot::ClimbAuto(void) {
 
 void MyRobot::RunCatapultState() {
     switch(CATAPULT_STATE) {
-        case CATAPULT_RETRACTING:
+        case CATAPULT_WINDING:
+            message("run winding state");
             RunWinch(-1.0);
             if(m_pacWinchPot->GetValue() < POT_RETRACTED) {
-                CloseValve(SOL_CATAPULT_RELEASE);
                 RunWinch(0.0);
-                CATAPULT_STATE = CATAPULT_WOUND;
+                CloseValve(SOL_CATAPULT_RELEASE);
+                SetCatapultState(CATAPULT_WOUND);
             }
             break;
         case CATAPULT_UNWINDING:
+            message("run unwinding state");
             RunWinch(1.0);
             if (m_pacWinchPot->GetValue() > POT_UNWINDED) {
                 RunWinch(0.0);
-                CATAPULT_STATE = CATAPULT_READY;
+                SetCatapultState(CATAPULT_READY);
             }
             break;
         case CATAPULT_INITIALIZING:
+            message("run init state");
             RunWinch(1.0);
             if(m_pacWinchPot->GetValue() > POT_UNWINDED) {
                 RunWinch(0.0);
-                CATAPULT_STATE = CATAPULT_RETRACTING;
+                SetCatapultState(CATAPULT_FIRED);
             }
+            break;
+        default:
+            RunWinch(0.0);
+            break;
     }
 }
 
 void MyRobot::SetCatapultState(int state) {
     CATAPULT_STATE = state;
+    switch(state) {
+        case CATAPULT_WINDING:
+            message("Changed to state: winding.");
+            break;
+        case CATAPULT_UNWINDING:
+            message("Changed to state: unwinding.");
+            break;
+        case CATAPULT_WOUND:
+            message("Changed to state: wound.");
+            break;
+        case CATAPULT_READY:
+            message("Changed to state: ready.");
+            break;
+        case CATAPULT_FIRED:
+            message("Changed to state: fired.");
+            break;
+        case CATAPULT_INITIALIZING:
+            message("Changed to state: initializing.");
+            break;
+        case CATAPULT_IDLE:
+            message("Changed to state: idle.");
+            break;
+    }
 }
 
 int MyRobot::GetCatapultState(void) {

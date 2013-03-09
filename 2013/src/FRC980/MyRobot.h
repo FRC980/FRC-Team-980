@@ -104,7 +104,8 @@
 #define CHAN_SOL_CLAW_TOP_B                4
 #define CHAN_SOL_CLAW_BOTTOM_A             5
 #define CHAN_SOL_CLAW_BOTTOM_B             6
-#define CHAN_SOL_CATAPOLT_RELEASE	       7
+#define CHAN_SOL_CATAPULT_RELEASE_A	       7
+#define CHAN_SOL_CATAPULT_RELEASE_B	       8
 #define CHAN_SOL_CLIMB_MECH_RELEASE	       9
 #define CHAN_SOL_CLIMB_MECH_DETRACT	       10
 
@@ -120,18 +121,18 @@
 
 //==============================================================================
 // Catapult Positions
-#define POT_RETRACTED                      1337
-#define POT_UNWINDED                       234
+#define POT_RETRACTED                      290
+#define POT_UNWINDED                       875
 
 // Catapult States
-#define CATAPULT_RETRACTING                1
+#define CATAPULT_WINDING                   1
 #define CATAPULT_UNWINDING                 2
 #define CATAPULT_WOUND                     3
+#define CATAPULT_UNWOUND
 #define CATAPULT_READY                     4
 #define CATAPULT_FIRED                     5
 #define CATAPULT_INITIALIZING              6
-
-
+#define CATAPULT_IDLE                      7
 
 //==============================================================================
 
@@ -180,6 +181,7 @@ public:
     void RunCatapultState(void);
     void SetCatapultState(int);
     int GetCatapultState(void);
+    bool CheckStopWinch(void);
 };
 
 #endif
