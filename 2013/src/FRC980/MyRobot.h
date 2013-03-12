@@ -121,8 +121,9 @@
 
 //==============================================================================
 // Catapult Positions
-#define POT_RETRACTED                      290
-#define POT_UNWINDED                       875
+#define POT_COCKED                         375
+#define POT_RETRACTED                      190
+#define POT_UNWINDED                       825
 
 // Catapult States
 #define CATAPULT_WINDING                   1

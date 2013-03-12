@@ -95,28 +95,33 @@ void MyRobot::Autonomous(void) {
     Timer timer;
     timer.Reset();
     timer.Start();
-    /*
-
-    while(timer.Get() < 5.0f) {
-        Drive(1.0f, -1.0f);
-        RunCatapultState();
-        if(GetCatapultState() == CATAPULT_WOUND) {
-            SetCatapultState(CATAPULT_UNWINDING);
+    m_pCompressor->Start();
+    
+    bool fired = false;
+    SetCatapultState(CATAPULT_INITIALIZING);
+    while(timer.Get() < 15.0) {
+        if(timer.Get() < 5.0) {
+            Drive(0.4, 0.35);
+        } else {
+            Drive(0.0, 0.0);
+        }
+        if(!fired) {
+            RunCatapultState();
+        
+            if(timer.Get() > 8.0) {
+                if(GetCatapultState() == CATAPULT_FIRED) {
+                    SetCatapultState(CATAPULT_WINDING);
+                } else if(GetCatapultState() == CATAPULT_WOUND) {
+                    SetCatapultState(CATAPULT_UNWINDING);
+                } else if(GetCatapultState() == CATAPULT_READY) {
+                    Fire();
+                    fired = true;
+                }
+            }
         }
     }
-    while(GetCatapultState() != CATAPULT_READY) {
-        RunCatapultState();
-        if(GetCatapultState() == CATAPULT_WOUND) {
-            SetCatapultState(CATAPULT_UNWINDING);
-        }
-    }
-    Fire();
-    */
 
-    while(timer.Get() < 5.0) {
-        Drive(-0.50, -0.50);
-    }
-
+    timer.Stop();
     Drive(0.0, 0.0);
 }
 
@@ -152,7 +157,7 @@ void MyRobot::OperatorControl(void) {
 	    // eGain = pow(2.7, (2.4*eGain-3));
 	    // eThrottle = pow(2.7, (3*eThrottle-3));
     	eGain = pow(2.71828183, (2.4*eGain-3));
-    	eThrottle = pow(2.71828183, (3*eThrottle-3));
+    	//eThrottle = pow(2.71828183, (3*eThrottle-3));
 
         if(gain > -0.03 && gain < 0.03) {
             eGain = 0;
@@ -234,12 +239,13 @@ void MyRobot::OperatorControl(void) {
         } else { 
             m_pscClimbTop->Set(joystick2_y);            
         }
-        
-        //message("pot: %d", m_pacWinchPot->GetValue());
+
+        if(m_pJoystick1->GetRawButton(6)) { 
+            message("pot: %d", m_pacWinchPot->GetValue());
+        }
 
         if (m_pJoystick2->GetRawButton(CATAPULT_WIND)) {
             if (GetCatapultState() != CATAPULT_WOUND &&
-               GetCatapultState() != CATAPULT_FIRED &&
                GetCatapultState() != CATAPULT_READY) {
                 SetCatapultState(CATAPULT_WINDING);
             }
@@ -262,18 +268,20 @@ void MyRobot::OperatorControl(void) {
         }
 
         RunCatapultState();
-        
-        /*
-        if(m_pJoystick2->GetRawButton(CATAPULT_WIND)) {
-            RunWinch(0.50);
-        } else if(m_pJoystick2->GetRawButton(CATAPULT_UNWIND)) {
 
-            RunWinch(-0.50);
-        } else {
-
-            RunWinch(0.0);
+        RUN_ONCE(m_pJoystick2, CATAPULT_RELEASE) {
+            Fire();
         }
-        */
+
+        if(m_pJoystick1->GetRawButton(7)) {
+            if(m_pJoystick1->GetRawButton(8)) {
+                RunWinch(0.50);
+            } else if(m_pJoystick1->GetRawButton(9)) {
+                RunWinch(-0.50);
+            } else {
+                RunWinch(0.0);
+            }
+        }
 
         RUN_ONCE(m_pJoystick1, 1) {
             OpenValve(SOL_CATAPULT_RELEASE);
@@ -308,7 +316,7 @@ void MyRobot::RunWinch(float speed) {
 }
 
 void MyRobot::Fire(void) {
-    OpenValve(SOL_CATAPULT_RELEASE);
+    CloseValve(SOL_CATAPULT_RELEASE);
     SetCatapultState(CATAPULT_FIRED);
 }
 
@@ -500,16 +508,14 @@ void MyRobot::ClimbAuto(void) {
 void MyRobot::RunCatapultState() {
     switch(CATAPULT_STATE) {
         case CATAPULT_WINDING:
-            message("run winding state");
             RunWinch(-1.0);
-            if(m_pacWinchPot->GetValue() < POT_RETRACTED) {
+            if(m_pacWinchPot->GetValue() < POT_COCKED) {
                 RunWinch(0.0);
-                CloseValve(SOL_CATAPULT_RELEASE);
+                OpenValve(SOL_CATAPULT_RELEASE);
                 SetCatapultState(CATAPULT_WOUND);
             }
             break;
         case CATAPULT_UNWINDING:
-            message("run unwinding state");
             RunWinch(1.0);
             if (m_pacWinchPot->GetValue() > POT_UNWINDED) {
                 RunWinch(0.0);
@@ -517,7 +523,6 @@ void MyRobot::RunCatapultState() {
             }
             break;
         case CATAPULT_INITIALIZING:
-            message("run init state");
             RunWinch(1.0);
             if(m_pacWinchPot->GetValue() > POT_UNWINDED) {
                 RunWinch(0.0);
@@ -531,6 +536,9 @@ void MyRobot::RunCatapultState() {
 }
 
 void MyRobot::SetCatapultState(int state) {
+    if(state == CATAPULT_STATE) {
+        return;
+    }
     CATAPULT_STATE = state;
     switch(state) {
         case CATAPULT_WINDING:
@@ -543,7 +551,9 @@ void MyRobot::SetCatapultState(int state) {
             message("Changed to state: wound.");
             break;
         case CATAPULT_READY:
-            message("Changed to state: ready.");
+            for(int i = 0; i < 5; i++) {
+                message("READY TO FIRE");
+            }
             break;
         case CATAPULT_FIRED:
             message("Changed to state: fired.");
