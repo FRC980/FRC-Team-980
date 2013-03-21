@@ -148,7 +148,7 @@ void MyRobot::OperatorControl(void) {
         //******************************** DRIVE *************************************
         float gain, throttle;
 
-        gain = m_pSteeringwheel->GetX();
+        gain = m_pSteeringwheel->GetX()/2.0;
         throttle = m_pJoystick1->GetY();
 
 	    float eGain = (gain > 0) ? gain : gain * -1;
@@ -157,17 +157,17 @@ void MyRobot::OperatorControl(void) {
 	    // eGain = pow(2.7, (2.4*eGain-3));
 	    // eThrottle = pow(2.7, (3*eThrottle-3));
     	eGain = pow(2.71828183, (2.4*eGain-3));
-    	//eThrottle = pow(2.71828183, (3*eThrottle-3));
+    	eThrottle = pow(2.71828183, (3*eThrottle-3));
 
         if(gain > -0.03 && gain < 0.03) {
             eGain = 0;
 	    }
-        gain = (gain > 0) ? eGain : (eGain)* -1;
+        //gain = (gain > 0) ? eGain : (eGain)* -1;
         
         if(throttle > -0.05 && throttle < 0.05) {
             eThrottle = 0;
 	    }
-        throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
+        //throttle = (throttle > 0) ? (eThrottle)* -1 : (eThrottle);
         
 	    //set default fLeft and fRight to throttle
 	    float fLeft = throttle;
