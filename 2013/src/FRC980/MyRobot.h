@@ -102,28 +102,27 @@
 #define CHAN_SOL_DRIVE_SHIFT_B             2
 #define CHAN_SOL_CLAW_TOP_A                3
 #define CHAN_SOL_CLAW_TOP_B                4
-#define CHAN_SOL_CLAW_BOTTOM_A             5
-#define CHAN_SOL_CLAW_BOTTOM_B             6
+#define CHAN_SOL_CLAW_BOTTOM_A             1
+#define CHAN_SOL_CLAW_BOTTOM_B             2
 #define CHAN_SOL_CATAPULT_RELEASE_A	       7
 #define CHAN_SOL_CATAPULT_RELEASE_B	       8
-#define CHAN_SOL_CLIMB_MECH_RELEASE	       9
-#define CHAN_SOL_CLIMB_MECH_DETRACT	       10
+#define CHAN_SOL_START_CLIMB_A	           5
+#define CHAN_SOL_START_CLIMB_B  	       6
 
 // Number of Solenoids
 #define NUM_SOLENOIDS                      7
 
 // Valve IDs
-#define SOL_DRIVE_SHIFT                    1
+#define SOL_DRIVE_SHIFT                    9
 #define SOL_CLAW_TOP                       3
-#define SOL_CLAW_BOTTOM                    5
-#define SOL_START_CLIMB                    9
-#define SOL_CATAPULT_RELEASE		       7
+#define SOL_CLAW_BOTTOM                    1
+#define SOL_START_CLIMB                    7
+#define SOL_CATAPULT_RELEASE		       5
 
 //==============================================================================
 // Catapult Positions
-#define POT_COCKED                         375
-#define POT_RETRACTED                      190
-#define POT_UNWINDED                       825
+#define POT_COCKED                         600
+#define POT_UNWINDED                       220
 
 // Catapult States
 #define CATAPULT_WINDING                   1

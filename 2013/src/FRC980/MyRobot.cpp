@@ -57,14 +57,16 @@ MyRobot::MyRobot(void)
       m_pTimerTopWheel(new Timer),
       m_pTimerBottomWheel(new Timer)
 {
-    m_pValves[SOL_DRIVE_SHIFT] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_DRIVE_SHIFT_A);
-    m_pValves[SOL_DRIVE_SHIFT+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_DRIVE_SHIFT_B);
+    m_pValves[SOL_DRIVE_SHIFT] = new Solenoid(SOLENOID_SLOT2, CHAN_SOL_DRIVE_SHIFT_A);
+    m_pValves[SOL_DRIVE_SHIFT+1] = new Solenoid(SOLENOID_SLOT2, CHAN_SOL_DRIVE_SHIFT_B);
     m_pValves[SOL_CLAW_TOP] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_TOP_A);
     m_pValves[SOL_CLAW_TOP+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_TOP_B);
     m_pValves[SOL_CLAW_BOTTOM] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_BOTTOM_A);
     m_pValves[SOL_CLAW_BOTTOM+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CLAW_BOTTOM_B);
     m_pValves[SOL_CATAPULT_RELEASE] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CATAPULT_RELEASE_A);
     m_pValves[SOL_CATAPULT_RELEASE+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_CATAPULT_RELEASE_B);
+    m_pValves[SOL_START_CLIMB] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_START_CLIMB_A);
+    m_pValves[SOL_START_CLIMB+1] = new Solenoid(SOLENOID_SLOT1, CHAN_SOL_START_CLIMB_B);
 
     m_pTimerTopWheel->Reset();
     m_pTimerTopWheel->Start();
@@ -101,14 +103,14 @@ void MyRobot::Autonomous(void) {
     SetCatapultState(CATAPULT_INITIALIZING);
     while(timer.Get() < 15.0) {
         if(timer.Get() < 5.0) {
-            Drive(0.4, 0.35);
+            Drive(0.35, 0.35);
         } else {
             Drive(0.0, 0.0);
         }
         if(!fired) {
             RunCatapultState();
         
-            if(timer.Get() > 8.0) {
+            if(timer.Get() > 6.0) {
                 if(GetCatapultState() == CATAPULT_FIRED) {
                     SetCatapultState(CATAPULT_WINDING);
                 } else if(GetCatapultState() == CATAPULT_WOUND) {
@@ -133,6 +135,7 @@ void MyRobot::OperatorControl(void) {
     CloseValve(SOL_CLAW_TOP);
     CloseValve(SOL_CLAW_BOTTOM);
     OpenValve(SOL_DRIVE_SHIFT);
+    OpenValve(SOL_START_CLIMB);
 
     SetCatapultState(CATAPULT_IDLE);
 
@@ -213,21 +216,22 @@ void MyRobot::OperatorControl(void) {
         float joystick2_y = m_pJoystick2->GetY();
 
         // bottom wheel
-        if(joystick2_x > -.20f || joystick2_x < .2f) {
+        //if(joystick2_x > -.20f || joystick2_x < .2f) {
             if(m_pJoystick2->GetRawButton(TOP_WHEEL) && !bottomWheelEngaged) {
                 EngageBottomWheel();
                 bottomWheelEngaged = true;
-            } else if(m_pJoystick2->GetRawButton(TOP_WHEEL) && bottomWheelEngaged) {
+            } else if(!m_pJoystick2->GetRawButton(TOP_WHEEL) && bottomWheelEngaged) {
                 DisengageBottomWheel();
                 bottomWheelEngaged = false;
             }
             CheckStopBottomWheel();
-        } else { 
-            m_pscClimbBottom->Set(joystick2_x);            
-        }
+        //} else { 
+        //    m_pscClimbBottom->Set(joystick2_x);            
+        //}
         
         // top wheel
-        if(joystick2_y > -.2f || joystick2_y < .2f) {
+        //if(joystick2_y > -.2f || joystick2_y < .2f) {
+            /*
             if(m_pJoystick2->GetRawButton(BOTTOM_WHEEL) && !topWheelEngaged) {
                 EngageTopWheel();
                 topWheelEngaged = true;
@@ -236,9 +240,10 @@ void MyRobot::OperatorControl(void) {
                 topWheelEngaged = false;
             }
             CheckStopTopWheel();
-        } else { 
-            m_pscClimbTop->Set(joystick2_y);            
-        }
+            */
+        //} else { 
+        //    m_pscClimbTop->Set(joystick2_y);            
+        //}
 
         if(m_pJoystick1->GetRawButton(6)) { 
             message("pot: %d", m_pacWinchPot->GetValue());
@@ -275,19 +280,23 @@ void MyRobot::OperatorControl(void) {
 
         if(m_pJoystick1->GetRawButton(7)) {
             if(m_pJoystick1->GetRawButton(8)) {
-                RunWinch(0.50);
+                RunWinch(.80);
             } else if(m_pJoystick1->GetRawButton(9)) {
-                RunWinch(-0.50);
+                RunWinch(-0.80);
             } else {
                 RunWinch(0.0);
+            }
+
+            RUN_ONCE(m_pJoystick1, 10) {
+                CloseValve(SOL_START_CLIMB);
+            }
+            RUN_ONCE(m_pJoystick1, 11) {
+                OpenValve(SOL_START_CLIMB);
             }
         }
 
         RUN_ONCE(m_pJoystick1, 1) {
-            OpenValve(SOL_CATAPULT_RELEASE);
-        }
-        RUN_ONCE(m_pJoystick1, 4) {
-            CloseValve(SOL_CATAPULT_RELEASE);
+            m_pscClimbBottom->Set(0.0);
         }
 
         /*
@@ -304,6 +313,7 @@ void MyRobot::OperatorControl(void) {
 
         Wait(0.05);
     }
+    GetWatchdog().SetEnabled(false);
 }
 
 void MyRobot::Drive(float right, float left) {
@@ -509,7 +519,7 @@ void MyRobot::RunCatapultState() {
     switch(CATAPULT_STATE) {
         case CATAPULT_WINDING:
             RunWinch(-1.0);
-            if(m_pacWinchPot->GetValue() < POT_COCKED) {
+            if(m_pacWinchPot->GetValue() > POT_COCKED) {
                 RunWinch(0.0);
                 OpenValve(SOL_CATAPULT_RELEASE);
                 SetCatapultState(CATAPULT_WOUND);
@@ -517,14 +527,14 @@ void MyRobot::RunCatapultState() {
             break;
         case CATAPULT_UNWINDING:
             RunWinch(1.0);
-            if (m_pacWinchPot->GetValue() > POT_UNWINDED) {
+            if (m_pacWinchPot->GetValue() < POT_UNWINDED) {
                 RunWinch(0.0);
                 SetCatapultState(CATAPULT_READY);
             }
             break;
         case CATAPULT_INITIALIZING:
             RunWinch(1.0);
-            if(m_pacWinchPot->GetValue() > POT_UNWINDED) {
+            if(m_pacWinchPot->GetValue() < POT_UNWINDED) {
                 RunWinch(0.0);
                 SetCatapultState(CATAPULT_FIRED);
             }
